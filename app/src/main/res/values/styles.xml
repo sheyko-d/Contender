@@ -10,6 +10,7 @@
     <style name="AppTheme.Loading" parent="AppTheme" tools:ignore="NewApi">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorAccent">@android:color/white</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
@@ -29,6 +30,18 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14sp</item>
         <item name="android:height">32dp</item>
+    </style>
+
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="android:shadowColor">#cc333333</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowDy">1</item>
     </style>
 
 </resources>
