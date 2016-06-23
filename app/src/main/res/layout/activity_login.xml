@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="36dp"
-                    android:hint="@string/register_name"
+                    android:hint="@string/login_email"
                     android:inputType="textPersonName" />
 
                 <EditText
@@ -50,23 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/register_email"
-                    android:inputType="textEmailAddress" />
-
-                <EditText
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/register_password"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/register_repeat_password"
+                    android:hint="@string/login_password"
                     android:inputType="textPassword" />
             </LinearLayout>
         </ScrollView>
@@ -75,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/register_submit"
+            android:text="@string/login_submit"
             android:theme="@style/Button" />
     </LinearLayout>
 </FrameLayout>

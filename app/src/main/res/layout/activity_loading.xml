@@ -34,8 +34,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/email"
-            android:drawableStart="@drawable/email"
+            android:onClick="onLoginButtonClicked"
             android:text="@string/loading_email"
             android:theme="@style/Button" />
 

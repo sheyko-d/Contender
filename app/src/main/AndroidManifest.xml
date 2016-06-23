@@ -19,8 +19,12 @@
         </activity>
         <activity
             android:name=".login.RegisterActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:theme="@style/AppTheme.Loading"/>
+            android:theme="@style/AppTheme.Loading"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.Loading"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

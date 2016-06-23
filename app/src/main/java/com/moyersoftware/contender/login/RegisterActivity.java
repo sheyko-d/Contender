@@ -12,9 +12,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overrideActivityAnimation();
         setContentView(R.layout.activity_register);
 
+        overrideActivityAnimation();
         initStatusBar();
     }
 
@@ -22,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
      * Creates a cross fade effect between loading and registration screens.
      */
     private void overrideActivityAnimation() {
-        overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_hold);
+        overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_hold);
     }
 
     /**
@@ -34,5 +34,11 @@ public class RegisterActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.activity_fade_out);
     }
 }

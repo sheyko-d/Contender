@@ -10,5 +10,11 @@
     <string name="register_name">Name</string>
     <string name="register_email">Email</string>
     <string name="register_password">Password</string>
-    <string name="register_repeat_password">Repeat Password</string>
+    <string name="register_repeat_password">Repeat password</string>
+    <string name="register_submit">Create an account</string>
+
+    <!-- Login screen -->
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_submit">Sign in</string>
 </resources>

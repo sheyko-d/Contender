@@ -1,6 +1,5 @@
 package com.moyersoftware.contender.login;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +7,22 @@ import android.view.View;
 
 import com.moyersoftware.contender.R;
 
-public class LoadingActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
+        setContentView(R.layout.activity_login);
 
+        overrideActivityAnimation();
         initStatusBar();
+    }
+
+    /**
+     * Creates a cross fade effect between loading and registration screens.
+     */
+    private void overrideActivityAnimation() {
+        overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_hold);
     }
 
     /**
@@ -29,17 +36,9 @@ public class LoadingActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Opens a log in screen.
-     */
-    public void onLoginButtonClicked(View view) {
-        startActivity(new Intent(this, LoginActivity.class));
-    }
-
-    /**
-     * Opens a registration screen.
-     */
-    public void onRegisterButtonClicked(View view) {
-        startActivity(new Intent(this, RegisterActivity.class));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.activity_fade_out);
     }
 }
