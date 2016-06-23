@@ -5,28 +5,36 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.moyersoftware.contender.games.MainFragment;
+import com.moyersoftware.contender.games.SettingsFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 3;
 
     public MainPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
-    // Returns total number of pages
+    /**
+     * Returns total number of pages.
+     */
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return 3;
     }
 
-    // Returns the fragment to display for that page
+    /**
+     * Returns the fragment to display for that page.
+     */
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
+            case 0:
                 return MainFragment.newInstance();
+            case 1:
+                return MainFragment.newInstance();
+            case 2:
+                return SettingsFragment.newInstance();
             default:
-                return MainFragment.newInstance();
+                return null;
         }
     }
 }

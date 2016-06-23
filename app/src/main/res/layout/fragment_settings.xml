@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="12dp"
+    tools:context=".games.MainFragment"
+    tools:ignore="MissingPrefix"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/main_games_txt"
+        fontPath="fonts/segoe_ui.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textColor="@color/secondary_text"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/background_light"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:padding="16dp"
+            android:text="@string/settings_support"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:padding="16dp"
+            android:text="@string/settings_rate"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:padding="16dp"
+            android:text="@string/settings_about"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>
