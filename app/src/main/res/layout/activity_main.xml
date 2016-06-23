@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.moyersoftware.contender.games.MainActivity"
     tools:targetApi="lollipop">
@@ -23,6 +24,7 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
+        app:tabIndicatorColor="@android:color/white"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="4dp" />

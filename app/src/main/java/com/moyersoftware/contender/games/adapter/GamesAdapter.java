@@ -2,6 +2,7 @@ package com.moyersoftware.contender.games.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
+        holder.timeTxt.setText(DateUtils.formatDateTime(mContext, game.getTime(),
+                DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_TIME
+                        | DateUtils.FORMAT_SHOW_DATE));
+        holder.scoreTxt.setText(game.getScore());
         Picasso.with(mContext).load(game.getImage()).placeholder(android.R.color.white)
                 .into(holder.img);
     }
