@@ -1,5 +1,6 @@
 package com.moyersoftware.contender.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.moyersoftware.contender.R;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -41,5 +44,13 @@ public class LoadingActivity extends AppCompatActivity {
      */
     public void onRegisterButtonClicked(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    /**
+     * Required for the calligraphy library.
+     */
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

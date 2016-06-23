@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="12dp"
+    tools:context=".games.MainFragment"
+    tools:ignore="MissingPrefix"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/main_games_txt"
+        fontPath="fonts/segoe_ui.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/main_games"
+        android:textColor="@color/secondary_text"
+        android:textSize="20sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_games_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_games_txt"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/background_light"
+        android:elevation="2dp" />
+
+    <Button
+        android:id="@+id/main_host_btn"
+        fontPath="fonts/segoe_ui_bold.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_join_btn"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/main_host"
+        android:theme="@style/Button" />
+
+    <Button
+        android:id="@+id/main_join_btn"
+        fontPath="fonts/segoe_ui_bold.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/main_join"
+        android:theme="@style/Button" />
+</RelativeLayout>

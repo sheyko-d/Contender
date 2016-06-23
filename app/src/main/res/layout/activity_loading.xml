@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:ignore="MissingPrefix"
     android:layout_height="match_parent"
     tools:context=".login.LoadingActivity">
 
@@ -34,6 +35,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            fontPath="fonts/segoe_ui_bold.ttf"
             android:onClick="onLoginButtonClicked"
             android:text="@string/loading_email"
             android:theme="@style/Button" />
@@ -43,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/facebook"
+            fontPath="fonts/segoe_ui_bold.ttf"
             android:drawableStart="@drawable/facebook"
             android:text="@string/loading_facebook"
             android:theme="@style/Button.Facebook" />
@@ -50,6 +53,7 @@
         <Button
             style="@style/Button.Borderless"
             android:layout_width="wrap_content"
+            fontPath="fonts/segoe_ui.ttf"
             android:onClick="onRegisterButtonClicked"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

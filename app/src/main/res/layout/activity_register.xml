@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoadingActivity">
+    tools:context=".login.LoadingActivity"
+    tools:ignore="MissingPrefix">
 
     <ImageView
         android:layout_width="match_parent"
@@ -39,6 +40,7 @@
 
                 <EditText
                     style="@style/EditText"
+                    fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="36dp"
@@ -47,6 +49,7 @@
 
                 <EditText
                     style="@style/EditText"
+                    fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -55,6 +58,7 @@
 
                 <EditText
                     style="@style/EditText"
+                    fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -63,6 +67,7 @@
 
                 <EditText
                     style="@style/EditText"
+                    fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -72,6 +77,7 @@
         </ScrollView>
 
         <Button
+            fontPath="fonts/segoe_ui_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

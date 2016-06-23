@@ -3,5 +3,10 @@
     <color name="colorPrimary">#09bf23</color>
     <color name="colorPrimaryDark">#079b1c</color>
     <color name="colorAccent">#09bf23</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
     <color name="facebook">#3b5998</color>
+    <color name="background">#cdcdcd</color>
+    <color name="background_light">#e3e3e3</color>
+    <color name="divider">#C6C6C6</color>
 </resources>

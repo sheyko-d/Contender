@@ -17,4 +17,9 @@
     <string name="login_email">Email</string>
     <string name="login_password">Password</string>
     <string name="login_submit">Sign in</string>
+
+    <!-- Mains screen -->
+    <string name="main_games">Your Games</string>
+    <string name="main_host">Host a game</string>
+    <string name="main_join">Join a game</string>
 </resources>
