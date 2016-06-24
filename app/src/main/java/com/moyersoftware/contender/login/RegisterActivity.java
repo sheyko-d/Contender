@@ -1,12 +1,14 @@
 package com.moyersoftware.contender.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.menu.MainActivity;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -51,5 +53,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    public void onRegisterButtonClicked(View view) {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

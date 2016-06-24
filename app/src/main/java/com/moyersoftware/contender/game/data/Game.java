@@ -1,4 +1,4 @@
-package com.moyersoftware.contender.menu.data;
+package com.moyersoftware.contender.game.data;
 
 /**
  * Immutable model class for a Game.

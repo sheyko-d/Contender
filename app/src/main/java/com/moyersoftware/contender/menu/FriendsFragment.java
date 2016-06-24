@@ -48,8 +48,7 @@ public class FriendsFragment extends Fragment {
     private void initRecycler() {
         // TODO: Remove
         mFriends.clear();
-        mFriends.add(new Friend("Jeff Spadaccini", "@jspadacc",
-                "http://womensenews.org/files/NFL-football.jpg"));
+        mFriends.add(new Friend("Jeff Spadaccini", "@jspadacc", "http://womensenews.org/files/NFL-football.jpg"));
 
         mFriendsRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mFriendsRecycler.setHasFixedSize(true);

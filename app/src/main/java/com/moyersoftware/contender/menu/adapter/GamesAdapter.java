@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.menu.data.Game;
+import com.moyersoftware.contender.game.data.Game;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

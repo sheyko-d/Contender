@@ -1,5 +1,6 @@
 package com.moyersoftware.contender.menu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
-import com.moyersoftware.contender.menu.data.Game;
+import com.moyersoftware.contender.game.data.Game;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,10 @@ public class GamesFragment extends Fragment {
     // Views
     @Bind(R.id.games_recycler)
     RecyclerView mGamesRecycler;
+    @Bind(R.id.games_host_btn)
+    Button mHostBtn;
+    @Bind(R.id.games_join_btn)
+    Button mJoinBtn;
 
     // Usual variables
     private ArrayList<Game> mGames = new ArrayList<>();
@@ -41,6 +48,7 @@ public class GamesFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         initRecycler();
+        initButtons();
 
         return view;
     }
@@ -54,5 +62,21 @@ public class GamesFragment extends Fragment {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
         mGamesRecycler.setAdapter(new GamesAdapter(getContext(), mGames));
+    }
+
+    private void initButtons() {
+        mHostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HostActivity.class));
+            }
+        });
+        mJoinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Change HostActivity to JoinActivity
+                startActivity(new Intent(getActivity(), HostActivity.class));
+            }
+        });
     }
 }

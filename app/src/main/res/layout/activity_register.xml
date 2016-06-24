@@ -39,7 +39,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    style="@style/EditText"
+                    style="@style/EditText.Light"
                     fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     android:inputType="textPersonName" />
 
                 <EditText
-                    style="@style/EditText"
+                    style="@style/EditText.Light"
                     fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     android:inputType="textEmailAddress" />
 
                 <EditText
-                    style="@style/EditText"
+                    style="@style/EditText.Light"
                     fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                     android:inputType="textPassword" />
 
                 <EditText
-                    style="@style/EditText"
+                    style="@style/EditText.Light"
                     fontPath="fonts/segoe_ui.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,6 +80,7 @@
             fontPath="fonts/segoe_ui_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onRegisterButtonClicked"
             android:layout_marginBottom="16dp"
             android:text="@string/register_submit"
             android:theme="@style/Button" />
