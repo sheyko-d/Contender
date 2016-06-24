@@ -416,6 +416,7 @@
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="1px"
                     android:layout_height="match_parent"

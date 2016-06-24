@@ -6,7 +6,7 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="facebook">#3b5998</color>
-    <color name="background">#E0E0E0</color>
-    <color name="background_light">#EEEEEE</color>
+    <color name="background">#DADADA</color>
+    <color name="background_light">#F0F0F0</color>
     <color name="divider">#C6C6C6</color>
 </resources>
