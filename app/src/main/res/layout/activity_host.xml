@@ -56,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
         android:paddingTop="16dp"
         android:scrollbarStyle="outsideOverlay">
 
@@ -276,6 +275,17 @@
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="-8dp"
                 android:inputType="number" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="16dp"
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:text="@string/host_create"
+                android:theme="@style/Button" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

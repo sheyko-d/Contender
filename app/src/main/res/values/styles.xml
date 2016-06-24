@@ -16,7 +16,7 @@
 
     <style name="Button" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:height">64dp</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:paddingLeft">20dp</item>
