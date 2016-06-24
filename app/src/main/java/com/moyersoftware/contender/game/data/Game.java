@@ -9,12 +9,14 @@ public final class Game {
     private final Long mTime;
     private final String mImage;
     private final String mScore;
+    private final String mUsername;
 
-    public Game(String name, Long time, String image, String score) {
+    public Game(String name, Long time, String image, String score, String username) {
         mName = name;
         mTime = time;
         mImage = image;
         mScore = score;
+        mUsername = username;
     }
 
     public String getName() {
@@ -31,5 +33,9 @@ public final class Game {
 
     public String getScore() {
         return mScore;
+    }
+
+    public String getUsername() {
+        return mUsername;
     }
 }

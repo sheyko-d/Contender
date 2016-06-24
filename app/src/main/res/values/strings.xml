@@ -33,5 +33,11 @@
     <string name="friends_pending_title">Pending friends</string>
     <string name="friends_title">Friends</string>
     <string name="friends_social_title">Social media friends</string>
+
+    <!-- Host a game screen -->
     <string name="host_create">Create a game</string>
+
+    <!-- Join a game screen -->
+    <string name="join_btn">Join</string>
+    <string name="join_author_txt">Created by @%1$s</string>
 </resources>

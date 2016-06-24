@@ -13,13 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".login.LoadingActivity"
-            android:theme="@style/AppTheme.Loading">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.Loading"></activity>
         <activity
             android:name=".login.RegisterActivity"
             android:theme="@style/AppTheme.Loading"
@@ -28,9 +22,19 @@
             android:name=".login.LoginActivity"
             android:theme="@style/AppTheme.Loading"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".menu.MainActivity"/>
+        <activity android:name=".menu.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".game.HostActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".game.JoinActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
     </application>
+
 </manifest>

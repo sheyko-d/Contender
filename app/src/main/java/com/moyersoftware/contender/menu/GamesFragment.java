@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.HostActivity;
+import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.game.data.Game;
 
@@ -56,8 +57,8 @@ public class GamesFragment extends Fragment {
     private void initRecycler() {
         // TODO: Remove
         mGames.clear();
-        mGames.add(new Game("Big Day", System.currentTimeMillis(), "http://womensenews.org/files/NFL-football.jpg", "89/100"));
-        mGames.add(new Game("NFL", System.currentTimeMillis(), "http://cache3.asset-cache.net/gc/461080164-detailed-view-of-an-nfl-game-ball-during-the-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=GkZZ8bf5zL1ZiijUmxa7QSy23N5sserBo9ZkzRzjt5OUXhIP8J6xwGtqTHhFXuOJK6GssOSoFoAZB2jFBmovrQ%3D%3D", "100/100"));
+        mGames.add(new Game("Big Day", System.currentTimeMillis(), "http://womensenews.org/files/NFL-football.jpg", "89/100", ""));
+        mGames.add(new Game("NFL", System.currentTimeMillis(), "http://cache3.asset-cache.net/gc/461080164-detailed-view-of-an-nfl-game-ball-during-the-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=GkZZ8bf5zL1ZiijUmxa7QSy23N5sserBo9ZkzRzjt5OUXhIP8J6xwGtqTHhFXuOJK6GssOSoFoAZB2jFBmovrQ%3D%3D", "100/100", ""));
 
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
@@ -74,8 +75,7 @@ public class GamesFragment extends Fragment {
         mJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Change HostActivity to JoinActivity
-                startActivity(new Intent(getActivity(), HostActivity.class));
+                startActivity(new Intent(getActivity(), JoinActivity.class));
             }
         });
     }

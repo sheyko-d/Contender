@@ -1,37 +1,30 @@
-package com.moyersoftware.contender.menu;
+package com.moyersoftware.contender.game;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
+import com.moyersoftware.contender.game.adapter.JoinPagerAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+public class JoinActivity extends AppCompatActivity {
 
-    // Views
-    @Bind(R.id.main_tab_layout)
-    TabLayout mTabLayout;
-    @Bind(R.id.main_pager)
+    @Bind(R.id.join_pager)
     ViewPager mPager;
-
-    // Usual variables
-    private int[] mTabIcons = new int[]{
-            R.drawable.tab_home,
-            R.drawable.tab_friends,
-            R.drawable.tab_settings
-    };
+    @Bind(R.id.join_tab_layout)
+    TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_join);
         ButterKnife.bind(this);
 
         initPager();
@@ -39,15 +32,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPager() {
-        mPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        mPager.setAdapter(new JoinPagerAdapter(getSupportFragmentManager()));
     }
 
     private void initTabs() {
         mTabLayout.setupWithViewPager(mPager);
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
-            //noinspection ConstantConditions
-            mTabLayout.getTabAt(i).setIcon(mTabIcons[i]);
-        }
     }
 
     /**
@@ -56,5 +45,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    public void onBackButtonClicked(View view) {
+        finish();
     }
 }
