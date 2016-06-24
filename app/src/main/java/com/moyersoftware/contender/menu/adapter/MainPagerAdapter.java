@@ -1,11 +1,12 @@
-package com.moyersoftware.contender.games.adapter;
+package com.moyersoftware.contender.menu.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.moyersoftware.contender.games.MainFragment;
-import com.moyersoftware.contender.games.SettingsFragment;
+import com.moyersoftware.contender.menu.FriendsFragment;
+import com.moyersoftware.contender.menu.GamesFragment;
+import com.moyersoftware.contender.menu.SettingsFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
@@ -28,9 +29,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MainFragment.newInstance();
+                return GamesFragment.newInstance();
             case 1:
-                return MainFragment.newInstance();
+                return FriendsFragment.newInstance();
             case 2:
                 return SettingsFragment.newInstance();
             default:

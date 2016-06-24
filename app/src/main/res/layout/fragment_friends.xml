@@ -1,0 +1,105 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".menu.GamesFragment"
+    tools:ignore="MissingPrefix"
+    tools:targetApi="lollipop"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="12dp">
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/friends_pending_title"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friends_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_light"
+            android:elevation="2dp" />
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/friends_title"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            tools:ignore="ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:text="Find friends"
+                android:textSize="18sp"
+                android:theme="@style/Button" />
+
+            <Button
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="Invite friends"
+                android:textSize="18sp"
+                android:theme="@style/Button" />
+        </LinearLayout>
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/friends_social_title"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp" />
+
+        <Button
+            fontPath="fonts/segoe_ui_bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:text="Invite from facebook"
+            android:textSize="18sp"
+            android:theme="@style/Button" />
+
+    </LinearLayout>
+</ScrollView>

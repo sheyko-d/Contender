@@ -1,4 +1,4 @@
-package com.moyersoftware.contender.games;
+package com.moyersoftware.contender.menu;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.games.adapter.MainPagerAdapter;
+import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

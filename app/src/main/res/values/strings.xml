@@ -22,7 +22,15 @@
     <string name="main_games">Your Games</string>
     <string name="main_host">Host a game</string>
     <string name="main_join">Join a game</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
     <string name="settings_support">Support</string>
     <string name="settings_rate">Rate This App</string>
     <string name="settings_about">About</string>
+
+    <!-- Friends screen -->
+    <string name="friends_pending_title">Pending friends</string>
+    <string name="friends_title">Friends</string>
+    <string name="friends_social_title">Social media friends</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.moyersoftware.contender.games.adapter;
+package com.moyersoftware.contender.menu.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.games.data.Game;
+import com.moyersoftware.contender.menu.data.Game;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

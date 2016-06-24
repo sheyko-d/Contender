@@ -3,31 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:paddingTop="12dp"
-    tools:context=".games.MainFragment"
+    tools:context=".menu.GamesFragment"
     tools:ignore="MissingPrefix"
     tools:targetApi="lollipop">
 
     <TextView
-        android:id="@+id/main_games_txt"
         fontPath="fonts/segoe_ui.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/settings_title"
         android:textColor="@color/secondary_text"
         android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/background_light"
         android:elevation="2dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/settings_support_txt"
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
             android:background="@color/divider" />
 
         <TextView
+            android:id="@+id/settings_rate_txt"
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +61,7 @@
             android:background="@color/divider" />
 
         <TextView
+            android:id="@+id/settings_about_txt"
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

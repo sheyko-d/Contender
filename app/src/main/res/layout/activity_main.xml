@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.moyersoftware.contender.games.MainActivity"
+    tools:context="com.moyersoftware.contender.menu.MainActivity"
     tools:targetApi="lollipop">
 
     <ImageView

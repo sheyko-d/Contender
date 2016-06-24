@@ -1,4 +1,4 @@
-package com.moyersoftware.contender.games;
+package com.moyersoftware.contender.menu;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,35 +9,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.games.adapter.GamesAdapter;
-import com.moyersoftware.contender.games.data.Game;
+import com.moyersoftware.contender.menu.adapter.GamesAdapter;
+import com.moyersoftware.contender.menu.data.Game;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainFragment extends Fragment {
+public class GamesFragment extends Fragment {
 
     // Views
-    @Bind(R.id.main_games_recycler)
+    @Bind(R.id.games_recycler)
     RecyclerView mGamesRecycler;
 
     // Usual variables
     private ArrayList<Game> mGames = new ArrayList<>();
 
-    public MainFragment() {
+    public GamesFragment() {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static GamesFragment newInstance() {
+        return new GamesFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.bind(this, view);
 
         initRecycler();

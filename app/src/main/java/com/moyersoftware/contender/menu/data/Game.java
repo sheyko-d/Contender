@@ -1,4 +1,4 @@
-package com.moyersoftware.contender.games.data;
+package com.moyersoftware.contender.menu.data;
 
 /**
  * Immutable model class for a Game.
@@ -32,5 +32,4 @@ public final class Game {
     public String getScore() {
         return mScore;
     }
-
 }

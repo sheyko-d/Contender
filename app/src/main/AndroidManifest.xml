@@ -22,7 +22,7 @@
             android:name=".login.LoginActivity"
             android:theme="@style/AppTheme.Loading"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".games.MainActivity">
+        <activity android:name=".menu.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
