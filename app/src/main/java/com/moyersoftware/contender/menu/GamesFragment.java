@@ -9,12 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.JoinActivity;
-import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 
 import java.util.ArrayList;
 
@@ -30,9 +37,13 @@ public class GamesFragment extends Fragment {
     Button mHostBtn;
     @Bind(R.id.games_join_btn)
     Button mJoinBtn;
+    @Bind(R.id.games_title_txt)
+    TextView mTitleTxt;
 
     // Usual variables
     private ArrayList<Game> mGames = new ArrayList<>();
+    private DatabaseReference mDatabase;
+    private GamesAdapter mAdapter;
 
     public GamesFragment() {
         // Required empty public constructor
@@ -48,21 +59,44 @@ public class GamesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.bind(this, view);
 
+        initDatabase();
         initRecycler();
         initButtons();
 
         return view;
     }
 
-    private void initRecycler() {
-        // TODO: Remove
-        mGames.clear();
-        mGames.add(new Game("Big Day", System.currentTimeMillis(), "http://womensenews.org/files/NFL-football.jpg", "89/100", ""));
-        mGames.add(new Game("NFL", System.currentTimeMillis(), "http://cache3.asset-cache.net/gc/461080164-detailed-view-of-an-nfl-game-ball-during-the-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=GkZZ8bf5zL1ZiijUmxa7QSy23N5sserBo9ZkzRzjt5OUXhIP8J6xwGtqTHhFXuOJK6GssOSoFoAZB2jFBmovrQ%3D%3D", "100/100", ""));
+    private void initDatabase() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        Query myTopPostsQuery = mDatabase.child("games").orderByChild("time");
+        myTopPostsQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Update the games list
+                mGames.clear();
+                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                    Game game = gameSnapshot.getValue(Game.class);
+                    mGames.add(game);
+                }
+                mAdapter.notifyDataSetChanged();
+
+                // Update the title text
+                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                        : R.string.games_title_empty);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void initRecycler() {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
-        mGamesRecycler.setAdapter(new GamesAdapter(getContext(), mGames));
+        mAdapter = new GamesAdapter(getContext(), mGames);
+        mGamesRecycler.setAdapter(mAdapter);
     }
 
     private void initButtons() {

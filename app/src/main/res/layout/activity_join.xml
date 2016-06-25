@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:includeFontPadding="false"
-            android:text="@string/main_join"
+            android:text="@string/games_join"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="20sp" />

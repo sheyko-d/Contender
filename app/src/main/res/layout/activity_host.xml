@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:includeFontPadding="false"
-            android:text="@string/main_host"
+            android:text="@string/games_host"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
@@ -75,15 +75,16 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/host_id_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="54897678"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="54897678" />
 
             <TextView
                 fontPath="fonts/segoe_ui_medium.ttf"
@@ -108,6 +109,7 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/host_name_edit_txt"
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,16 +129,34 @@
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 
-            <Button
-                fontPath="fonts/segoe_ui_bold.ttf"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginRight="13dp"
-                android:layout_marginTop="2dp"
-                android:text="Pick from gallery"
-                android:textSize="14sp"
-                android:theme="@style/Button" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/host_game_img"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/placeholder" />
+
+                <Button
+                    fontPath="fonts/segoe_ui_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:onClick="onImageButtonClicked"
+                    android:text="Pick from gallery"
+                    android:textSize="14sp"
+                    android:theme="@style/Button" />
+            </LinearLayout>
 
             <TextView
                 fontPath="fonts/segoe_ui_medium.ttf"
@@ -161,6 +181,7 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/host_password_edit_txt"
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +197,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="12dp"
-                android:text="Square price"
+                android:text="Square price ($)"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 
@@ -192,12 +213,15 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/host_square_price_edit_txt"
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="-8dp"
+                android:maxLength="3"
+                android:text="@string/host_default_square_price"
                 android:inputType="number" />
 
             <TextView
@@ -252,7 +276,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:text="Quoter price"
+                android:text="Quoter price ($)"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 
@@ -266,15 +290,6 @@
                 android:text="How much is paid out per quarter"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
-
-            <EditText
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="-8dp"
-                android:inputType="number" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -303,6 +318,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/host_quarter1_price_edit_txt"
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -310,7 +326,8 @@
                         android:layout_marginTop="2dp"
                         android:background="@null"
                         android:gravity="center"
-                        android:text="20$"
+                        android:inputType="number"
+                        android:text="20"
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -337,6 +354,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/host_quarter2_price_edit_txt"
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -344,7 +362,8 @@
                         android:layout_marginTop="2dp"
                         android:background="@null"
                         android:gravity="center"
-                        android:text="20$"
+                        android:inputType="number"
+                        android:text="20"
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -371,6 +390,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/host_quarter3_price_edit_txt"
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -378,7 +398,8 @@
                         android:layout_marginTop="2dp"
                         android:background="@null"
                         android:gravity="center"
-                        android:text="20$"
+                        android:inputType="number"
+                        android:text="20"
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -405,6 +426,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/host_final_price_edit_txt"
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -412,7 +434,8 @@
                         android:layout_marginTop="2dp"
                         android:background="@null"
                         android:gravity="center"
-                        android:text="40$"
+                        android:inputType="number"
+                        android:text="40"
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -438,7 +461,8 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="14sp" />
 
-                    <EditText
+                    <TextView
+                        android:id="@+id/host_total_price_txt"
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -446,7 +470,7 @@
                         android:layout_marginTop="2dp"
                         android:background="@null"
                         android:gravity="center"
-                        android:text="100$"
+                        android:text="100"
                         android:textColor="@color/primary_text"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -460,6 +484,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="16dp"
+                android:onClick="onCreateButtonClicked"
                 android:text="@string/host_create"
                 android:theme="@style/Button" />
         </LinearLayout>

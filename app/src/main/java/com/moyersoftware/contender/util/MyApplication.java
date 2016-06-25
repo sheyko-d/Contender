@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.FacebookSdk;
+import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -18,6 +19,9 @@ public class MyApplication extends Application{
 
         // Init Facebook SDK
         FacebookSdk.sdkInitialize(this);
+
+        // Init Firebase SDK
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Init calligraphy library
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()

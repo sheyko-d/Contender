@@ -1,20 +1,495 @@
 package com.moyersoftware.contender.game;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.ByteArrayOutputStream;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HostActivity extends AppCompatActivity {
+
+    // Constants
+    private static final int PICK_IMAGE_CODE = 0;
+    private static final int GAME_IMAGE_SIZE_PX = 256;
+    private static final int MIN_PASSWORD_LENGTH = 4;
+
+    // Views
+    @Bind(R.id.host_id_txt)
+    TextView mIdTxt;
+    @Bind(R.id.host_game_img)
+    ImageView mGameImg;
+    @Bind(R.id.host_name_edit_txt)
+    EditText mNameEditTxt;
+    @Bind(R.id.host_password_edit_txt)
+    EditText mPasswordEditTxt;
+    @Bind(R.id.host_square_price_edit_txt)
+    EditText mSquarePriceEditTxt;
+    @Bind(R.id.host_quarter1_price_edit_txt)
+    EditText mQuarter1PriceEditTxt;
+    @Bind(R.id.host_quarter2_price_edit_txt)
+    EditText mQuarter2PriceEditTxt;
+    @Bind(R.id.host_quarter3_price_edit_txt)
+    EditText mQuarter3PriceEditTxt;
+    @Bind(R.id.host_final_price_edit_txt)
+    EditText mFinalPriceEditTxt;
+    @Bind(R.id.host_total_price_txt)
+    TextView mTotalPriceTxt;
+
+    // Usual variables
+    private DatabaseReference mDatabase;
+    private String mId;
+    private FirebaseStorage mStorage;
+    private StorageReference mMountainsRef;
+    private Bitmap mBitmap;
+    private ProgressDialog mProgressDialog;
+    private String mName;
+    private String mPassword;
+    private String mUsername;
+    private Integer mSquarePrice = -1;
+    private Integer mQuarter1Price = -1;
+    private Integer mQuarter2Price = -1;
+    private Integer mQuarter3Price = -1;
+    private Integer mFinalPrice = -1;
+    private Integer mTotalPrice = -1;
+    private boolean mQuarterPricesEnabled = true;
+    private boolean mListenToFieldChanges = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        ButterKnife.bind(this);
+
+        initId();
+        initUser();
+        initDatabase();
+        initStorage();
+        initPrices();
+    }
+
+    private void initPrices() {
+        mSquarePriceEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mQuarterPricesEnabled == TextUtils.isEmpty(mSquarePriceEditTxt.getText()
+                        .toString())) {
+                    mQuarterPricesEnabled = !TextUtils.isEmpty(mSquarePriceEditTxt.getText()
+                            .toString());
+
+                    if (!mQuarterPricesEnabled) {
+                        // Reset all text fields
+                        mQuarter1PriceEditTxt.setText("-");
+                        mQuarter2PriceEditTxt.setText("-");
+                        mQuarter3PriceEditTxt.setText("-");
+                        mFinalPriceEditTxt.setText("-");
+                        mTotalPriceTxt.setText("-");
+                    } else {
+                        setDefaultPrices();
+                    }
+
+                    // Enable or disable text fields depending on a square price
+                    mQuarter1PriceEditTxt.setEnabled(mQuarterPricesEnabled);
+                    mQuarter2PriceEditTxt.setEnabled(mQuarterPricesEnabled);
+                    mQuarter3PriceEditTxt.setEnabled(mQuarterPricesEnabled);
+                    mFinalPriceEditTxt.setEnabled(mQuarterPricesEnabled);
+                } else {
+                    setDefaultPrices();
+                }
+            }
+
+            private void setDefaultPrices() {
+                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                        * 100;
+                mQuarter1PriceEditTxt.setText(String.valueOf((int) (totalPrice * 0.2)));
+                mQuarter2PriceEditTxt.setText(String.valueOf((int) (totalPrice * 0.2)));
+                mQuarter3PriceEditTxt.setText(String.valueOf((int) (totalPrice * 0.2)));
+                mFinalPriceEditTxt.setText(String.valueOf((int) (totalPrice * 0.4)));
+                mTotalPriceTxt.setText(String.valueOf(totalPrice));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        mQuarter1PriceEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!mListenToFieldChanges) return;
+
+                String text = mQuarter1PriceEditTxt.getText().toString();
+                if (TextUtils.isEmpty(text)) {
+                    mQuarter1PriceEditTxt.setText("0");
+                    mQuarter1PriceEditTxt.setSelection(1);
+                } else if (text.length() > 1 && text.startsWith("0")) {
+                    mQuarter1PriceEditTxt.setText(text.substring(1, text.length()));
+                } else if (text.length() == 1) {
+                    mQuarter1PriceEditTxt.setSelection(1);
+                }
+
+                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                        * 100;
+                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter1PriceEditTxt.getText()
+                        .toString()) > totalPrice) {
+                    mQuarter1PriceEditTxt.setText(String.valueOf(totalPrice));
+                    mQuarter1PriceEditTxt.setSelection(mQuarter1PriceEditTxt.getText().length());
+                }
+
+                updateOtherPrices(mQuarter1PriceEditTxt);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        mQuarter2PriceEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!mListenToFieldChanges) return;
+
+                String text = mQuarter2PriceEditTxt.getText().toString();
+                if (TextUtils.isEmpty(text)) {
+                    mQuarter2PriceEditTxt.setText("0");
+                    mQuarter2PriceEditTxt.setSelection(1);
+                } else if (text.length() > 1 && text.startsWith("0")) {
+                    mQuarter2PriceEditTxt.setText(text.substring(1, text.length()));
+                } else if (text.length() == 1) {
+                    mQuarter2PriceEditTxt.setSelection(1);
+                }
+
+                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                        * 100;
+                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter2PriceEditTxt.getText()
+                        .toString()) > totalPrice) {
+                    mQuarter2PriceEditTxt.setText(String.valueOf(totalPrice));
+                    mQuarter2PriceEditTxt.setSelection(mQuarter2PriceEditTxt.getText().length());
+                }
+
+                updateOtherPrices(mQuarter2PriceEditTxt);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        mQuarter3PriceEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!mListenToFieldChanges) return;
+
+                String text = mQuarter3PriceEditTxt.getText().toString();
+                if (TextUtils.isEmpty(text)) {
+                    mQuarter3PriceEditTxt.setText("0");
+                    mQuarter3PriceEditTxt.setSelection(1);
+                } else if (text.length() > 1 && text.startsWith("0")) {
+                    mQuarter3PriceEditTxt.setText(text.substring(1, text.length()));
+                } else if (text.length() == 1) {
+                    mQuarter3PriceEditTxt.setSelection(1);
+                }
+
+                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                        * 100;
+                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter3PriceEditTxt.getText()
+                        .toString()) > totalPrice) {
+                    mQuarter3PriceEditTxt.setText(String.valueOf(totalPrice));
+                    mQuarter3PriceEditTxt.setSelection(mQuarter3PriceEditTxt.getText().length());
+                }
+
+                updateOtherPrices(mQuarter3PriceEditTxt);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        mFinalPriceEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!mListenToFieldChanges) return;
+
+                String text = mFinalPriceEditTxt.getText().toString();
+                if (TextUtils.isEmpty(text)) {
+                    mFinalPriceEditTxt.setText("0");
+                    mFinalPriceEditTxt.setSelection(1);
+                } else if (text.length() > 1 && text.startsWith("0")) {
+                    mFinalPriceEditTxt.setText(text.substring(1, text.length()));
+                } else if (text.length() == 1) {
+                    mFinalPriceEditTxt.setSelection(1);
+                }
+
+                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                        * 100;
+                if (!TextUtils.isEmpty(text) && Integer.valueOf(mFinalPriceEditTxt.getText()
+                        .toString()) > totalPrice) {
+                    mFinalPriceEditTxt.setText(String.valueOf(totalPrice));
+                    mFinalPriceEditTxt.setSelection(mFinalPriceEditTxt.getText().length());
+                }
+
+                updateOtherPrices(mFinalPriceEditTxt);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void updateOtherPrices(EditText editText) {
+        int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                * 100;
+        int quarter1Price = Integer.parseInt(mQuarter1PriceEditTxt.getText().toString());
+        int quarter2Price = Integer.parseInt(mQuarter2PriceEditTxt.getText().toString());
+        int quarter3Price = Integer.parseInt(mQuarter3PriceEditTxt.getText().toString());
+        int finalPrice = Integer.parseInt(mFinalPriceEditTxt.getText().toString());
+
+        mListenToFieldChanges = false;
+        if (mQuarter1PriceEditTxt == editText) {
+            mQuarter2PriceEditTxt.setText(String.valueOf(totalPrice - quarter1Price - quarter3Price
+                    - finalPrice));
+            updateAdditionalPrices(mQuarter2PriceEditTxt);
+        } else if (mQuarter2PriceEditTxt == editText) {
+            mQuarter3PriceEditTxt.setText(String.valueOf(totalPrice - quarter1Price - quarter2Price
+                    - finalPrice));
+            updateAdditionalPrices(mQuarter3PriceEditTxt);
+        } else if (mQuarter3PriceEditTxt == editText) {
+            mFinalPriceEditTxt.setText(String.valueOf(totalPrice - quarter1Price - quarter2Price
+                    - quarter3Price));
+            updateAdditionalPrices(mFinalPriceEditTxt);
+        } else if (mFinalPriceEditTxt == editText) {
+            mQuarter1PriceEditTxt.setText(String.valueOf(totalPrice - quarter2Price - quarter3Price
+                    - finalPrice));
+            updateAdditionalPrices(mQuarter1PriceEditTxt);
+        }
+
+        mListenToFieldChanges = true;
+    }
+
+    private void updateAdditionalPrices(EditText editTxt) {
+        if (Integer.valueOf(editTxt.getText().toString()) < 0) {
+            editTxt.setText("0");
+            updateOtherPrices(editTxt);
+        }
+    }
+
+    private void initId() {
+        mId = Util.generateGameId();
+        mIdTxt.setText(mId);
+    }
+
+    private void initUser() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            mUsername = Util.parseUsername(firebaseUser);
+        }
+    }
+
+    private void initStorage() {
+        mStorage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = mStorage.getReferenceFromUrl
+                ("gs://contender-3ef7d.appspot.com");
+
+        // Create a reference to "mountains.jpg"
+        mMountainsRef = storageRef.child(mId + ".jpg");
+    }
+
+    private void initDatabase() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+    }
+
+    public void onBackButtonClicked(View view) {
+        finish();
+    }
+
+    public void onCreateButtonClicked(View view) {
+        readFieldValues();
+
+        if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mPassword) || mSquarePrice == -1) {
+            Toast.makeText(this, "Some fields are empty", Toast.LENGTH_SHORT).show();
+        } else if (mPassword.length() < MIN_PASSWORD_LENGTH) {
+            Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
+        } else {
+            mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
+            mProgressDialog.show();
+            if (mBitmap != null) {
+                uploadImage();
+            } else {
+                uploadData(null);
+            }
+        }
+    }
+
+    private void readFieldValues() {
+        mName = mNameEditTxt.getText().toString();
+        mPassword = mPasswordEditTxt.getText().toString();
+        String squarePrice = mSquarePriceEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(squarePrice)) {
+            mSquarePrice = Integer.valueOf(squarePrice);
+        } else {
+            mSquarePrice = -1;
+        }
+        String quarter1Price = mQuarter1PriceEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(quarter1Price)) {
+            mQuarter1Price = Integer.valueOf(quarter1Price);
+        } else {
+            mQuarter1Price = -1;
+        }
+        String quarter2Price = mQuarter2PriceEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(quarter2Price)) {
+            mQuarter2Price = Integer.valueOf(quarter2Price);
+        } else {
+            mQuarter2Price = -1;
+        }
+        String quarter3Price = mQuarter3PriceEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(quarter3Price)) {
+            mQuarter3Price = Integer.valueOf(quarter3Price);
+        } else {
+            mQuarter3Price = -1;
+        }
+        String finalPrice = mFinalPriceEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(finalPrice)) {
+            mFinalPrice = Integer.valueOf(finalPrice);
+        } else {
+            mFinalPrice = -1;
+        }
+        String totalPrice = mTotalPriceTxt.getText().toString();
+        if (!TextUtils.isEmpty(totalPrice)) {
+            mTotalPrice = Integer.valueOf(totalPrice);
+        } else {
+            mTotalPrice = -1;
+        }
+    }
+
+    private void uploadData(String imageUrl) {
+        mDatabase.child("games").child(mId).setValue(new Game(mId, mName,
+                System.currentTimeMillis(), imageUrl, "100/100", mUsername, mPassword,
+                mSquarePrice, mQuarter1Price, mQuarter2Price, mQuarter3Price, mFinalPrice,
+                mTotalPrice))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mProgressDialog.cancel();
+                        // TODO: Open game lobby activity or something
+
+                        finish();
+                    }
+                });
+    }
+
+    private void uploadImage() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        byte[] data = outputStream.toByteArray();
+
+        UploadTask uploadTask = mMountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Util.Log("File uploading failure: " + exception);
+
+                Toast.makeText(HostActivity.this, "Can't upload image", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                uploadData(taskSnapshot.getDownloadUrl() + "");
+            }
+        });
+    }
+
+    public void onImageButtonClicked(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a game image"),
+                PICK_IMAGE_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Picasso.with(this).load(data.getData()).placeholder(android.R.color.white)
+                        .centerCrop().fit().into(mGameImg);
+
+                Picasso.with(this).load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
+                        GAME_IMAGE_SIZE_PX).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        mBitmap = bitmap;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -23,9 +498,5 @@ public class HostActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    public void onBackButtonClicked(View view) {
-        finish();
     }
 }

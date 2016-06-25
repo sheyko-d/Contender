@@ -38,7 +38,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        holder.authorTxt.setText(mContext.getString(R.string.join_author_txt, game.getUsername()));
+        holder.authorTxt.setText(mContext.getString(R.string.join_author_txt, game.getAuthorUsername()));
         Picasso.with(mContext).load(game.getImage()).placeholder(android.R.color.white)
                 .into(holder.img);
     }

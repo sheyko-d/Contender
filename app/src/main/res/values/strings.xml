@@ -19,10 +19,11 @@
     <string name="login_password">Password</string>
     <string name="login_submit">Sign in</string>
 
-    <!-- Mains screen -->
-    <string name="main_games">Your Games</string>
-    <string name="main_host">Host a game</string>
-    <string name="main_join">Join a game</string>
+    <!-- Games screen -->
+    <string name="games_title">Your Games</string>
+    <string name="games_title_empty">No games found</string>
+    <string name="games_host">Host a game</string>
+    <string name="games_join">Join a game</string>
 
     <!-- Settings screen -->
     <string name="settings_title">Settings</string>
@@ -37,6 +38,7 @@
 
     <!-- Host a game screen -->
     <string name="host_create">Create a game</string>
+    <string name="host_default_square_price">1</string>
 
     <!-- Join a game screen -->
     <string name="join_btn">Join</string>

@@ -40,7 +40,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.nameTxt.setText(friend.getName());
         holder.usernameTxt.setText(friend.getUsername());
         Picasso.with(mContext).load(friend.getImage()).placeholder(android.R.color.white)
-                .into(holder.img);
+                .centerCrop().fit().into(holder.img);
     }
 
     @Override
