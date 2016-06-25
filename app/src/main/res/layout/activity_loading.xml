@@ -46,6 +46,7 @@
             android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/facebook"
             fontPath="fonts/segoe_ui_bold.ttf"
+            android:onClick="onFacebookButtonClicked"
             android:drawableStart="@drawable/facebook"
             android:text="@string/loading_facebook"
             android:theme="@style/Button.Facebook" />

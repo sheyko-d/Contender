@@ -3,6 +3,7 @@ package com.moyersoftware.contender.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
 import com.moyersoftware.contender.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -14,6 +15,9 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         sContext = this;
+
+        // Init Facebook SDK
+        FacebookSdk.sdkInitialize(this);
 
         // Init calligraphy library
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
