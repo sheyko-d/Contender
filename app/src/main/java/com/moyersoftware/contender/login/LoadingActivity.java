@@ -13,12 +13,19 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoadingActivity extends AppCompatActivity {
 
+    public static LoadingActivity sActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        initActivity();
         initStatusBar();
+    }
+
+    private void initActivity() {
+        sActivity = this;
     }
 
     /**

@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Util.Log("onAuthStateChanged:signed_in:" + user.getUid());
 
                     finish();
-                    // TODO: Finish loading activity
+                    LoadingActivity.sActivity.finish();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 } else {
                     // User is signed out
@@ -133,8 +133,6 @@ public class RegisterActivity extends AppCompatActivity {
                         @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Util.Log("createUserWithEmail:onComplete:" + task.isSuccessful());
-
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
