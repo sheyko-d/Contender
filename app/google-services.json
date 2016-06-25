@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "9328000707",
+    "firebase_url": "https://contender-3ef7d.firebaseio.com",
+    "project_id": "contender-3ef7d",
+    "storage_bucket": "contender-3ef7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9328000707:android:51d356a3d3c6387f",
+        "android_client_info": {
+          "package_name": "com.moyersoftware.contender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9328000707-2v9ocqsdpphtv01u3mltf87e6a51hs5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGYE8uPjqBSivzLm01acCOfY8PvD2GACE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

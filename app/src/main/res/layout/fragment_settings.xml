@@ -70,5 +70,23 @@
             android:text="@string/settings_about"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="onLogOutButtonClicked"
+            android:background="?selectableItemBackground"
+            android:includeFontPadding="false"
+            android:padding="16dp"
+            android:text="@string/settings_log_out"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
