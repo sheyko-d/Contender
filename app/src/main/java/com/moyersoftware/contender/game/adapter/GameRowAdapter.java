@@ -1,6 +1,5 @@
 package com.moyersoftware.contender.game.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +8,17 @@ import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 
 public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHolder> {
 
-    // Constants
-    private final static int ROW_COUNT = 10;
-
     // Usual variables
-    private Context mContext;
+    private ArrayList<Integer> mNumbers;
 
-    public GameRowAdapter(Context context) {
-        mContext = context;
+    public GameRowAdapter(ArrayList<Integer> numbers) {
+        mNumbers = numbers;
     }
 
     @Override
@@ -31,12 +29,12 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ((TextView)holder.itemView).setText((position+1)+"");
+        ((TextView) holder.itemView).setText(String.valueOf(mNumbers.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return ROW_COUNT;
+        return mNumbers.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

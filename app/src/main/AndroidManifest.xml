@@ -3,6 +3,7 @@
     package="com.moyersoftware.contender">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".util.MyApplication"
@@ -16,7 +17,21 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+            <!-- Accept chrome links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://moyersoftware.com/contender" -->
+                <data
+                    android:host="moyersoftware.com"
+                    android:pathPrefix="/contender"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".login.LoadingActivity"
             android:theme="@style/AppTheme.Loading" />
@@ -30,11 +45,10 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".game.HostActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".game.JoinActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".game.GameBoardActivity" />
 
         <meta-data

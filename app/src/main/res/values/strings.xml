@@ -24,6 +24,7 @@
     <string name="games_title_empty">No games found</string>
     <string name="games_host">Host a game</string>
     <string name="games_join">Join a game</string>
+    <string name="games_score">%1$d/100</string>
 
     <!-- Settings screen -->
     <string name="settings_title">Settings</string>
@@ -42,6 +43,13 @@
 
     <!-- Join a game screen -->
     <string name="join_btn">Join</string>
+    <string name="join_disabled_btn">Play</string>
     <string name="join_author_txt">Created by @%1$s</string>
+    <string name="join_found_title">Games found</string>
+    <string name="join_id_title">Search by Game ID</string>
+    <string name="join_location_title">Searching near your location…</string>
+    <string name="join_location_empty">No games found around you</string>
+
+    <!-- Settings screen -->
     <string name="settings_log_out">Log Out</string>
 </resources>

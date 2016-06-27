@@ -8,6 +8,28 @@
     android:foreground="?selectableItemBackground"
     tools:ignore="MissingPrefix">
 
+    <ImageView
+        android:id="@+id/cell_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/cell_name_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="1dp"
+        android:includeFontPadding="false"
+        android:ellipsize="marquee"
+        android:gravity="center_horizontal"
+        android:shadowColor="@android:color/black"
+        android:shadowRadius="8"
+        android:maxLines="1"
+        android:padding="1dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

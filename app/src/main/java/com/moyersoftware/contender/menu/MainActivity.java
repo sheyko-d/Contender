@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 
@@ -36,19 +38,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, LoadingActivity.class));
+            finish();
+            return;
+        }
+
+        if (getIntent().getExtras() != null && getIntent().getData() != null) {
+            String data = getIntent().getDataString();
+            if (data.contains("http://moyersoftware.com/contender#")) {
+                String gameId = data.substring(data.indexOf("#") + 1, data.length());
+                // TODO: Add to players list
+                startActivity(new Intent(this, GameBoardActivity.class)
+                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
+            }
+        }
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initAuth();
         initPager();
         initTabs();
-    }
-
-    /**
-     * Initializes Firebase Auth.
-     */
-    private void initAuth() {
-        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     private void initPager() {

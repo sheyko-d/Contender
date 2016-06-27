@@ -1,13 +1,19 @@
 package com.moyersoftware.contender.game;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,9 +21,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,22 +40,25 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class HostActivity extends AppCompatActivity {
+public class HostActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
 
     // Constants
     private static final int PICK_IMAGE_CODE = 0;
     private static final int GAME_IMAGE_SIZE_PX = 256;
     private static final int MIN_PASSWORD_LENGTH = 4;
+    private static final int LOCATION_PERMISSION_CODE = 0;
 
     // Views
     @Bind(R.id.host_id_txt)
@@ -69,6 +81,8 @@ public class HostActivity extends AppCompatActivity {
     EditText mFinalPriceEditTxt;
     @Bind(R.id.host_total_price_txt)
     TextView mTotalPriceTxt;
+    @Bind(R.id.host_img_progress_bar)
+    ProgressBar mProgressBar;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -79,7 +93,8 @@ public class HostActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private String mName;
     private String mPassword;
-    private String mUsername;
+    private String mAuthorId;
+    private String mAuthorUsername;
     private Integer mSquarePrice = -1;
     private Integer mQuarter1Price = -1;
     private Integer mQuarter2Price = -1;
@@ -88,6 +103,9 @@ public class HostActivity extends AppCompatActivity {
     private Integer mTotalPrice = -1;
     private boolean mQuarterPricesEnabled = true;
     private boolean mListenToFieldChanges = true;
+    private GoogleApiClient mGoogleApiClient;
+    private double mLatitude;
+    private double mLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +118,17 @@ public class HostActivity extends AppCompatActivity {
         initDatabase();
         initStorage();
         initPrices();
+        initGoogleClient();
+    }
+
+    private void initGoogleClient() {
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     private void initPrices() {
@@ -338,7 +367,8 @@ public class HostActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
-            mUsername = Util.parseUsername(firebaseUser);
+            mAuthorId = firebaseUser.getUid();
+            mAuthorUsername = Util.parseUsername(firebaseUser);
         }
     }
 
@@ -363,7 +393,9 @@ public class HostActivity extends AppCompatActivity {
     public void onCreateButtonClicked(View view) {
         readFieldValues();
 
-        if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mPassword) || mSquarePrice == -1) {
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            Toast.makeText(this, "Image is still loading", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mPassword) || mSquarePrice == -1) {
             Toast.makeText(this, "Some fields are empty", Toast.LENGTH_SHORT).show();
         } else if (mPassword.length() < MIN_PASSWORD_LENGTH) {
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
@@ -421,18 +453,20 @@ public class HostActivity extends AppCompatActivity {
 
     private void uploadData(String imageUrl) {
         mDatabase.child("games").child(mId).setValue(new Game(mId, mName,
-                System.currentTimeMillis(), imageUrl, "100/100", mUsername, mPassword,
-                mSquarePrice, mQuarter1Price, mQuarter2Price, mQuarter3Price, mFinalPrice,
-                mTotalPrice))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mProgressDialog.cancel();
-                        // TODO: Open game lobby activity or something
+                System.currentTimeMillis(), imageUrl, "100/100", mAuthorId, mAuthorUsername,
+                mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price, mQuarter3Price,
+                mFinalPrice, mTotalPrice, mLatitude, mLongitude, new ArrayList<String>(),
+                Util.generateBoardNumbers(), Util.generateBoardNumbers(),
+                new ArrayList<SelectedSquare>())).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                mProgressDialog.cancel();
+                startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
+                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, mId));
 
-                        finish();
-                    }
-                });
+                finish();
+            }
+        });
     }
 
     private void uploadImage() {
@@ -473,11 +507,13 @@ public class HostActivity extends AppCompatActivity {
                 Picasso.with(this).load(data.getData()).placeholder(android.R.color.white)
                         .centerCrop().fit().into(mGameImg);
 
+                mProgressBar.setVisibility(View.VISIBLE);
                 Picasso.with(this).load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
                         GAME_IMAGE_SIZE_PX).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                         mBitmap = bitmap;
+                        mProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -498,5 +534,75 @@ public class HostActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                    (this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        LOCATION_PERMISSION_CODE);
+            } else {
+                Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
+                if (lastLocation != null) {
+                    mLatitude = lastLocation.getLatitude();
+                    mLongitude = lastLocation.getLongitude();
+                }
+            }
+        } else {
+            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            if (lastLocation != null) {
+                mLatitude = lastLocation.getLatitude();
+                mLongitude = lastLocation.getLongitude();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0]
+                        == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                            mGoogleApiClient);
+                    if (lastLocation != null) {
+                        mLatitude = lastLocation.getLatitude();
+                        mLongitude = lastLocation.getLongitude();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 }

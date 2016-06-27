@@ -137,12 +137,25 @@
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/host_game_img"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/placeholder" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/host_game_img"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/placeholder" />
+
+                    <ProgressBar
+                        android:id="@+id/host_img_progress_bar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@android:color/white"
+                        android:visibility="gone" />
+                </FrameLayout>
 
                 <Button
                     fontPath="fonts/segoe_ui_bold.ttf"
@@ -220,9 +233,9 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="-8dp"
+                android:inputType="number"
                 android:maxLength="3"
-                android:text="@string/host_default_square_price"
-                android:inputType="number" />
+                android:text="@string/host_default_square_price" />
 
             <TextView
                 fontPath="fonts/segoe_ui_medium.ttf"

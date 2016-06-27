@@ -54,6 +54,7 @@
                 tools:src="@android:color/white" />
 
             <TextView
+                android:id="@+id/board_title_txt"
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -62,9 +63,9 @@
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:includeFontPadding="false"
-                android:text="Big Day"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:text="Big Day" />
 
             <ImageView
                 android:layout_width="24dp"
@@ -75,93 +76,101 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@null"
+                android:onClick="onPrintButtonClicked"
                 android:src="@drawable/print" />
         </LinearLayout>
 
-        <TextView
-            fontPath="fonts/wanted.ttf"
+        <LinearLayout
+            android:id="@+id/board_layout"
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="3dp"
-            android:shadowColor="@android:color/white"
-            android:shadowRadius="10"
-            android:text="New England Patriots"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <HorizontalScrollView
-                android:id="@+id/board_horizontal_scroll_view"
+            <TextView
+                fontPath="fonts/wanted.ttf"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="32dp"
-                android:layout_marginStart="32dp"
-                android:overScrollMode="never"
-                android:scrollbars="none">
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="3dp"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="10"
+                android:text="New England Patriots"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/board_recycler"
-                    android:layout_width="800dp"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <HorizontalScrollView
+                    android:id="@+id/board_horizontal_scroll_view"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
                     android:overScrollMode="never"
-                    android:paddingLeft="@dimen/board_cell_size"
-                    android:paddingStart="@dimen/board_cell_size"
-                    android:paddingTop="@dimen/board_cell_size"
-                    tools:ignore="RtlSymmetry" />
-            </HorizontalScrollView>
+                    android:scrollbars="none">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/board_column_recycler"
-                android:layout_width="@dimen/board_cell_size"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="32dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="@dimen/board_cell_size"
-                android:background="@color/colorPrimary" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_marginStart="32dp">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/board_recycler"
+                        android:layout_width="800dp"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:paddingLeft="@dimen/board_cell_size"
+                        android:paddingStart="@dimen/board_cell_size"
+                        android:paddingTop="@dimen/board_cell_size"
+                        tools:ignore="RtlSymmetry" />
+                </HorizontalScrollView>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/board_row_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/board_cell_size"
-                    android:layout_marginLeft="@dimen/board_cell_size"
-                    android:layout_marginStart="@dimen/board_cell_size"
+                    android:id="@+id/board_column_recycler"
+                    android:layout_width="@dimen/board_cell_size"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="@dimen/board_cell_size"
                     android:background="@color/colorPrimary" />
-            </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="32dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp">
 
-                <com.moyersoftware.contender.util.VerticalTextView
-                    fontPath="fonts/wanted.ttf"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/board_row_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/board_cell_size"
+                        android:layout_marginLeft="@dimen/board_cell_size"
+                        android:layout_marginStart="@dimen/board_cell_size"
+                        android:background="@color/colorPrimary" />
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingBottom="6dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="10dp"
-                    android:shadowColor="@android:color/white"
-                    android:shadowRadius="10"
-                    android:text="New York Giants"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    tools:ignore="RtlHardcoded" />
+                    android:layout_marginBottom="32dp">
+
+                    <com.moyersoftware.contender.util.VerticalTextView
+                        fontPath="fonts/wanted.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="10dp"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="10"
+                        android:text="New York Giants"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        tools:ignore="RtlHardcoded" />
+                </FrameLayout>
             </FrameLayout>
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -311,6 +320,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
                     android:text="Q2: $20"
                     android:textAllCaps="true"
                     android:textColor="@color/primary_text"
@@ -321,6 +331,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
                     android:text="Q3: $20"
                     android:textAllCaps="true"
                     android:textColor="@color/primary_text"
@@ -331,6 +342,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
                     android:text="Final: $20"
                     android:textAllCaps="true"
                     android:textColor="@color/primary_text"

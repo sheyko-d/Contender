@@ -16,7 +16,7 @@ public class VerticalTextView extends TextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //noinspection SuspiciousNameCombination
         super.onMeasure(heightMeasureSpec, widthMeasureSpec);
-        setMeasuredDimension(getMeasuredHeight(), getMeasuredWidth());
+        setMeasuredDimension(Util.convertDpToPixel(32), getMeasuredWidth());
     }
 
     @Override

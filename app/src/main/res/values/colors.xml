@@ -9,4 +9,5 @@
     <color name="background">#DADADA</color>
     <color name="background_light">#F0F0F0</color>
     <color name="divider">#C6C6C6</color>
+    <color name="button_disabled">#aaa</color>
 </resources>

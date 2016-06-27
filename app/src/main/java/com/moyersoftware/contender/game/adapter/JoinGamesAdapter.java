@@ -1,14 +1,15 @@
 package com.moyersoftware.contender.game.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.squareup.picasso.Picasso;
 
@@ -19,12 +20,14 @@ import butterknife.ButterKnife;
 
 public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.ViewHolder> {
 
-    private Context mContext;
+    private String mMyId;
+    private JoinActivity mActivity;
     private ArrayList<Game> mGames;
 
-    public JoinGamesAdapter(Context context, ArrayList<Game> games) {
-        mContext = context;
+    public JoinGamesAdapter(JoinActivity activity, ArrayList<Game> games, String myId) {
+        mActivity = activity;
         mGames = games;
+        mMyId = myId;
     }
 
     @Override
@@ -38,9 +41,15 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        holder.authorTxt.setText(mContext.getString(R.string.join_author_txt, game.getAuthorUsername()));
-        Picasso.with(mContext).load(game.getImage()).placeholder(android.R.color.white)
-                .into(holder.img);
+        holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, game.getAuthorUsername()));
+        Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
+                .centerCrop().fit().into(holder.img);
+
+        if (game.getPlayers()!=null && game.getPlayers().contains(mMyId)){
+            holder.joinBtn.setText(R.string.join_disabled_btn);
+        } else {
+            holder.joinBtn.setText(R.string.join_btn);
+        }
     }
 
     @Override
@@ -48,7 +57,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         return mGames.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.game_img)
         ImageView img;
@@ -56,10 +65,19 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         TextView nameTxt;
         @Bind(R.id.game_author_txt)
         TextView authorTxt;
+        @Bind(R.id.game_join_btn)
+        Button joinBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            joinBtn.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mActivity.joinGame(mGames.get(getAdapterPosition()).getId());
         }
     }
 }

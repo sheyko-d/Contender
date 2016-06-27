@@ -1,11 +1,10 @@
 package com.moyersoftware.contender.game.data;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+import java.util.ArrayList;
 
 /**
  * Immutable model class for a Game.
  */
-@IgnoreExtraProperties
 public class Game {
 
     public String id;
@@ -13,6 +12,7 @@ public class Game {
     public long time;
     public String image;
     public String score;
+    public String authorId;
     public String authorUsername;
     public String password;
     public int squarePrice;
@@ -21,19 +21,29 @@ public class Game {
     public int quarter3Price;
     public int finalPrice;
     public int totalPrice;
+    public double latitude;
+    public double longitude;
+    public ArrayList<String> players;
+    public ArrayList<Integer> rowNumbers;
+    public ArrayList<Integer> columnNumbers;
+    public ArrayList<SelectedSquare> selectedSquares;
 
     public Game() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
     public Game(String id, String name, Long time, String image, String score,
-                String authorUsername, String password, int squarePrice, int quarter1Price,
-                int quarter2Price, int quarter3Price, int finalPrice, int totalPrice) {
+                String authorId, String authorUsername, String password, int squarePrice,
+                int quarter1Price, int quarter2Price, int quarter3Price, int finalPrice,
+                int totalPrice, double latitude, double longitude, ArrayList<String> players,
+                ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
+                ArrayList<SelectedSquare> selectedSquares) {
         this.id = id;
         this.name = name;
         this.time = time;
         this.image = image;
         this.score = score;
+        this.authorId = authorId;
         this.authorUsername = authorUsername;
         this.password = password;
         this.squarePrice = squarePrice;
@@ -42,6 +52,12 @@ public class Game {
         this.quarter3Price = quarter3Price;
         this.finalPrice = finalPrice;
         this.totalPrice = totalPrice;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.players = players;
+        this.rowNumbers = rowNumbers;
+        this.columnNumbers = columnNumbers;
+        this.selectedSquares = selectedSquares;
     }
 
     public String getId() {
@@ -62,6 +78,10 @@ public class Game {
 
     public String getScore() {
         return score;
+    }
+
+    public String getAuthorId() {
+        return authorId;
     }
 
     public String getAuthorUsername() {
@@ -94,5 +114,29 @@ public class Game {
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Integer> getRowNumbers() {
+        return rowNumbers;
+    }
+
+    public ArrayList<Integer> getColumnNumbers() {
+        return columnNumbers;
+    }
+
+    public ArrayList<SelectedSquare> getSelectedSquares() {
+        return selectedSquares;
     }
 }
