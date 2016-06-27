@@ -52,4 +52,11 @@
 
     <!-- Settings screen -->
     <string name="settings_log_out">Log Out</string>
+    <string name="settings_about_desc">Contender is an app that allows you to bet on sports
+        events such as football games. Football Squares is a game played while watching Football
+        games. To read how it is played, go to this link: http://www.footballsquares.net/pages/help.
+    </string>
+    <string name="settings_about_copyright">Copyright © 2016 MoyerSoftware
+        \nhttp://moyersoftware.com
+    </string>
 </resources>

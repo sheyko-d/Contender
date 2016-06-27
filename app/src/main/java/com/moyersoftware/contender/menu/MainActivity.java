@@ -2,9 +2,12 @@ package com.moyersoftware.contender.menu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -20,6 +23,7 @@ import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
+import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null && getIntent().getData() != null) {
             String data = getIntent().getDataString();
-            if (data.contains("http://moyersoftware.com/contender#")) {
+            if (data.contains("moyersoftware.com/contender#")) {
                 String gameId = data.substring(data.indexOf("#") + 1, data.length());
                 playGame(gameId);
             }
@@ -129,5 +133,34 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth.signOut();
         startActivity(new Intent(this, LoadingActivity.class));
         finish();
+    }
+
+    public void onSupportButtonClicked(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Util.SUPPORT_URL)));
+    }
+
+    public void onRateButtonClicked(View view) {
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="
+                    + appPackageName)));
+        } catch (android.content.ActivityNotFoundException exception) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
+                    ("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    public void onAboutButtonClicked(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0)
+                    .versionName;
+            dialogBuilder.setTitle(getString(R.string.app_name) + " v" + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            dialogBuilder.setTitle(getString(R.string.app_name));
+        }
+        dialogBuilder.setView(R.layout.dialog_about);
+        dialogBuilder.setNegativeButton("Cancel", null);
+        dialogBuilder.create().show();
     }
 }

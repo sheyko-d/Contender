@@ -20,6 +20,7 @@ import java.util.Set;
 public class Util {
 
     private static final String LOG_TAG = "ContenderDebug";
+    public static final String SUPPORT_URL = "http://www.moyersoftware.com";
 
     /**
      * Adds a message to LogCat.
@@ -49,7 +50,7 @@ public class Util {
      */
     @SuppressLint("SimpleDateFormat")
     public static String formatDate(long time) {
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMM, h:mm a zzz");
+        SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMM, h:mm a");
         return fmtOut.format(time);
     }
 
