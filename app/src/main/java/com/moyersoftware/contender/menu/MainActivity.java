@@ -10,10 +10,18 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
+import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
             String data = getIntent().getDataString();
             if (data.contains("http://moyersoftware.com/contender#")) {
                 String gameId = data.substring(data.indexOf("#") + 1, data.length());
-                // TODO: Add to players list
-                startActivity(new Intent(this, GameBoardActivity.class)
-                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
+                playGame(gameId);
             }
         }
 
@@ -63,6 +69,40 @@ public class MainActivity extends AppCompatActivity {
 
         initPager();
         initTabs();
+    }
+
+    public void playGame(final String gameId) {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        // Retrieve current list of players for the game user wants to join
+        database.child("games").child(gameId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get game value
+                        Game game = dataSnapshot.getValue(Game.class);
+
+                        if (firebaseUser != null) {
+                            final String id = firebaseUser.getUid();
+                            ArrayList<String> players = game.getPlayers();
+                            if (players == null) players = new ArrayList<>();
+
+                            if (!players.contains(id)) players.add(id);
+
+                            database.child("games").child(gameId).child("players")
+                                    .setValue(players);
+
+                            startActivity(new Intent(MainActivity.this, GameBoardActivity.class)
+                                    .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     private void initPager() {

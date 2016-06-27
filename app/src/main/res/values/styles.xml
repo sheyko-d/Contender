@@ -53,4 +53,7 @@
         <item name="android:shadowDy">1</item>
     </style>
 
+    <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

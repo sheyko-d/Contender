@@ -45,7 +45,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
                 .centerCrop().fit().into(holder.img);
 
-        if (game.getPlayers()!=null && game.getPlayers().contains(mMyId)){
+        if (game.getPlayers() != null && game.getPlayers().contains(mMyId)) {
             holder.joinBtn.setText(R.string.join_disabled_btn);
         } else {
             holder.joinBtn.setText(R.string.join_btn);
@@ -77,7 +77,15 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
 
         @Override
         public void onClick(View v) {
-            mActivity.joinGame(mGames.get(getAdapterPosition()).getId());
+            Game game = mGames.get(getAdapterPosition());
+            // Check if user already joined this game before
+            if (game.getPlayers() != null && game.getPlayers().contains(mMyId)) {
+                // Open the game board screen
+                mActivity.playGame(game.getId());
+            } else {
+                // Ask for password
+                mActivity.joinGame(game.getId(), game.getPassword());
+            }
         }
     }
 }
