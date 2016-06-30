@@ -2,6 +2,7 @@ package com.moyersoftware.contender.util;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -21,6 +22,11 @@ public class Util {
 
     private static final String LOG_TAG = "ContenderDebug";
     public static final String SUPPORT_URL = "http://www.moyersoftware.com";
+    public static final String INVITE_LINK = "https://fb.me/1791931414374088";
+    public static final String INVITE_IMAGE = "http://moyersoftware.com/contender/images" +
+            "/invite.png";
+    private static final String PREF_REFERRAL_CODE = "ReferralCode";
+    private static final String PREF_REFERRAL_ASKED = "ReferralAsked";
 
     /**
      * Adds a message to LogCat.
@@ -43,6 +49,13 @@ public class Util {
      */
     public static String generateGameId() {
         return String.valueOf(10000000 + new Random().nextInt(90000000));
+    }
+
+    /**
+     * Generates a new game code with 4 random digits.
+     */
+    public static String generateGameCode() {
+        return String.valueOf(1000 + new Random().nextInt(9000));
     }
 
     /**
@@ -85,5 +98,25 @@ public class Util {
             numbers.add(number);
         }
         return numbers;
+    }
+
+    public static void setReferralCode(String code) {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putString(PREF_REFERRAL_CODE, code).apply();
+    }
+
+    public static String getReferralCode() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getString(PREF_REFERRAL_CODE, null);
+    }
+
+    public static void setReferralAsked() {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putBoolean(PREF_REFERRAL_ASKED, true).apply();
+    }
+
+    public static Boolean isReferralAsked() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_REFERRAL_ASKED, false);
     }
 }

@@ -9,7 +9,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,10 +25,12 @@ import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
+import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
+import bolts.AppLinks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -46,33 +50,131 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.tab_settings
     };
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            // TODO: Save referral user id and add them to friends after the log in
+
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, LoadingActivity.class));
             finish();
             return;
         }
 
+        checkUserInvite();
+        checkFacebookInvite();
+        checkGameInvite();
+
+        setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
+        initPager();
+        initTabs();
+    }
+
+    private void checkFacebookInvite() {
+        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
+        if (targetUrl != null) {
+            Util.Log("App Link Target URL: " + targetUrl.toString());
+        }
+    }
+
+    private void checkUserInvite() {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final String code = Util.getReferralCode();
+        if (!TextUtils.isEmpty(code)) {
+            database.child("invites").addListenerForSingleValueEvent
+                    (new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Get all invites
+                            Iterable<DataSnapshot> invites = dataSnapshot.getChildren();
+                            String referralId = null;
+                            for (DataSnapshot invite : invites) {
+                                // Find an invite by code,
+                                // and check if user didn't create it himself
+                                if (invite.getValue(String.class).equals(code) && !invite.getKey()
+                                        .equals(mFirebaseUser.getUid())) {
+                                    referralId = invite.getKey();
+                                }
+                            }
+
+                            if (referralId == null) {
+                                Toast.makeText(MainActivity.this, "Invite not found",
+                                        Toast.LENGTH_SHORT).show();
+                                Util.setReferralCode(null);
+                                return;
+                            }
+
+                            final Friendship friendship = new Friendship(referralId,
+                                    mFirebaseUser.getUid());
+                            addFriend(database, friendship, referralId);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        }
+    }
+
+    private void addFriend(final DatabaseReference database, final Friendship friendship,
+                           final String referralId) {
+        // Get all friends
+        database.child("friends").addListenerForSingleValueEvent
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Check if the referral and current user
+                        // aren't already friends
+                        Iterable<DataSnapshot> friendships = dataSnapshot
+                                .getChildren();
+                        boolean alreadyFriends = false;
+                        for (DataSnapshot friendshipSnapshot : friendships) {
+                            Friendship friendship = friendshipSnapshot.getValue
+                                    (Friendship.class);
+                            if (friendship != null && ((friendship.getUser1Id().equals
+                                    (mFirebaseUser.getUid()) && friendship.getUser2Id().equals
+                                    (referralId)) || (friendship.getUser2Id().equals(mFirebaseUser
+                                    .getUid()) && friendship.getUser1Id().equals(referralId)))) {
+                                alreadyFriends = true;
+                                break;
+                            }
+                        }
+
+                        if (!alreadyFriends) {
+                            database.child("friends").setValue
+                                    (new ArrayList<Friendship>() {{
+                                        add(friendship);
+                                    }});
+                        }
+
+                        Util.setReferralCode(null);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void checkGameInvite() {
         if (getIntent().getExtras() != null && getIntent().getData() != null) {
             String data = getIntent().getDataString();
+
             if (data.contains("moyersoftware.com/contender#")) {
                 String gameId = data.substring(data.indexOf("#") + 1, data.length());
                 playGame(gameId);
             }
         }
-
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        initPager();
-        initTabs();
     }
 
     public void playGame(final String gameId) {

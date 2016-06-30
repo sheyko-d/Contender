@@ -29,7 +29,7 @@ public class Game {
     public ArrayList<SelectedSquare> selectedSquares;
 
     public Game() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        // Default constructor required for calls to DataSnapshot.getValue(Game.class)
     }
 
     public Game(String id, String name, Long time, String image, String score,

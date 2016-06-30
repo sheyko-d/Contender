@@ -39,6 +39,16 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/register_name_edit_txt"
+                    style="@style/EditText.Light"
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/register_name"
+                    android:inputType="textPersonName" />
+
+                <EditText
                     android:id="@+id/register_email_edit_txt"
                     style="@style/EditText.Light"
                     fontPath="fonts/segoe_ui.ttf"

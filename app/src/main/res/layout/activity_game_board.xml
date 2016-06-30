@@ -310,8 +310,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="Q1: $20"
-                    android:textAllCaps="true"
+                    android:text="Q1: 20 points"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -321,8 +320,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="2dp"
-                    android:text="Q2: $20"
-                    android:textAllCaps="true"
+                    android:text="Q2: 20 points"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -332,8 +330,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="2dp"
-                    android:text="Q3: $20"
-                    android:textAllCaps="true"
+                    android:text="Q3: 20 points"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -343,8 +340,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="2dp"
-                    android:text="Final: $20"
-                    android:textAllCaps="true"
+                    android:text="FINAL: 20 points"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
             </LinearLayout>

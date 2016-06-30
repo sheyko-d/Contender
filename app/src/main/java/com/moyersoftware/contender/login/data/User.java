@@ -1,17 +1,19 @@
-package com.moyersoftware.contender.menu.data;
+package com.moyersoftware.contender.login.data;
 
 /**
  * Immutable model class for a User.
  */
-public final class Friend {
+public final class User {
 
     private final String mName;
     private final String mUsername;
+    private final String mEmail;
     private final String mImage;
 
-    public Friend(String name, String username, String image) {
+    public User(String name, String username, String email, String image) {
         mName = name;
         mUsername = username;
+        mEmail = email;
         mImage = image;
     }
 
@@ -21,6 +23,10 @@ public final class Friend {
 
     public String getUsername() {
         return mUsername;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 
     public String getImage() {

@@ -40,6 +40,8 @@
                     android:host="www.moyersoftware.com"
                     android:pathPrefix="/contender"
                     android:scheme="https" />
+                <data
+                    android:scheme="contender" />
             </intent-filter>
         </activity>
 

@@ -33,5 +33,6 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.0.2'
     compile 'com.google.firebase:firebase-database:9.0.2'
     compile 'com.google.firebase:firebase-storage:9.0.2'
+    compile 'com.google.firebase:firebase-invites:9.0.2'
     compile 'com.google.android.gms:play-services-location:9.0.0'
 }

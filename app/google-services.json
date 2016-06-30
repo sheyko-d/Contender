@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "9328000707-j4i08uoa4dg0qcoellggbu2rf89r257i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moyersoftware.contender",
+            "certificate_hash": "6A2BB7D8225A7C9E77ACE43B7B79BDD72A9BA8DF"
+          }
+        },
+        {
+          "client_id": "9328000707-f03te9tm5sv3gjcftdup972q67jpmdo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moyersoftware.contender",
+            "certificate_hash": "99304EFE5E55281CE35F2BD5B626291118195471"
+          }
+        },
+        {
           "client_id": "9328000707-2v9ocqsdpphtv01u3mltf87e6a51hs5q.apps.googleusercontent.com",
           "client_type": 3
         }
