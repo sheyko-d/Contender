@@ -1,5 +1,7 @@
 package com.moyersoftware.contender.game.data;
 
+import com.moyersoftware.contender.menu.data.Player;
+
 import java.util.ArrayList;
 
 /**
@@ -13,8 +15,7 @@ public class Game {
     public long time;
     public String image;
     public String score;
-    public String authorId;
-    public String authorUsername;
+    public Player author;
     public String password;
     public int squarePrice;
     public int quarter1Price;
@@ -24,7 +25,7 @@ public class Game {
     public int totalPrice;
     public double latitude;
     public double longitude;
-    public ArrayList<String> players;
+    public ArrayList<Player> players;
     public ArrayList<Integer> rowNumbers;
     public ArrayList<Integer> columnNumbers;
     public ArrayList<SelectedSquare> selectedSquares;
@@ -34,9 +35,9 @@ public class Game {
     }
 
     public Game(String eventId, String id, String name, Long time, String image, String score,
-                String authorId, String authorUsername, String password, int squarePrice,
+                Player author, String password, int squarePrice,
                 int quarter1Price, int quarter2Price, int quarter3Price, int finalPrice,
-                int totalPrice, double latitude, double longitude, ArrayList<String> players,
+                int totalPrice, double latitude, double longitude, ArrayList<Player> players,
                 ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
                 ArrayList<SelectedSquare> selectedSquares) {
         this.eventId = eventId;
@@ -45,8 +46,7 @@ public class Game {
         this.time = time;
         this.image = image;
         this.score = score;
-        this.authorId = authorId;
-        this.authorUsername = authorUsername;
+        this.author = author;
         this.password = password;
         this.squarePrice = squarePrice;
         this.quarter1Price = quarter1Price;
@@ -86,12 +86,8 @@ public class Game {
         return score;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public String getAuthorUsername() {
-        return authorUsername;
+    public Player getAuthor() {
+        return author;
     }
 
     public String getPassword() {
@@ -130,7 +126,7 @@ public class Game {
         return longitude;
     }
 
-    public ArrayList<String> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 

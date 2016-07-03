@@ -25,6 +25,7 @@ import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
+import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
 
@@ -72,10 +73,8 @@ public class GamesFragment extends Fragment {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
-            final String myId = firebaseUser.getUid();
-
             Query query = database.child("games").orderByChild("time");
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -85,8 +84,10 @@ public class GamesFragment extends Fragment {
                     for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                         Game game = gameSnapshot.getValue(Game.class);
 
-                        if (game != null && (game.getAuthorId().equals(myId) || (game.getPlayers()
-                                != null && game.getPlayers().contains(myId)))) {
+                        if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                                .getUid()) || (game.getPlayers() != null && game.getPlayers()
+                                .contains(new Player(firebaseUser.getUid(), firebaseUser.getEmail(),
+                                        firebaseUser.getDisplayName()))))) {
                             mGames.add(game);
                         }
                     }

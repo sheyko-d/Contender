@@ -9,7 +9,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class SelectedSquare {
 
     public String authorId;
-    public String authorUsername;
+    public String authorName;
     public String authorPhoto;
     public int position;
     public int column;
@@ -19,10 +19,10 @@ public class SelectedSquare {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public SelectedSquare(String authorId, String authorUsername, String authorPhoto, int column,
+    public SelectedSquare(String authorId, String authorName, String authorPhoto, int column,
                           int row, int position) {
         this.authorId = authorId;
-        this.authorUsername = authorUsername;
+        this.authorName = authorName;
         this.authorPhoto = authorPhoto;
         this.column = column;
         this.row = row;
@@ -33,8 +33,8 @@ public class SelectedSquare {
         return authorId;
     }
 
-    public String getAuthorUsername() {
-        return authorUsername;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getAuthorPhoto() {

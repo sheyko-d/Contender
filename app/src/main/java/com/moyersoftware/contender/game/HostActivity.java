@@ -51,6 +51,7 @@ import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -99,14 +100,14 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     // Usual variables
     private DatabaseReference mDatabase;
     private String mId;
-    private FirebaseStorage mStorage;
     private StorageReference mMountainsRef;
     private Bitmap mBitmap;
     private ProgressDialog mProgressDialog;
     private String mName;
     private String mPassword;
     private String mAuthorId;
-    private String mAuthorUsername;
+    private String mAuthorEmail;
+    private String mAuthorName;
     private Integer mSquarePrice = -1;
     private Integer mQuarter1Price = -1;
     private Integer mQuarter2Price = -1;
@@ -149,19 +150,19 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                         Event event = eventSnapshot.getValue(Event.class);
                         if (event != null) {
                             //TODO: Restore if (event.getTime() > System.currentTimeMillis()) {
-                                if (mEvents.size() == 0 || !event.getWeek()
-                                        .equals(previousEventWeek)) {
-                                    mEvents.add(new Event(null, null, null, null, null,
-                                            event.getWeek()));
-                                }
-                                previousEventWeek = event.getWeek();
+                            if (mEvents.size() == 0 || !event.getWeek()
+                                    .equals(previousEventWeek)) {
+                                mEvents.add(new Event(null, null, null, null, null,
+                                        event.getWeek()));
+                            }
+                            previousEventWeek = event.getWeek();
 
-                                mEvents.add(event);
+                            mEvents.add(event);
                             //}
                         }
                     }
                 }
-                if (mAdapter!=null) {
+                if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -420,14 +421,15 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             mAuthorId = firebaseUser.getUid();
-            mAuthorUsername = Util.parseUsername(firebaseUser);
+            mAuthorEmail = firebaseUser.getEmail();
+            mAuthorName = firebaseUser.getDisplayName();
         }
     }
 
     private void initStorage() {
-        mStorage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
-        StorageReference storageRef = mStorage.getReferenceFromUrl
+        StorageReference storageRef = storage.getReferenceFromUrl
                 ("gs://contender-3ef7d.appspot.com");
 
         // Create a reference to "mountains.jpg"
@@ -507,11 +509,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void uploadData(String imageUrl) {
         mDatabase.child("games").child(mId).setValue(new Game(mEventId, mId, mName,
-                System.currentTimeMillis(), imageUrl, "100/100", mAuthorId, mAuthorUsername,
-                mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price, mQuarter3Price,
-                mFinalPrice, mTotalPrice, mLatitude, mLongitude, new ArrayList<String>(),
-                Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, mAuthorEmail,
+                mAuthorName), mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price,
+                mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
+                new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
+                new ArrayList<SelectedSquare>())).addOnCompleteListener
+                (new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 mProgressDialog.cancel();

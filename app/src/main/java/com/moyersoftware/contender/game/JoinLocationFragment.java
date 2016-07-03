@@ -58,6 +58,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     private GoogleApiClient mGoogleApiClient;
     private Location mMyLocation;
     private String mMyId;
+    private String mMyEmail;
+    private String mMyName;
 
     public JoinLocationFragment() {
         // Required empty public constructor
@@ -86,6 +88,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             mMyId = firebaseUser.getUid();
+            mMyEmail = firebaseUser.getEmail();
+            mMyName = firebaseUser.getDisplayName();
         }
     }
 
@@ -102,7 +106,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     private void initRecycler() {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
-        mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId);
+        mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId, mMyEmail,
+                mMyName);
         mGamesRecycler.setAdapter(mAdapter);
     }
 
@@ -139,7 +144,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
                     gameLocation.setLatitude(game.getLatitude());
                     gameLocation.setLongitude(game.getLongitude());
                     if (mMyLocation != null && mMyLocation.distanceTo(gameLocation)
-                            < GAME_SEARCH_RADIUS_METERS && !game.getAuthorId().equals(mMyId)) {
+                            < GAME_SEARCH_RADIUS_METERS && !game.getAuthor().getUserId()
+                            .equals(mMyId)) {
                         mGames.add(game);
                     }
                 }

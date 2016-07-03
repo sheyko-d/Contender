@@ -46,6 +46,8 @@ public class JoinIdFragment extends Fragment {
     private String mQuery;
     private DataSnapshot mDataSnapshot;
     private String mMyId;
+    private String mMyEmail;
+    private String mMyName;
 
     public JoinIdFragment() {
         // Required empty public constructor
@@ -75,6 +77,8 @@ public class JoinIdFragment extends Fragment {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             mMyId = firebaseUser.getUid();
+            mMyEmail = firebaseUser.getEmail();
+            mMyName = firebaseUser.getDisplayName();
         }
     }
 
@@ -99,7 +103,8 @@ public class JoinIdFragment extends Fragment {
     private void initRecycler() {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
-        mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId);
+        mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId, mMyEmail,
+                mMyName);
         mGamesRecycler.setAdapter(mAdapter);
     }
 
@@ -132,7 +137,7 @@ public class JoinIdFragment extends Fragment {
                 Game game = gameSnapshot.getValue(Game.class);
 
                 if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
-                        && !game.getAuthorId().equals(mMyId)) {
+                        && !game.getAuthor().getUserId().equals(mMyId)) {
                     mGames.add(game);
                 }
             }

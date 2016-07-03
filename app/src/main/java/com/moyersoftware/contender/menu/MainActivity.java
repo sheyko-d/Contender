@@ -26,6 +26,7 @@ import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 import com.moyersoftware.contender.menu.data.Friendship;
+import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void playGame(final String gameId) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         // Retrieve current list of players for the game user wants to join
@@ -191,11 +192,14 @@ public class MainActivity extends AppCompatActivity {
                         Game game = dataSnapshot.getValue(Game.class);
 
                         if (firebaseUser != null) {
-                            final String id = firebaseUser.getUid();
-                            ArrayList<String> players = game.getPlayers();
+                            ArrayList<Player> players = game.getPlayers();
                             if (players == null) players = new ArrayList<>();
 
-                            if (!players.contains(id)) players.add(id);
+                            if (!players.contains(new Player(firebaseUser.getUid(),
+                                    firebaseUser.getEmail(), firebaseUser.getDisplayName()))) {
+                                players.add(new Player(firebaseUser.getUid(),
+                                        firebaseUser.getEmail(), firebaseUser.getDisplayName()));
+                            }
 
                             database.child("games").child(gameId).child("players")
                                     .setValue(players);

@@ -1,11 +1,24 @@
 package com.moyersoftware.contender.game;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,15 +41,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -48,6 +69,7 @@ public class GameBoardActivity extends AppCompatActivity {
     // Constants
     private final static int COLUMNS_COUNT = 10;
     public static final String EXTRA_GAME_ID = "GameId";
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 0;
 
     // Views
     @Bind(R.id.board_game_img)
@@ -92,6 +114,12 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mFinalScoreTxt;
     @Bind(R.id.board_info_time_txt)
     TextView mTimeTxt;
+    @Bind(R.id.board_print_img)
+    ImageView mPrintImg;
+    @Bind(R.id.board_pdf_img)
+    ImageView mPdfImg;
+    @Bind(R.id.board_progress_txt)
+    View mProgressBar;
 
     // Usual variables
     private int mTotalScrollY;
@@ -106,10 +134,14 @@ public class GameBoardActivity extends AppCompatActivity {
     private GameRowAdapter mRowAdapter;
     private String mGameName;
     private String mMyId;
-    private String mMyUsername;
+    private String mMyName;
     private String mMyPhoto;
     private GameBoardAdapter mBoardAdapter;
     private Boolean mGameLive = false;
+    private boolean mPendingUpload = false;
+    private boolean mIgnoreUpdate = false;
+    private ArrayList<String> mPlayerEmails = new ArrayList<>();
+    private String mAuthorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,13 +152,13 @@ public class GameBoardActivity extends AppCompatActivity {
         mGameId = getIntent().getStringExtra(EXTRA_GAME_ID);
         if (TextUtils.isEmpty(mGameId)) return;
 
+        initUser();
         initRowRecycler();
         initColumnRecycler();
         initBoardRecycler();
         initHorizontalScrollView();
         initBottomSheet();
         initDatabase();
-        initUser();
     }
 
     private void initUser() {
@@ -134,7 +166,7 @@ public class GameBoardActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             mMyId = firebaseUser.getUid();
-            mMyUsername = Util.parseUsername(firebaseUser);
+            mMyName = firebaseUser.getDisplayName();
             if (firebaseUser.getPhotoUrl() != null) {
                 mMyPhoto = firebaseUser.getPhotoUrl().toString();
             }
@@ -166,7 +198,12 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initGameDetails(Game game) {
-        Util.Log("game live = " + mGameLive);
+        if (mIgnoreUpdate) {
+            mIgnoreUpdate = false;
+            return;
+        }
+
+        Util.Log("update game details");
 
         // Set game image
         Picasso.with(this).load(game.getImage()).centerCrop().fit()
@@ -192,6 +229,16 @@ public class GameBoardActivity extends AppCompatActivity {
         mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
         mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
 
+        // Get players
+        mPlayerEmails.clear();
+        mPlayerEmails.add(game.getAuthor().getEmail());
+        mAuthorId = game.getAuthor().getUserId();
+        if (game.getPlayers() != null) {
+            for (Player player : game.getPlayers()) {
+                mPlayerEmails.add(player.getEmail());
+            }
+        }
+
         // Update selected squares
         mSelectedSquares.clear();
         ArrayList<SelectedSquare> selectedSquares = game.getSelectedSquares();
@@ -202,14 +249,16 @@ public class GameBoardActivity extends AppCompatActivity {
         }
         mBoardAdapter.refresh(mSelectedSquares);
 
+        updateLiveState();
+
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
                 (new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Event event = dataSnapshot.getValue(Event.class);
                         if (event != null) {
-                            mGameLive = event.getTime() != -1 && System.currentTimeMillis()
-                                    > event.getTime();
+                            mGameLive = (event.getTime() != -1 && System.currentTimeMillis()
+                                    > event.getTime()) || mSelectedSquares.size() == 100;
                             mColumnAdapter.setLive(mGameLive);
                             mRowAdapter.setLive(mGameLive);
                             mBoardAdapter.setLive(mGameLive);
@@ -258,6 +307,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoardRecycler.setHasFixedSize(true);
         mBoardAdapter = new GameBoardAdapter(this);
         mBoardRecycler.setAdapter(mBoardAdapter);
+
         mBoardRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -315,6 +365,18 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     public void onPrintButtonClicked(View view) {
+        mLayout.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mBoardAdapter.setPrintMode(true);
+        mBoardRecycler.post(new Runnable() {
+            @Override
+            public void run() {
+                takeScreenshot();
+            }
+        });
+    }
+
+    private void takeScreenshot() {
         int boardSize = (int) (getResources().getDimension(R.dimen.board_cell_size) * 11
                 + Util.convertDpToPixel(32));
         mLayout.getLayoutParams().width = boardSize;
@@ -331,8 +393,121 @@ public class GameBoardActivity extends AppCompatActivity {
                 mLayout.getLayoutParams().width = ViewPager.LayoutParams.MATCH_PARENT;
                 mLayout.getLayoutParams().height = ViewPager.LayoutParams.MATCH_PARENT;
                 mLayout.requestLayout();
+                mBoardAdapter.setPrintMode(false);
+
+                mProgressBar.setVisibility(View.GONE);
+                mLayout.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private static String FILE = Environment.getExternalStorageDirectory() + "/Contender.pdf";
+
+    public void onPdfButtonClicked(View view) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+            } else {
+                onPdfButtonClicked();
+            }
+        } else {
+            onPdfButtonClicked();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onPdfButtonClicked();
+                }
+            }
+        }
+    }
+
+    private void onPdfButtonClicked() {
+        mLayout.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mBoardAdapter.setPrintMode(true);
+        mBoardRecycler.post(new Runnable() {
+            @Override
+            public void run() {
+                makePdf();
+            }
+        });
+    }
+
+    private void makePdf() {
+        int boardSize = (int) (getResources().getDimension(R.dimen.board_cell_size) * 11
+                + Util.convertDpToPixel(32));
+        mLayout.getLayoutParams().width = boardSize;
+        mLayout.getLayoutParams().height = boardSize;
+        mLayout.requestLayout();
+        mLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = loadBitmapFromView(mLayout);
+
+                Document document = new Document(new Rectangle(bitmap.getWidth(),
+                        bitmap.getHeight()), 0, 0, 0, 0);
+
+                try {
+                    PdfWriter.getInstance(document, new FileOutputStream(FILE));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                document.open();
+
+                addImage(document, bitmap);
+                document.close();
+
+                Util.Log("FILE = " + FILE);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/*");
+                String[] playerEmails = new String[mPlayerEmails.size()];
+                playerEmails = mPlayerEmails.toArray(playerEmails);
+                intent.putExtra(Intent.EXTRA_EMAIL, playerEmails);
+                intent.putExtra(Intent.EXTRA_SUBJECT, mGameName + " Contender board");
+                File file = new File(FILE);
+                if (!file.exists() || !file.canRead()) {
+                    Toast.makeText(GameBoardActivity.this, "Attachment Error", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                Uri uri = FileProvider.getUriForFile(GameBoardActivity.this, getPackageName(),
+                        file);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(intent, "Send email..."));
+
+                mLayout.getLayoutParams().width = ViewPager.LayoutParams.MATCH_PARENT;
+                mLayout.getLayoutParams().height = ViewPager.LayoutParams.MATCH_PARENT;
+                mLayout.requestLayout();
+                mBoardAdapter.setPrintMode(false);
+
+                mProgressBar.setVisibility(View.GONE);
+                mLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void addImage(Document document, Bitmap bitmap) {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            document.add(Image.getInstance(byteArray));
+
+            Util.Log("saved = " + document.getPageSize().getWidth());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Bitmap loadBitmapFromView(View v) {
@@ -342,6 +517,8 @@ public class GameBoardActivity extends AppCompatActivity {
         v.draw(c);
         return b;
     }
+
+    private Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
         boolean squareExists = false;
@@ -355,12 +532,51 @@ public class GameBoardActivity extends AppCompatActivity {
                 row -= 10;
                 column++;
             }
-            mSelectedSquares.add(new SelectedSquare(mMyId, mMyUsername, mMyPhoto, column, row,
+            mSelectedSquares.add(new SelectedSquare(mMyId, mMyName, mMyPhoto, column, row,
                     position));
-            mBoardAdapter.refresh(mSelectedSquares);
+            mBoardAdapter.refresh(mSelectedSquares, position);
 
+            if (mPendingUpload) {
+                mHandler.removeCallbacks(updateSquaresRunnable);
+            }
+            mPendingUpload = true;
+            mHandler.postDelayed(updateSquaresRunnable, 500);
+        }
+
+        updateLiveState();
+    }
+
+    Runnable updateSquaresRunnable = new Runnable() {
+        @Override
+        public void run() {
+            //noinspection unchecked
+            AsyncTaskCompat.executeParallel(new UpdateSquareTask());
+        }
+    };
+
+    private class UpdateSquareTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected final Void doInBackground(Void... params) {
+            Util.Log("updated squares");
+            mIgnoreUpdate = true;
             mDatabase.child("games").child(mGameId).child("selectedSquares")
                     .setValue(mSelectedSquares);
+            mPendingUpload = false;
+            return null;
+        }
+    }
+
+    private void updateLiveState() {
+        if (mSelectedSquares.size() == 100 != mGameLive) {
+            mGameLive = mSelectedSquares.size() == 100;
+            mPrintImg.setVisibility(mGameLive ? View.VISIBLE : View.GONE);
+            mPdfImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) ? View.VISIBLE : View.GONE);
+            mBoardAdapter.setLive(mGameLive);
+            mRowAdapter.setLive(mGameLive);
+            mColumnAdapter.setLive(mGameLive);
+            mBoardAdapter.notifyDataSetChanged();
+            mRowAdapter.notifyDataSetChanged();
+            mColumnAdapter.notifyDataSetChanged();
         }
     }
 }

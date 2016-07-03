@@ -68,6 +68,7 @@
                 tools:text="Big Day" />
 
             <ImageView
+                android:id="@+id/board_print_img"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
@@ -77,8 +78,37 @@
                 android:clickable="true"
                 android:contentDescription="@null"
                 android:onClick="onPrintButtonClicked"
-                android:src="@drawable/print" />
+                android:src="@drawable/print"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/board_pdf_img"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="4dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onPdfButtonClicked"
+                android:src="@drawable/pdf"
+                android:visibility="gone" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/board_progress_txt"
+            fontPath="fonts/segoe_ui_medium.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="Loading..."
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/board_layout"

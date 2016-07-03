@@ -1,6 +1,8 @@
 package com.moyersoftware.contender.game.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     private GameBoardActivity mActivity;
     private HashMap<Integer, SelectedSquare> mSelectedPositions = new HashMap<>();
     private Boolean mLive = false;
+    private boolean mPrintMode = false;
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
@@ -39,8 +42,25 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     public void refresh(ArrayList<SelectedSquare> selectedSquares) {
         mSelectedPositions.clear();
         for (SelectedSquare selectedSquare : selectedSquares) {
+            try {
+                mSelectedPositions.put(selectedSquare.getPosition(), selectedSquare);
+            } catch (Exception e) {
+                // Can't add square
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void refresh(ArrayList<SelectedSquare> selectedSquares, int position) {
+        mSelectedPositions.clear();
+        for (SelectedSquare selectedSquare : selectedSquares) {
             mSelectedPositions.put(selectedSquare.getPosition(), selectedSquare);
         }
+        notifyItemChanged(position);
+    }
+
+    public void setPrintMode(boolean printMode) {
+        mPrintMode = printMode;
         notifyDataSetChanged();
     }
 
@@ -54,12 +74,25 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (mSelectedPositions.containsKey(position)) {
             SelectedSquare selectedSquare = mSelectedPositions.get(position);
-            holder.nameTxt.setText(selectedSquare.getAuthorUsername());
-            Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
-                    (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+            holder.nameTxt.setText(selectedSquare.getAuthorName());
+
+            if (!mPrintMode) {
+                holder.img.setVisibility(View.VISIBLE);
+                Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
+                        (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+                holder.nameTxt.setTextColor(Color.WHITE);
+                holder.nameTxt.setEllipsize(TextUtils.TruncateAt.END);
+                holder.nameTxt.setMaxLines(1);
+            } else {
+                holder.img.setVisibility(View.GONE);
+                holder.nameTxt.setTextColor(Color.BLACK);
+                holder.nameTxt.setEllipsize(null);
+                holder.nameTxt.setShadowLayer(0, 0, 0, 0);
+                holder.nameTxt.setMaxLines(2);
+            }
         } else {
+            holder.img.setVisibility(View.GONE);
             holder.nameTxt.setText("");
-            holder.img.setImageResource(0);
         }
 
         holder.itemView.setClickable(!mLive);

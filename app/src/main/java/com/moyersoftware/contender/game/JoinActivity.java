@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinPagerAdapter;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
 
@@ -129,11 +130,14 @@ public class JoinActivity extends AppCompatActivity {
                         Game game = dataSnapshot.getValue(Game.class);
 
                         if (firebaseUser != null) {
-                            final String id = firebaseUser.getUid();
-                            ArrayList<String> players = game.getPlayers();
+                            ArrayList<Player> players = game.getPlayers();
                             if (players == null) players = new ArrayList<>();
 
-                            if (!players.contains(id)) players.add(id);
+                            if (!players.contains(new Player(firebaseUser.getUid(),
+                                    firebaseUser.getEmail(), firebaseUser.getDisplayName()))) {
+                                players.add(new Player(firebaseUser.getUid(),
+                                        firebaseUser.getEmail(), firebaseUser.getDisplayName()));
+                            }
 
                             database.child("games").child(gameId).child("players")
                                     .setValue(players);
