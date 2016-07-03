@@ -1,6 +1,7 @@
 package com.moyersoftware.contender.game;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,10 +15,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,12 +38,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.util.Util;
@@ -83,6 +93,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView mTotalPriceTxt;
     @Bind(R.id.host_img_progress_bar)
     ProgressBar mProgressBar;
+    @Bind(R.id.host_event_txt)
+    TextView eventTxt;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -106,6 +118,10 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     private double mLatitude;
     private double mLongitude;
+    private HostEventsAdapter mAdapter;
+    private ArrayList<Event> mEvents = new ArrayList<>();
+    private AlertDialog mEventsDialog;
+    private String mEventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +135,42 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initStorage();
         initPrices();
         initGoogleClient();
+        loadEvents();
+    }
+
+    private void loadEvents() {
+        mDatabase.child("events").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEvents.clear();
+                if (dataSnapshot.exists()) {
+                    String previousEventWeek = null;
+                    for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                        Event event = eventSnapshot.getValue(Event.class);
+                        if (event != null) {
+                            //TODO: Restore if (event.getTime() > System.currentTimeMillis()) {
+                                if (mEvents.size() == 0 || !event.getWeek()
+                                        .equals(previousEventWeek)) {
+                                    mEvents.add(new Event(null, null, null, null, null,
+                                            event.getWeek()));
+                                }
+                                previousEventWeek = event.getWeek();
+
+                                mEvents.add(event);
+                            //}
+                        }
+                    }
+                }
+                if (mAdapter!=null) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initGoogleClient() {
@@ -399,6 +451,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Some fields are empty", Toast.LENGTH_SHORT).show();
         } else if (mPassword.length() < MIN_PASSWORD_LENGTH) {
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(mEventId)) {
+            Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
         } else {
             mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
             mProgressDialog.show();
@@ -452,7 +506,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void uploadData(String imageUrl) {
-        mDatabase.child("games").child(mId).setValue(new Game(mId, mName,
+        mDatabase.child("games").child(mId).setValue(new Game(mEventId, mId, mName,
                 System.currentTimeMillis(), imageUrl, "100/100", mAuthorId, mAuthorUsername,
                 mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price, mQuarter3Price,
                 mFinalPrice, mTotalPrice, mLatitude, mLongitude, new ArrayList<String>(),
@@ -590,6 +644,22 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    public void onChooseGameClicked(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        dialogBuilder.setTitle("Choose a game");
+        @SuppressLint("InflateParams")
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_events, null);
+        RecyclerView eventsRecycler = (RecyclerView) dialogView.findViewById(R.id.events_recycler);
+        eventsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        eventsRecycler.setHasFixedSize(true);
+        mAdapter = new HostEventsAdapter(this, mEvents);
+        eventsRecycler.setAdapter(mAdapter);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setNegativeButton("Cancel", null);
+        mEventsDialog = dialogBuilder.create();
+        mEventsDialog.show();
+    }
+
     @Override
     public void onConnectionSuspended(int i) {
     }
@@ -604,5 +674,14 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void setSelectedEvent(Event event) {
+        mEventId = event.getId();
+        mEventsDialog.cancel();
+
+        eventTxt.setText(event.getTeamAway().getName() + " — " + event.getTeamHome().getName()
+                + ", " + Util.formatTime(event.getTime()));
     }
 }

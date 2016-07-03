@@ -41,7 +41,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.nameTxt.setText(game.getName());
         holder.timeTxt.setText(Util.formatDate(game.getTime()));
         holder.scoreTxt.setText(mFragment.getResources().getString(R.string.games_score,
-                game.getSelectedSquares().size()));
+                game.getSelectedSquares() != null ? game.getSelectedSquares().size() : 0));
         Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
                 (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
                 .into(holder.img);

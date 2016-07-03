@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class Game {
 
+    public String eventId;
     public String id;
     public String name;
     public long time;
@@ -32,12 +33,13 @@ public class Game {
         // Default constructor required for calls to DataSnapshot.getValue(Game.class)
     }
 
-    public Game(String id, String name, Long time, String image, String score,
+    public Game(String eventId, String id, String name, Long time, String image, String score,
                 String authorId, String authorUsername, String password, int squarePrice,
                 int quarter1Price, int quarter2Price, int quarter3Price, int finalPrice,
                 int totalPrice, double latitude, double longitude, ArrayList<String> players,
                 ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
                 ArrayList<SelectedSquare> selectedSquares) {
+        this.eventId = eventId;
         this.id = id;
         this.name = name;
         this.time = time;
@@ -58,6 +60,10 @@ public class Game {
         this.rowNumbers = rowNumbers;
         this.columnNumbers = columnNumbers;
         this.selectedSquares = selectedSquares;
+    }
+
+    public String getEventId() {
+        return eventId;
     }
 
     public String getId() {

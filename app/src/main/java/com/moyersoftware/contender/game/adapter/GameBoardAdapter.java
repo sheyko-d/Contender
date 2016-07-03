@@ -26,14 +26,19 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     // Usual variables
     private GameBoardActivity mActivity;
     private HashMap<Integer, SelectedSquare> mSelectedPositions = new HashMap<>();
+    private Boolean mLive = false;
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
     }
 
+    public void setLive(Boolean live) {
+        mLive = live;
+    }
+
     public void refresh(ArrayList<SelectedSquare> selectedSquares) {
         mSelectedPositions.clear();
-        for (SelectedSquare selectedSquare: selectedSquares){
+        for (SelectedSquare selectedSquare : selectedSquares) {
             mSelectedPositions.put(selectedSquare.getPosition(), selectedSquare);
         }
         notifyDataSetChanged();
@@ -56,6 +61,8 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
             holder.nameTxt.setText("");
             holder.img.setImageResource(0);
         }
+
+        holder.itemView.setClickable(!mLive);
     }
 
     @Override
@@ -79,7 +86,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
         @Override
         public void onClick(View v) {
-            mActivity.selectSquare(getAdapterPosition());
+            if (!mLive) mActivity.selectSquare(getAdapterPosition());
         }
     }
 }

@@ -16,9 +16,14 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
 
     // Usual variables
     private ArrayList<Integer> mNumbers;
+    private Boolean mLive = false;
 
     public GameRowAdapter(ArrayList<Integer> numbers) {
         mNumbers = numbers;
+    }
+
+    public void setLive(Boolean live){
+        mLive = live;
     }
 
     @Override
@@ -29,7 +34,11 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ((TextView) holder.itemView).setText(String.valueOf(mNumbers.get(position)));
+        if (mLive){
+            ((TextView) holder.itemView).setText(String.valueOf(mNumbers.get(position)));
+        } else {
+            ((TextView) holder.itemView).setText("-");
+        }
     }
 
     @Override

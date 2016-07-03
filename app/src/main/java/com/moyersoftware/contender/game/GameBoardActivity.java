@@ -1,5 +1,6 @@
 package com.moyersoftware.contender.game;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.util.Util;
@@ -60,14 +62,36 @@ public class GameBoardActivity extends AppCompatActivity {
     HorizontalScrollView mHorizontalScrollView;
     @Bind(R.id.board_bottom_sheet)
     View mBottomSheet;
-    @Bind(R.id.board_team1_img)
+    @Bind(R.id.board_info_home_img)
     ImageView mTeam1Img;
-    @Bind(R.id.board_team2_img)
+    @Bind(R.id.board_info_away_img)
     ImageView mTeam2Img;
     @Bind(R.id.board_title_txt)
     TextView mTitleTxt;
     @Bind(R.id.board_layout)
     View mLayout;
+    @Bind(R.id.board_away_name_txt)
+    TextView mAwayNameTxt;
+    @Bind(R.id.board_home_name_txt)
+    TextView mHomeNameTxt;
+    @Bind(R.id.board_info_away_name_txt)
+    TextView mInfoAwayNameTxt;
+    @Bind(R.id.board_info_home_name_txt)
+    TextView mInfoHomeNameTxt;
+    @Bind(R.id.board_info_home_total_score_txt)
+    TextView mInfoHomeTotalScoreTxt;
+    @Bind(R.id.board_info_away_total_score_txt)
+    TextView mInfoAwayTotalScoreTxt;
+    @Bind(R.id.board_info_q1_score_txt)
+    TextView mQ1ScoreTxt;
+    @Bind(R.id.board_info_q2_score_txt)
+    TextView mQ2ScoreTxt;
+    @Bind(R.id.board_info_q3_score_txt)
+    TextView mQ3ScoreTxt;
+    @Bind(R.id.board_info_final_score_txt)
+    TextView mFinalScoreTxt;
+    @Bind(R.id.board_info_time_txt)
+    TextView mTimeTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -85,6 +109,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private String mMyUsername;
     private String mMyPhoto;
     private GameBoardAdapter mBoardAdapter;
+    private Boolean mGameLive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +164,10 @@ public class GameBoardActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void initGameDetails(Game game) {
+        Util.Log("game live = " + mGameLive);
+
         // Set game image
         Picasso.with(this).load(game.getImage()).centerCrop().fit()
                 .placeholder(R.drawable.placeholder).into(mGameImg);
@@ -158,6 +186,12 @@ public class GameBoardActivity extends AppCompatActivity {
         mColumnNumbers.addAll(game.getColumnNumbers());
         mColumnAdapter.notifyDataSetChanged();
 
+        // Update prices
+        mQ1ScoreTxt.setText("Q1: " + game.getQuarter1Price() + " points");
+        mQ2ScoreTxt.setText("Q2: " + game.getQuarter2Price() + " points");
+        mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
+        mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
+
         // Update selected squares
         mSelectedSquares.clear();
         ArrayList<SelectedSquare> selectedSquares = game.getSelectedSquares();
@@ -167,6 +201,56 @@ public class GameBoardActivity extends AppCompatActivity {
             mSelectedSquares.add(selectedSquare);
         }
         mBoardAdapter.refresh(mSelectedSquares);
+
+        mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Event event = dataSnapshot.getValue(Event.class);
+                        if (event != null) {
+                            mGameLive = event.getTime() != -1 && System.currentTimeMillis()
+                                    > event.getTime();
+                            mColumnAdapter.setLive(mGameLive);
+                            mRowAdapter.setLive(mGameLive);
+                            mBoardAdapter.setLive(mGameLive);
+                            mColumnAdapter.notifyDataSetChanged();
+                            mRowAdapter.notifyDataSetChanged();
+                            mBoardAdapter.notifyDataSetChanged();
+
+                            mTimeTxt.setText(event.getTimeText());
+
+                            mAwayNameTxt.setText(event.getTeamAway().getName());
+                            mHomeNameTxt.setText(event.getTeamHome().getName());
+
+                            // Init bottom section info
+                            mInfoAwayNameTxt.setText(event.getTeamAway().getName());
+                            mInfoHomeNameTxt.setText(event.getTeamHome().getName());
+
+                            Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
+                                    .getImage()).into(mTeam1Img);
+                            Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
+                                    .getImage()).into(mTeam2Img);
+
+                            if (event.getTeamAway().getScore() != null) {
+                                mInfoAwayTotalScoreTxt.setText(event.getTeamAway().getScore()
+                                        .getTotal());
+                                mInfoHomeTotalScoreTxt.setText(event.getTeamHome().getScore()
+                                        .getTotal());
+                            } else {
+                                mInfoAwayTotalScoreTxt.setText("00");
+                                mInfoHomeTotalScoreTxt.setText("00");
+                            }
+                        } else {
+                            Toast.makeText(GameBoardActivity.this, "Event not found",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     private void initBoardRecycler() {
@@ -216,11 +300,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private void initBottomSheet() {
         BottomSheetBehavior behavior = BottomSheetBehavior.from(mBottomSheet);
         behavior.setPeekHeight(Util.convertDpToPixel(48));
-
-        Picasso.with(this).load("http://a2.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fnfl%2F500%2Fne.png")
-                .into(mTeam1Img);
-        Picasso.with(this).load("http://content.sportslogos.net/logos/7/166/full/919.gif")
-                .into(mTeam2Img);
     }
 
     /**

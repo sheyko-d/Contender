@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="24dp"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:paddingRight="24dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <ImageView
+        android:id="@+id/event_away_img"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/event_away_name_txt"
+        fontPath="fonts/segoe_ui_medium.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp"
+        tools:ignore="MissingPrefix"
+        tools:text="Big Day" />
+
+    <TextView
+        android:id="@+id/event_time_txt"
+        fontPath="fonts/segoe_ui_bold.ttf"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="AT"
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp"
+        tools:ignore="MissingPrefix" />
+
+    <TextView
+        android:id="@+id/event_home_name_txt"
+        fontPath="fonts/segoe_ui_medium.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp"
+        tools:ignore="MissingPrefix"
+        tools:text="Big Day" />
+
+    <ImageView
+        android:id="@+id/event_home_img"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
+</LinearLayout>

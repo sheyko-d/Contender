@@ -85,8 +85,8 @@ public class GamesFragment extends Fragment {
                     for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                         Game game = gameSnapshot.getValue(Game.class);
 
-                        if (game.getAuthorId().equals(myId) || (game.getPlayers() != null
-                                && game.getPlayers().contains(myId))) {
+                        if (game != null && (game.getAuthorId().equals(myId) || (game.getPlayers()
+                                != null && game.getPlayers().contains(myId)))) {
                             mGames.add(game);
                         }
                     }

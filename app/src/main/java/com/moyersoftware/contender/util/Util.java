@@ -10,10 +10,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Helper class.
@@ -118,5 +120,12 @@ public class Util {
     public static Boolean isReferralAsked() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getBoolean(PREF_REFERRAL_ASKED, false);
+    }
+
+    public static String formatTime(Long time) {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+        sdf.setTimeZone(TimeZone.getTimeZone("EST"));
+        return sdf.format(new Date(time)).replace(":00", "");
     }
 }

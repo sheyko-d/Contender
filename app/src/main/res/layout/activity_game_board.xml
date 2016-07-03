@@ -87,6 +87,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/board_away_name_txt"
                 fontPath="fonts/wanted.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
@@ -96,9 +97,9 @@
                 android:paddingTop="3dp"
                 android:shadowColor="@android:color/white"
                 android:shadowRadius="10"
-                android:text="New England Patriots"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="New England Patriots" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -154,6 +155,7 @@
                     android:layout_marginBottom="32dp">
 
                     <com.moyersoftware.contender.util.VerticalTextView
+                        android:id="@+id/board_home_name_txt"
                         fontPath="fonts/wanted.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -164,10 +166,10 @@
                         android:paddingTop="10dp"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="10"
-                        android:text="New York Giants"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16sp"
-                        tools:ignore="RtlHardcoded" />
+                        tools:ignore="RtlHardcoded"
+                        tools:text="New York Giants" />
                 </FrameLayout>
             </FrameLayout>
         </LinearLayout>
@@ -200,21 +202,22 @@
                 android:src="@drawable/arrow_bottom_sheet" />
 
             <TextView
+                android:id="@+id/board_info_time_txt"
                 fontPath="fonts/segoe_ui_medium.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="1st quarter - 5:34"
                 android:textColor="@color/primary_text"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="1st quarter - 5:34" />
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -225,30 +228,33 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/board_team1_img"
+                    android:id="@+id/board_info_home_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@null" />
 
                 <TextView
+                    android:id="@+id/board_info_home_name_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:text="Patriots"
                     android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="Patriots" />
 
                 <TextView
+                    android:id="@+id/board_info_home_total_score_txt"
                     fontPath="fonts/wanted.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
-                    android:text="00"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/primary_text"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    tools:text="00" />
             </LinearLayout>
 
             <TextView
@@ -258,8 +264,8 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="VS"
-                android:textColor="@color/primary_text"
+                android:text="AT"
+                android:textColor="@color/secondary_text"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -270,30 +276,33 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/board_team2_img"
+                    android:id="@+id/board_info_away_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@null" />
 
                 <TextView
+                    android:id="@+id/board_info_away_name_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:text="Giants"
                     android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="Giants" />
 
                 <TextView
+                    android:id="@+id/board_info_away_total_score_txt"
                     fontPath="fonts/wanted.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="6dp"
-                    android:text="03"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/primary_text"
-                    android:textSize="28sp" />
+                    android:textSize="28sp"
+                    tools:text="00" />
             </LinearLayout>
 
             <LinearLayout
@@ -306,6 +315,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/board_info_q1_score_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -315,6 +325,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/board_info_q2_score_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -325,6 +336,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/board_info_q3_score_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -335,6 +347,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/board_info_final_score_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
