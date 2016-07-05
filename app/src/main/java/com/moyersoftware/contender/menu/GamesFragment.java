@@ -26,6 +26,7 @@ import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
@@ -86,8 +87,10 @@ public class GamesFragment extends Fragment {
 
                         if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
-                                .contains(new Player(firebaseUser.getUid(), firebaseUser.getEmail(),
-                                        firebaseUser.getDisplayName()))))) {
+                                .contains(new Player(firebaseUser.getUid(), null,
+                                        firebaseUser.getEmail(),
+                                        Util.getDisplayName(),
+                                        firebaseUser.getPhotoUrl() + ""))))) {
                             mGames.add(game);
                         }
                     }

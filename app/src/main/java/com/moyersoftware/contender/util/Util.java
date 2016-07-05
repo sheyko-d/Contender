@@ -29,6 +29,7 @@ public class Util {
             "/invite.png";
     private static final String PREF_REFERRAL_CODE = "ReferralCode";
     private static final String PREF_REFERRAL_ASKED = "ReferralAsked";
+    private static final String PREF_DISPLAY_NAME = "DisplayName";
 
     /**
      * Adds a message to LogCat.
@@ -76,8 +77,8 @@ public class Util {
         if (firebaseUser.getEmail() != null) {
             String email = firebaseUser.getEmail();
             return email.substring(0, email.indexOf("@"));
-        } else if (firebaseUser.getDisplayName() != null) {
-            return firebaseUser.getDisplayName().toLowerCase(Locale.getDefault());
+        } else if (Util.getDisplayName() != null) {
+            return Util.getDisplayName().toLowerCase(Locale.getDefault());
         } else {
             return firebaseUser.getUid();
         }
@@ -134,5 +135,19 @@ public class Util {
         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
         sdf.setTimeZone(TimeZone.getTimeZone("EST"));
         return sdf.format(new Date(time)).replace(":00", "");
+    }
+
+    public static void setDisplayName(String name){
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putString(PREF_DISPLAY_NAME, name).apply();
+    }
+
+    public static String generatePlayerId() {
+        return String.valueOf(1000000000 + new Random().nextInt(900000000));
+    }
+
+    public static String getDisplayName(){
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getString(PREF_DISPLAY_NAME, null);
     }
 }

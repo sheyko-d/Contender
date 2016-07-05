@@ -25,16 +25,18 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
     private String mMyId;
     private String mMyEmail;
     private String mMyName;
+    private String mMyPhoto;
     private JoinActivity mActivity;
     private ArrayList<Game> mGames;
 
     public JoinGamesAdapter(JoinActivity activity, ArrayList<Game> games, String myId,
-                            String myEmail, String myName) {
+                            String myEmail, String myName, String myPhoto) {
         mActivity = activity;
         mGames = games;
         mMyId = myId;
         mMyEmail = myEmail;
         mMyName = myName;
+        mMyPhoto = myPhoto;
     }
 
     @Override
@@ -53,8 +55,8 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
                 .centerCrop().fit().into(holder.img);
 
-        if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, mMyEmail,
-                mMyName))) {
+        if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
+                mMyEmail, mMyName, mMyPhoto))) {
             holder.joinBtn.setText(R.string.join_disabled_btn);
         } else {
             holder.joinBtn.setText(R.string.join_btn);
@@ -88,8 +90,8 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         public void onClick(View v) {
             Game game = mGames.get(getAdapterPosition());
             // Check if user already joined this game before
-            if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, mMyEmail,
-                    mMyName))) {
+            if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
+                    mMyEmail, mMyName, mMyPhoto))) {
                 // Open the game board screen
                 mActivity.playGame(game.getId());
             } else {

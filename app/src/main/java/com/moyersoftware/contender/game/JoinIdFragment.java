@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,7 @@ public class JoinIdFragment extends Fragment {
     private String mMyId;
     private String mMyEmail;
     private String mMyName;
+    private String mMyPhoto;
 
     public JoinIdFragment() {
         // Required empty public constructor
@@ -78,7 +80,8 @@ public class JoinIdFragment extends Fragment {
         if (firebaseUser != null) {
             mMyId = firebaseUser.getUid();
             mMyEmail = firebaseUser.getEmail();
-            mMyName = firebaseUser.getDisplayName();
+            mMyName = Util.getDisplayName();
+            mMyPhoto = firebaseUser.getPhotoUrl()+"";
         }
     }
 
@@ -104,7 +107,7 @@ public class JoinIdFragment extends Fragment {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
         mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId, mMyEmail,
-                mMyName);
+                mMyName, mMyPhoto);
         mGamesRecycler.setAdapter(mAdapter);
     }
 

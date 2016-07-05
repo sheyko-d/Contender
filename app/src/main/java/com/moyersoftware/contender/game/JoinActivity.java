@@ -27,6 +27,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinPagerAdapter;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
@@ -118,7 +119,7 @@ public class JoinActivity extends AppCompatActivity {
 
     public void playGame(final String gameId) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         // Retrieve current list of players for the game user wants to join
@@ -133,10 +134,12 @@ public class JoinActivity extends AppCompatActivity {
                             ArrayList<Player> players = game.getPlayers();
                             if (players == null) players = new ArrayList<>();
 
-                            if (!players.contains(new Player(firebaseUser.getUid(),
-                                    firebaseUser.getEmail(), firebaseUser.getDisplayName()))) {
-                                players.add(new Player(firebaseUser.getUid(),
-                                        firebaseUser.getEmail(), firebaseUser.getDisplayName()));
+                            if (!players.contains(new Player(firebaseUser.getUid(), null,
+                                    firebaseUser.getEmail(), Util.getDisplayName(),
+                                    firebaseUser.getPhotoUrl() + ""))) {
+                                players.add(new Player(firebaseUser.getUid(), null,
+                                        firebaseUser.getEmail(), Util.getDisplayName(),
+                                        firebaseUser.getPhotoUrl() + ""));
                             }
 
                             database.child("games").child(gameId).child("players")

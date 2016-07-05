@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,7 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     private String mMyId;
     private String mMyEmail;
     private String mMyName;
+    private String mMyPhoto;
 
     public JoinLocationFragment() {
         // Required empty public constructor
@@ -89,7 +91,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
         if (firebaseUser != null) {
             mMyId = firebaseUser.getUid();
             mMyEmail = firebaseUser.getEmail();
-            mMyName = firebaseUser.getDisplayName();
+            mMyName = Util.getDisplayName();
+            mMyPhoto = firebaseUser.getPhotoUrl()+"";
         }
     }
 
@@ -107,7 +110,7 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
         mAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mGames, mMyId, mMyEmail,
-                mMyName);
+                mMyName, mMyPhoto);
         mGamesRecycler.setAdapter(mAdapter);
     }
 

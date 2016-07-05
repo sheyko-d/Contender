@@ -68,6 +68,19 @@
                 tools:text="Big Day" />
 
             <ImageView
+                android:id="@+id/board_add_player_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onAddPlayerButtonClicked"
+                android:src="@drawable/player_add" />
+
+            <ImageView
                 android:id="@+id/board_print_img"
                 android:layout_width="24dp"
                 android:layout_height="24dp"

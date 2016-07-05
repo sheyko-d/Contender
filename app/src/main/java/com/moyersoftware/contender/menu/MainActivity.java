@@ -75,6 +75,24 @@ public class MainActivity extends AppCompatActivity {
 
         initPager();
         initTabs();
+        initUser();
+    }
+
+    private void initUser() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
+                .child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String name = dataSnapshot.getValue(String.class);
+                    Util.setDisplayName(name);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void checkUserInvite() {
@@ -184,10 +202,12 @@ public class MainActivity extends AppCompatActivity {
                             ArrayList<Player> players = game.getPlayers();
                             if (players == null) players = new ArrayList<>();
 
-                            if (!players.contains(new Player(firebaseUser.getUid(),
-                                    firebaseUser.getEmail(), firebaseUser.getDisplayName()))) {
-                                players.add(new Player(firebaseUser.getUid(),
-                                        firebaseUser.getEmail(), firebaseUser.getDisplayName()));
+                            if (!players.contains(new Player(firebaseUser.getUid(), null,
+                                    firebaseUser.getEmail(), Util.getDisplayName(),
+                                    firebaseUser.getPhotoUrl() + ""))) {
+                                players.add(new Player(firebaseUser.getUid(), null,
+                                        firebaseUser.getEmail(), Util.getDisplayName(),
+                                        firebaseUser.getPhotoUrl() + ""));
                             }
 
                             database.child("games").child(gameId).child("players")

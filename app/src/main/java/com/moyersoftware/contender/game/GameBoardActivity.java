@@ -21,13 +21,16 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.Document;
@@ -47,6 +51,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
+import com.moyersoftware.contender.game.adapter.GamePlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
@@ -142,6 +147,11 @@ public class GameBoardActivity extends AppCompatActivity {
     private boolean mIgnoreUpdate = false;
     private ArrayList<String> mPlayerEmails = new ArrayList<>();
     private String mAuthorId;
+    private AlertDialog mPlayersDialog;
+    private ArrayList<Player> mPlayers = new ArrayList<>();
+    private GamePlayersAdapter mPlayersAdapter;
+    private String mMyEmail;
+    private String mDeviceOwnerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,14 +169,45 @@ public class GameBoardActivity extends AppCompatActivity {
         initHorizontalScrollView();
         initBottomSheet();
         initDatabase();
+        loadPlayers();
+    }
+
+    private void loadPlayers() {
+        mDatabase.child("games").child(mGameId).child("players").addValueEventListener
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        mPlayers.clear();
+                        if (mAuthorId.equals(mMyId)) {
+                            mPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
+                        }
+                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
+                            Player player = playerSnapshot.getValue(Player.class);
+                            if (player.getCreatedByUserId() == null || player.getCreatedByUserId()
+                                    .equals(mDeviceOwnerId)) {
+                                mPlayers.add(player);
+                                Util.Log("ADD PLAYER = "+player.getName());
+                            }
+                        }
+                        if (mPlayersAdapter != null) {
+                            mPlayersAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     private void initUser() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
+            mDeviceOwnerId = firebaseUser.getUid();
             mMyId = firebaseUser.getUid();
-            mMyName = firebaseUser.getDisplayName();
+            mMyName = Util.getDisplayName();
+            mMyEmail = firebaseUser.getEmail();
             if (firebaseUser.getPhotoUrl() != null) {
                 mMyPhoto = firebaseUser.getPhotoUrl().toString();
             }
@@ -554,10 +595,66 @@ public class GameBoardActivity extends AppCompatActivity {
         }
     };
 
+    public void onAddPlayerButtonClicked(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        dialogBuilder.setTitle("Select player");
+        @SuppressLint("InflateParams")
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_player, null);
+        RecyclerView recycler = (RecyclerView) dialogView.findViewById
+                (R.id.friends_select_recycler);
+        final EditText editTxt = (EditText) dialogView.findViewById(R.id.friends_select_edit_txt);
+        View addBtn = dialogView.findViewById(R.id.friends_select_add_btn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editTxt.getText().toString())) {
+                    Toast.makeText(GameBoardActivity.this, "Name is empty", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    mDatabase.child("games").child(mGameId).child("players")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    GenericTypeIndicator<ArrayList<Player>> t
+                                            = new GenericTypeIndicator<ArrayList<Player>>() {
+                                    };
+                                    ArrayList<Player> players = dataSnapshot.getValue(t);
+                                    if (players == null) players = new ArrayList<>();
+
+                                    players.add(new Player(Util.generatePlayerId(), mDeviceOwnerId,
+                                            null, editTxt.getText().toString(), null));
+
+                                    mDatabase.child("games").child(mGameId).child("players")
+                                            .setValue(players);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                }
+            }
+        });
+        mPlayersAdapter = new GamePlayersAdapter(this, mPlayers, mMyId);
+        recycler.setAdapter(mPlayersAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setNegativeButton("Close", null);
+        mPlayersDialog = dialogBuilder.create();
+        mPlayersDialog.show();
+    }
+
+    public void selectPlayer(Player player) {
+        mMyId = player.getUserId();
+        mMyEmail = player.getEmail();
+        mMyName = player.getName();
+        mMyPhoto = player.getPhoto();
+        mPlayersAdapter.setCurrentPlayerId(mMyId);
+    }
+
     private class UpdateSquareTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected final Void doInBackground(Void... params) {
-            Util.Log("updated squares");
             mIgnoreUpdate = true;
             mDatabase.child("games").child(mGameId).child("selectedSquares")
                     .setValue(mSelectedSquares);

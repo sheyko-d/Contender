@@ -123,6 +123,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private ArrayList<Event> mEvents = new ArrayList<>();
     private AlertDialog mEventsDialog;
     private String mEventId;
+    private String mAuthorImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -422,7 +423,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         if (firebaseUser != null) {
             mAuthorId = firebaseUser.getUid();
             mAuthorEmail = firebaseUser.getEmail();
-            mAuthorName = firebaseUser.getDisplayName();
+            mAuthorName = Util.getDisplayName();
+            mAuthorImage = firebaseUser.getPhotoUrl()+"";
         }
     }
 
@@ -509,21 +511,21 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void uploadData(String imageUrl) {
         mDatabase.child("games").child(mId).setValue(new Game(mEventId, mId, mName,
-                System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, mAuthorEmail,
-                mAuthorName), mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price,
+                System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, null,
+                mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price,
                 mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
                 new ArrayList<SelectedSquare>())).addOnCompleteListener
                 (new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                mProgressDialog.cancel();
-                startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
-                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, mId));
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mProgressDialog.cancel();
+                        startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
+                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, mId));
 
-                finish();
-            }
-        });
+                        finish();
+                    }
+                });
     }
 
     private void uploadImage() {
