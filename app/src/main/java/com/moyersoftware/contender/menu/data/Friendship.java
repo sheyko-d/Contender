@@ -5,12 +5,14 @@ package com.moyersoftware.contender.menu.data;
  */
 public final class Friendship {
 
-    public String user1Id;
-    public String user2Id;
+    private String user1Id;
+    private String user2Id;
+    private Boolean pending = false;
 
-    public Friendship(String user1Id, String user2Id) {
+    public Friendship(String user1Id, String user2Id, Boolean pending) {
         this.user1Id = user1Id;
         this.user2Id = user2Id;
+        this.pending = pending;
     }
 
     public Friendship() {
@@ -23,5 +25,13 @@ public final class Friendship {
 
     public String getUser2Id() {
         return user2Id;
+    }
+
+    public Boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 }

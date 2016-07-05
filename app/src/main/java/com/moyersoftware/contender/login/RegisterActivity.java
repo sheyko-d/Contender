@@ -68,8 +68,9 @@ public class RegisterActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(user.getUid()).setValue(new User(mNameEditTxt.getText()
-                            .toString(), Util.parseUsername(user), user.getEmail(), ""));
+                            .child(user.getUid()).setValue(new User(user.getUid(),
+                            mNameEditTxt.getText().toString(), Util.parseUsername(user),
+                            user.getEmail(), ""));
                     if (Util.isReferralAsked()) {
                         finish();
                         LoadingActivity.sActivity.finish();

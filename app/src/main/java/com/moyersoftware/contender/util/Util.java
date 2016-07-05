@@ -84,6 +84,13 @@ public class Util {
     }
 
     /**
+     * Parses the user email and formats it to username.
+     */
+    public static String parseUsername(String email) {
+        return email.substring(0, email.indexOf("@"));
+    }
+
+    /**
      * Generates numbers for the game board.
      */
     public static ArrayList<Integer> generateBoardNumbers() {

@@ -1,14 +1,20 @@
 package com.moyersoftware.contender.menu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.share.model.AppInviteContent;
@@ -20,10 +26,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.adapter.FriendsAdapter;
 import com.moyersoftware.contender.menu.data.Friend;
+import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -39,17 +48,32 @@ public class FriendsFragment extends Fragment {
     // Views
     @Bind(R.id.friends_recycler)
     RecyclerView mFriendsRecycler;
+    @Bind(R.id.friends_pending_recycler)
+    RecyclerView mFriendsPendingRecycler;
     @Bind(R.id.friends_invite_btn)
     Button mInviteBtn;
     @Bind(R.id.friends_social_txt)
     TextView mSocialTxt;
     @Bind(R.id.friends_social_btn)
     TextView mSocialBtn;
+    @Bind(R.id.friends_title_txt)
+    TextView mTitleTxt;
+    @Bind(R.id.friends_pending_title_txt)
+    TextView mPendingTitleTxt;
+    @Bind(R.id.friends_find_btn)
+    Button mFindBtn;
 
     // Usual variables
     private ArrayList<Friend> mFriends = new ArrayList<>();
+    private ArrayList<Friend> mPendingFriends = new ArrayList<>();
+    private ArrayList<Friend> mFoundFriends = new ArrayList<>();
     private String mMyId;
     private DatabaseReference mDatabase;
+    private FriendsAdapter mAdapter;
+    private FriendsAdapter mFoundAdapter;
+    private AlertDialog mSearchDialog;
+    private int mCurrentUsernameLength;
+    private FriendsAdapter mPendingAdapter;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -68,10 +92,171 @@ public class FriendsFragment extends Fragment {
         initUser();
         initDatabase();
         initRecycler();
+        initPendingRecycler();
         initInviteBtn();
         initFacebookInviteBtn();
+        initFindBtn();
+        loadFriends();
 
         return view;
+    }
+
+    private void initFindBtn() {
+        mFindBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity(),
+                        R.style.MaterialDialog);
+                @SuppressLint("InflateParams")
+                View dialogView = LayoutInflater.from(getActivity())
+                        .inflate(R.layout.dialog_friends, null);
+                RecyclerView recycler = (RecyclerView) dialogView.findViewById
+                        (R.id.friends_find_recycler);
+                recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mFoundAdapter = new FriendsAdapter(FriendsFragment.this, mFoundFriends, true);
+                recycler.setAdapter(mFoundAdapter);
+
+                final EditText editTxt = (EditText) dialogView.findViewById(R.id.friends_find_edit_txt);
+                editTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        searchFriends(editTxt.getText().toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.setPositiveButton("Close", null);
+                mSearchDialog = dialogBuilder.create();
+                mSearchDialog.show();
+            }
+        });
+    }
+
+    private void searchFriends(final String username) {
+        mFoundFriends.clear();
+        if (!TextUtils.isEmpty(username)) {
+            mDatabase.child("users").addListenerForSingleValueEvent
+                    (new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mFoundFriends.clear();
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                User user = userSnapshot.getValue(User.class);
+                                if (Util.parseUsername(user.getEmail()).contains(username)
+                                        || user.getName().contains(username)) {
+                                    mCurrentUsernameLength = username.length();
+                                    addMatch(userSnapshot.getKey(), user, username.length());
+                                }
+                            }
+
+                            mFoundAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            mFoundFriends.clear();
+                            mFoundAdapter.notifyDataSetChanged();
+                        }
+                    });
+        } else {
+            mFoundAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void addMatch(final String userId, final User user, final int usernameLength) {
+        mDatabase.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean alreadyFriends = false;
+                for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
+                    Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                    if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
+                            .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
+                            && friendship.getUser1Id().equals(user.getId()))) {
+                        alreadyFriends = true;
+                    }
+                }
+
+                if (usernameLength == mCurrentUsernameLength) {
+                    if (!alreadyFriends) {
+                        mFoundFriends.add(new Friend(userId, user.getName(),
+                                user.getUsername(), user.getImage(), false));
+                        mFoundAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void loadFriends() {
+        mDatabase.child("friends").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mFriends.clear();
+                mPendingFriends.clear();
+                for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
+                    final Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                    if (friendship.getUser1Id().equals(mMyId)
+                            || friendship.getUser2Id().equals(mMyId)) {
+                        String friendId = friendship.getUser1Id().equals(mMyId)
+                                ? friendship.getUser2Id() : friendship.getUser1Id();
+
+                        mDatabase.child("users").child(friendId).addListenerForSingleValueEvent
+                                (new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+
+                                        if (friendship.isPending()) {
+                                            if (!friendship.getUser1Id().equals(mMyId)) {
+                                                mPendingFriends.add(new Friend(dataSnapshot
+                                                        .getKey(), user.getName(),
+                                                        user.getUsername(), user.getImage(), true));
+                                                mPendingAdapter.notifyDataSetChanged();
+                                            }
+                                        } else {
+                                            mFriends.add(new Friend(dataSnapshot.getKey(),
+                                                    user.getName(), user.getUsername(),
+                                                    user.getImage(), false));
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+
+                                        mTitleTxt.setVisibility(mFriends.size() > 0 ? View.VISIBLE
+                                                : View.GONE);
+                                        mFriendsRecycler.setVisibility(mFriends.size() > 0
+                                                ? View.VISIBLE : View.GONE);
+                                        mPendingTitleTxt.setVisibility(mPendingFriends.size() > 0
+                                                ? View.VISIBLE : View.GONE);
+                                        mFriendsPendingRecycler.setVisibility(mPendingFriends
+                                                .size() > 0 ? View.VISIBLE : View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initDatabase() {
@@ -122,13 +307,15 @@ public class FriendsFragment extends Fragment {
     }
 
     private void initRecycler() {
-        // TODO: Remove
-        mFriends.clear();
-        mFriends.add(new Friend("Jeff Spadaccini", "@jspadacc", "http://womensenews.org/files/NFL-football.jpg"));
-
         mFriendsRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mFriendsRecycler.setHasFixedSize(true);
-        mFriendsRecycler.setAdapter(new FriendsAdapter(getContext(), mFriends));
+        mAdapter = new FriendsAdapter(FriendsFragment.this, mFriends);
+        mFriendsRecycler.setAdapter(mAdapter);
+    }
+
+    private void initPendingRecycler() {
+        mFriendsPendingRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mPendingAdapter = new FriendsAdapter(FriendsFragment.this, mPendingFriends);
+        mFriendsPendingRecycler.setAdapter(mPendingAdapter);
     }
 
     private void initInviteBtn() {
@@ -167,5 +354,53 @@ public class FriendsFragment extends Fragment {
                 .setMessage("Hey check this game out! (use this code: " + code + ")")
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
+    }
+
+    public void addFriend(final String userId) {
+        mDatabase.child("friends")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        GenericTypeIndicator<ArrayList<Friendship>> t = new GenericTypeIndicator
+                                <ArrayList<Friendship>>() {
+                        };
+                        ArrayList<Friendship> friendships = dataSnapshot.getValue(t);
+                        friendships.add(new Friendship(mMyId, userId, true));
+
+                        mDatabase.child("friends").setValue(friendships);
+                        mSearchDialog.cancel();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    public void acceptFriend(final String id) {
+        mDatabase.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<Friendship>> t = new GenericTypeIndicator
+                        <ArrayList<Friendship>>() {
+                };
+                ArrayList<Friendship> friendships = dataSnapshot.getValue(t);
+                for (int i = 0; i < friendships.size(); i++) {
+                    Friendship friendship = friendships.get(i);
+                    if (friendship.getUser1Id().equals(id) && friendship.getUser2Id()
+                            .equals(mMyId)) {
+                        friendship.setPending(false);
+                        friendships.set(i, friendship);
+                        break;
+                    }
+                }
+
+                mDatabase.child("friends").setValue(friendships);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 }

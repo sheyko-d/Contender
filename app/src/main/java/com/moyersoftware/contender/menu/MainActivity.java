@@ -31,7 +31,6 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
-import bolts.AppLinks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -61,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
-            // TODO: Save referral user id and add them to friends after the log in
-
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, LoadingActivity.class));
             finish();
@@ -70,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkUserInvite();
-        checkFacebookInvite();
         checkGameInvite();
 
         setContentView(R.layout.activity_main);
@@ -79,13 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         initPager();
         initTabs();
-    }
-
-    private void checkFacebookInvite() {
-        Uri targetUrl = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
-        if (targetUrl != null) {
-            Util.Log("App Link Target URL: " + targetUrl.toString());
-        }
     }
 
     private void checkUserInvite() {
@@ -116,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             final Friendship friendship = new Friendship(referralId,
-                                    mFirebaseUser.getUid());
+                                    mFirebaseUser.getUid(), false);
                             addFriend(database, friendship, referralId);
                         }
 

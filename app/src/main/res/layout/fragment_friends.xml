@@ -13,6 +13,7 @@
         android:paddingTop="12dp">
 
         <TextView
+            android:id="@+id/friends_pending_title_txt"
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
             android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/friends_recycler"
+            android:id="@+id/friends_pending_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -34,6 +35,7 @@
             android:elevation="2dp" />
 
         <TextView
+            android:id="@+id/friends_title_txt"
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,14 +45,25 @@
             android:textColor="@color/secondary_text"
             android:textSize="20sp" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/friends_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_light"
+            android:elevation="2dp" />
+
         <LinearLayout
             tools:ignore="ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/friends_find_btn"
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

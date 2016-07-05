@@ -66,8 +66,9 @@ public class LoadingActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(user.getUid()).setValue(new User(user.getDisplayName(),
-                            Util.parseUsername(user), user.getEmail(), user.getPhotoUrl() + ""));
+                            .child(user.getUid()).setValue(new User(user.getUid(),
+                            user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
+                            user.getPhotoUrl() + ""));
                     if (Util.isReferralAsked()) {
                         startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                     } else {

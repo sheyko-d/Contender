@@ -12,6 +12,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         mActivity = activity;
         mGames = games;
         mMyId = myId;
-        mMyEmail = myId;
-        mMyName = myId;
+        mMyEmail = myEmail;
+        mMyName = myName;
     }
 
     @Override
@@ -47,8 +48,8 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, game.getAuthor()
-                .getName()));
+        holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
+                (game.getAuthor().getEmail())));
         Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
                 .centerCrop().fit().into(holder.img);
 

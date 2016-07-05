@@ -5,31 +5,40 @@ package com.moyersoftware.contender.login.data;
  */
 public final class User {
 
-    private final String mName;
-    private final String mUsername;
-    private final String mEmail;
-    private final String mImage;
+    private String id;
+    private String name;
+    private String username;
+    private String email;
+    private String image;
 
-    public User(String name, String username, String email, String image) {
-        mName = name;
-        mUsername = username;
-        mEmail = email;
-        mImage = image;
+    public User() {
+    }
+
+    public User(String id, String name, String username, String email, String image) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.image = image;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public String getUsername() {
-        return mUsername;
+        return username;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public String getImage() {
-        return mImage;
+        return image;
     }
 }

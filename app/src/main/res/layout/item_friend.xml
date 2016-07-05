@@ -15,12 +15,13 @@
         android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="-1dp"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="-1dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -36,12 +37,28 @@
         <TextView
             android:id="@+id/friend_username_txt"
             fontPath="fonts/segoe_ui.ttf"
-            android:layout_marginTop="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:includeFontPadding="false"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
             tools:text="\@jspadacc" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/friend_add_img"
+        fontPath="fonts/segoe_ui_medium.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:src="@drawable/add"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:visibility="gone" />
 </LinearLayout>

@@ -45,7 +45,7 @@
     <!-- Join a game screen -->
     <string name="join_btn">Join</string>
     <string name="join_disabled_btn">Play</string>
-    <string name="join_author_txt">Created by %1$s</string>
+    <string name="join_author_txt">Created by @%1$s</string>
     <string name="join_found_title">Games found</string>
     <string name="join_id_title">Search by Game ID</string>
     <string name="join_location_title">Searching near your location…</string>
