@@ -81,7 +81,7 @@ public class JoinIdFragment extends Fragment {
             mMyId = firebaseUser.getUid();
             mMyEmail = firebaseUser.getEmail();
             mMyName = Util.getDisplayName();
-            mMyPhoto = firebaseUser.getPhotoUrl()+"";
+            mMyPhoto = Util.getPhoto();
         }
     }
 

@@ -3,15 +3,19 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -100,7 +105,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     // Usual variables
     private DatabaseReference mDatabase;
     private String mId;
-    private StorageReference mMountainsRef;
+    private StorageReference mImageRef;
     private Bitmap mBitmap;
     private ProgressDialog mProgressDialog;
     private String mName;
@@ -131,6 +136,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_host);
         ButterKnife.bind(this);
 
+        initBilling();
         initId();
         initUser();
         initDatabase();
@@ -138,6 +144,36 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initPrices();
         initGoogleClient();
         loadEvents();
+    }
+
+    private void initBilling() {
+        Intent serviceIntent =
+                new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+    }
+
+    IInAppBillingService mService;
+
+    ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name,
+                                       IBinder service) {
+            mService = IInAppBillingService.Stub.asInterface(service);
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mService != null) {
+            unbindService(mServiceConn);
+        }
     }
 
     private void loadEvents() {
@@ -424,7 +460,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             mAuthorId = firebaseUser.getUid();
             mAuthorEmail = firebaseUser.getEmail();
             mAuthorName = Util.getDisplayName();
-            mAuthorImage = firebaseUser.getPhotoUrl()+"";
+            mAuthorImage = Util.getPhoto();
         }
     }
 
@@ -434,8 +470,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         StorageReference storageRef = storage.getReferenceFromUrl
                 ("gs://contender-3ef7d.appspot.com");
 
-        // Create a reference to "mountains.jpg"
-        mMountainsRef = storageRef.child(mId + ".jpg");
+        // Create a reference to the photo
+        mImageRef = storageRef.child(mId + ".jpg");
     }
 
     private void initDatabase() {
@@ -447,6 +483,23 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void onCreateButtonClicked(View view) {
+        if (mService!=null) {
+            try {
+                Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
+                        "host_game", "inapp", "");
+                PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                startIntentSenderForResult(pendingIntent.getIntentSender(),
+                        1001, new Intent(), Integer.valueOf(0), Integer.valueOf(0),
+                        Integer.valueOf(0));
+            } catch (Exception e) {
+                Util.Log("exception: " + e);
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "Can't pay to host the game right now", Toast.LENGTH_SHORT).show();
+        }
+        /*
+
         readFieldValues();
 
         if (mProgressBar.getVisibility() == View.VISIBLE) {
@@ -465,7 +518,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             } else {
                 uploadData(null);
             }
-        }
+        }*/
     }
 
     private void readFieldValues() {
@@ -533,7 +586,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         byte[] data = outputStream.toByteArray();
 
-        UploadTask uploadTask = mMountainsRef.putBytes(data);
+        UploadTask uploadTask = mImageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {

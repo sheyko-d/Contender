@@ -1,101 +1,259 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="12dp"
-    tools:context=".menu.GamesFragment"
-    tools:ignore="MissingPrefix"
-    tools:targetApi="lollipop">
-
-    <TextView
-        fontPath="fonts/segoe_ui.ttf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:text="@string/settings_title"
-        android:textColor="@color/secondary_text"
-        android:textSize="20sp" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/background_light"
-        android:elevation="2dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/settings_support_txt"
-            fontPath="fonts/segoe_ui.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onSupportButtonClicked"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:includeFontPadding="false"
-            android:padding="16dp"
-            android:text="@string/settings_support"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" />
-
-        <TextView
-            android:id="@+id/settings_rate_txt"
-            fontPath="fonts/segoe_ui.ttf"
-            android:onClick="onRateButtonClicked"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:includeFontPadding="false"
-            android:padding="16dp"
-            android:text="@string/settings_rate"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" />
-
-        <TextView
-            android:id="@+id/settings_about_txt"
-            fontPath="fonts/segoe_ui.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:onClick="onAboutButtonClicked"
-            android:includeFontPadding="false"
-            android:padding="16dp"
-            android:text="@string/settings_about"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" />
+        android:orientation="vertical"
+        android:paddingTop="12dp"
+        tools:context=".menu.GamesFragment"
+        tools:ignore="MissingPrefix"
+        tools:targetApi="lollipop">
 
         <TextView
             fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:includeFontPadding="false"
-            android:onClick="onLogOutButtonClicked"
-            android:padding="16dp"
-            android:text="@string/settings_log_out"
-            android:textColor="@color/primary_text"
-            android:textSize="16sp" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="My Account"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_light"
+            android:elevation="2dp"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:text="Name"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/settings_name_txt"
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                tools:text="Dmytro Sheiko" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:text="Username"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/settings_username_txt"
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                tools:text="sheyko.dmitriy" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:text="Email"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/settings_email_txt"
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                tools:text="sheyko.dmitriy@gmail.com" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:text="Photo"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/settings_photo_img"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@null" />
+
+                <Button
+                    android:id="@+id/settings_photo_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Update photo"
+                    android:textSize="12sp"
+                    android:theme="@style/Button" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:onClick="onLogOutButtonClicked"
+                android:padding="16dp"
+                android:text="@string/settings_log_out"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            fontPath="fonts/segoe_ui.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Support"
+            android:textColor="@color/secondary_text"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/background_light"
+            android:elevation="2dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settings_support_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:onClick="onSupportButtonClicked"
+                android:padding="16dp"
+                android:text="@string/settings_support"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/settings_rate_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:onClick="onRateButtonClicked"
+                android:padding="16dp"
+                android:text="@string/settings_rate"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/settings_about_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:onClick="onAboutButtonClicked"
+                android:padding="16dp"
+                android:text="@string/settings_about"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

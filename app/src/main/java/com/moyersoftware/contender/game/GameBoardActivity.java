@@ -186,7 +186,6 @@ public class GameBoardActivity extends AppCompatActivity {
                             if (player.getCreatedByUserId() == null || player.getCreatedByUserId()
                                     .equals(mDeviceOwnerId)) {
                                 mPlayers.add(player);
-                                Util.Log("ADD PLAYER = "+player.getName());
                             }
                         }
                         if (mPlayersAdapter != null) {
@@ -208,9 +207,7 @@ public class GameBoardActivity extends AppCompatActivity {
             mMyId = firebaseUser.getUid();
             mMyName = Util.getDisplayName();
             mMyEmail = firebaseUser.getEmail();
-            if (firebaseUser.getPhotoUrl() != null) {
-                mMyPhoto = firebaseUser.getPhotoUrl().toString();
-            }
+            mMyPhoto = Util.getPhoto();
         }
     }
 
@@ -243,8 +240,6 @@ public class GameBoardActivity extends AppCompatActivity {
             mIgnoreUpdate = false;
             return;
         }
-
-        Util.Log("update game details");
 
         // Set game image
         Picasso.with(this).load(game.getImage()).centerCrop().fit()

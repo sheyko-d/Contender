@@ -89,8 +89,7 @@ public class GamesFragment extends Fragment {
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
                                 .contains(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(),
-                                        Util.getDisplayName(),
-                                        firebaseUser.getPhotoUrl() + ""))))) {
+                                        Util.getDisplayName(), Util.getPhoto()))))) {
                             mGames.add(game);
                         }
                     }

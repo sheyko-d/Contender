@@ -30,6 +30,7 @@ public class Util {
     private static final String PREF_REFERRAL_CODE = "ReferralCode";
     private static final String PREF_REFERRAL_ASKED = "ReferralAsked";
     private static final String PREF_DISPLAY_NAME = "DisplayName";
+    private static final String PREF_PHOTO = "Photo";
 
     /**
      * Adds a message to LogCat.
@@ -142,12 +143,22 @@ public class Util {
                 .putString(PREF_DISPLAY_NAME, name).apply();
     }
 
-    public static String generatePlayerId() {
-        return String.valueOf(1000000000 + new Random().nextInt(900000000));
-    }
-
     public static String getDisplayName(){
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_DISPLAY_NAME, null);
+    }
+
+    public static void setPhoto(String photo){
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putString(PREF_PHOTO, photo).apply();
+    }
+
+    public static String getPhoto(){
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getString(PREF_PHOTO, null);
+    }
+
+    public static String generatePlayerId() {
+        return String.valueOf(1000000000 + new Random().nextInt(900000000));
     }
 }

@@ -136,10 +136,10 @@ public class JoinActivity extends AppCompatActivity {
 
                             if (!players.contains(new Player(firebaseUser.getUid(), null,
                                     firebaseUser.getEmail(), Util.getDisplayName(),
-                                    firebaseUser.getPhotoUrl() + ""))) {
+                                    Util.getPhoto()))) {
                                 players.add(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(), Util.getDisplayName(),
-                                        firebaseUser.getPhotoUrl() + ""));
+                                        Util.getPhoto()));
                             }
 
                             database.child("games").child(gameId).child("players")

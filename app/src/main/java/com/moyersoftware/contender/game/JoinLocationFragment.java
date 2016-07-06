@@ -92,7 +92,7 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
             mMyId = firebaseUser.getUid();
             mMyEmail = firebaseUser.getEmail();
             mMyName = Util.getDisplayName();
-            mMyPhoto = firebaseUser.getPhotoUrl()+"";
+            mMyPhoto = Util.getPhoto();
         }
     }
 

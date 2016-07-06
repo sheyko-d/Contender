@@ -16,8 +16,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.menu.MainActivity;
+import com.moyersoftware.contender.util.Util;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,11 +57,31 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    finish();
-                    LoadingActivity.sActivity.finish();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(user.getUid()).child("image").addListenerForSingleValueEvent
+                            (new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        String oldPhoto = dataSnapshot.getValue(String.class);
+                                        Util.setPhoto(oldPhoto);
+                                    } else {
+                                        Util.setPhoto(user.getPhotoUrl() + "");
+                                    }
+
+
+                                    finish();
+                                    LoadingActivity.sActivity.finish();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                 }
             }
         };

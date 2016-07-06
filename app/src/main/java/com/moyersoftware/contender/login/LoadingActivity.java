@@ -29,7 +29,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.MainActivity;
@@ -63,12 +66,34 @@ public class LoadingActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(user.getUid()).setValue(new User(user.getUid(),
-                            user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
-                            user.getPhotoUrl() + ""));
+                            .child(user.getUid()).child("image").addListenerForSingleValueEvent
+                            (new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        String oldPhoto = dataSnapshot.getValue(String.class);
+                                        Util.setPhoto(oldPhoto);
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(user.getUid()).setValue(new User(user.getUid(),
+                                                user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
+                                                oldPhoto));
+                                    } else {
+                                        Util.setPhoto(user.getPhotoUrl() + "");
+                                        FirebaseDatabase.getInstance().getReference().child("users")
+                                                .child(user.getUid()).setValue(new User(user.getUid(),
+                                                user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
+                                                user.getPhotoUrl() + ""));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                     if (Util.isReferralAsked()) {
                         startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                     } else {

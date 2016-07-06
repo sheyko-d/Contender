@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                             .child(user.getUid()).setValue(new User(user.getUid(),
                             mNameEditTxt.getText().toString(), Util.parseUsername(user),
                             user.getEmail(), ""));
+                    Util.setPhoto("");
                     if (Util.isReferralAsked()) {
                         finish();
                         LoadingActivity.sActivity.finish();
