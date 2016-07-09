@@ -110,7 +110,12 @@ public class GamesFragment extends Fragment {
     private void initRecycler() {
         mGamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGamesRecycler.setHasFixedSize(true);
-        mAdapter = new GamesAdapter(this, mGames);
+        String myId = null;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            myId = user.getUid();
+        }
+        mAdapter = new GamesAdapter(this, mGames, myId);
         mGamesRecycler.setAdapter(mAdapter);
     }
 

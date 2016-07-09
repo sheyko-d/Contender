@@ -29,6 +29,12 @@ public class Game {
     public ArrayList<Integer> rowNumbers;
     public ArrayList<Integer> columnNumbers;
     public ArrayList<SelectedSquare> selectedSquares;
+    public Winner quarter1Winner;
+    public Winner quarter2Winner;
+    public Winner quarter3Winner;
+    public Winner finalWinner;
+    public boolean current;
+    public String currentQuarter;
 
     public Game() {
         // Default constructor required for calls to DataSnapshot.getValue(Game.class)
@@ -39,7 +45,9 @@ public class Game {
                 int quarter1Price, int quarter2Price, int quarter3Price, int finalPrice,
                 int totalPrice, double latitude, double longitude, ArrayList<Player> players,
                 ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
-                ArrayList<SelectedSquare> selectedSquares) {
+                ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
+                Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
+                String currentQuarter) {
         this.eventId = eventId;
         this.id = id;
         this.name = name;
@@ -60,6 +68,12 @@ public class Game {
         this.rowNumbers = rowNumbers;
         this.columnNumbers = columnNumbers;
         this.selectedSquares = selectedSquares;
+        this.quarter1Winner = quarter1Winner;
+        this.quarter2Winner = quarter2Winner;
+        this.quarter3Winner = quarter3Winner;
+        this.finalWinner = finalWinner;
+        this.current = current;
+        this.currentQuarter = currentQuarter;
     }
 
     public String getEventId() {
@@ -140,5 +154,29 @@ public class Game {
 
     public ArrayList<SelectedSquare> getSelectedSquares() {
         return selectedSquares;
+    }
+
+    public Winner getQuarter1Winner() {
+        return quarter1Winner;
+    }
+
+    public Winner getQuarter2Winner() {
+        return quarter2Winner;
+    }
+
+    public Winner getQuarter3Winner() {
+        return quarter3Winner;
+    }
+
+    public Winner getFinalWinner() {
+        return finalWinner;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public String getCurrentQuarter(){
+        return currentQuarter;
     }
 }

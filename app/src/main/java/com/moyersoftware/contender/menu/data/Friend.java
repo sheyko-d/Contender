@@ -9,13 +9,16 @@ public final class Friend {
     private final String mName;
     private final String mUsername;
     private final String mImage;
+    private final String mEmail;
     private boolean mIncomingPending = false;
 
-    public Friend(String id, String name, String username, String image, boolean incomingPending) {
+    public Friend(String id, String name, String username, String image, String email,
+                  boolean incomingPending) {
         mId = id;
         mName = name;
         mUsername = username;
         mImage = image;
+        mEmail = email;
         mIncomingPending = incomingPending;
     }
 
@@ -33,6 +36,10 @@ public final class Friend {
 
     public String getImage() {
         return mImage;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 
     public Boolean isIncomingPending() {

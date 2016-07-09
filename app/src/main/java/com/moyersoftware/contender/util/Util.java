@@ -3,6 +3,7 @@ package com.moyersoftware.contender.util;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -23,6 +24,10 @@ import java.util.TimeZone;
 public class Util {
 
     private static final String LOG_TAG = "ContenderDebug";
+    public static final String GET_CODES_URL = "http://www.moyersoftware.com/contender/" +
+            "get_codes.php";
+    public static final String SET_CODE_EXPIRED_URL = "http://www.moyersoftware.com/contender/" +
+            "set_code_expired.php";
     public static final String SUPPORT_URL = "http://www.moyersoftware.com";
     public static final String INVITE_LINK = "https://fb.me/1791931414374088";
     public static final String INVITE_IMAGE = "http://moyersoftware.com/contender/images" +
@@ -138,24 +143,28 @@ public class Util {
         return sdf.format(new Date(time)).replace(":00", "");
     }
 
-    public static void setDisplayName(String name){
+    public static void setDisplayName(String name) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
                 .putString(PREF_DISPLAY_NAME, name).apply();
     }
 
-    public static String getDisplayName(){
+    public static String getDisplayName() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_DISPLAY_NAME, null);
     }
 
-    public static void setPhoto(String photo){
+    public static void setPhoto(String photo) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
                 .putString(PREF_PHOTO, photo).apply();
     }
 
-    public static String getPhoto(){
-        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+    public static String getPhoto() {
+        String photo = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_PHOTO, null);
+        if (TextUtils.isEmpty(photo)) {
+            photo = "null";
+        }
+        return photo;
     }
 
     public static String generatePlayerId() {

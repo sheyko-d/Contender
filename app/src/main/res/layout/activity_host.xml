@@ -491,6 +491,38 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Have a secret code?"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="2dp"
+                android:text="Enter it here to get a free game!"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/host_code_edit_txt"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="-8dp"
+                android:inputType="textNoSuggestions" />
+
             <Button
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="match_parent"

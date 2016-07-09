@@ -188,7 +188,7 @@ public class FriendsFragment extends Fragment {
                 if (usernameLength == mCurrentUsernameLength) {
                     if (!alreadyFriends) {
                         mFoundFriends.add(new Friend(userId, user.getName(),
-                                user.getUsername(), user.getImage(), false));
+                                user.getUsername(), user.getImage(), user.getEmail(), false));
                         mFoundAdapter.notifyDataSetChanged();
                     }
                 }
@@ -224,13 +224,14 @@ public class FriendsFragment extends Fragment {
                                             if (!friendship.getUser1Id().equals(mMyId)) {
                                                 mPendingFriends.add(new Friend(dataSnapshot
                                                         .getKey(), user.getName(),
-                                                        user.getUsername(), user.getImage(), true));
+                                                        user.getUsername(), user.getImage(),
+                                                        user.getEmail(), true));
                                                 mPendingAdapter.notifyDataSetChanged();
                                             }
                                         } else {
                                             mFriends.add(new Friend(dataSnapshot.getKey(),
                                                     user.getName(), user.getUsername(),
-                                                    user.getImage(), false));
+                                                    user.getImage(), user.getEmail(), false));
                                             mAdapter.notifyDataSetChanged();
                                         }
 
@@ -331,7 +332,6 @@ public class FriendsFragment extends Fragment {
                                 if (code == null) {
                                     code = createGameCode();
                                 }
-                                Util.Log("code = " + code);
                                 sendInvite(code);
                             }
 

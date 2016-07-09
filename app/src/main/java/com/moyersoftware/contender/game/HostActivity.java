@@ -16,6 +16,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -61,11 +62,22 @@ import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HostActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
@@ -101,6 +113,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     ProgressBar mProgressBar;
     @Bind(R.id.host_event_txt)
     TextView eventTxt;
+    @Bind(R.id.host_code_edit_txt)
+    EditText mCodeEditTxt;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -129,6 +143,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private AlertDialog mEventsDialog;
     private String mEventId;
     private String mAuthorImage;
+    private String mCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +158,78 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initStorage();
         initPrices();
         initGoogleClient();
+        initCodes();
         loadEvents();
+    }
+
+    private void initCodes() {
+        mCodeEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loadCodes(mCodeEditTxt.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void loadCodes(String query) {
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("query", query)
+                .build();
+        Request request = new Request.Builder()
+                .url(Util.GET_CODES_URL)
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Util.Log("Can't retrieve codes: " + e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) return;
+
+                String responseTxt = response.body().string();
+                Util.Log("response: " + responseTxt);
+
+                try {
+                    JSONObject codeJson = new JSONObject(responseTxt);
+                    boolean expired = codeJson.getInt("expired") == 1;
+                    if (!expired) {
+                        mCode = codeJson.getString("text");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(HostActivity.this, "Great, this game will be free!",
+                                        Toast.LENGTH_SHORT).show();
+                                mCodeEditTxt.setEnabled(false);
+                            }
+                        });
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(HostActivity.this, "Code is expired",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    Util.Log("Can't parse codes: " + e);
+                }
+            }
+        });
     }
 
     private void initBilling() {
@@ -184,18 +270,22 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (dataSnapshot.exists()) {
                     String previousEventWeek = null;
                     for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                        Event event = eventSnapshot.getValue(Event.class);
-                        if (event != null) {
-                            //TODO: Restore if (event.getTime() > System.currentTimeMillis()) {
-                            if (mEvents.size() == 0 || !event.getWeek()
-                                    .equals(previousEventWeek)) {
-                                mEvents.add(new Event(null, null, null, null, null,
-                                        event.getWeek()));
-                            }
-                            previousEventWeek = event.getWeek();
+                        try {
+                            Event event = eventSnapshot.getValue(Event.class);
+                            if (event != null) {
+                                if (event.getTime() > System.currentTimeMillis()) {
+                                    if (mEvents.size() == 0 || !event.getWeek()
+                                            .equals(previousEventWeek)) {
+                                        mEvents.add(new Event(null, null, null, null, null,
+                                                event.getWeek()));
+                                    }
+                                    previousEventWeek = event.getWeek();
 
-                            mEvents.add(event);
-                            //}
+                                    mEvents.add(event);
+                                }
+                            }
+                        } catch (Exception e) {
+                            // Can't add event
                         }
                     }
                 }
@@ -483,23 +573,6 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void onCreateButtonClicked(View view) {
-        if (mService!=null) {
-            try {
-                Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                        "host_game", "inapp", "");
-                PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
-                startIntentSenderForResult(pendingIntent.getIntentSender(),
-                        1001, new Intent(), Integer.valueOf(0), Integer.valueOf(0),
-                        Integer.valueOf(0));
-            } catch (Exception e) {
-                Util.Log("exception: " + e);
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(this, "Can't pay to host the game right now", Toast.LENGTH_SHORT).show();
-        }
-        /*
-
         readFieldValues();
 
         if (mProgressBar.getVisibility() == View.VISIBLE) {
@@ -510,15 +583,55 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
-        } else {
-            mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
-            mProgressDialog.show();
-            if (mBitmap != null) {
-                uploadImage();
+        } else if (TextUtils.isEmpty(mCode)){
+            if (mService != null) {
+                try {
+                    Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
+                            "host_game", "inapp", "");
+                    PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                    startIntentSenderForResult(pendingIntent.getIntentSender(),
+                            1001, new Intent(), Integer.valueOf(0), Integer.valueOf(0),
+                            Integer.valueOf(0));
+                } catch (Exception e) {
+                    Util.Log("exception: " + e);
+                    e.printStackTrace();
+                }
             } else {
-                uploadData(null);
+                Toast.makeText(this, "Can't pay to host the game right now", Toast.LENGTH_SHORT).show();
             }
-        }*/
+        } else {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("text", mCode)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(Util.SET_CODE_EXPIRED_URL)
+                    .post(formBody)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Util.Log("Can't set code as expired: " + e);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) return;
+
+                    String responseTxt = response.body().string();
+                    if (responseTxt.equals("success")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                createGame();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void readFieldValues() {
@@ -565,11 +678,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private void uploadData(String imageUrl) {
         mDatabase.child("games").child(mId).setValue(new Game(mEventId, mId, mName,
                 System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, null,
-                mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price, mQuarter2Price,
-                mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
+                mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
+                mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>())).addOnCompleteListener
-                (new OnCompleteListener<Void>() {
+                new ArrayList<SelectedSquare>(), null, null, null, null, false, ""))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         mProgressDialog.cancel();
@@ -637,6 +750,53 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     }
                 });
             }
+        } else if (requestCode == 1001) {
+            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+
+            if (resultCode == RESULT_OK) {
+                try {
+                    JSONObject jo = new JSONObject(purchaseData);
+                    String sku = jo.getString("productId");
+                    final String token = jo.getString("purchaseToken");
+                    if (sku.equals("host_game")) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    mService.consumePurchase(3, getPackageName(), token);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            createGame();
+                                        }
+                                    });
+                                } catch (RemoteException e) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(HostActivity.this, "Purchase failed",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }).start();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(this, "Purchase failed", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void createGame() {
+        mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
+        mProgressDialog.show();
+        if (mBitmap != null) {
+            uploadImage();
+        } else {
+            uploadData(null);
         }
     }
 

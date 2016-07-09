@@ -175,13 +175,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkGameInvite() {
-        if (getIntent().getExtras() != null && getIntent().getData() != null) {
-            String data = getIntent().getDataString();
+        String data = getIntent().getDataString();
 
-            if (data.contains("moyersoftware.com/contender#")) {
-                String gameId = data.substring(data.indexOf("#") + 1, data.length());
-                playGame(gameId);
-            }
+        if (!TextUtils.isEmpty(data) && data.contains("moyersoftware.com/contender#")) {
+            String gameId = data.substring(data.indexOf("#") + 1, data.length());
+            playGame(gameId);
         }
     }
 
@@ -202,16 +200,17 @@ public class MainActivity extends AppCompatActivity {
                             ArrayList<Player> players = game.getPlayers();
                             if (players == null) players = new ArrayList<>();
 
-                            if (!players.contains(new Player(firebaseUser.getUid(), null,
+                            if (!game.getAuthor().getUserId().equals(firebaseUser.getUid())
+                                    && !players.contains(new Player(firebaseUser.getUid(), null,
                                     firebaseUser.getEmail(), Util.getDisplayName(),
                                     Util.getPhoto()))) {
                                 players.add(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(), Util.getDisplayName(),
                                         Util.getPhoto()));
-                            }
 
-                            database.child("games").child(gameId).child("players")
-                                    .setValue(players);
+                                database.child("games").child(gameId).child("players")
+                                        .setValue(players);
+                            }
 
                             startActivity(new Intent(MainActivity.this, GameBoardActivity.class)
                                     .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
