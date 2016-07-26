@@ -56,7 +56,11 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         for (SelectedSquare selectedSquare : selectedSquares) {
             mSelectedPositions.put(selectedSquare.getPosition(), selectedSquare);
         }
-        notifyItemChanged(position);
+        try {
+            notifyItemChanged(position);
+        } catch (Exception e) {
+            notifyDataSetChanged();
+        }
     }
 
     public void setPrintMode(boolean printMode) {
@@ -103,23 +107,39 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         return CELLS_COUNT;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
 
         @Bind(R.id.cell_name_txt)
         TextView nameTxt;
         @Bind(R.id.cell_img)
         ImageView img;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (!mLive) mActivity.selectSquare(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (mLive) return true;
+
+            if (mSelectedPositions.containsKey(getAdapterPosition())) {
+                SelectedSquare selectedSquare = mSelectedPositions.get(getAdapterPosition());
+
+                if (selectedSquare.getAuthorId().equals(mActivity.getCurrentId())) {
+                    mActivity.openRemoveMenu(selectedSquare);
+                }
+            }
+            return true;
         }
     }
 }

@@ -31,7 +31,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -174,6 +176,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private ArrayList<Friend> mFriends = new ArrayList<>();
     private GameFriendsAdapter mFriendsAdapter;
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
+    private int mRemoveSquarePos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +235,10 @@ public class GameBoardActivity extends AppCompatActivity {
             mMyEmail = firebaseUser.getEmail();
             mMyPhoto = Util.getPhoto();
         }
+    }
+
+    public String getCurrentId() {
+        return mMyId;
     }
 
     private void initDatabase() {
@@ -456,6 +463,8 @@ public class GameBoardActivity extends AppCompatActivity {
                 mColumnLayoutManager.scrollToPositionWithOffset(0, -mTotalScrollY);
             }
         });
+
+        registerForContextMenu(mBoardRecycler);
     }
 
     private void initRowRecycler() {
@@ -819,6 +828,37 @@ public class GameBoardActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_TEXT, "moyersoftware.com/contender#"
                 + mGameId);
         startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
+
+    public void openRemoveMenu(SelectedSquare selectedSquare) {
+        openContextMenu(mBoardRecycler);
+        mRemoveSquarePos = selectedSquare.getPosition();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remove this square");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        for (SelectedSquare selectedSquare:mSelectedSquares){
+            if (selectedSquare.getPosition()==mRemoveSquarePos){
+                mSelectedSquares.remove(selectedSquare);
+                break;
+            }
+        }
+
+        mBoardAdapter.refresh(mSelectedSquares, mRemoveSquarePos);
+
+        if (mPendingUpload) {
+            mHandler.removeCallbacks(updateSquaresRunnable);
+        }
+        mPendingUpload = true;
+        mHandler.postDelayed(updateSquaresRunnable, 500);
+        return super.onContextItemSelected(item);
     }
 
     private class UpdateSquareTask extends AsyncTask<Void, Void, Void> {
