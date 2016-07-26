@@ -134,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonClicked(View view) {
-
         String email = mEmailEditTxt.getText().toString();
         String password = mPasswordEditTxt.getText().toString();
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
