@@ -153,6 +153,7 @@
                     android:contentDescription="@null" />
 
                 <Button
+                    fontPath="fonts/segoe_ui_bold.ttf"
                     android:id="@+id/settings_photo_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"

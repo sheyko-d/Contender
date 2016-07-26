@@ -8,6 +8,12 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
+    <style name="AppTheme.Translucent" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#22000000</item>
+    </style>
+
     <style name="AppTheme.Loading" parent="AppTheme" tools:ignore="NewApi">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -16,7 +22,7 @@
 
     <style name="Button" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:height">64dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>

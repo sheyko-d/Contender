@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.HostActivity;
+import com.moyersoftware.contender.game.HowToPlayActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
@@ -44,6 +45,8 @@ public class GamesFragment extends Fragment {
     Button mJoinBtn;
     @Bind(R.id.games_title_txt)
     TextView mTitleTxt;
+    @Bind(R.id.games_how_to_btn)
+    Button mHowToBtn;
 
     // Usual variables
     private ArrayList<Game> mGames = new ArrayList<>();
@@ -130,6 +133,12 @@ public class GamesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), JoinActivity.class));
+            }
+        });
+        mHowToBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HowToPlayActivity.class));
             }
         });
     }

@@ -60,4 +60,9 @@
     <string name="settings_about_copyright">Copyright © 2016 MoyerSoftware
         \nhttp://moyersoftware.com
     </string>
+    <string name="games_how_to">How to Play</string>
+
+    <!-- How to Play screen -->
+    <string name="title_activity_how_to_play">How to Play</string>
+    <string name="skip">Skip</string>
 </resources>
