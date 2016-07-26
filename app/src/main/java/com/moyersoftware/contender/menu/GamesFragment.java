@@ -24,12 +24,14 @@ import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.HowToPlayActivity;
 import com.moyersoftware.contender.game.JoinActivity;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +53,8 @@ public class GamesFragment extends Fragment {
     // Usual variables
     private ArrayList<Game> mGames = new ArrayList<>();
     private GamesAdapter mAdapter;
+    private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private ArrayList<Long> mGameTimes = new ArrayList<>();
 
     public GamesFragment() {
         // Required empty public constructor
@@ -74,40 +78,70 @@ public class GamesFragment extends Fragment {
     }
 
     private void initDatabase() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
-            Query query = database.child("games").orderByChild("time");
-            query.addValueEventListener(new ValueEventListener() {
+            Query query = database.child("events");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // Update the games list
-                    mGames.clear();
+                    mEventTimes.clear();
                     for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                        Game game = gameSnapshot.getValue(Game.class);
-
-                        if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
-                                .getUid()) || (game.getPlayers() != null && game.getPlayers()
-                                .contains(new Player(firebaseUser.getUid(), null,
-                                        firebaseUser.getEmail(),
-                                        Util.getDisplayName(), Util.getPhoto()))))) {
-                            mGames.add(game);
+                        try {
+                            final Event event = gameSnapshot.getValue(Event.class);
+                            mEventTimes.put(event.getId(), event.getTime());
+                        } catch (Exception e) {
+                            // Can't retrieve game time
                         }
                     }
-                    mAdapter.notifyDataSetChanged();
 
-                    // Update the title text
-                    mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
-                            : R.string.games_title_empty);
+                    getGames(database, firebaseUser);
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
+
+
         }
+    }
+
+    private void getGames(DatabaseReference database, final FirebaseUser firebaseUser) {
+        Query query = database.child("games").orderByChild("time");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Update the games list
+                mGames.clear();
+                mGameTimes.clear();
+                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                    final Game game = gameSnapshot.getValue(Game.class);
+
+                    if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                            .getUid()) || (game.getPlayers() != null && game.getPlayers()
+                            .contains(new Player(firebaseUser.getUid(), null,
+                                    firebaseUser.getEmail(),
+                                    Util.getDisplayName(), Util.getPhoto()))))) {
+
+                        mGameTimes.add(mEventTimes.get(game.getEventId()));
+                        mGames.add(game);
+                    }
+                }
+                mAdapter.updateGameTimes(mGameTimes);
+                mAdapter.notifyDataSetChanged();
+
+                // Update the title text
+                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                        : R.string.games_title_empty);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     private void initRecycler() {

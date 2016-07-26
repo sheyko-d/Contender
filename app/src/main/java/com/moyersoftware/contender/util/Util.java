@@ -72,8 +72,8 @@ public class Util {
      */
     @SuppressLint("SimpleDateFormat")
     public static String formatDate(long time) {
-        SimpleDateFormat fmtOut = new SimpleDateFormat("dd MMM, h:mm a");
-        return fmtOut.format(time);
+        SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d @ h:mma");
+        return fmtOut.format(time).replace("AM", "am").replace("PM", "pm");
     }
 
     /**

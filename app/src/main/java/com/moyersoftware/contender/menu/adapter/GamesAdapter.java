@@ -23,6 +23,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     private GamesFragment mFragment;
     private ArrayList<Game> mGames;
     private String mMyId;
+    private ArrayList<Long> mGameTimes;
 
     public GamesAdapter(GamesFragment fragment, ArrayList<Game> games, String myId) {
         mFragment = fragment;
@@ -41,7 +42,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        holder.timeTxt.setText(Util.formatDate(game.getTime()));
+        holder.timeTxt.setText(Util.formatDate(mGameTimes.get(position)));
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
         } else {
@@ -79,6 +80,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mGames.size();
+    }
+
+    public void updateGameTimes(ArrayList<Long> gameTimes) {
+        mGameTimes = gameTimes;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
