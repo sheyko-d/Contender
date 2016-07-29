@@ -42,7 +42,9 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        holder.timeTxt.setText(Util.formatDate(mGameTimes.get(position)));
+        if (mGameTimes != null) {
+            holder.timeTxt.setText(Util.formatDate(mGameTimes.get(position)));
+        }
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
         } else {
@@ -51,19 +53,19 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         }
         if (mMyId != null) {
             int totalWinnings = 0;
-            if (game.getQuarter1Winner()!=null && game.getQuarter1Winner().getPlayer().getUserId()
+            if (game.getQuarter1Winner() != null && game.getQuarter1Winner().getPlayer().getUserId()
                     .equals(mMyId)) {
                 totalWinnings += game.getQuarter1Price();
             }
-            if (game.getQuarter2Winner()!=null && game.getQuarter2Winner().getPlayer().getUserId()
+            if (game.getQuarter2Winner() != null && game.getQuarter2Winner().getPlayer().getUserId()
                     .equals(mMyId)) {
                 totalWinnings += game.getQuarter2Price();
             }
-            if (game.getQuarter3Winner()!=null && game.getQuarter3Winner().getPlayer().getUserId()
+            if (game.getQuarter3Winner() != null && game.getQuarter3Winner().getPlayer().getUserId()
                     .equals(mMyId)) {
                 totalWinnings += game.getQuarter3Price();
             }
-            if (game.getFinalWinner()!=null && game.getFinalWinner().getPlayer().getUserId()
+            if (game.getFinalWinner() != null && game.getFinalWinner().getPlayer().getUserId()
                     .equals(mMyId)) {
                 totalWinnings += game.getFinalPrice();
             }
