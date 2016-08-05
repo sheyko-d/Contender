@@ -52,6 +52,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.moyersoftware.contender.BuildConfig;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -583,7 +584,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mCode)){
+        } else if (BuildConfig.DEBUG) {
+            createGame();
+        } else if (TextUtils.isEmpty(mCode)) {
             if (mService != null) {
                 try {
                     Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
@@ -621,7 +624,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     if (!response.isSuccessful()) return;
 
                     String responseTxt = response.body().string();
-                    if (responseTxt.equals("success")){
+                    if (responseTxt.equals("success")) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

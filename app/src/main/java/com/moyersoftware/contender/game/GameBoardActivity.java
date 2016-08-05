@@ -177,6 +177,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private GameFriendsAdapter mFriendsAdapter;
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
     private int mRemoveSquarePos;
+    private ArrayList<String> mFriendIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -780,6 +781,7 @@ public class GameBoardActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mFriends.clear();
+                mFriendIds.clear();
                 for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
                     final Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
                     if (friendship.getUser1Id().equals(mMyId)
@@ -792,11 +794,16 @@ public class GameBoardActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         User user = dataSnapshot.getValue(User.class);
+                                        Util.Log("data change: "+user.getName());
 
                                         if (!friendship.isPending()) {
-                                            mFriends.add(new Friend(dataSnapshot.getKey(),
+                                            Friend friend = new Friend(dataSnapshot.getKey(),
                                                     user.getName(), user.getUsername(),
-                                                    user.getImage(), user.getEmail(), false));
+                                                    user.getImage(), user.getEmail(), false);
+                                            if (!mFriendIds.contains(friend.getId())) {
+                                                mFriends.add(friend);
+                                                mFriendIds.add(friend.getId());
+                                            }
                                             if (mFriendsAdapter != null) {
                                                 mFriendsAdapter.notifyDataSetChanged();
                                             }
