@@ -176,7 +176,7 @@ public class Game {
         return current;
     }
 
-    public String getCurrentQuarter(){
+    public String getCurrentQuarter() {
         return currentQuarter;
     }
 }

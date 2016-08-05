@@ -64,7 +64,9 @@
         <activity
             android:name=".game.JoinActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".game.GameBoardActivity" />
+        <activity
+            android:name=".game.GameBoardActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".game.HowToPlayActivity"
             android:label="@string/title_activity_how_to_play"

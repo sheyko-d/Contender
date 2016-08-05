@@ -178,6 +178,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
     private int mRemoveSquarePos;
     private ArrayList<String> mFriendIds = new ArrayList<>();
+    private Game mGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,6 +249,8 @@ public class GameBoardActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Util.Log("data change: " + dataSnapshot.toString());
+
                 if (!dataSnapshot.exists()) {
                     Toast.makeText(GameBoardActivity.this, "Game not found", Toast.LENGTH_SHORT)
                             .show();
@@ -255,7 +258,10 @@ public class GameBoardActivity extends AppCompatActivity {
                 } else {
                     Game game = dataSnapshot.getValue(Game.class);
 
-                    initGameDetails(game);
+                    if (mGame != game) {
+                        initGameDetails(game);
+                        mGame = game;
+                    }
                 }
             }
 
@@ -267,6 +273,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initGameDetails(Game game) {
+
+        Util.Log("initGameDetails");
         if (mIgnoreUpdate) {
             mIgnoreUpdate = false;
             return;
@@ -304,31 +312,60 @@ public class GameBoardActivity extends AppCompatActivity {
             if (!game.getQuarter1Winner().isConsumed()
                     && game.getQuarter1Winner().getPlayer().getUserId().equals(mMyId)) {
                 showWinDialog(game.getQuarter1Price(), "1st", null);
-                mDatabase.child("games").child(mGameId).child("quarter1Winner").child("consumed")
-                        .setValue(true);
             } else if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner()
                     .getPlayer().getCreatedByUserId().equals(mDeviceOwnerId)) {
                 showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
                         .getName());
-                mDatabase.child("games").child(mGameId).child("quarter1Winner").child("consumed")
-                        .setValue(true);
             }
+            mDatabase.child("games").child(mGameId).child("quarter1Winner").child("consumed")
+                    .setValue(true);
         }
         mWinner2Img.setVisibility(game.getQuarter2Winner() == null ? View.INVISIBLE : View.VISIBLE);
         if (game.getQuarter2Winner() != null) {
             Picasso.with(this).load(game.getQuarter2Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner2Img);
+            if (!game.getQuarter2Winner().isConsumed()
+                    && game.getQuarter2Winner().getPlayer().getUserId().equals(mMyId)) {
+                showWinDialog(game.getQuarter2Price(), "2nd", null);
+            } else if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner()
+                    .getPlayer().getCreatedByUserId().equals(mDeviceOwnerId)) {
+                showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
+                        .getName());
+            }
+            mDatabase.child("games").child(mGameId).child("quarter2Winner").child("consumed")
+                    .setValue(true);
         }
         mWinner3Img.setVisibility(game.getQuarter3Winner() == null ? View.INVISIBLE : View.VISIBLE);
         if (game.getQuarter3Winner() != null) {
             Picasso.with(this).load(game.getQuarter3Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner3Img);
+            if (!game.getQuarter3Winner().isConsumed()
+                    && game.getQuarter3Winner().getPlayer().getUserId().equals(mMyId)) {
+                showWinDialog(game.getQuarter3Price(), "3rd", null);
+            } else if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner()
+                    .getPlayer().getCreatedByUserId().equals(mDeviceOwnerId)) {
+                showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
+                        .getName());
+            }
+            mDatabase.child("games").child(mGameId).child("quarter3Winner").child("consumed")
+                    .setValue(true);
         }
         mWinnerFinalImg.setVisibility(game.getFinalWinner() == null ? View.INVISIBLE
                 : View.VISIBLE);
         if (game.getFinalWinner() != null) {
             Picasso.with(this).load(game.getFinalWinner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinnerFinalImg);
+
+            if (!game.getFinalWinner().isConsumed()
+                    && game.getFinalWinner().getPlayer().getUserId().equals(mMyId)) {
+                showWinDialog(game.getFinalPrice(), "final", null);
+            } else if (!game.getFinalWinner().isConsumed() && game.getFinalWinner()
+                    .getPlayer().getCreatedByUserId().equals(mDeviceOwnerId)) {
+                showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
+                        .getName());
+            }
+            mDatabase.child("games").child(mGameId).child("finalWinner").child("consumed")
+                    .setValue(true);
         }
 
         // Get players
@@ -404,50 +441,59 @@ public class GameBoardActivity extends AppCompatActivity {
                 });
     }
 
-    private void showWinDialog(int price, String quarter, String name) {
-        try {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
-            dialogBuilder.setTitle("\uD83C\uDFC6  Congratulations");
-            if (TextUtils.isEmpty(name)) {
-                dialogBuilder.setMessage("You won " + price + " points in the " + quarter
-                        + " quarter");
-            } else {
-                dialogBuilder.setMessage(name + " won " + price + " points in the " + quarter
-                        + " quarter");
+    private void showWinDialog(final int price, final String quarter, final String name) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameBoardActivity.this,
+                            R.style.MaterialDialog);
+                    dialogBuilder.setTitle("\uD83C\uDFC6  Congratulations!");
+                    if (TextUtils.isEmpty(name)) {
+                        dialogBuilder.setMessage("You won " + price + " points in the " + quarter
+                                + " quarter");
+                    } else {
+                        dialogBuilder.setMessage(name + " won " + price + " points in the " + quarter
+                                + " quarter");
+                    }
+                    dialogBuilder.setNegativeButton("OK", null);
+                    dialogBuilder.create().show();
+                } catch (Exception e) {
+                    Util.Log("can't show dialog: " + e);
+                    NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
+                            new NotificationCompat.Builder(GameBoardActivity.this)
+                                    .setSmallIcon(R.drawable.notif)
+                                    .setContentTitle("Congratulations!")
+                                    .setAutoCancel(true)
+                                    .setColor(ContextCompat.getColor(GameBoardActivity.this, R.color.colorPrimary));
+                    if (TextUtils.isEmpty(name)) {
+                        mBuilder.setContentText("You won " + price + " points in the " + quarter
+                                + " quarter");
+                    } else {
+                        mBuilder.setContentText(name + " won " + price + " points in the " + quarter
+                                + " quarter");
+                    }
+                    Intent resultIntent = new Intent(GameBoardActivity.this, GameBoardActivity.class)
+                            .putExtra(EXTRA_GAME_ID, mGameId);
+                    PendingIntent resultPendingIntent =
+                            PendingIntent.getActivity(
+                                    GameBoardActivity.this,
+                                    0,
+                                    resultIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
+                    mBuilder.setContentIntent(resultPendingIntent);// Sets an ID for the notification
+                    // Gets an instance of the NotificationManager service
+                    NotificationManager mNotifyMgr =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    Notification notification = mBuilder.build();
+                    notification.defaults |= Notification.DEFAULT_VIBRATE;
+                    notification.defaults |= Notification.DEFAULT_SOUND;
+                    // Builds the notification and issues it.
+                    mNotifyMgr.notify(1, notification);
+                }
             }
-            dialogBuilder.setNegativeButton("OK", null);
-            dialogBuilder.create().show();
-        } catch (Exception e) {
-            NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.notif)
-                            .setContentTitle("Congratulations!");
-            if (TextUtils.isEmpty(name)) {
-                mBuilder.setContentText("You won " + price + " points in the " + quarter
-                        + " quarter");
-            } else {
-                mBuilder.setContentText(name + " won " + price + " points in the " + quarter
-                        + " quarter");
-            }
-            Intent resultIntent = new Intent(this, GameBoardActivity.class)
-                    .putExtra(EXTRA_GAME_ID, mGameId);
-            PendingIntent resultPendingIntent =
-                    PendingIntent.getActivity(
-                            this,
-                            0,
-                            resultIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);// Sets an ID for the notification
-            // Gets an instance of the NotificationManager service
-            NotificationManager mNotifyMgr =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            Notification notification = mBuilder.build();
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
-            notification.defaults |= Notification.DEFAULT_SOUND;
-            // Builds the notification and issues it.
-            mNotifyMgr.notify(1, notification);
-        }
+        });
     }
 
     private void initBoardRecycler() {
@@ -794,7 +840,7 @@ public class GameBoardActivity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         User user = dataSnapshot.getValue(User.class);
-                                        Util.Log("data change: "+user.getName());
+                                        Util.Log("data change: " + user.getName());
 
                                         if (!friendship.isPending()) {
                                             Friend friend = new Friend(dataSnapshot.getKey(),
@@ -851,8 +897,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        for (SelectedSquare selectedSquare:mSelectedSquares){
-            if (selectedSquare.getPosition()==mRemoveSquarePos){
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            if (selectedSquare.getPosition() == mRemoveSquarePos) {
                 mSelectedSquares.remove(selectedSquare);
                 break;
             }
