@@ -175,6 +175,8 @@ public class FriendsFragment extends Fragment {
         mDatabase.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mFoundFriends.clear();
+
                 boolean alreadyFriends = false;
                 for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
                     Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
@@ -187,8 +189,11 @@ public class FriendsFragment extends Fragment {
 
                 if (usernameLength == mCurrentUsernameLength) {
                     if (!alreadyFriends) {
-                        mFoundFriends.add(new Friend(userId, user.getName(),
-                                user.getUsername(), user.getImage(), user.getEmail(), false));
+                        Friend friend = new Friend(userId, user.getName(),
+                                user.getUsername(), user.getImage(), user.getEmail(), false);
+                        if (!mFoundFriends.contains(friend)) {
+                            mFoundFriends.add(friend);
+                        }
                         mFoundAdapter.notifyDataSetChanged();
                     }
                 }
@@ -219,19 +224,24 @@ public class FriendsFragment extends Fragment {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         User user = dataSnapshot.getValue(User.class);
+                                        mFriends.clear();
 
                                         if (friendship.isPending()) {
                                             if (!friendship.getUser1Id().equals(mMyId)) {
-                                                mPendingFriends.add(new Friend(dataSnapshot
+                                                Friend friend = new Friend(dataSnapshot
                                                         .getKey(), user.getName(),
                                                         user.getUsername(), user.getImage(),
-                                                        user.getEmail(), true));
+                                                        user.getEmail(), true);
+                                                if (!mPendingFriends.contains(friend)) {
+                                                    mPendingFriends.add(friend);
+                                                }
                                                 mPendingAdapter.notifyDataSetChanged();
                                             }
                                         } else {
-                                            mFriends.add(new Friend(dataSnapshot.getKey(),
+                                            Friend friend = new Friend(dataSnapshot.getKey(),
                                                     user.getName(), user.getUsername(),
-                                                    user.getImage(), user.getEmail(), false));
+                                                    user.getImage(), user.getEmail(), false);
+                                            mFriends.add(friend);
                                             mAdapter.notifyDataSetChanged();
                                         }
 
