@@ -87,6 +87,12 @@ public class LoadingActivity extends AppCompatActivity {
                                                 user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                 user.getPhotoUrl() + ""));
                                     }
+                                    Util.setDisplayName(user.getDisplayName());
+                                    if (Util.isReferralAsked()) {
+                                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                                    } else {
+                                        askReferral();
+                                    }
                                 }
 
                                 @Override
@@ -94,11 +100,6 @@ public class LoadingActivity extends AppCompatActivity {
 
                                 }
                             });
-                    if (Util.isReferralAsked()) {
-                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                    } else {
-                        askReferral();
-                    }
                 }
             }
         };

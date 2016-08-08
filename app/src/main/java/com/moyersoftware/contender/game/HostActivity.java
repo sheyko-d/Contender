@@ -68,7 +68,9 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -274,6 +276,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                         try {
                             Event event = eventSnapshot.getValue(Event.class);
                             if (event != null) {
+                                Date date = new Date(event.getTime());
+                                DateFormat dateFormat = android.text.format.DateFormat.getLongDateFormat(getApplicationContext());
+                                Util.Log("Event time: "+dateFormat.format(date));
                                 if (event.getTime() > System.currentTimeMillis()) {
                                     if (mEvents.size() == 0 || !event.getWeek()
                                             .equals(previousEventWeek)) {
