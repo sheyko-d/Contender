@@ -20,6 +20,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +40,9 @@ import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.MainActivity;
 import com.moyersoftware.contender.util.Util;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -48,6 +53,8 @@ public class LoadingActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String mFacebookName = null;
+    private String mFacebookPhoto = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,38 +75,50 @@ public class LoadingActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(user.getUid()).child("image").addListenerForSingleValueEvent
-                            (new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        String oldPhoto = dataSnapshot.getValue(String.class);
-                                        Util.setPhoto(oldPhoto);
-                                        FirebaseDatabase.getInstance().getReference().child("users")
-                                                .child(user.getUid()).setValue(new User(user.getUid(),
-                                                user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
-                                                oldPhoto));
-                                    } else {
-                                        Util.setPhoto(user.getPhotoUrl() + "");
-                                        FirebaseDatabase.getInstance().getReference().child("users")
-                                                .child(user.getUid()).setValue(new User(user.getUid(),
-                                                user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
-                                                user.getPhotoUrl() + ""));
-                                    }
-                                    Util.setDisplayName(user.getDisplayName());
-                                    if (Util.isReferralAsked()) {
-                                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                                    } else {
-                                        askReferral();
-                                    }
-                                }
+                    if (mFacebookName!=null){
+                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
+                                .child("name").setValue(mFacebookName);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
+                                .child("image").setValue(mFacebookPhoto);
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                        if (Util.isReferralAsked()) {
+                            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                        } else {
+                            askReferral();
+                        }
+                    } else {
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(user.getUid()).child("image").addListenerForSingleValueEvent
+                                (new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            String oldPhoto = dataSnapshot.getValue(String.class);
+                                            Util.setPhoto(oldPhoto);
+                                            FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(user.getUid()).setValue(new User(user.getUid(),
+                                                    user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
+                                                    oldPhoto));
+                                        } else {
+                                            Util.setPhoto(user.getPhotoUrl() + "");
+                                            FirebaseDatabase.getInstance().getReference().child("users")
+                                                    .child(user.getUid()).setValue(new User(user.getUid(),
+                                                    user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
+                                                    user.getPhotoUrl() + ""));
+                                        }
+                                        if (Util.isReferralAsked()) {
+                                            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                                        } else {
+                                            askReferral();
+                                        }
+                                    }
 
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                    }
                 }
             }
         };
@@ -153,8 +172,29 @@ public class LoadingActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(mCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    public void onSuccess(final LoginResult loginResult) {
+                        GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject me, GraphResponse response) {
+                                        if (response.getError() != null) {
+                                            Util.Log("Can't retrieve Facebook info");
+                                        } else {
+                                            try {
+                                                mFacebookName = response.getJSONObject()
+                                                        .get("name").toString();
+                                                mFacebookPhoto = "https://graph.facebook.com/" + response.getJSONObject()
+                                                        .get("id").toString() + "/picture?type=large";
+
+                                                Util.setDisplayName(mFacebookName);
+                                                Util.setPhoto(mFacebookPhoto);
+                                            } catch (JSONException e) {
+                                                Util.Log("Can't retrieve Facebook name: "+e+", "+me.toString());
+                                            }
+                                        }
+                                        handleFacebookAccessToken(loginResult.getAccessToken());
+                                    }
+                                }).executeAsync();
                     }
 
                     @Override
