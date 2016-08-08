@@ -261,7 +261,7 @@ public class FriendsFragment extends Fragment {
                                 });
                     }
                 }
-                
+
                 mTitleTxt.setVisibility(mFriends.size() > 0 ? View.VISIBLE
                         : View.GONE);
                 mFriendsRecycler.setVisibility(mFriends.size() > 0
