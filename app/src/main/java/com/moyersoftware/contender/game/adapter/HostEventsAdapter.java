@@ -59,7 +59,7 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
             holder.homeNameTxt.setText(event.getTeamHome().getName());
             Picasso.with(mActivity).load(event.getTeamHome().getImage()).into(holder.homeImg);
 
-            holder.timeTxt.setText(Util.formatTime(event.getTime()));
+            holder.timeTxt.setText(Util.formatTime(event.getTime()+1000*60*60));
         } else {
             holder.awayNameTxt.setText(event.getWeek());
         }
