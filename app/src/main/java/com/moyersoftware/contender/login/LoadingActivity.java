@@ -83,6 +83,7 @@ public class LoadingActivity extends AppCompatActivity {
 
                         if (Util.isReferralAsked()) {
                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                            finish();
                         } else {
                             askReferral();
                         }
@@ -108,6 +109,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         }
                                         if (Util.isReferralAsked()) {
                                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                                            finish();
                                         } else {
                                             askReferral();
                                         }
@@ -154,6 +156,7 @@ public class LoadingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Util.setReferralAsked();
                 startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                finish();
             }
         });
         dialogBuilder.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
@@ -161,6 +164,7 @@ public class LoadingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Util.setReferralAsked();
                 startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                finish();
             }
         });
         dialogBuilder.create().show();

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.moyersoftware.contender.R;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -54,6 +55,14 @@ public class HowToPlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO: Remove this check after you'll change the tutorial
+        if (mTitles[0].equals("Hey there Ryan!")){
+            Toast.makeText(this, "Tutorial isn't available yet.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_how_to_play);
 
         bindViews();
