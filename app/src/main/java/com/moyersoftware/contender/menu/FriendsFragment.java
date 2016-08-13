@@ -36,6 +36,7 @@ import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,6 +75,7 @@ public class FriendsFragment extends Fragment {
     private AlertDialog mSearchDialog;
     private int mCurrentUsernameLength;
     private FriendsAdapter mPendingAdapter;
+    private DataSnapshot mDataSnapshot;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -141,61 +143,65 @@ public class FriendsFragment extends Fragment {
     }
 
     private void searchFriends(final String username) {
-        mFoundFriends.clear();
-        if (!TextUtils.isEmpty(username)) {
-            mDatabase.child("users").addListenerForSingleValueEvent
-                    (new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            mFoundFriends.clear();
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                User user = userSnapshot.getValue(User.class);
-                                if (Util.parseUsername(user.getEmail()).contains(username)
-                                        || user.getName().contains(username)) {
-                                    mCurrentUsernameLength = username.length();
-                                    addMatch(userSnapshot.getKey(), user, username.length());
-                                }
-                            }
-
-                            mFoundAdapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            mFoundFriends.clear();
-                            mFoundAdapter.notifyDataSetChanged();
-                        }
-                    });
-        } else {
-            mFoundAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void addMatch(final String userId, final User user, final int usernameLength) {
         mDatabase.child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mDataSnapshot = dataSnapshot;
+
                 mFoundFriends.clear();
+                if (!TextUtils.isEmpty(username)) {
+                    mDatabase.child("users").addListenerForSingleValueEvent
+                            (new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    mFoundFriends.clear();
+                                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                        User user = userSnapshot.getValue(User.class);
+                                        if (user.getName().toLowerCase(Locale.US).contains
+                                                (username.toLowerCase(Locale.US))
+                                                || Util.parseUsername(user.getEmail())
+                                                .toLowerCase(Locale.US).contains(username
+                                                        .toLowerCase(Locale.US))
+                                                || Util.parseUsername(user.getName())
+                                                .toLowerCase(Locale.US).contains(username
+                                                        .toLowerCase(Locale.US))) {
+                                            boolean alreadyFriends = false;
+                                            for (DataSnapshot friendshipSnapshot : mDataSnapshot.getChildren()) {
+                                                Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                                                if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
+                                                        .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
+                                                        && friendship.getUser1Id().equals(user.getId()))) {
+                                                    alreadyFriends = true;
+                                                }
+                                            }
 
-                boolean alreadyFriends = false;
-                for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
-                    Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
-                    if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
-                            .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
-                            && friendship.getUser1Id().equals(user.getId()))) {
-                        alreadyFriends = true;
-                    }
-                }
+                                            if (!alreadyFriends) {
+                                                Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
+                                                        Util.parseUsername(user), user.getImage(), user.getEmail(), false);
+                                                if (!mFoundFriends.contains(friend)) {
+                                                    mFoundFriends.add(friend);
+                                                    mAdapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+                                    }
 
-                if (usernameLength == mCurrentUsernameLength) {
-                    if (!alreadyFriends) {
-                        Friend friend = new Friend(userId, user.getName(),
-                                user.getUsername(), user.getImage(), user.getEmail(), false);
-                        if (!mFoundFriends.contains(friend)) {
-                            mFoundFriends.add(friend);
-                        }
-                        mFoundAdapter.notifyDataSetChanged();
-                    }
+
+                                    if (TextUtils.isEmpty(username)) {
+                                        mFoundFriends.clear();
+                                    }
+                                    mFoundAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    mFoundFriends.clear();
+                                    mFoundAdapter.notifyDataSetChanged();
+                                }
+                            });
+                } else {
+                    mFoundFriends.clear();
+                    mFoundAdapter.notifyDataSetChanged();
                 }
             }
 

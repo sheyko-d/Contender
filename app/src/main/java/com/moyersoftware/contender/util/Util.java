@@ -8,6 +8,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.moyersoftware.contender.login.data.User;
+import com.moyersoftware.contender.menu.data.Friend;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,10 +93,28 @@ public class Util {
     }
 
     /**
+     * Parses the user email and full name and formats it to username.
+     */
+    public static String parseUsername(User friend) {
+        if (friend.getEmail() != null) {
+            String email = friend.getEmail();
+            return email.substring(0, email.indexOf("@"));
+        } else if (friend.getName() != null) {
+            return friend.getName().toLowerCase(Locale.getDefault());
+        } else {
+            return friend.getId();
+        }
+    }
+
+    /**
      * Parses the user email and formats it to username.
      */
     public static String parseUsername(String email) {
-        return email.substring(0, email.indexOf("@"));
+        try {
+            return email.substring(0, email.indexOf("@"));
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /**
