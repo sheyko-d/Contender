@@ -178,7 +178,7 @@ public class FriendsFragment extends Fragment {
                                             if (!alreadyFriends) {
                                                 Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
                                                         Util.parseUsername(user), user.getImage(), user.getEmail(), false);
-                                                if (!mFoundFriends.contains(friend)) {
+                                                if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
                                                     mFoundFriends.add(friend);
                                                     mAdapter.notifyDataSetChanged();
                                                 }
