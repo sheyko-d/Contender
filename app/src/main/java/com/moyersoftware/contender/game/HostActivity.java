@@ -3,6 +3,7 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -58,11 +59,14 @@ import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.Game;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.game.receiver.BootReceiver;
+import com.moyersoftware.contender.game.receiver.EmptyCellCheckReceiver;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,7 +123,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
     // Usual variables
     private DatabaseReference mDatabase;
-    private String mId;
+    private String mGameId;
     private StorageReference mImageRef;
     private Bitmap mBitmap;
     private ProgressDialog mProgressDialog;
@@ -145,6 +149,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private String mEventId;
     private String mAuthorImage;
     private String mCode;
+    private Long mEventTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -561,8 +566,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void initId() {
-        mId = Util.generateGameId();
-        mIdTxt.setText(mId);
+        mGameId = Util.generateGameId();
+        mIdTxt.setText(mGameId);
     }
 
     private void initUser() {
@@ -583,7 +588,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 ("gs://contender-3ef7d.appspot.com");
 
         // Create a reference to the photo
-        mImageRef = storageRef.child(mId + ".jpg");
+        mImageRef = storageRef.child(mGameId + ".jpg");
     }
 
     private void initDatabase() {
@@ -613,9 +618,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
                             "host_game", "inapp", "");
                     PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                    assert pendingIntent != null;
                     startIntentSenderForResult(pendingIntent.getIntentSender(),
-                            1001, new Intent(), Integer.valueOf(0), Integer.valueOf(0),
-                            Integer.valueOf(0));
+                            1001, new Intent(), 0, 0, 0);
                 } catch (Exception e) {
                     Util.Log("exception: " + e);
                     e.printStackTrace();
@@ -700,7 +705,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void uploadData(String imageUrl) {
-        mDatabase.child("games").child(mId).setValue(new Game(mEventId, mId, mName,
+        mDatabase.child("games").child(mGameId).setValue(new Game(mEventId, mGameId, mName,
                 System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, null,
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
@@ -709,9 +714,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        createEmptyCellsReminder();
+
                         mProgressDialog.cancel();
                         startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
-                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, mId));
+                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, mGameId));
 
                         finish();
                     }
@@ -817,11 +824,41 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private void createGame() {
         mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
         mProgressDialog.show();
+
         if (mBitmap != null) {
             uploadImage();
         } else {
             uploadData(null);
         }
+    }
+
+    private void createEmptyCellsReminder() {
+        // Remember the time of the event
+        JSONArray emptyCellReminderTimes = Util.getEmptyCellReminderTimes();
+        try {
+            emptyCellReminderTimes.put(new JSONObject()
+                    .put("id", mGameId)
+                    .put("time", mEventTime)
+                    .put("name", mName)
+                    .toString());
+        } catch (Exception e) {
+            Util.Log("Can't add a new game");
+        }
+        Util.setEmptyCellReminderTimes(emptyCellReminderTimes);
+
+        // Add a reminder to check for empty cells 30 min before the game
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, EmptyCellCheckReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, mEventTime - Util.HALF_HOUR_DURATION,
+                alarmIntent);
+
+        // Don't disable the boot receiver
+        ComponentName receiver = new ComponentName(this, BootReceiver.class);
+        PackageManager pm = getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     /**
@@ -921,6 +958,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     @SuppressLint("SetTextI18n")
     public void setSelectedEvent(Event event) {
         mEventId = event.getId();
+        mEventTime = event.getTime();
         mEventsDialog.cancel();
 
         eventTxt.setText(event.getTeamAway().getName() + " — " + event.getTeamHome().getName()

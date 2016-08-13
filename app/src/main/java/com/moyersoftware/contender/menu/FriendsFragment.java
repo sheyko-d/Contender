@@ -186,7 +186,6 @@ public class FriendsFragment extends Fragment {
                                         }
                                     }
 
-
                                     if (TextUtils.isEmpty(username)) {
                                         mFoundFriends.clear();
                                     }

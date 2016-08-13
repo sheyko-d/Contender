@@ -9,7 +9,8 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.moyersoftware.contender.login.data.User;
-import com.moyersoftware.contender.menu.data.Friend;
+
+import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class Util {
     private static final String PREF_REFERRAL_ASKED = "ReferralAsked";
     private static final String PREF_DISPLAY_NAME = "DisplayName";
     private static final String PREF_PHOTO = "Photo";
+    private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
+    public static final int HALF_HOUR_DURATION = 1000 * 60 * 30;
 
     /**
      * Adds a message to LogCat.
@@ -185,6 +188,27 @@ public class Util {
             photo = "null";
         }
         return photo;
+    }
+
+    public static void setEmptyCellReminderTimes(JSONArray emptyCellReminderTimes) {
+        try {
+            PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                    .putString(PREF_EMPTY_CELL_REMINDER_TIMES, emptyCellReminderTimes.toString())
+                    .apply();
+        } catch (Exception e) {
+            PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                    .remove(PREF_EMPTY_CELL_REMINDER_TIMES).apply();
+        }
+    }
+
+    public static JSONArray getEmptyCellReminderTimes() {
+        try {
+            return new JSONArray(PreferenceManager.getDefaultSharedPreferences
+                    (MyApplication.getContext())
+                    .getString(PREF_EMPTY_CELL_REMINDER_TIMES, null));
+        } catch (Exception e) {
+            return new JSONArray();
+        }
     }
 
     public static String generatePlayerId() {

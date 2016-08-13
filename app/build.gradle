@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.moyersoftware.contender"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 22
         versionName '0.1.11'
