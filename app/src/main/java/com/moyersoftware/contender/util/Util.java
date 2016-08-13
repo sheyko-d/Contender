@@ -41,6 +41,7 @@ public class Util {
     private static final String PREF_PHOTO = "Photo";
     private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
     public static final int HALF_HOUR_DURATION = 1000 * 60 * 30;
+    private static final String PREF_CURRENT_PLAYER_ID = "CurrentPlayerId";
 
     /**
      * Adds a message to LogCat.
@@ -213,5 +214,16 @@ public class Util {
 
     public static String generatePlayerId() {
         return String.valueOf(1000000000 + new Random().nextInt(900000000));
+    }
+
+    public static void setCurrentPlayerId(String id) {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putString(PREF_CURRENT_PLAYER_ID, id)
+                .apply();
+    }
+
+    public static String getCurrentPlayerId() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getString(PREF_CURRENT_PLAYER_ID, null);
     }
 }

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.util.Util;
 
 import org.json.JSONArray;
@@ -24,6 +25,8 @@ public class BootReceiver extends BroadcastReceiver {
                 Util.Log("Can't reset alarm: " + e);
             }
         }
+
+        context.startService(new Intent(context, WinnerService.class));
     }
 
     private void setAlarm(Context context, long time) {

@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 import com.moyersoftware.contender.menu.data.Friendship;
@@ -73,9 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        startWinnerService();
         initPager();
         initTabs();
         initUser();
+    }
+
+    private void startWinnerService() {
+        startService(new Intent(this, WinnerService.class));
     }
 
     private void initUser() {

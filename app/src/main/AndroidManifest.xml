@@ -73,6 +73,8 @@
             android:label="@string/title_activity_how_to_play"
             android:theme="@style/AppTheme.Translucent" />
 
+        <service android:name=".game.service.WinnerService"/>
+
         <receiver android:name=".game.receiver.EmptyCellCheckReceiver"/>
         <receiver android:name=".game.receiver.BootReceiver"
             android:enabled="false">
