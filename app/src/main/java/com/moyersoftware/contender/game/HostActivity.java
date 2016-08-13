@@ -380,12 +380,17 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter1PriceEditTxt.setSelection(1);
                 }
 
-                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                String squarePrice = mSquarePriceEditTxt.getText().toString();
+                int totalPrice = TextUtils.isEmpty(squarePrice) ? 0 : Integer.parseInt(squarePrice)
                         * 100;
-                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter1PriceEditTxt.getText()
-                        .toString()) > totalPrice) {
-                    mQuarter1PriceEditTxt.setText(String.valueOf(totalPrice));
-                    mQuarter1PriceEditTxt.setSelection(mQuarter1PriceEditTxt.getText().length());
+                try {
+                    if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter1PriceEditTxt.getText()
+                            .toString()) > totalPrice) {
+                        mQuarter1PriceEditTxt.setText(String.valueOf(totalPrice));
+                        mQuarter1PriceEditTxt.setSelection(mQuarter1PriceEditTxt.getText().length());
+                    }
+                } catch (Exception e) {
+                    mQuarter1PriceEditTxt.setText("0");
                 }
 
                 updateOtherPrices(mQuarter1PriceEditTxt);
@@ -415,12 +420,17 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter2PriceEditTxt.setSelection(1);
                 }
 
-                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                String squarePrice = mSquarePriceEditTxt.getText().toString();
+                int totalPrice = TextUtils.isEmpty(squarePrice) ? 0 : Integer.parseInt(squarePrice)
                         * 100;
-                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter2PriceEditTxt.getText()
-                        .toString()) > totalPrice) {
-                    mQuarter2PriceEditTxt.setText(String.valueOf(totalPrice));
-                    mQuarter2PriceEditTxt.setSelection(mQuarter2PriceEditTxt.getText().length());
+                try {
+                    if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter2PriceEditTxt.getText()
+                            .toString()) > totalPrice) {
+                        mQuarter2PriceEditTxt.setText(String.valueOf(totalPrice));
+                        mQuarter2PriceEditTxt.setSelection(mQuarter2PriceEditTxt.getText().length());
+                    }
+                } catch (Exception e) {
+                    mQuarter2PriceEditTxt.setText("0");
                 }
 
                 updateOtherPrices(mQuarter2PriceEditTxt);
@@ -450,12 +460,17 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter3PriceEditTxt.setSelection(1);
                 }
 
-                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                String squarePrice = mSquarePriceEditTxt.getText().toString();
+                int totalPrice = TextUtils.isEmpty(squarePrice) ? 0 : Integer.parseInt(squarePrice)
                         * 100;
-                if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter3PriceEditTxt.getText()
-                        .toString()) > totalPrice) {
-                    mQuarter3PriceEditTxt.setText(String.valueOf(totalPrice));
-                    mQuarter3PriceEditTxt.setSelection(mQuarter3PriceEditTxt.getText().length());
+                try {
+                    if (!TextUtils.isEmpty(text) && Integer.valueOf(mQuarter3PriceEditTxt.getText()
+                            .toString()) > totalPrice) {
+                        mQuarter3PriceEditTxt.setText(String.valueOf(totalPrice));
+                        mQuarter3PriceEditTxt.setSelection(mQuarter3PriceEditTxt.getText().length());
+                    }
+                } catch (Exception e) {
+                    mQuarter3PriceEditTxt.setText("0");
                 }
 
                 updateOtherPrices(mQuarter3PriceEditTxt);
@@ -485,12 +500,17 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mFinalPriceEditTxt.setSelection(1);
                 }
 
-                int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+                String squarePrice = mSquarePriceEditTxt.getText().toString();
+                int totalPrice = TextUtils.isEmpty(squarePrice) ? 0 : Integer.parseInt(squarePrice)
                         * 100;
-                if (!TextUtils.isEmpty(text) && Integer.valueOf(mFinalPriceEditTxt.getText()
-                        .toString()) > totalPrice) {
-                    mFinalPriceEditTxt.setText(String.valueOf(totalPrice));
-                    mFinalPriceEditTxt.setSelection(mFinalPriceEditTxt.getText().length());
+                try {
+                    if (!TextUtils.isEmpty(text) && Integer.valueOf(mFinalPriceEditTxt.getText()
+                            .toString()) > totalPrice) {
+                        mFinalPriceEditTxt.setText(String.valueOf(totalPrice));
+                        mFinalPriceEditTxt.setSelection(mFinalPriceEditTxt.getText().length());
+                    }
+                } catch (Exception e) {
+                    mFinalPriceEditTxt.setText("0");
                 }
 
                 updateOtherPrices(mFinalPriceEditTxt);
@@ -503,7 +523,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void updateOtherPrices(EditText editText) {
-        int totalPrice = Integer.valueOf(mSquarePriceEditTxt.getText().toString())
+        String squarePrice = mSquarePriceEditTxt.getText().toString();
+        int totalPrice = TextUtils.isEmpty(squarePrice) ? 0 : Integer.parseInt(squarePrice)
                 * 100;
         int quarter1Price = Integer.parseInt(mQuarter1PriceEditTxt.getText().toString());
         int quarter2Price = Integer.parseInt(mQuarter2PriceEditTxt.getText().toString());
