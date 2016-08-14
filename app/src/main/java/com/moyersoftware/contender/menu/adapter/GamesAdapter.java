@@ -43,7 +43,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         holder.nameTxt.setText(game.getName());
         if (mGameTimes != null) {
-            holder.timeTxt.setText(Util.formatDate(mGameTimes.get(position)));
+            holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
         }
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");

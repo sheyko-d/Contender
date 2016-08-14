@@ -41,6 +41,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="1dp"
         android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:gravity="center"
         android:text="AT"
         android:textColor="@color/secondary_text"

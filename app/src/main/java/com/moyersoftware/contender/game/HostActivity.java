@@ -269,12 +269,14 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void loadEvents() {
-        mDatabase.child("events").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("events").orderByChild("time").addValueEventListener
+                (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mEvents.clear();
                 if (dataSnapshot.exists()) {
                     String previousEventWeek = null;
+                    String previousEventDate = null;
                     for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                         try {
                             Event event = eventSnapshot.getValue(Event.class);
@@ -282,10 +284,18 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                 if (event.getTime() > System.currentTimeMillis()) {
                                     if (mEvents.size() == 0 || !event.getWeek()
                                             .equals(previousEventWeek)) {
-                                        mEvents.add(new Event(null, null, null, null, null,
-                                                event.getWeek()));
+                                        mEvents.add(new Event(null, null, null, event.getTime(),
+                                                null, event.getWeek(),
+                                                HostEventsAdapter.TYPE_HEADER));
+                                    }
+
+                                    if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
+                                            .equals(previousEventDate)) {
+                                        mEvents.add(new Event(null, null, null, event.getTime(),
+                                                null, "Date", HostEventsAdapter.TYPE_DATE));
                                     }
                                     previousEventWeek = event.getWeek();
+                                    previousEventDate = Util.formatDate(event.getTime());
 
                                     mEvents.add(event);
                                 }

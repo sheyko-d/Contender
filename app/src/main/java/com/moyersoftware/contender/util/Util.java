@@ -77,9 +77,18 @@ public class Util {
      * Formats a timestamp into a human-readable text.
      */
     @SuppressLint("SimpleDateFormat")
-    public static String formatDate(long time) {
+    public static String formatDateTime(long time) {
         SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d @ h:mma");
         return fmtOut.format(time).replace("AM", "am").replace("PM", "pm");
+    }
+
+    /**
+     * Formats a timestamp into a human-readable text.
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String formatDate(long time) {
+        SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d");
+        return fmtOut.format(time);
     }
 
     /**
