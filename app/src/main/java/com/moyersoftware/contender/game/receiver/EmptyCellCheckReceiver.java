@@ -27,8 +27,6 @@ import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 public class EmptyCellCheckReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Util.Log("should check empty cells");
-
         final JSONArray emptyCellReminderTimes = Util.getEmptyCellReminderTimes();
         for (int i = 0; i < emptyCellReminderTimes.length(); i++) {
             try {
@@ -51,9 +49,11 @@ public class EmptyCellCheckReceiver extends BroadcastReceiver {
                                     }
                                 }
 
-                                // TODO: Only if needed
-                                showReminderNotification(context, id, name, time,
-                                        emptySquaresCount);
+                                if (emptySquaresCount == 0
+                                        && game.getTime() > System.currentTimeMillis()) {
+                                    showReminderNotification(context, id, name, time,
+                                            emptySquaresCount);
+                                }
                             }
 
                             @Override

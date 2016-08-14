@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +58,7 @@ public class GamesFragment extends Fragment {
     private GamesAdapter mAdapter;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
     private ArrayList<Long> mGameTimes = new ArrayList<>();
+    private String mGameToRemoveId;
 
     public GamesFragment() {
         // Required empty public constructor
@@ -154,6 +158,7 @@ public class GamesFragment extends Fragment {
         }
         mAdapter = new GamesAdapter(this, mGames, myId);
         mGamesRecycler.setAdapter(mAdapter);
+        registerForContextMenu(mGamesRecycler);
     }
 
     private void initButtons() {
@@ -180,5 +185,46 @@ public class GamesFragment extends Fragment {
     public void joinGame(String gameId) {
         startActivity(new Intent(getActivity(), GameBoardActivity.class)
                 .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
+    }
+
+    public void deleteGame(Game game) {
+        mGameToRemoveId = game.getId();
+
+        FirebaseDatabase.getInstance().getReference().child("events").child(game.getEventId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Event event = dataSnapshot.getValue(Event.class);
+                if (event != null) {
+                    if (event.getTimeText().toLowerCase().contains("final")) {
+                        getActivity().openContextMenu(mGamesRecycler);
+                    } else {
+                        Toast.makeText(getActivity(),
+                                "You can only delete this game after it's finished",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "You can't remove this game", Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Delete game");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        FirebaseDatabase.getInstance().getReference().child("games").child(mGameToRemoveId)
+                .removeValue();
+        return true;
     }
 }

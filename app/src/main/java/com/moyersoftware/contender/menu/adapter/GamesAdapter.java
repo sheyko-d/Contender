@@ -88,7 +88,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         mGameTimes = gameTimes;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
 
         @Bind(R.id.game_img)
         ImageView img;
@@ -108,11 +109,18 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
             ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mFragment.deleteGame(mGames.get(getAdapterPosition()));
+            return true;
         }
     }
 }
