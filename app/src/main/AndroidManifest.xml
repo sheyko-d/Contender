@@ -50,6 +50,7 @@
 
         <activity
             android:name=".login.LoadingActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.Loading" />
         <activity
             android:name=".login.RegisterActivity"

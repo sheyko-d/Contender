@@ -25,7 +25,6 @@
             android:textColor="@color/secondary_text"
             android:textSize="20sp" />
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/games_recycler"
             android:layout_width="match_parent"

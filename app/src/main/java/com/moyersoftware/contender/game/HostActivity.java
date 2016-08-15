@@ -720,7 +720,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>(), null, null, null, null, false, ""))
+                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

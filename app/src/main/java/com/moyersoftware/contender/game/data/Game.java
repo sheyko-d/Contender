@@ -35,6 +35,7 @@ public class Game {
     public Winner finalWinner;
     public boolean current;
     public String currentQuarter;
+    public String code;
 
     public Game() {
         // Default constructor required for calls to DataSnapshot.getValue(Game.class)
@@ -47,7 +48,7 @@ public class Game {
                 ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
                 ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
                 Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
-                String currentQuarter) {
+                String currentQuarter, String code) {
         this.eventId = eventId;
         this.id = id;
         this.name = name;
@@ -74,6 +75,7 @@ public class Game {
         this.finalWinner = finalWinner;
         this.current = current;
         this.currentQuarter = currentQuarter;
+        this.code = code;
     }
 
     public String getEventId() {
@@ -179,4 +181,6 @@ public class Game {
     public String getCurrentQuarter() {
         return currentQuarter;
     }
+
+    public String getCode() {return code;}
 }

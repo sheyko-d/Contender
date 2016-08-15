@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.applinks.AppLinkData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +33,7 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
+import bolts.AppLinks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         checkUserInvite();
         checkGameInvite();
+        checkFacebookInvite();
 
         setContentView(R.layout.activity_main);
 
@@ -78,6 +81,52 @@ public class MainActivity extends AppCompatActivity {
         initPager();
         initTabs();
         initUser();
+    }
+
+    private void checkFacebookInvite() {
+        Uri targetUrl =
+                AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
+        AppLinkData.fetchDeferredAppLinkData(this, new AppLinkData.CompletionHandler() {
+            @Override
+            public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                final String code = appLinkData.getPromotionCode();
+                if (!TextUtils.isEmpty(code)) {
+                    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    database.child("invites").addListenerForSingleValueEvent
+                            (new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Get all invites
+                                    Iterable<DataSnapshot> invites = dataSnapshot.getChildren();
+                                    String referralId = null;
+                                    for (DataSnapshot invite : invites) {
+                                        // Find an invite by code,
+                                        // and check if user didn't create it himself
+                                        if (invite.getValue(String.class).equals(code)
+                                                && !invite.getKey().equals(mFirebaseUser.getUid())) {
+                                            referralId = invite.getKey();
+                                        }
+                                    }
+
+                                    if (referralId == null) {
+                                        Toast.makeText(MainActivity.this, "Invite not found",
+                                                Toast.LENGTH_SHORT).show();
+                                        Util.setReferralCode(null);
+                                        return;
+                                    }
+
+                                    final Friendship friendship = new Friendship(referralId,
+                                            mFirebaseUser.getUid(), false);
+                                    addFriend(database, friendship, referralId);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                }
+            }
+        });
     }
 
     private void startWinnerService() {
