@@ -33,7 +33,6 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
-import bolts.AppLinks;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -84,12 +83,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkFacebookInvite() {
-        Uri targetUrl =
-                AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
         AppLinkData.fetchDeferredAppLinkData(this, new AppLinkData.CompletionHandler() {
             @Override
             public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
-                final String code = appLinkData.getPromotionCode();
+                final String code;
+                if (appLinkData != null) {
+                    code = appLinkData.getPromotionCode();
+                } else {
+                    code = null;
+                }
                 if (!TextUtils.isEmpty(code)) {
                     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                     database.child("invites").addListenerForSingleValueEvent

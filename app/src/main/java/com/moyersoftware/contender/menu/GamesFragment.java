@@ -141,7 +141,8 @@ public class GamesFragment extends Fragment {
 
                         mGameTimes.add(mEventTimes.get(game.getEventId()));
                         mGames.add(game);
-                        if (game.getSelectedSquares().size() < 100
+                        if (game.getSelectedSquares() != null
+                                && game.getSelectedSquares().size() < 100
                                 && System.currentTimeMillis() > game.getTime()) {
                             String code = game.getCode();
                             if (!TextUtils.isEmpty(code)) {
@@ -166,7 +167,7 @@ public class GamesFragment extends Fragment {
                                             throws IOException {
                                         if (!response.isSuccessful()) return;
 
-                                        Util.Log("Make code for game "+game.getName()+" valid");
+                                        Util.Log("Make code for game " + game.getName() + " valid");
                                     }
                                 });
                             }
