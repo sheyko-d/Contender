@@ -56,77 +56,80 @@ public class WinnerService extends Service {
                     if (myId == null) myId = deviceOwnerId;
 
                     for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                        Game game = gameSnapshot.getValue(Game.class);
-                        if (game == null) continue;
 
-                        // Check if I'm playing in this game
-                        if (!game.getAuthor().getUserId().equals(myId) && !isPlayer(myId,
-                                game.getPlayers())) {
-                            continue;
-                        }
+                        try {
+                            Game game = gameSnapshot.getValue(Game.class);
+                            if (game == null) continue;
 
-                        String gameId = game.getId();
-
-                        if (game.getQuarter1Winner() != null) {
-                            if (!game.getQuarter1Winner().isConsumed()
-                                    && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
-                                showWinDialog(game.getQuarter1Price(), "1st", null, gameId);
-                            } else if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner()
-                                    .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
-                                        .getName(), gameId);
+                            // Check if I'm playing in this game
+                            if (!game.getAuthor().getUserId().equals(myId) && !isPlayer(myId,
+                                    game.getPlayers())) {
+                                continue;
                             }
-                            database.child("games").child(gameId).child("quarter1Winner").child("consumed")
-                                    .setValue(true);
-                        }
 
-                        if (game.getQuarter2Winner() != null) {
-                            if (!game.getQuarter2Winner().isConsumed()
-                                    && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
-                                showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
-                            } else if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner()
-                                    .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
-                                        .getName(), gameId);
-                            }
-                            database.child("games").child(gameId).child("quarter2Winner").child("consumed")
-                                    .setValue(true);
-                        }
+                            String gameId = game.getId();
 
-                        if (game.getQuarter3Winner() != null) {
-                            if (!game.getQuarter3Winner().isConsumed()
-                                    && game.getQuarter3Winner().getPlayer().getUserId().equals(myId)) {
-                                showWinDialog(game.getQuarter3Price(), "3rd", null, gameId);
-                            } else if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner()
-                                    .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
-                                        .getName(), gameId);
+                            if (game.getQuarter1Winner() != null) {
+                                if (!game.getQuarter1Winner().isConsumed()
+                                        && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
+                                    showWinDialog(game.getQuarter1Price(), "1st", null, gameId);
+                                } else if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner()
+                                        .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
+                                    showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
+                                            .getName(), gameId);
+                                }
+                                database.child("games").child(gameId).child("quarter1Winner").child("consumed")
+                                        .setValue(true);
                             }
-                            database.child("games").child(gameId).child("quarter3Winner").child("consumed")
-                                    .setValue(true);
-                        }
 
-                        if (game.getFinalWinner() != null) {
-                            if (!game.getFinalWinner().isConsumed()
-                                    && game.getFinalWinner().getPlayer().getUserId().equals(myId)) {
-                                showWinDialog(game.getFinalPrice(), "final", null, gameId);
-                            } else if (!game.getFinalWinner().isConsumed() && game.getFinalWinner()
-                                    .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
-                                        .getName(), gameId);
+                            if (game.getQuarter2Winner() != null) {
+                                if (!game.getQuarter2Winner().isConsumed()
+                                        && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
+                                    showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
+                                } else if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner()
+                                        .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
+                                    showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
+                                            .getName(), gameId);
+                                }
+                                database.child("games").child(gameId).child("quarter2Winner").child("consumed")
+                                        .setValue(true);
                             }
-                            database.child("games").child(gameId).child("finalWinner").child("consumed")
-                                    .setValue(true);
+
+                            if (game.getQuarter3Winner() != null) {
+                                if (!game.getQuarter3Winner().isConsumed()
+                                        && game.getQuarter3Winner().getPlayer().getUserId().equals(myId)) {
+                                    showWinDialog(game.getQuarter3Price(), "3rd", null, gameId);
+                                } else if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner()
+                                        .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
+                                    showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
+                                            .getName(), gameId);
+                                }
+                                database.child("games").child(gameId).child("quarter3Winner").child("consumed")
+                                        .setValue(true);
+                            }
+
+                            if (game.getFinalWinner() != null) {
+                                if (!game.getFinalWinner().isConsumed()
+                                        && game.getFinalWinner().getPlayer().getUserId().equals(myId)) {
+                                    showWinDialog(game.getFinalPrice(), "final", null, gameId);
+                                } else if (!game.getFinalWinner().isConsumed() && game.getFinalWinner()
+                                        .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
+                                    showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
+                                            .getName(), gameId);
+                                }
+                                database.child("games").child(gameId).child("finalWinner").child("consumed")
+                                        .setValue(true);
+                            }
+                        } catch (Exception e) {
+                            Util.Log("Can't update games: " + e);
                         }
                     }
-                }
-                try {
-                } catch (Exception e) {
-                    Util.Log("Can't update games: " + e);
                 }
             }
 
             private boolean isPlayer(String myId, ArrayList<Player> players) {
+                if (players == null) return false;
+
                 for (Player player : players) {
                     if (player.getUserId().equals(myId)) {
                         return true;
@@ -144,23 +147,6 @@ public class WinnerService extends Service {
 
 
     private void showWinDialog(final int price, final String quarter, final String name, final String gameId) {
-        /*runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameBoardActivity.this,
-                            R.style.MaterialDialog);
-                    dialogBuilder.setTitle("\uD83C\uDFC6  Congratulations!");
-                    if (TextUtils.isEmpty(name)) {
-                        dialogBuilder.setMessage("You won " + price + " points in the " + quarter
-                                + " quarter");
-                    } else {
-                        dialogBuilder.setMessage(name + " won " + price + " points in the " + quarter
-                                + " quarter");
-                    }
-                    dialogBuilder.setNegativeButton("OK", null);
-                    dialogBuilder.create().show();
-                } catch (Exception e) {*/
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
                 new NotificationCompat.Builder(MyApplication.getContext())
                         .setSmallIcon(R.drawable.notif)
@@ -192,8 +178,5 @@ public class WinnerService extends Service {
         notification.defaults |= Notification.DEFAULT_SOUND;
         // Builds the notification and issues it.
         mNotifyMgr.notify(gameId.hashCode() + quarter.hashCode(), notification);
-               /* }
-            }
-        });*/
     }
 }
