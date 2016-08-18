@@ -3,7 +3,10 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -27,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -825,6 +829,26 @@ public class GameBoardActivity extends AppCompatActivity {
         mPendingUpload = true;
         mHandler.postDelayed(updateSquaresRunnable, 500);
         return super.onContextItemSelected(item);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void onInfoButtonClicked(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        dialogBuilder.setTitle("Game info");
+        dialogBuilder.setMessage(Html.fromHtml("<b>Name:</b> " + mGameName + "<br><br><b>ID:</b> "
+                + mGameId));
+        dialogBuilder.setPositiveButton("Copy ID", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Game ID", mGameId);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(GameBoardActivity.this, "Game ID is copied to clipboard",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", null);
+        dialogBuilder.create().show();
     }
 
     private class UpdateSquareTask extends AsyncTask<Void, Void, Void> {
