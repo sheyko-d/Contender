@@ -389,6 +389,9 @@ public class FriendsFragment extends Fragment {
                                 <ArrayList<Friendship>>() {
                         };
                         ArrayList<Friendship> friendships = dataSnapshot.getValue(t);
+                        if (friendships == null) {
+                            friendships = new ArrayList<>();
+                        }
                         friendships.add(new Friendship(mMyId, userId, true));
 
                         mDatabase.child("friends").setValue(friendships);

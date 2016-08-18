@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
@@ -200,12 +201,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Check if the referral and current user
                         // aren't already friends
-                        Iterable<DataSnapshot> friendships = dataSnapshot
-                                .getChildren();
+                        GenericTypeIndicator<ArrayList<Friendship>> t = new GenericTypeIndicator
+                                <ArrayList<Friendship>>() {
+                        };
+                        ArrayList<Friendship> friendships = dataSnapshot.getValue(t);
+                        if (friendships == null) {
+                            friendships = new ArrayList<>();
+                        }
                         boolean alreadyFriends = false;
-                        for (DataSnapshot friendshipSnapshot : friendships) {
-                            Friendship friendship = friendshipSnapshot.getValue
-                                    (Friendship.class);
+                        for (Friendship friendship : friendships) {
                             if (friendship != null && ((friendship.getUser1Id().equals
                                     (mFirebaseUser.getUid()) && friendship.getUser2Id().equals
                                     (referralId)) || (friendship.getUser2Id().equals(mFirebaseUser
