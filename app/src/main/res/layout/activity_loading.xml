@@ -45,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/facebook"
             android:drawableStart="@drawable/facebook"
             android:onClick="onFacebookButtonClicked"
             android:text="@string/loading_facebook"

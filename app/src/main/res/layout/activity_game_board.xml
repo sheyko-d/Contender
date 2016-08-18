@@ -59,7 +59,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
@@ -76,7 +75,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="-1dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@null"
@@ -89,7 +87,6 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@null"
@@ -102,7 +99,6 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@null"
@@ -116,8 +112,6 @@
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="16dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginStart="4dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
@@ -168,7 +162,6 @@
                     android:id="@+id/board_horizontal_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp"
                     android:overScrollMode="never"
                     android:scrollbars="none">
@@ -178,7 +171,6 @@
                         android:layout_width="800dp"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
-                        android:paddingLeft="@dimen/board_cell_size"
                         android:paddingStart="@dimen/board_cell_size"
                         android:paddingTop="@dimen/board_cell_size"
                         tools:ignore="RtlSymmetry" />
@@ -188,7 +180,6 @@
                     android:id="@+id/board_column_recycler"
                     android:layout_width="@dimen/board_cell_size"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="@dimen/board_cell_size"
                     android:background="@color/colorPrimary" />
@@ -196,14 +187,12 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/board_row_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/board_cell_size"
-                        android:layout_marginLeft="@dimen/board_cell_size"
                         android:layout_marginStart="@dimen/board_cell_size"
                         android:background="@color/colorPrimary" />
                 </FrameLayout>
@@ -406,7 +395,6 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:contentDescription="@null"
                         android:visibility="invisible" />
@@ -437,7 +425,6 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:contentDescription="@null"
                         android:visibility="invisible" />
@@ -468,7 +455,6 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:contentDescription="@null"
                         android:visibility="invisible" />
@@ -500,7 +486,6 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
                         android:contentDescription="@null"
                         android:visibility="invisible" />
