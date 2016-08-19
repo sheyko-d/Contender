@@ -1,5 +1,7 @@
 package com.moyersoftware.contender.game.data;
 
+import android.support.annotation.Nullable;
+
 import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class Game {
     public boolean current;
     public String currentQuarter;
     public String code;
+    @Nullable
+    public Long eventTime;
 
     public Game() {
         // Default constructor required for calls to DataSnapshot.getValue(Game.class)
@@ -182,5 +186,15 @@ public class Game {
         return currentQuarter;
     }
 
-    public String getCode() {return code;}
+    public String getCode() {
+        return code;
+    }
+
+    public Long getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(long eventTime) {
+        this.eventTime = eventTime;
+    }
 }

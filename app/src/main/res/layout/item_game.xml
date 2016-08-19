@@ -37,8 +37,8 @@
                     android:id="@+id/game_name_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp"
                     tools:text="Big Day" />
@@ -51,6 +51,23 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     tools:text="20 points" />
+
+                <TextView
+                    android:id="@+id/game_final_txt"
+                    fontPath="fonts/segoe_ui_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="1.5dp"
+                    android:paddingLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:paddingRight="3dp"
+                    android:visibility="gone"
+                    android:paddingTop="1dp"
+                    android:text="FINAL"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp" />
             </LinearLayout>
 
             <LinearLayout

@@ -36,6 +36,8 @@ import com.moyersoftware.contender.util.Util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -140,10 +142,11 @@ public class GamesFragment extends Fragment {
                                     Util.getDisplayName(), Util.getPhoto()))))) {
 
                         mGameTimes.add(mEventTimes.get(game.getEventId()));
+                        game.setEventTime(mEventTimes.get(game.getEventId()));
                         mGames.add(game);
-                        if (game.getSelectedSquares() != null
-                                && game.getSelectedSquares().size() < 100
-                                && System.currentTimeMillis() > game.getTime()) {
+                        if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
+                                && game.getSelectedSquares().size() < 100))
+                                && mEventTimes.get(game.getEventId()) == -2) {
                             String code = game.getCode();
                             if (!TextUtils.isEmpty(code)) {
                                 OkHttpClient client = new OkHttpClient();
@@ -174,6 +177,7 @@ public class GamesFragment extends Fragment {
                         }
                     }
                 }
+                Collections.sort(mGames, new GameComparator());
                 mAdapter.updateGameTimes(mGameTimes);
                 mAdapter.notifyDataSetChanged();
 
@@ -186,6 +190,12 @@ public class GamesFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    public class GameComparator implements Comparator<Game> {
+        public int compare(Game game1, Game game2) {
+            return game1.getEventTime().compareTo(game2.getEventTime());
+        }
     }
 
     private void initRecycler() {
@@ -227,7 +237,7 @@ public class GamesFragment extends Fragment {
                 .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
     }
 
-    public void deleteGame(Game game) {
+    public void deleteGame(final Game game) {
         mGameToRemoveId = game.getId();
 
         FirebaseDatabase.getInstance().getReference().child("events").child(game.getEventId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -235,11 +245,12 @@ public class GamesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
                 if (event != null) {
-                    if (event.getTimeText().toLowerCase().contains("final")) {
+                    if (event.getTimeText().toLowerCase().contains("final") || (game.getPlayers()
+                            == null && game.getSelectedSquares() == null)) {
                         getActivity().openContextMenu(mGamesRecycler);
                     } else {
                         Toast.makeText(getActivity(),
-                                "You can only delete this game after it's finished",
+                                "You can only delete this game if it's finished or empty",
                                 Toast.LENGTH_LONG).show();
                     }
                 } else {

@@ -10,4 +10,5 @@
     <color name="background_light">#F0F0F0</color>
     <color name="divider">#C6C6C6</color>
     <color name="button_disabled">#aaa</color>
+    <color name="red">#F44336</color>
 </resources>
