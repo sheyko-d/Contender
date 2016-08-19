@@ -140,7 +140,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/board_away_name_txt"
+                android:id="@+id/board_home_name_txt"
                 fontPath="fonts/wanted.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
@@ -203,7 +203,7 @@
                     android:layout_marginBottom="32dp">
 
                     <com.moyersoftware.contender.util.VerticalTextView
-                        android:id="@+id/board_home_name_txt"
+                        android:id="@+id/board_away_name_txt"
                         fontPath="fonts/wanted.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -264,14 +264,14 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:onClick="onInfoButtonClicked"
-                android:clickable="true"
+                android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="12dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:tint="@color/primary_text"
-                android:layout_gravity="center_vertical|end"
+                android:clickable="true"
                 android:contentDescription="@null"
-                android:src="@drawable/info" />
+                android:onClick="onInfoButtonClicked"
+                android:src="@drawable/info"
+                android:tint="@color/primary_text" />
         </FrameLayout>
 
         <LinearLayout
@@ -288,14 +288,14 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/board_info_home_img"
+                    android:id="@+id/board_info_away_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@null" />
 
                 <TextView
-                    android:id="@+id/board_info_home_name_txt"
+                    android:id="@+id/board_info_away_name_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -306,7 +306,7 @@
                     tools:text="Patriots" />
 
                 <TextView
-                    android:id="@+id/board_info_home_total_score_txt"
+                    android:id="@+id/board_info_away_total_score_txt"
                     fontPath="fonts/wanted.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -334,14 +334,14 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/board_info_away_img"
+                    android:id="@+id/board_info_home_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@null" />
 
                 <TextView
-                    android:id="@+id/board_info_away_name_txt"
+                    android:id="@+id/board_info_home_name_txt"
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -352,7 +352,7 @@
                     tools:text="Giants" />
 
                 <TextView
-                    android:id="@+id/board_info_away_total_score_txt"
+                    android:id="@+id/board_info_home_total_score_txt"
                     fontPath="fonts/wanted.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -396,7 +396,10 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:contentDescription="@null"
+                        android:onClick="showWinner1"
                         android:visibility="invisible" />
                 </LinearLayout>
 
@@ -426,7 +429,10 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:contentDescription="@null"
+                        android:onClick="showWinner2"
                         android:visibility="invisible" />
                 </LinearLayout>
 
@@ -456,7 +462,10 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:contentDescription="@null"
+                        android:onClick="showWinner3"
                         android:visibility="invisible" />
                 </LinearLayout>
 
@@ -487,7 +496,10 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:contentDescription="@null"
+                        android:onClick="showWinnerFinal"
                         android:visibility="invisible" />
                 </LinearLayout>
             </LinearLayout>

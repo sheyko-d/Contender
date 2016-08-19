@@ -315,24 +315,24 @@ public class GameBoardActivity extends AppCompatActivity {
         mFinalScoreTxt.setText("FNL: " + game.getFinalPrice() + " points");
 
         // Update winners
-        mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.INVISIBLE : View.VISIBLE);
+        mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
         if (game.getQuarter1Winner() != null) {
             Picasso.with(this).load(game.getQuarter1Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner1Img);
 
         }
-        mWinner2Img.setVisibility(game.getQuarter2Winner() == null ? View.INVISIBLE : View.VISIBLE);
+        mWinner2Img.setVisibility(game.getQuarter2Winner() == null ? View.GONE : View.VISIBLE);
         if (game.getQuarter2Winner() != null) {
             Picasso.with(this).load(game.getQuarter2Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner2Img);
         }
-        mWinner3Img.setVisibility(game.getQuarter3Winner() == null ? View.INVISIBLE : View.VISIBLE);
+        mWinner3Img.setVisibility(game.getQuarter3Winner() == null ? View.GONE : View.VISIBLE);
         if (game.getQuarter3Winner() != null) {
             Picasso.with(this).load(game.getQuarter3Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner3Img);
 
         }
-        mWinnerFinalImg.setVisibility(game.getFinalWinner() == null ? View.INVISIBLE
+        mWinnerFinalImg.setVisibility(game.getFinalWinner() == null ? View.GONE
                 : View.VISIBLE);
         if (game.getFinalWinner() != null) {
             Picasso.with(this).load(game.getFinalWinner().getPlayer().getPhoto()).fit()
@@ -883,5 +883,29 @@ public class GameBoardActivity extends AppCompatActivity {
             mInviteFriendsImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) ? View.VISIBLE
                     : View.GONE);
         }
+    }
+
+    public void showWinner1(View view) {
+        Toast.makeText(this, mGame.getQuarter1Winner().getPlayer().getName()
+                +" won the first quarter!", Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    public void showWinner2(View view) {
+        Toast.makeText(this, mGame.getQuarter2Winner().getPlayer().getName()
+                +" won the second quarter!", Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    public void showWinner3(View view) {
+        Toast.makeText(this, mGame.getQuarter3Winner().getPlayer().getName()
+                +" won the third quarter!", Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    public void showWinnerFinal(View view) {
+        Toast.makeText(this, mGame.getFinalWinner().getPlayer().getName()
+                +" won the final quarter!", Toast.LENGTH_SHORT)
+                .show();
     }
 }
