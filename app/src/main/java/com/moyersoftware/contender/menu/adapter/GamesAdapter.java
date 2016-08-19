@@ -43,7 +43,14 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         holder.nameTxt.setText(game.getName());
         if (mGameTimes != null) {
-            holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
+            if (mGameTimes.get(position) == -2) {
+                holder.finalLayout.setVisibility(View.VISIBLE);
+                holder.timeTxt.setVisibility(View.GONE);
+            } else {
+                holder.timeTxt.setVisibility(View.VISIBLE);
+                holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
+                holder.finalLayout.setVisibility(View.GONE);
+            }
         }
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
@@ -77,10 +84,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
                 (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
                 .into(holder.img);
-
-        if (mGameTimes.get(position) == -2) {
-            holder.finalTxt.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -107,8 +110,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView quarterTxt;
         @Bind(R.id.game_winnings_txt)
         TextView winningsTxt;
-        @Bind(R.id.game_final_txt)
-        TextView finalTxt;
+        @Bind(R.id.game_final_layout)
+        View finalLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

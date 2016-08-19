@@ -51,23 +51,6 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     tools:text="20 points" />
-
-                <TextView
-                    android:id="@+id/game_final_txt"
-                    fontPath="fonts/segoe_ui_bold.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/red"
-                    android:includeFontPadding="false"
-                    android:paddingBottom="1.5dp"
-                    android:paddingLeft="3dp"
-                    android:layout_marginStart="3dp"
-                    android:paddingRight="3dp"
-                    android:visibility="gone"
-                    android:paddingTop="1dp"
-                    android:text="FINAL"
-                    android:textColor="@android:color/white"
-                    android:textSize="11sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,6 +69,29 @@
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     tools:text="09 Nov 4:30 PM EST" />
+
+                <FrameLayout
+                    android:id="@+id/game_final_layout"
+                    android:layout_width="0dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        fontPath="fonts/segoe_ui_bold.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/red"
+                        android:includeFontPadding="false"
+                        android:paddingBottom="1.5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:paddingTop="1dp"
+                        android:text="FINAL"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp"
+                        tools:ignore="SmallSp" />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/game_quarter_txt"

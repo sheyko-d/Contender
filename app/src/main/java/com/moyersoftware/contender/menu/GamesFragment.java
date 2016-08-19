@@ -142,6 +142,7 @@ public class GamesFragment extends Fragment {
                                     Util.getDisplayName(), Util.getPhoto()))))) {
 
                         mGameTimes.add(mEventTimes.get(game.getEventId()));
+                        Util.Log("add game time: "+mEventTimes.get(game.getEventId()));
                         game.setEventTime(mEventTimes.get(game.getEventId()));
                         mGames.add(game);
                         if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
