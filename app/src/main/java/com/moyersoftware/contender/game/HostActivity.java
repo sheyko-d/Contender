@@ -271,50 +271,51 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private void loadEvents() {
         mDatabase.child("events").orderByChild("time").addValueEventListener
                 (new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mEvents.clear();
-                if (dataSnapshot.exists()) {
-                    String previousEventWeek = null;
-                    String previousEventDate = null;
-                    for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                        try {
-                            Event event = eventSnapshot.getValue(Event.class);
-                            if (event != null) {
-                                if (event.getTime() > System.currentTimeMillis()) {
-                                    if (mEvents.size() == 0 || !event.getWeek()
-                                            .equals(previousEventWeek)) {
-                                        mEvents.add(new Event(null, null, null, event.getTime(),
-                                                null, event.getWeek(),
-                                                HostEventsAdapter.TYPE_HEADER));
-                                    }
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        mEvents.clear();
+                        if (dataSnapshot.exists()) {
+                            String previousEventWeek = null;
+                            String previousEventDate = null;
+                            for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                                try {
+                                    Event event = eventSnapshot.getValue(Event.class);
+                                    if (event != null) {
+                                        if (event.getTime() > System.currentTimeMillis()) {
+                                            if (mEvents.size() == 0 || !event.getWeek()
+                                                    .equals(previousEventWeek)) {
+                                                mEvents.add(new Event(null, null, null, event.getTime()
+                                                        + 1000 * 60 * 60, null, event.getWeek(),
+                                                        HostEventsAdapter.TYPE_HEADER));
+                                            }
 
-                                    if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
-                                            .equals(previousEventDate)) {
-                                        mEvents.add(new Event(null, null, null, event.getTime(),
-                                                null, "Date", HostEventsAdapter.TYPE_DATE));
-                                    }
-                                    previousEventWeek = event.getWeek();
-                                    previousEventDate = Util.formatDate(event.getTime());
+                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime() + 1000 * 60 * 60)
+                                                    .equals(previousEventDate)) {
+                                                mEvents.add(new Event(null, null, null, event.getTime() + 1000 * 60 * 60,
+                                                        null, "Date", HostEventsAdapter.TYPE_DATE));
+                                            }
 
-                                    mEvents.add(event);
+                                            previousEventWeek = event.getWeek();
+                                            previousEventDate = Util.formatDate(event.getTime() + 1000 * 60 * 60);
+
+                                            mEvents.add(event);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    // Can't add event
                                 }
                             }
-                        } catch (Exception e) {
-                            // Can't add event
+                        }
+                        if (mAdapter != null) {
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
-                }
-                if (mAdapter != null) {
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
     private void initGoogleClient() {
