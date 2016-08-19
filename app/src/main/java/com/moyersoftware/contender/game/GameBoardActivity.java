@@ -792,12 +792,17 @@ public class GameBoardActivity extends AppCompatActivity {
         mInvitedFriendIds.add(friend.getId());
         mFriendsAdapter.notifyDataSetChanged();
 
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", friend.getEmail(), null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join the Contender game!");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "moyersoftware.com/contender#"
-                + mGameId);
-        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        if (friend.getEmail()!=null) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", friend.getEmail(), null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join the Contender game!");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "moyersoftware.com/contender#"
+                    + mGameId);
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        } else {
+            Toast.makeText(GameBoardActivity.this, "This friend doesn't have an email address specified",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void openRemoveMenu(SelectedSquare selectedSquare) {
