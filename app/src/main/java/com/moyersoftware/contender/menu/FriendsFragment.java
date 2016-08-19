@@ -53,8 +53,6 @@ public class FriendsFragment extends Fragment {
     RecyclerView mFriendsPendingRecycler;
     @Bind(R.id.friends_invite_btn)
     Button mInviteBtn;
-    @Bind(R.id.friends_social_txt)
-    TextView mSocialTxt;
     @Bind(R.id.friends_social_btn)
     TextView mSocialBtn;
     @Bind(R.id.friends_title_txt)
@@ -299,7 +297,6 @@ public class FriendsFragment extends Fragment {
     private void initFacebookInviteBtn() {
         boolean canInviteFacebook = AppInviteDialog.canShow();
         mSocialBtn.setVisibility(canInviteFacebook ? View.VISIBLE : View.GONE);
-        mSocialTxt.setVisibility(canInviteFacebook ? View.VISIBLE : View.GONE);
         if (canInviteFacebook) {
             mSocialBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

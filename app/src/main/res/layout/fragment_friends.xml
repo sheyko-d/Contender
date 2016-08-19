@@ -34,6 +34,18 @@
             android:background="@drawable/background_light"
             android:elevation="2dp" />
 
+        <Button
+            android:id="@+id/friends_social_btn"
+            fontPath="fonts/segoe_ui_bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:text="Invite from facebook"
+            android:textSize="18sp"
+            android:theme="@style/Button" />
+
         <TextView
             android:id="@+id/friends_title_txt"
             fontPath="fonts/segoe_ui.ttf"
@@ -92,29 +104,5 @@
                 android:textSize="16sp"
                 android:theme="@style/Button" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/friends_social_txt"
-            fontPath="fonts/segoe_ui.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/friends_social_title"
-            android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/friends_social_btn"
-            fontPath="fonts/segoe_ui_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="12dp"
-            android:text="Invite from facebook"
-            android:textSize="18sp"
-            android:theme="@style/Button" />
     </LinearLayout>
 </ScrollView>
