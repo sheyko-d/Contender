@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
@@ -8,8 +7,8 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 28
-        versionName '0.1.7'
+        versionCode 29
+        versionName '0.1.8'
     }
     buildTypes {
         release {
@@ -17,25 +16,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'com.google.firebase:firebase-auth:9.0.0'
-    compile 'com.google.firebase:firebase-database:9.0.0'
-    compile 'com.google.firebase:firebase-storage:9.0.0'
-    compile 'com.google.firebase:firebase-invites:9.0.0'
-    compile 'com.google.android.gms:play-services-location:9.0.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+    compile 'com.google.firebase:firebase-database:9.4.0'
+    compile 'com.google.firebase:firebase-storage:9.4.0'
+    compile 'com.google.firebase:firebase-invites:9.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.itextpdf:itextpdf:5.3.2'
     compile 'com.squareup.okhttp3:okhttp:3.4.0-RC1'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'

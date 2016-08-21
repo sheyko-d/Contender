@@ -61,7 +61,7 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
             holder.homeNameTxt.setText(event.getTeamHome().getName());
             Picasso.with(mActivity).load(event.getTeamHome().getImage()).into(holder.homeImg);
 
-            holder.timeTxt.setText(Util.formatTime(event.getTime() + 1000 * 60 * 60));
+            holder.timeTxt.setText(Util.formatTime(event.getTime()));
         } else if (getItemViewType(position) == TYPE_DATE) {
             holder.awayNameTxt.setText(Util.formatDate(event.getTime()));
         } else {
