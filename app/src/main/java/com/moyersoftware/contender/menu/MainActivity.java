@@ -24,7 +24,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get game value
-                        Game game = dataSnapshot.getValue(Game.class);
+                        GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
 
                         if (firebaseUser != null) {
                             ArrayList<Player> players = game.getPlayers();

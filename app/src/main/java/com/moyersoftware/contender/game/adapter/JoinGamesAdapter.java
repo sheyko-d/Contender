@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.JoinActivity;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
@@ -27,9 +27,9 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
     private String mMyName;
     private String mMyPhoto;
     private JoinActivity mActivity;
-    private ArrayList<Game> mGames;
+    private ArrayList<GameInvite.Game> mGames;
 
-    public JoinGamesAdapter(JoinActivity activity, ArrayList<Game> games, String myId,
+    public JoinGamesAdapter(JoinActivity activity, ArrayList<GameInvite.Game> games, String myId,
                             String myEmail, String myName, String myPhoto) {
         mActivity = activity;
         mGames = games;
@@ -47,7 +47,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Game game = mGames.get(position);
+        GameInvite.Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
         holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
@@ -88,7 +88,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
 
         @Override
         public void onClick(View v) {
-            Game game = mGames.get(getAdapterPosition());
+            GameInvite.Game game = mGames.get(getAdapterPosition());
             // Check if user already joined this game before
             if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
                     mMyEmail, mMyName, mMyPhoto))) {

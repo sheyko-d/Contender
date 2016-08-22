@@ -39,6 +39,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp"
                     tools:text="Big Day" />
@@ -65,7 +67,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:includeFontPadding="false"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLines="2"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     tools:text="09 Nov 4:30 PM EST" />
@@ -73,9 +78,9 @@
                 <FrameLayout
                     android:id="@+id/game_final_layout"
                     android:layout_width="0dp"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <TextView
                         fontPath="fonts/segoe_ui_bold.ttf"
@@ -121,4 +126,34 @@
         android:layout_height="1px"
         android:layout_gravity="bottom"
         android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/accept"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/accept" />
+
+        <ImageView
+            android:id="@+id/reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/reject" />
+    </LinearLayout>
 </FrameLayout>

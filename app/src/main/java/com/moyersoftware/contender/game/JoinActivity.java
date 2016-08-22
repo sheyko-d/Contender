@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinPagerAdapter;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 
@@ -128,7 +128,7 @@ public class JoinActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get game value
-                        Game game = dataSnapshot.getValue(Game.class);
+                        GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
 
                         if (firebaseUser != null) {
                             ArrayList<Player> players = game.getPlayers();

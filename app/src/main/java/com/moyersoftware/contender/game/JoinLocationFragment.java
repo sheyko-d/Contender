@@ -28,7 +28,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     TextView mSearchTxt;
 
     // Usual variables
-    private ArrayList<Game> mGames = new ArrayList<>();
+    private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
     private DataSnapshot mDataSnapshot;
     private JoinGamesAdapter mAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -140,7 +140,7 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
         mGames.clear();
         if (mMyId != null) {
             for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                Game game = gameSnapshot.getValue(Game.class);
+                GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
 
                 if (game.getLatitude() != 0 && game.getLongitude() != 0) {
                     Location gameLocation = new Location("");

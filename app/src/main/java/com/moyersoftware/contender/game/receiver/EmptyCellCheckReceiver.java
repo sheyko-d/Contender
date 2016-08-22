@@ -15,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.util.Util;
 
 import org.json.JSONArray;
@@ -39,7 +39,7 @@ public class EmptyCellCheckReceiver extends BroadcastReceiver {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                Game game = dataSnapshot.getValue(Game.class);
+                                GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
                                 int emptySquaresCount = -1;
                                 if (game != null) {
                                     if (game.getSelectedSquares() != null) {

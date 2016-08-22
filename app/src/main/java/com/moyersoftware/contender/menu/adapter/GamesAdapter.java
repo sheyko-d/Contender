@@ -1,14 +1,18 @@
 package com.moyersoftware.contender.menu.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.GamesFragment;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
@@ -21,11 +25,11 @@ import butterknife.ButterKnife;
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
     private GamesFragment mFragment;
-    private ArrayList<Game> mGames;
+    private ArrayList<GameInvite.Game> mGames;
     private String mMyId;
     private ArrayList<Long> mGameTimes;
 
-    public GamesAdapter(GamesFragment fragment, ArrayList<Game> games, String myId) {
+    public GamesAdapter(GamesFragment fragment, ArrayList<GameInvite.Game> games, String myId) {
         mFragment = fragment;
         mGames = games;
         mMyId = myId;
@@ -37,11 +41,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 (R.layout.item_game, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Game game = mGames.get(position);
+        GameInvite.Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
+
         if (mGameTimes != null) {
             if (mGameTimes.get(position) == -2) {
                 holder.finalLayout.setVisibility(View.VISIBLE);
@@ -50,6 +56,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 holder.timeTxt.setVisibility(View.VISIBLE);
                 holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
                 holder.finalLayout.setVisibility(View.GONE);
+
+                if (!TextUtils.isEmpty(game.getInviteName())) {
+                    holder.timeTxt.setText(holder.timeTxt.getText() + "\n\uD83C\uDFC8 "
+                            + game.getInviteName());
+                }
             }
         }
         if (game.isCurrent()) {
@@ -84,6 +95,12 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
                 (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
                 .into(holder.img);
+
+        boolean invite = !TextUtils.isEmpty(game.getInviteName());
+        holder.accept.setVisibility(invite ? View.VISIBLE : View.GONE);
+        holder.reject.setVisibility(invite ? View.VISIBLE : View.GONE);
+        holder.scoreTxt.setVisibility(invite ? View.GONE : View.VISIBLE);
+        holder.itemView.setClickable(!invite);
     }
 
     @Override
@@ -112,6 +129,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView winningsTxt;
         @Bind(R.id.game_final_layout)
         View finalLayout;
+        @Bind(R.id.accept)
+        View accept;
+        @Bind(R.id.reject)
+        View reject;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -119,6 +140,28 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
+                    removeInvite();
+                }
+            });
+            reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    removeInvite();
+                }
+            });
+        }
+
+        private void removeInvite() {
+            Util.Log("remove invite: " + mGames.get(getAdapterPosition()).getInviteId());
+            FirebaseDatabase.getInstance().getReference().child("game_invites")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(mGames.get(getAdapterPosition()).getInviteId()).removeValue();
+
+            mFragment.initDatabase();
         }
 
         @Override

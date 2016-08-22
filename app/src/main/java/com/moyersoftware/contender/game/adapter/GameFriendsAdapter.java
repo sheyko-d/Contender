@@ -41,6 +41,7 @@ public class GameFriendsAdapter extends RecyclerView.Adapter<GameFriendsAdapter.
         Friend friend = mFriends.get(position);
         holder.nameTxt.setText(friend.getName());
         holder.sendBtn.setEnabled(!mInvitedFriendIds.contains(friend.getId()));
+        holder.sendBtn.setText(!mInvitedFriendIds.contains(friend.getId()) ? "Invite" : "Invited");
     }
 
     @Override

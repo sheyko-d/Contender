@@ -57,7 +57,7 @@ import com.moyersoftware.contender.BuildConfig;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.game.receiver.BootReceiver;
 import com.moyersoftware.contender.game.receiver.EmptyCellCheckReceiver;
@@ -717,7 +717,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void uploadData(String imageUrl) {
-        mDatabase.child("games").child(mGameId).setValue(new Game(mEventId, mGameId, mName,
+        mDatabase.child("games").child(mGameId).setValue(new GameInvite.Game(mEventId, mGameId, mName,
                 System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, null,
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,

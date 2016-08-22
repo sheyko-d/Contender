@@ -23,7 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class JoinIdFragment extends Fragment {
     TextView mTitleTxt;
 
     // Usual variables
-    private ArrayList<Game> mGames = new ArrayList<>();
+    private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
     private JoinGamesAdapter mAdapter;
     private String mQuery;
     private DataSnapshot mDataSnapshot;
@@ -137,7 +137,7 @@ public class JoinIdFragment extends Fragment {
         mGames.clear();
         if (mMyId != null) {
             for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                Game game = gameSnapshot.getValue(Game.class);
+                GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
 
                 if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
                         && !game.getAuthor().getUserId().equals(mMyId)) {

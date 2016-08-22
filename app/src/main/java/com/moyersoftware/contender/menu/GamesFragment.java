@@ -29,7 +29,7 @@ import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.HowToPlayActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Event;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
@@ -65,7 +65,7 @@ public class GamesFragment extends Fragment {
     Button mHowToBtn;
 
     // Usual variables
-    private ArrayList<Game> mGames = new ArrayList<>();
+    private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
     private GamesAdapter mAdapter;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
     private ArrayList<Long> mGameTimes = new ArrayList<>();
@@ -93,11 +93,14 @@ public class GamesFragment extends Fragment {
         return view;
     }
 
-    private void initDatabase() {
+    public void initDatabase() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = firebaseAuth.getCurrentUser();
+        mGames.clear();
+        mEventTimes.clear();
+        mGameTimes.clear();
         if (mFirebaseUser != null) {
             Query query = database.child("events");
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -125,7 +128,7 @@ public class GamesFragment extends Fragment {
         }
     }
 
-    private void getGames(DatabaseReference database, final FirebaseUser firebaseUser) {
+    private void getGames(final DatabaseReference database, final FirebaseUser firebaseUser) {
         Query query = database.child("games").orderByChild("time");
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -135,7 +138,7 @@ public class GamesFragment extends Fragment {
                 mGameTimes.clear();
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                     try {
-                        final Game game = gameSnapshot.getValue(Game.class);
+                        final GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
 
                         if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
@@ -183,13 +186,48 @@ public class GamesFragment extends Fragment {
                         // Can't parse game
                     }
                 }
-                Collections.sort(mGames, new GameComparator());
-                mAdapter.updateGameTimes(mGameTimes);
-                mAdapter.notifyDataSetChanged();
 
-                // Update the title text
-                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
-                        : R.string.games_title_empty);
+                database.child("game_invites").child(mFirebaseUser.getUid()).addValueEventListener
+                        (new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
+                                    GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                    Util.Log("add game = " + gameInvite.getGame().getEventTime());
+                                    Util.Log(gameInvite.getName() + " invited you");
+                                    if (gameInvite.getGame() != null) {
+                                        GameInvite.Game game = gameInvite.getGame();
+                                        if (mEventTimes.get(game.getEventId()) > 0) {
+                                            mGameTimes.add(mEventTimes.get(game.getEventId()));
+                                            game.setEventTime(mEventTimes.get(game.getEventId()));
+                                            game.setInviteName(gameInvite.getName());
+                                            game.setInviteId(gameInviteSnapshot.getKey());
+                                            mGames.add(game);
+                                        }
+                                    }
+                                }
+
+                                Collections.sort(mGames, new GameComparator());
+                                mAdapter.updateGameTimes(mGameTimes);
+                                mAdapter.notifyDataSetChanged();
+
+                                // Update the title text
+                                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                                        : R.string.games_title_empty);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Collections.sort(mGames, new GameComparator());
+                                mAdapter.updateGameTimes(mGameTimes);
+                                mAdapter.notifyDataSetChanged();
+
+                                // Update the title text
+                                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                                        : R.string.games_title_empty);
+                            }
+                        });
+
             }
 
             @Override
@@ -198,8 +236,8 @@ public class GamesFragment extends Fragment {
         });
     }
 
-    public class GameComparator implements Comparator<Game> {
-        public int compare(Game game1, Game game2) {
+    public class GameComparator implements Comparator<GameInvite.Game> {
+        public int compare(GameInvite.Game game1, GameInvite.Game game2) {
             return game1.getEventTime().compareTo(game2.getEventTime());
         }
     }
@@ -243,7 +281,7 @@ public class GamesFragment extends Fragment {
                 .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
     }
 
-    public void deleteGame(final Game game) {
+    public void deleteGame(final GameInvite.Game game) {
         mGameToRemoveId = game.getId();
 
         FirebaseDatabase.getInstance().getReference().child("events").child(game.getEventId()).addListenerForSingleValueEvent(new ValueEventListener() {

@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
@@ -58,7 +58,7 @@ public class WinnerService extends Service {
                     for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
 
                         try {
-                            Game game = gameSnapshot.getValue(Game.class);
+                            GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
                             if (game == null) continue;
 
                             // Check if I'm playing in this game

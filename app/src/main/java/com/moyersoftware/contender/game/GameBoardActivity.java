@@ -62,7 +62,7 @@ import com.moyersoftware.contender.game.adapter.GameFriendsAdapter;
 import com.moyersoftware.contender.game.adapter.GamePlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
-import com.moyersoftware.contender.game.data.Game;
+import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.data.Friend;
@@ -179,7 +179,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
     private int mRemoveSquarePos;
     private ArrayList<String> mFriendIds = new ArrayList<>();
-    private Game mGame;
+    private GameInvite.Game mGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,7 +266,7 @@ public class GameBoardActivity extends AppCompatActivity {
                             .show();
                     finish();
                 } else {
-                    Game game = dataSnapshot.getValue(Game.class);
+                    GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
 
                     if (mGame != game) {
                         initGameDetails(game);
@@ -282,7 +282,7 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    private void initGameDetails(Game game) {
+    private void initGameDetails(GameInvite.Game game) {
 
         Util.Log("initGameDetails");
         if (mIgnoreUpdate) {
@@ -749,7 +749,7 @@ public class GameBoardActivity extends AppCompatActivity {
                     final Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
                     if (friendship.getUser1Id().equals(mMyId)
                             || friendship.getUser2Id().equals(mMyId)) {
-                        String friendId = friendship.getUser1Id().equals(mMyId)
+                        final String friendId = friendship.getUser1Id().equals(mMyId)
                                 ? friendship.getUser2Id() : friendship.getUser1Id();
 
                         mDatabase.child("users").child(friendId).addListenerForSingleValueEvent
@@ -771,6 +771,31 @@ public class GameBoardActivity extends AppCompatActivity {
                                                 mFriendsAdapter.notifyDataSetChanged();
                                             }
                                         }
+
+                                        for (final Friend friend: mFriends) {
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("game_invites").child(friend.getId())
+                                                    .addListenerForSingleValueEvent
+                                                    (new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
+                                                                GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                                                if (gameInvite.getGame().getId().equals(mGameId)){
+                                                                    mInvitedFriendIds.add(friend.getId());
+                                                                    if (mFriendsAdapter != null) {
+                                                                        mFriendsAdapter.notifyDataSetChanged();
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+                                                        }
+                                                    });
+                                        }
                                     }
 
                                     @Override
@@ -783,7 +808,6 @@ public class GameBoardActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -792,17 +816,8 @@ public class GameBoardActivity extends AppCompatActivity {
         mInvitedFriendIds.add(friend.getId());
         mFriendsAdapter.notifyDataSetChanged();
 
-        if (friend.getEmail()!=null) {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", friend.getEmail(), null));
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join the Contender game!");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "moyersoftware.com/contender#"
-                    + mGameId);
-            startActivity(Intent.createChooser(emailIntent, "Send email..."));
-        } else {
-            Toast.makeText(GameBoardActivity.this, "This friend doesn't have an email address specified",
-                    Toast.LENGTH_SHORT).show();
-        }
+        mDatabase.child("game_invites").child(friend.getId()).push()
+                .setValue(new GameInvite(Util.getDisplayName(), mGame));
     }
 
     public void openRemoveMenu(SelectedSquare selectedSquare) {
@@ -887,25 +902,25 @@ public class GameBoardActivity extends AppCompatActivity {
 
     public void showWinner1(View view) {
         Toast.makeText(this, mGame.getQuarter1Winner().getPlayer().getName()
-                +" won the first quarter!", Toast.LENGTH_SHORT)
+                + " won the first quarter!", Toast.LENGTH_SHORT)
                 .show();
     }
 
     public void showWinner2(View view) {
         Toast.makeText(this, mGame.getQuarter2Winner().getPlayer().getName()
-                +" won the second quarter!", Toast.LENGTH_SHORT)
+                + " won the second quarter!", Toast.LENGTH_SHORT)
                 .show();
     }
 
     public void showWinner3(View view) {
         Toast.makeText(this, mGame.getQuarter3Winner().getPlayer().getName()
-                +" won the third quarter!", Toast.LENGTH_SHORT)
+                + " won the third quarter!", Toast.LENGTH_SHORT)
                 .show();
     }
 
     public void showWinnerFinal(View view) {
         Toast.makeText(this, mGame.getFinalWinner().getPlayer().getName()
-                +" won the final quarter!", Toast.LENGTH_SHORT)
+                + " won the final quarter!", Toast.LENGTH_SHORT)
                 .show();
     }
 }
