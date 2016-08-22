@@ -70,6 +70,7 @@ public class GamesFragment extends Fragment {
     private HashMap<String, Long> mEventTimes = new HashMap<>();
     private ArrayList<Long> mGameTimes = new ArrayList<>();
     private String mGameToRemoveId;
+    private FirebaseUser mFirebaseUser;
 
     public GamesFragment() {
         // Required empty public constructor
@@ -96,8 +97,8 @@ public class GamesFragment extends Fragment {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
+        mFirebaseUser = firebaseAuth.getCurrentUser();
+        if (mFirebaseUser != null) {
             Query query = database.child("events");
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -112,7 +113,7 @@ public class GamesFragment extends Fragment {
                         }
                     }
 
-                    getGames(database, firebaseUser);
+                    getGames(database, mFirebaseUser);
                 }
 
                 @Override
@@ -133,49 +134,53 @@ public class GamesFragment extends Fragment {
                 mGames.clear();
                 mGameTimes.clear();
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                    final Game game = gameSnapshot.getValue(Game.class);
+                    try {
+                        final Game game = gameSnapshot.getValue(Game.class);
 
-                    if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
-                            .getUid()) || (game.getPlayers() != null && game.getPlayers()
-                            .contains(new Player(firebaseUser.getUid(), null,
-                                    firebaseUser.getEmail(),
-                                    Util.getDisplayName(), Util.getPhoto()))))) {
+                        if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                                .getUid()) || (game.getPlayers() != null && game.getPlayers()
+                                .contains(new Player(firebaseUser.getUid(), null,
+                                        firebaseUser.getEmail(),
+                                        Util.getDisplayName(), Util.getPhoto()))))) {
 
-                        mGameTimes.add(mEventTimes.get(game.getEventId()));
-                        Util.Log("add game time: "+mEventTimes.get(game.getEventId()));
-                        game.setEventTime(mEventTimes.get(game.getEventId()));
-                        mGames.add(game);
-                        if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
-                                && game.getSelectedSquares().size() < 100))
-                                && mEventTimes.get(game.getEventId()) == -2) {
-                            String code = game.getCode();
-                            if (!TextUtils.isEmpty(code)) {
-                                OkHttpClient client = new OkHttpClient();
+                            mGameTimes.add(mEventTimes.get(game.getEventId()));
+                            Util.Log("add game time: " + mEventTimes.get(game.getEventId()));
+                            game.setEventTime(mEventTimes.get(game.getEventId()));
+                            mGames.add(game);
+                            if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
+                                    && game.getSelectedSquares().size() < 100))
+                                    && mEventTimes.get(game.getEventId()) == -2) {
+                                String code = game.getCode();
+                                if (!TextUtils.isEmpty(code)) {
+                                    OkHttpClient client = new OkHttpClient();
 
-                                RequestBody formBody = new FormBody.Builder()
-                                        .add("text", code)
-                                        .build();
-                                Request request = new Request.Builder()
-                                        .url(Util.SET_CODE_VALID_URL)
-                                        .post(formBody)
-                                        .build();
+                                    RequestBody formBody = new FormBody.Builder()
+                                            .add("text", code)
+                                            .build();
+                                    Request request = new Request.Builder()
+                                            .url(Util.SET_CODE_VALID_URL)
+                                            .post(formBody)
+                                            .build();
 
-                                client.newCall(request).enqueue(new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
-                                        Util.Log("Can't set code as expired: " + e);
-                                    }
+                                    client.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            Util.Log("Can't set code as expired: " + e);
+                                        }
 
-                                    @Override
-                                    public void onResponse(Call call, Response response)
-                                            throws IOException {
-                                        if (!response.isSuccessful()) return;
+                                        @Override
+                                        public void onResponse(Call call, Response response)
+                                                throws IOException {
+                                            if (!response.isSuccessful()) return;
 
-                                        Util.Log("Make code for game " + game.getName() + " valid");
-                                    }
-                                });
+                                            Util.Log("Make code for game " + game.getName() + " valid");
+                                        }
+                                    });
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        // Can't parse game
                     }
                 }
                 Collections.sort(mGames, new GameComparator());
@@ -246,6 +251,8 @@ public class GamesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
                 if (event != null) {
+                    if (!game.getAuthor().getUserId().equals(mFirebaseUser.getUid())) return;
+
                     if (event.getTimeText().toLowerCase().contains("final") || (game.getPlayers()
                             == null && game.getSelectedSquares() == null)) {
                         getActivity().openContextMenu(mGamesRecycler);
