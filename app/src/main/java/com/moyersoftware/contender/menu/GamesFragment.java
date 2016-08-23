@@ -98,9 +98,6 @@ public class GamesFragment extends Fragment {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = firebaseAuth.getCurrentUser();
-        mGames.clear();
-        mEventTimes.clear();
-        mGameTimes.clear();
         if (mFirebaseUser != null) {
             Query query = database.child("events");
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -250,7 +247,7 @@ public class GamesFragment extends Fragment {
         if (user != null) {
             myId = user.getUid();
         }
-        mAdapter = new GamesAdapter(this, mGames, myId);
+        mAdapter = new GamesAdapter((MainActivity) getActivity(), this, mGames, myId);
         mGamesRecycler.setAdapter(mAdapter);
         registerForContextMenu(mGamesRecycler);
     }

@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.GamesFragment;
+import com.moyersoftware.contender.menu.MainActivity;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -24,12 +25,15 @@ import butterknife.ButterKnife;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
+    private MainActivity mActivity;
     private GamesFragment mFragment;
     private ArrayList<GameInvite.Game> mGames;
     private String mMyId;
     private ArrayList<Long> mGameTimes;
 
-    public GamesAdapter(GamesFragment fragment, ArrayList<GameInvite.Game> games, String myId) {
+    public GamesAdapter(MainActivity activity, GamesFragment fragment,
+                        ArrayList<GameInvite.Game> games, String myId) {
+        mActivity = activity;
         mFragment = fragment;
         mGames = games;
         mMyId = myId;
@@ -100,6 +104,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.accept.setVisibility(invite ? View.VISIBLE : View.GONE);
         holder.reject.setVisibility(invite ? View.VISIBLE : View.GONE);
         holder.scoreTxt.setVisibility(invite ? View.GONE : View.VISIBLE);
+        holder.layout.setClickable(!invite);
         holder.itemView.setClickable(!invite);
     }
 
@@ -133,17 +138,25 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         View accept;
         @Bind(R.id.reject)
         View reject;
+        @Bind(R.id.game_layout)
+        View layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(this);
+            try {
+                itemView.setClickable(!TextUtils.isEmpty(mGames.get(getAdapterPosition())
+                        .getInviteName()));
+            } catch (Exception e) {
+                // Can't set item clickable
+            }
             itemView.setOnLongClickListener(this);
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
+                    mActivity.playGame(mGames.get(getAdapterPosition()).getId());
                     removeInvite();
                 }
             });
@@ -166,12 +179,19 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
+            if (TextUtils.isEmpty(mGames.get(getAdapterPosition()).getInviteName())) {
+                mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
+            } else {
+                mActivity.playGame(mGames.get(getAdapterPosition()).getId());
+                removeInvite();
+            }
         }
 
         @Override
         public boolean onLongClick(View view) {
-            mFragment.deleteGame(mGames.get(getAdapterPosition()));
+            if (TextUtils.isEmpty(mGames.get(getAdapterPosition()).getInviteName())) {
+                mFragment.deleteGame(mGames.get(getAdapterPosition()));
+            }
             return true;
         }
     }
