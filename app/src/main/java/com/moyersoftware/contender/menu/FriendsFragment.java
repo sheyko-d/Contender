@@ -227,7 +227,6 @@ public class FriendsFragment extends Fragment {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         User user = dataSnapshot.getValue(User.class);
-                                        mFriends.clear();
 
                                         if (friendship.isPending()) {
                                             if (!friendship.getUser1Id().equals(mMyId)) {
