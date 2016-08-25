@@ -3,7 +3,6 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -60,7 +59,6 @@ import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.game.receiver.BootReceiver;
-import com.moyersoftware.contender.game.receiver.EmptyCellCheckReceiver;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
@@ -857,13 +855,6 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Util.Log("Can't add a new game");
         }
         Util.setEmptyCellReminderTimes(emptyCellReminderTimes);
-
-        // Add a reminder to check for empty cells 30 min before the game
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, EmptyCellCheckReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, mEventTime - Util.HALF_HOUR_DURATION,
-                alarmIntent);
 
         // Don't disable the boot receiver
         ComponentName receiver = new ComponentName(this, BootReceiver.class);
