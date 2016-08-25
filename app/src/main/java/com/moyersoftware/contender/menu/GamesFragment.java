@@ -104,11 +104,13 @@ public class GamesFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mEventTimes.clear();
-                    for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                         try {
-                            final Event event = gameSnapshot.getValue(Event.class);
+                            Util.Log("event: "+ eventSnapshot);
+                            final Event event = eventSnapshot.getValue(Event.class);
                             mEventTimes.put(event.getId(), event.getTime());
                         } catch (Exception e) {
+                            Util.Log("Add event time: "+e);
                             // Can't retrieve game time
                         }
                     }
@@ -189,28 +191,32 @@ public class GamesFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
-                                    GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                    Util.Log("add game = " + gameInvite.getGame().getEventTime());
-                                    Util.Log(gameInvite.getName() + " invited you");
-                                    if (gameInvite.getGame() != null) {
-                                        GameInvite.Game game = gameInvite.getGame();
-                                        if (mEventTimes.get(game.getEventId()) > 0) {
-                                            mGameTimes.add(mEventTimes.get(game.getEventId()));
-                                            game.setEventTime(mEventTimes.get(game.getEventId()));
-                                            game.setInviteName(gameInvite.getName());
-                                            game.setInviteId(gameInviteSnapshot.getKey());
-                                            mGames.add(game);
+                                    try {
+                                        GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                        Util.Log("add game = " + gameInvite.getGame().getEventTime());
+                                        Util.Log(gameInvite.getName() + " invited you");
+                                        if (gameInvite.getGame() != null) {
+                                            GameInvite.Game game = gameInvite.getGame();
+                                            if (mEventTimes.get(game.getEventId()) > 0) {
+                                                mGameTimes.add(mEventTimes.get(game.getEventId()));
+                                                game.setEventTime(mEventTimes.get(game.getEventId()));
+                                                game.setInviteName(gameInvite.getName());
+                                                game.setInviteId(gameInviteSnapshot.getKey());
+                                                mGames.add(game);
+                                            }
                                         }
-                                    }
+                                    }catch (Exception e){}
                                 }
 
-                                Collections.sort(mGames, new GameComparator());
-                                mAdapter.updateGameTimes(mGameTimes);
-                                mAdapter.notifyDataSetChanged();
+                                try {
+                                    Collections.sort(mGames, new GameComparator());
+                                    mAdapter.updateGameTimes(mGameTimes);
+                                    mAdapter.notifyDataSetChanged();
 
-                                // Update the title text
-                                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
-                                        : R.string.games_title_empty);
+                                    // Update the title text
+                                    mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                                            : R.string.games_title_empty);
+                                }catch (Exception e){}
                             }
 
                             @Override

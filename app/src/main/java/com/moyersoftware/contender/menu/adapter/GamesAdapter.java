@@ -52,20 +52,23 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         holder.nameTxt.setText(game.getName());
 
-        if (mGameTimes != null) {
-            if (mGameTimes.get(position) == -2) {
-                holder.finalLayout.setVisibility(View.VISIBLE);
-                holder.timeTxt.setVisibility(View.GONE);
-            } else {
-                holder.timeTxt.setVisibility(View.VISIBLE);
-                holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
-                holder.finalLayout.setVisibility(View.GONE);
+        try {
+            if (mGameTimes != null) {
+                if (mGameTimes.get(position) == -2) {
+                    holder.finalLayout.setVisibility(View.VISIBLE);
+                    holder.timeTxt.setVisibility(View.GONE);
+                } else {
+                    holder.timeTxt.setVisibility(View.VISIBLE);
+                    holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
+                    holder.finalLayout.setVisibility(View.GONE);
 
-                if (!TextUtils.isEmpty(game.getInviteName())) {
-                    holder.timeTxt.setText(holder.timeTxt.getText() + "\n\uD83C\uDFC8 "
-                            + game.getInviteName());
+                    if (!TextUtils.isEmpty(game.getInviteName())) {
+                        holder.timeTxt.setText(holder.timeTxt.getText() + "\n\uD83C\uDFC8 "
+                                + game.getInviteName());
+                    }
                 }
             }
+        } catch (Exception e) {
         }
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
