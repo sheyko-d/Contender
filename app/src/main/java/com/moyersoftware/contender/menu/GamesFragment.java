@@ -105,14 +105,9 @@ public class GamesFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mEventTimes.clear();
                     for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                        try {
-                            Util.Log("event: "+ eventSnapshot);
+                            Util.Log("event: " + eventSnapshot);
                             final Event event = eventSnapshot.getValue(Event.class);
                             mEventTimes.put(event.getId(), event.getTime());
-                        } catch (Exception e) {
-                            Util.Log("Add event time: "+e);
-                            // Can't retrieve game time
-                        }
                     }
 
                     getGames(database, mFirebaseUser);
@@ -144,6 +139,7 @@ public class GamesFragment extends Fragment {
                                 .contains(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(),
                                         Util.getDisplayName(), Util.getPhoto()))))) {
+                            Util.Log("will add game time: " + game.getEventId());
 
                             mGameTimes.add(mEventTimes.get(game.getEventId()));
                             Util.Log("add game time: " + mEventTimes.get(game.getEventId()));
@@ -205,7 +201,8 @@ public class GamesFragment extends Fragment {
                                                 mGames.add(game);
                                             }
                                         }
-                                    }catch (Exception e){}
+                                    } catch (Exception e) {
+                                    }
                                 }
 
                                 try {
@@ -216,7 +213,8 @@ public class GamesFragment extends Fragment {
                                     // Update the title text
                                     mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
                                             : R.string.games_title_empty);
-                                }catch (Exception e){}
+                                } catch (Exception e) {
+                                }
                             }
 
                             @Override

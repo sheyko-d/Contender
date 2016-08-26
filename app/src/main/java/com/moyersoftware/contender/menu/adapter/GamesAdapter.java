@@ -54,6 +54,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         try {
             if (mGameTimes != null) {
+                Util.Log("mGameTimes.get(position)  = "+mGameTimes.get(position) );
                 if (mGameTimes.get(position) == -2) {
                     holder.finalLayout.setVisibility(View.VISIBLE);
                     holder.timeTxt.setVisibility(View.GONE);
