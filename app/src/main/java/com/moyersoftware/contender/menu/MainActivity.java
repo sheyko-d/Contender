@@ -233,6 +233,14 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid());
+    }
+
     private void checkGameInvite() {
         String data = getIntent().getDataString();
 

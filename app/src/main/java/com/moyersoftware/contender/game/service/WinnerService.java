@@ -56,7 +56,7 @@ public class WinnerService extends Service {
     private void addGamesListener() {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         Query query = database.child("events");
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mEventTimes.clear();
@@ -84,111 +84,10 @@ public class WinnerService extends Service {
             }
         });
 
-    }
-
-    private void getGames(final FirebaseUser firebaseUser, final DatabaseReference database) {
         database.child("games").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    String deviceOwnerId = user.getUid();
-                    String myId = Util.getCurrentPlayerId();
-                    if (myId == null) myId = deviceOwnerId;
-
-                    for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-
-                        try {
-                            GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
-                            if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
-                                    .getUid()) || (game.getPlayers() != null && game.getPlayers()
-                                    .contains(new Player(firebaseUser.getUid(), null,
-                                            firebaseUser.getEmail(),
-                                            Util.getDisplayName(), Util.getPhoto()))))) {
-
-                                if (TextUtils.isEmpty(game.getInviteName())) {
-                                    int emptySquaresCount;
-                                    if (game.getSelectedSquares() != null) {
-                                        emptySquaresCount = 100 - game.getSelectedSquares().size();
-                                    } else {
-                                        emptySquaresCount = 100;
-                                    }
-
-                                    if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId())
-                                            < System.currentTimeMillis() + 1000 * 60 * 30) {
-                                        if (!PreferenceManager.getDefaultSharedPreferences
-                                                (MyApplication.getContext()).getBoolean
-                                                (game.getId() + "reminder", false)) {
-                                            PreferenceManager.getDefaultSharedPreferences
-                                                    (MyApplication.getContext()).edit().putBoolean
-                                                    (game.getId() + "reminder", true).apply();
-                                            showReminderNotification(MyApplication.getContext(),
-                                                    game.getId(), game.getName(),
-                                                    mEventTimes.get(game.getEventId()),
-                                                    emptySquaresCount);
-                                        }
-                                    }
-                                }
-
-                                String gameId = game.getId();
-
-                                if (game.getQuarter1Winner() != null) {
-                                    if (!game.getQuarter1Winner().isConsumed()
-                                            && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
-                                        showWinDialog(game.getQuarter1Price(), "1st", null, gameId);
-                                    } else if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner()
-                                            .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                        showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
-                                                .getName(), gameId);
-                                    }
-                                    database.child("games").child(gameId).child("quarter1Winner").child("consumed")
-                                            .setValue(true);
-                                }
-
-                                if (game.getQuarter2Winner() != null) {
-                                    if (!game.getQuarter2Winner().isConsumed()
-                                            && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
-                                        showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
-                                    } else if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner()
-                                            .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                        showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
-                                                .getName(), gameId);
-                                    }
-                                    database.child("games").child(gameId).child("quarter2Winner").child("consumed")
-                                            .setValue(true);
-                                }
-
-                                if (game.getQuarter3Winner() != null) {
-                                    if (!game.getQuarter3Winner().isConsumed()
-                                            && game.getQuarter3Winner().getPlayer().getUserId().equals(myId)) {
-                                        showWinDialog(game.getQuarter3Price(), "3rd", null, gameId);
-                                    } else if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner()
-                                            .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                        showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
-                                                .getName(), gameId);
-                                    }
-                                    database.child("games").child(gameId).child("quarter3Winner").child("consumed")
-                                            .setValue(true);
-                                }
-
-                                if (game.getFinalWinner() != null) {
-                                    if (!game.getFinalWinner().isConsumed()
-                                            && game.getFinalWinner().getPlayer().getUserId().equals(myId)) {
-                                        showWinDialog(game.getFinalPrice(), "final", null, gameId);
-                                    } else if (!game.getFinalWinner().isConsumed() && game.getFinalWinner()
-                                            .getPlayer().getCreatedByUserId().equals(deviceOwnerId)) {
-                                        showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
-                                                .getName(), gameId);
-                                    }
-                                    database.child("games").child(gameId).child("finalWinner").child("consumed")
-                                            .setValue(true);
-                                }
-                            }
-                        } catch (Exception e) {
-                            Util.Log("Can't update games: " + e);
-                        }
-                    }
-                }
+                parseGames(database, FirebaseAuth.getInstance().getCurrentUser(), dataSnapshot);
             }
 
             @Override
@@ -196,6 +95,133 @@ public class WinnerService extends Service {
 
             }
         });
+    }
+
+    private void getGames(final FirebaseUser firebaseUser, final DatabaseReference database) {
+        database.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                parseGames(database, firebaseUser, dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void parseGames(DatabaseReference database, FirebaseUser firebaseUser, DataSnapshot dataSnapshot) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String deviceOwnerId = user.getUid();
+            String myId = Util.getCurrentPlayerId();
+            if (myId == null) myId = deviceOwnerId;
+
+            for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                try {
+                    GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
+                    if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                            .getUid()) || (game.getPlayers() != null && game.getPlayers()
+                            .contains(new Player(firebaseUser.getUid(), null,
+                                    firebaseUser.getEmail(),
+                                    Util.getDisplayName(), Util.getPhoto()))))) {
+
+                        if (!TextUtils.isEmpty(game.getInviteName())) {
+                            continue;
+                        }
+                        int emptySquaresCount;
+                        if (game.getSelectedSquares() != null) {
+                            emptySquaresCount = 100 - game.getSelectedSquares().size();
+                        } else {
+                            emptySquaresCount = 100;
+                        }
+
+                        if (emptySquaresCount == 100 && (mEventTimes.get(game.getEventId())
+                                == -2 || mEventTimes.get(game.getEventId())
+                                < System.currentTimeMillis())) {
+                            continue;
+                        }
+
+                        if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
+                                && mEventTimes.get(game.getEventId())
+                                < System.currentTimeMillis() + 1000 * 60 * 30) {
+                            if (!PreferenceManager.getDefaultSharedPreferences
+                                    (MyApplication.getContext()).getBoolean
+                                    (game.getId() + "reminder", false)) {
+                                PreferenceManager.getDefaultSharedPreferences
+                                        (MyApplication.getContext()).edit().putBoolean
+                                        (game.getId() + "reminder", true).apply();
+                                showReminderNotification(MyApplication.getContext(),
+                                        game.getId(), game.getName(),
+                                        mEventTimes.get(game.getEventId()),
+                                        emptySquaresCount);
+                            }
+                        }
+
+                        String gameId = game.getId();
+
+                        Util.Log("CHECK FOR WINNERS: " + game.getName());
+
+                        if (game.getQuarter1Winner() != null) {
+                            if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
+                                    && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
+                                showWinDialog(game.getQuarter1Price(), "1st", null, gameId);
+                            } else if (!game.getQuarter1Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter1Winner()
+                                    .getPlayer().getCreatedByUserId())) {
+                                showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
+                                        .getName(), gameId);
+                            }
+                            database.child("games").child(gameId).child("quarter1Winner").child("consumed")
+                                    .setValue(true);
+                        }
+
+                        if (game.getQuarter2Winner() != null) {
+                            Util.Log("show winner 1 " + game.getQuarter2Winner().getPlayer().getName() + ", " + game.getQuarter2Winner().getPlayer().getUserId() + " == " + myId);
+                            if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner().getPlayer() != null
+                                    && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
+                                Util.Log("show winner 2");
+                                showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
+                            } else if (!game.getQuarter2Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter2Winner()
+                                    .getPlayer().getCreatedByUserId())) {
+                                showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
+                                        .getName(), gameId);
+                            }
+                            database.child("games").child(gameId).child("quarter2Winner").child("consumed")
+                                    .setValue(true);
+                        }
+
+                        if (game.getQuarter3Winner() != null) {
+                            if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner().getPlayer() != null
+                                    && game.getQuarter3Winner().getPlayer().getUserId().equals(myId)) {
+                                showWinDialog(game.getQuarter3Price(), "3rd", null, gameId);
+                            } else if (!game.getQuarter3Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter3Winner()
+                                    .getPlayer().getCreatedByUserId())) {
+                                showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
+                                        .getName(), gameId);
+                            }
+                            database.child("games").child(gameId).child("quarter3Winner").child("consumed")
+                                    .setValue(true);
+                        }
+
+                        if (game.getFinalWinner() != null) {
+                            if (!game.getFinalWinner().isConsumed() && game.getFinalWinner().getPlayer() != null
+                                    && game.getFinalWinner().getPlayer().getUserId().equals(myId)) {
+                                showWinDialog(game.getFinalPrice(), "final", null, gameId);
+                            } else if (!game.getFinalWinner().isConsumed() && deviceOwnerId.equals(game.getFinalWinner()
+                                    .getPlayer().getCreatedByUserId())) {
+                                showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
+                                        .getName(), gameId);
+                            }
+                            database.child("games").child(gameId).child("finalWinner").child("consumed")
+                                    .setValue(true);
+                        }
+                    }
+                } catch (Exception e) {
+                    Util.Log("Can't show winners: " + e);
+                }
+            }
+        }
     }
 
     private void showReminderNotification(Context context, String id, String name, long time,
@@ -262,6 +288,6 @@ public class WinnerService extends Service {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notification.defaults |= Notification.DEFAULT_SOUND;
         // Builds the notification and issues it.
-        mNotifyMgr.notify(gameId.hashCode() + quarter.hashCode(), notification);
+        mNotifyMgr.notify(new Random().nextInt(), notification);
     }
 }

@@ -82,6 +82,9 @@ public class LoadingActivity extends AppCompatActivity {
                                 .child("image").setValue(mFacebookPhoto);
 
                         /*if (Util.isReferralAsked()) {
+
+                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid());
                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                             finish();
                         } else {*/
@@ -108,6 +111,8 @@ public class LoadingActivity extends AppCompatActivity {
                                                     user.getPhotoUrl() + ""));
                                         }
                                         /*if (Util.isReferralAsked()) {
+                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid());
                                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                                             finish();
                                         } else {*/
@@ -155,6 +160,9 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Util.setReferralAsked();
+
+                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid());
                 startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                 finish();
             }
@@ -163,6 +171,8 @@ public class LoadingActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Util.setReferralAsked();
+                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid());
                 startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                 finish();
             }

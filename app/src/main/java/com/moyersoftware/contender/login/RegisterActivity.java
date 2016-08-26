@@ -115,6 +115,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Util.setReferralAsked();
                 finish();
                 LoadingActivity.sActivity.finish();
+                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid());
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             }
         });
@@ -124,6 +126,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Util.setReferralAsked();
                 finish();
                 LoadingActivity.sActivity.finish();
+                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid());
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
             }
         });

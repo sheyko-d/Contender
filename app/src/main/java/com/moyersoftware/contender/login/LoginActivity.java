@@ -71,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                                         Util.setPhoto(user.getPhotoUrl() + "");
                                     }
 
+                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid());
 
                                     finish();
                                     LoadingActivity.sActivity.finish();
