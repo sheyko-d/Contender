@@ -61,7 +61,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
                     if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                             && game.getSelectedSquares().size() < 100))
-                            && mGameTimes.get(position) == -2) {
+                            && (mGameTimes.get(position) == -2|| mGameTimes.get(position)
+                            < System.currentTimeMillis())) {
                         holder.finalTxt.setText("VOID (BOARD ISN'T FILLED)");
                     } else {
                         holder.finalTxt.setText("FINAL");

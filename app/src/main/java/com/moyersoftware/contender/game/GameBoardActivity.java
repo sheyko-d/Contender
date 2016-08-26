@@ -390,7 +390,10 @@ public class GameBoardActivity extends AppCompatActivity {
                             Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
                                     .getImage()).into(mTeam2Img);
 
-                            if (event.getTeamAway().getScore() != null) {
+                            Util.Log("event.getTeamAway().getScore() = " + event.getTeamAway().getScore().getTotal());
+                            if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
+                                    (event.getTeamAway().getScore().getTotal()) && !TextUtils
+                                    .isEmpty(event.getTeamHome().getScore().getTotal())) {
                                 mInfoAwayTotalScoreTxt.setText(event.getTeamAway().getScore()
                                         .getTotal());
                                 mInfoHomeTotalScoreTxt.setText(event.getTeamHome().getScore()
@@ -772,29 +775,29 @@ public class GameBoardActivity extends AppCompatActivity {
                                             }
                                         }
 
-                                        for (final Friend friend: mFriends) {
+                                        for (final Friend friend : mFriends) {
                                             FirebaseDatabase.getInstance().getReference()
                                                     .child("game_invites").child(friend.getId())
                                                     .addListenerForSingleValueEvent
-                                                    (new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
-                                                                GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                                                if (gameInvite.getGame().getId().equals(mGameId)){
-                                                                    mInvitedFriendIds.add(friend.getId());
-                                                                    if (mFriendsAdapter != null) {
-                                                                        mFriendsAdapter.notifyDataSetChanged();
+                                                            (new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
+                                                                        GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                                                        if (gameInvite.getGame().getId().equals(mGameId)) {
+                                                                            mInvitedFriendIds.add(friend.getId());
+                                                                            if (mFriendsAdapter != null) {
+                                                                                mFriendsAdapter.notifyDataSetChanged();
+                                                                            }
+                                                                        }
                                                                     }
+
                                                                 }
-                                                            }
 
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-                                                        }
-                                                    });
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+                                                                }
+                                                            });
                                         }
                                     }
 

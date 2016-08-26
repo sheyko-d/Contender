@@ -105,9 +105,9 @@ public class GamesFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mEventTimes.clear();
                     for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                            Util.Log("event: " + eventSnapshot);
-                            final Event event = eventSnapshot.getValue(Event.class);
-                            mEventTimes.put(event.getId(), event.getTime());
+                        Util.Log("event: " + eventSnapshot);
+                        final Event event = eventSnapshot.getValue(Event.class);
+                        mEventTimes.put(event.getId(), event.getTime());
                     }
 
                     getGames(database, mFirebaseUser);
@@ -147,7 +147,8 @@ public class GamesFragment extends Fragment {
                             mGames.add(game);
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                                     && game.getSelectedSquares().size() < 100))
-                                    && mEventTimes.get(game.getEventId()) == -2) {
+                                    && (mEventTimes.get(game.getEventId()) == -2
+                                    || mEventTimes.get(game.getEventId()) < System.currentTimeMillis())) {
                                 String code = game.getCode();
                                 if (!TextUtils.isEmpty(code)) {
                                     OkHttpClient client = new OkHttpClient();
