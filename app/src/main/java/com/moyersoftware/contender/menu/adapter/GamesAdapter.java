@@ -58,6 +58,14 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 if (mGameTimes.get(position) == -2) {
                     holder.finalLayout.setVisibility(View.VISIBLE);
                     holder.timeTxt.setVisibility(View.GONE);
+
+                    if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
+                            && game.getSelectedSquares().size() < 100))
+                            && mGameTimes.get(position) == -2) {
+                        holder.finalTxt.setText("VOID (BOARD ISN'T FILLED)");
+                    } else {
+                        holder.finalTxt.setText("FINAL");
+                    }
                 } else {
                     holder.timeTxt.setVisibility(View.VISIBLE);
                     holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
@@ -138,6 +146,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView winningsTxt;
         @Bind(R.id.game_final_layout)
         View finalLayout;
+        @Bind(R.id.game_final_txt)
+        TextView finalTxt;
         @Bind(R.id.accept)
         View accept;
         @Bind(R.id.reject)
