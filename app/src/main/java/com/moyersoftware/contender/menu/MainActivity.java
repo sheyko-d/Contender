@@ -220,10 +220,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (!alreadyFriends) {
-                            database.child("friends").setValue
-                                    (new ArrayList<Friendship>() {{
-                                        add(friendship);
-                                    }});
+                            friendships.add(friendship);
+                            database.child("friends").setValue(friendships);
                         }
 
                         Util.setReferralCode(null);
