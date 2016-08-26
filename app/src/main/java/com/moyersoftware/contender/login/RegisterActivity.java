@@ -72,13 +72,13 @@ public class RegisterActivity extends AppCompatActivity {
                             mNameEditTxt.getText().toString(), Util.parseUsername(user),
                             user.getEmail(), ""));
                     Util.setPhoto("");
-                    if (Util.isReferralAsked()) {
+                    /*if (Util.isReferralAsked()) {
                         finish();
                         LoadingActivity.sActivity.finish();
                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    } else {
+                    } else {*/
                         askReferral();
-                    }
+                    //}
                 }
             }
         };

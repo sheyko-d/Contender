@@ -81,12 +81,12 @@ public class LoadingActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("image").setValue(mFacebookPhoto);
 
-                        if (Util.isReferralAsked()) {
+                        /*if (Util.isReferralAsked()) {
                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                             finish();
-                        } else {
+                        } else {*/
                             askReferral();
-                        }
+                        //}
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("users")
                                 .child(user.getUid()).child("image").addListenerForSingleValueEvent
@@ -107,12 +107,12 @@ public class LoadingActivity extends AppCompatActivity {
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                     user.getPhotoUrl() + ""));
                                         }
-                                        if (Util.isReferralAsked()) {
+                                        /*if (Util.isReferralAsked()) {
                                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                                             finish();
-                                        } else {
+                                        } else {*/
                                             askReferral();
-                                        }
+                                        //}
                                     }
 
                                     @Override
