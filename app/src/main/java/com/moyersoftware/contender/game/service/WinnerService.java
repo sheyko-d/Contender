@@ -63,7 +63,7 @@ public class WinnerService extends Service {
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                     try {
                         final Event event = gameSnapshot.getValue(Event.class);
-                        if (event.getTime()>0) {
+                        if (event.getTime() > 0) {
                             mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
                         } else {
                             mEventTimes.put(event.getId(), event.getTime());
@@ -147,9 +147,10 @@ public class WinnerService extends Service {
                             continue;
                         }
 
+
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
-                                && mEventTimes.get(game.getEventId())
-                                < System.currentTimeMillis() + 1000 * 60 * 30) {
+                                && mEventTimes.get(game.getEventId()) -
+                                System.currentTimeMillis() < 1000 * 60 * 30) {
                             if (!PreferenceManager.getDefaultSharedPreferences
                                     (MyApplication.getContext()).getBoolean
                                     (game.getId() + "reminder", false)) {
@@ -292,6 +293,6 @@ public class WinnerService extends Service {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notification.defaults |= Notification.DEFAULT_SOUND;
         // Builds the notification and issues it.
-        mNotifyMgr.notify((gameId+quarter).hashCode(), notification);
+        mNotifyMgr.notify((gameId + quarter).hashCode(), notification);
     }
 }
