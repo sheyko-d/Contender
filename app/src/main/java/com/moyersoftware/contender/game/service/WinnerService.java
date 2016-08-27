@@ -288,6 +288,6 @@ public class WinnerService extends Service {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notification.defaults |= Notification.DEFAULT_SOUND;
         // Builds the notification and issues it.
-        mNotifyMgr.notify(new Random().nextInt(), notification);
+        mNotifyMgr.notify((gameId+quarter).hashCode(), notification);
     }
 }
