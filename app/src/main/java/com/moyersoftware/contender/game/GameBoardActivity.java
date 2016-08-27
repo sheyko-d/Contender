@@ -390,7 +390,6 @@ public class GameBoardActivity extends AppCompatActivity {
                             Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
                                     .getImage()).into(mTeam2Img);
 
-                            Util.Log("event.getTeamAway().getScore() = " + event.getTeamAway().getScore().getTotal());
                             if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
                                     (event.getTeamAway().getScore().getTotal()) && !TextUtils
                                     .isEmpty(event.getTeamHome().getScore().getTotal())) {

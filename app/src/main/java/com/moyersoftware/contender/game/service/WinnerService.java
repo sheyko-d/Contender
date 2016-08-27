@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -77,6 +78,7 @@ public class WinnerService extends Service {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Toast.makeText(MyApplication.getContext(), "Get games", Toast.LENGTH_SHORT).show();
                         getGames(FirebaseAuth.getInstance().getCurrentUser(), database);
                         new Handler().postDelayed(this, 60 * 1000);
                     }
@@ -167,6 +169,7 @@ public class WinnerService extends Service {
                         String gameId = game.getId();
 
                         Util.Log("CHECK FOR WINNERS: " + game.getName());
+                        Util.Log("Time left: " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()) / 1000 / 60+" min");
 
                         if (game.getQuarter1Winner() != null) {
                             if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
