@@ -220,8 +220,8 @@ public class GameBoardActivity extends AppCompatActivity {
                         }
                         for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
                             Player player = playerSnapshot.getValue(Player.class);
-                            if (player.getCreatedByUserId() == null || player.getCreatedByUserId()
-                                    .equals(mDeviceOwnerId)) {
+                            if (!TextUtils.isEmpty(player.getCreatedByUserId())
+                                    && player.getCreatedByUserId().equals(mDeviceOwnerId)) {
                                 mPlayers.add(player);
                             }
                         }
