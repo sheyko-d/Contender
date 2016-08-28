@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
@@ -71,6 +72,7 @@ public class GamesFragment extends Fragment {
     private ArrayList<Long> mGameTimes = new ArrayList<>();
     private String mGameToRemoveId;
     private FirebaseUser mFirebaseUser;
+    private GameInvite.Game mRemoveGame;
 
     public GamesFragment() {
         // Required empty public constructor
@@ -108,7 +110,7 @@ public class GamesFragment extends Fragment {
                         Util.Log("event: " + eventSnapshot);
                         final Event event = eventSnapshot.getValue(Event.class);
 
-                        if (event.getTime()>0) {
+                        if (event.getTime() > 0) {
                             mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
                         } else {
                             mEventTimes.put(event.getId(), event.getTime());
@@ -296,16 +298,22 @@ public class GamesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(Event.class);
                 if (event != null) {
-                    if (!game.getAuthor().getUserId().equals(mFirebaseUser.getUid())) return;
 
-                    if (event.getTimeText().toLowerCase().contains("final") || (game.getPlayers()
-                            == null && game.getSelectedSquares() == null)) {
+                    if (!game.getAuthor().getUserId().equals(mFirebaseUser.getUid())) {
+                        mRemoveGame = game;
                         getActivity().openContextMenu(mGamesRecycler);
                     } else {
-                        Toast.makeText(getActivity(),
-                                "You can only delete this game if it's finished or empty",
-                                Toast.LENGTH_LONG).show();
+                        if (event.getTimeText().toLowerCase().contains("final") || (game.getPlayers()
+                                == null && game.getSelectedSquares() == null)) {
+                            mRemoveGame = game;
+                            getActivity().openContextMenu(mGamesRecycler);
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    "You can only delete this game if it's finished or empty",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
+
                 } else {
                     Toast.makeText(getActivity(), "You can't remove this game", Toast.LENGTH_LONG)
                             .show();
@@ -322,13 +330,47 @@ public class GamesFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Delete game");
+        if (mRemoveGame.getAuthor().getUserId().equals(mFirebaseUser.getUid())) {
+            menu.add("Delete game");
+        } else {
+            menu.add("Leave game");
+        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        FirebaseDatabase.getInstance().getReference().child("games").child(mGameToRemoveId)
-                .removeValue();
+        if (!mRemoveGame.getAuthor().getUserId().equals(mFirebaseUser.getUid())) {
+            FirebaseDatabase.getInstance().getReference().child("games").child(mRemoveGame.getId())
+                    .child("players")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            GenericTypeIndicator<ArrayList<Player>> t
+                                    = new GenericTypeIndicator<ArrayList<Player>>() {
+                            };
+                            ArrayList<Player> players = dataSnapshot.getValue(t);
+                            if (players == null) players = new ArrayList<>();
+
+                            for (Player player : players) {
+                                if (player.getUserId().equals(FirebaseAuth.getInstance()
+                                        .getCurrentUser().getUid())) {
+                                    players.remove(player);
+                                }
+                            }
+
+                            FirebaseDatabase.getInstance().getReference().child("games")
+                                    .child(mRemoveGame.getId()).child("players")
+                                    .setValue(players);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+        } else {
+            FirebaseDatabase.getInstance().getReference().child("games").child(mGameToRemoveId)
+                    .removeValue();
+        }
         return true;
     }
 }

@@ -279,6 +279,20 @@ public class GameBoardActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        mDatabase.child("events").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (mGame != null) {
+                    initGameDetails(mGame);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -312,7 +326,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mQ1ScoreTxt.setText("Q1: " + game.getQuarter1Price() + " points");
         mQ2ScoreTxt.setText("Q2: " + game.getQuarter2Price() + " points");
         mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
-        mFinalScoreTxt.setText("FNL: " + game.getFinalPrice() + " points");
+        mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
 
         // Update winners
         mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
@@ -385,9 +399,9 @@ public class GameBoardActivity extends AppCompatActivity {
                             mInfoAwayNameTxt.setText(event.getTeamAway().getName());
                             mInfoHomeNameTxt.setText(event.getTeamHome().getName());
 
-                            Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
-                                    .getImage()).into(mTeam1Img);
                             Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
+                                    .getImage()).into(mTeam1Img);
+                            Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
                                     .getImage()).into(mTeam2Img);
 
                             if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
