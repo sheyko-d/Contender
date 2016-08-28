@@ -228,33 +228,39 @@ public class FriendsFragment extends Fragment {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         User user = dataSnapshot.getValue(User.class);
 
-                                        if (friendship.isPending()) {
-                                            if (!friendship.getUser1Id().equals(mMyId)) {
-                                                Friend friend = new Friend(dataSnapshot
-                                                        .getKey(), user.getName(),
-                                                        user.getUsername(), user.getImage(),
-                                                        user.getEmail(), true);
-                                                if (!mPendingFriends.contains(friend)) {
-                                                    mPendingFriends.add(friend);
-                                                }
-                                                mPendingAdapter.notifyDataSetChanged();
-                                            }
-                                        } else {
-                                            Friend friend = new Friend(dataSnapshot.getKey(),
-                                                    user.getName(), user.getUsername(),
-                                                    user.getImage(), user.getEmail(), false);
-                                            mFriends.add(friend);
-                                            mAdapter.notifyDataSetChanged();
-                                        }
+                                        if (user == null) return;
 
-                                        mTitleTxt.setVisibility(mFriends.size() > 0 ? View.VISIBLE
-                                                : View.GONE);
-                                        mFriendsRecycler.setVisibility(mFriends.size() > 0
-                                                ? View.VISIBLE : View.GONE);
-                                        mPendingTitleTxt.setVisibility(mPendingFriends.size() > 0
-                                                ? View.VISIBLE : View.GONE);
-                                        mFriendsPendingRecycler.setVisibility(mPendingFriends
-                                                .size() > 0 ? View.VISIBLE : View.GONE);
+                                        try {
+                                            if (friendship.isPending()) {
+                                                if (!friendship.getUser1Id().equals(mMyId)) {
+                                                    Friend friend = new Friend(dataSnapshot
+                                                            .getKey(), user.getName(),
+                                                            user.getUsername(), user.getImage(),
+                                                            user.getEmail(), true);
+                                                    if (!mPendingFriends.contains(friend)) {
+                                                        mPendingFriends.add(friend);
+                                                    }
+                                                    mPendingAdapter.notifyDataSetChanged();
+                                                }
+                                            } else {
+                                                Friend friend = new Friend(dataSnapshot.getKey(),
+                                                        user.getName(), user.getUsername(),
+                                                        user.getImage(), user.getEmail(), false);
+                                                mFriends.add(friend);
+                                                mAdapter.notifyDataSetChanged();
+                                            }
+
+                                            mTitleTxt.setVisibility(mFriends.size() > 0 ? View.VISIBLE
+                                                    : View.GONE);
+                                            mFriendsRecycler.setVisibility(mFriends.size() > 0
+                                                    ? View.VISIBLE : View.GONE);
+                                            mPendingTitleTxt.setVisibility(mPendingFriends.size() > 0
+                                                    ? View.VISIBLE : View.GONE);
+                                            mFriendsPendingRecycler.setVisibility(mPendingFriends
+                                                    .size() > 0 ? View.VISIBLE : View.GONE);
+                                        } catch (Exception e) {
+
+                                        }
                                     }
 
                                     @Override
