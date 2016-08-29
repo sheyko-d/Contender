@@ -279,7 +279,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                 try {
                                     Event event = eventSnapshot.getValue(Event.class);
                                     if (event != null) {
-                                        if (event.getTime() > System.currentTimeMillis()) {
+                                        Util.Log("event time dif: "+(event.getTime()-60*60*1000-System.currentTimeMillis())/1000/60);
+                                        if (event.getTime()-60*60*1000 > System.currentTimeMillis()) {
                                             if (mEvents.size() == 0 || !event.getWeek()
                                                     .equals(previousEventWeek)) {
                                                 mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),

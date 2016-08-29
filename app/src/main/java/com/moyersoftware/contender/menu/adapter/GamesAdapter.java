@@ -51,7 +51,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         GameInvite.Game game = mGames.get(position);
 
         holder.nameTxt.setText(game.getName());
-        Util.Log("game name: "+game.getName()+" = "+mGameTimes.get(position) );
 
         try {
             if (mGameTimes != null) {
