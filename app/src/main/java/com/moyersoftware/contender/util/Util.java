@@ -90,6 +90,7 @@ public class Util {
     @SuppressLint("SimpleDateFormat")
     public static String formatDate(long time) {
         SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d");
+        fmtOut.setTimeZone(TimeZone.getTimeZone("EST"));
         return fmtOut.format(time);
     }
 

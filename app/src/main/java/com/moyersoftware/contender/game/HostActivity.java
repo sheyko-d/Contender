@@ -283,20 +283,19 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                         if (event.getTime()-60*60*1000 > System.currentTimeMillis()) {
                                             if (mEvents.size() == 0 || !event.getWeek()
                                                     .equals(previousEventWeek)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),
+                                                mEvents.add(new Event(null, null, null, event.getTime()-60*60*1000, null, event.getWeek(),
                                                         HostEventsAdapter.TYPE_HEADER));
                                             }
 
-                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
+                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime()-60*60*1000)
                                                     .equals(previousEventDate)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime(),
+                                                mEvents.add(new Event(null, null, null, event.getTime()-60*60*1000,
                                                         null, "Date", HostEventsAdapter.TYPE_DATE));
                                             }
 
+                                            Util.Log("Add event: "+event.getTeamHome().getName()+", "+(event.getTime()-60*60*1000));
                                             previousEventWeek = event.getWeek();
-                                            previousEventDate = Util.formatDate(event.getTime());
-
-                                            Util.Log(event.getTeamHome().getName()+" - "+Util.formatDateTime(event.getTime())+", "+event.getTime());
+                                            previousEventDate = Util.formatDate(event.getTime()-60*60*1000);
 
                                             mEvents.add(event);
                                         }

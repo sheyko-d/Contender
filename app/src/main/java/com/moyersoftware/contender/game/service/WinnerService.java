@@ -147,8 +147,6 @@ public class WinnerService extends Service {
                             continue;
                         }
 
-
-
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
                                 && mEventTimes.get(game.getEventId()) -
                                 System.currentTimeMillis() < 1000 * 60 * 30) {
@@ -160,7 +158,7 @@ public class WinnerService extends Service {
                                         (game.getId() + "reminder", true).apply();
                                 showReminderNotification(MyApplication.getContext(),
                                         game.getId(), game.getName(),
-                                        mEventTimes.get(game.getEventId())+60*60*1000,
+                                        mEventTimes.get(game.getEventId()) + 60 * 60 * 1000,
                                         emptySquaresCount);
                             }
                         }
@@ -168,7 +166,7 @@ public class WinnerService extends Service {
                         String gameId = game.getId();
 
                         Util.Log("CHECK FOR WINNERS: " + game.getName());
-                        Util.Log("Time left: " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()) / 1000 / 60+" min");
+                        Util.Log("Time left: " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()) / 1000 / 60 + " min");
 
                         if (game.getQuarter1Winner() != null) {
                             if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
