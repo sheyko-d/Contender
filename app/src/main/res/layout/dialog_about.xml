@@ -11,11 +11,10 @@
     <TextView
         fontPath="fonts/segoe_ui.ttf"
         android:layout_width="match_parent"
-        android:autoLink="web"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:lineSpacingExtra="2dp"
-        android:visibility="gone"
-        android:text="@string/settings_about_desc"
+        android:text="@string/settings_about_affiliation"
         android:textColor="@color/primary_text"
         android:textSize="16sp"
         tools:ignore="MissingPrefix" />

@@ -44,6 +44,7 @@ public class Util {
     private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
     public static final int HALF_HOUR_DURATION = 1000 * 60 * 30;
     private static final String PREF_CURRENT_PLAYER_ID = "CurrentPlayerId";
+    public static final String SUPPORT_EMAIL = "ryan@moyersoftware.com";
 
     /**
      * Adds a message to LogCat.

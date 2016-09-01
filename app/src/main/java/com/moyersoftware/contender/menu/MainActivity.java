@@ -1,6 +1,7 @@
 package com.moyersoftware.contender.menu;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -317,7 +318,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSupportButtonClicked(View view) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Util.SUPPORT_URL)));
+        new AlertDialog.Builder(this, R.style.MaterialDialog)
+                .setTitle("Select topic")
+                .setSingleChoiceItems(new String[]{
+                        "Support Issue",
+                        "Report Abuse",
+                        "Submit Your Idea",
+                        "Other"
+                }, 0, null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("message/rfc822");
+                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{Util.SUPPORT_EMAIL});
+                        String subject;
+                        if (selectedPosition==0) {
+                            subject = "Support Issue (Contender)";
+                        } else if (selectedPosition==1) {
+                            subject = "Report Abuse (Contender)";
+                        } else if (selectedPosition==2) {
+                            subject = "Submit Your Idea (Contender)";
+                        } else {
+                            subject = "Feedback (Contender)";
+                        }
+                        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+                        try {
+                            startActivity(Intent.createChooser(i, "Send mail..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(MainActivity.this, "There are no email clients installed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .show();
+
+
     }
 
     public void onRateButtonClicked(View view) {
