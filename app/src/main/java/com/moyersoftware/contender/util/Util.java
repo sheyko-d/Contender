@@ -44,6 +44,7 @@ public class Util {
     private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
     public static final int HALF_HOUR_DURATION = 1000 * 60 * 30;
     private static final String PREF_CURRENT_PLAYER_ID = "CurrentPlayerId";
+    private static final String PREF_TUTORIAL_SHOWN = "TutorialShown";
     public static final String SUPPORT_EMAIL = "ryan@moyersoftware.com";
 
     /**
@@ -238,5 +239,16 @@ public class Util {
     public static String getCurrentPlayerId() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_CURRENT_PLAYER_ID, null);
+    }
+
+    public static void setTutorialShown() {
+            PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                    .putBoolean(PREF_TUTORIAL_SHOWN, true)
+                    .apply();
+    }
+
+    public static boolean isTutorialShown() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_TUTORIAL_SHOWN, false);
     }
 }

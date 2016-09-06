@@ -25,6 +25,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
+import com.moyersoftware.contender.game.HowToPlayActivity;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.login.LoadingActivity;
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
         initPager();
         initTabs();
         initUser();
+
+        if (!Util.isTutorialShown()){
+            startActivity(new Intent(this, HowToPlayActivity.class));
+        }
     }
 
     private void checkFacebookInvite() {

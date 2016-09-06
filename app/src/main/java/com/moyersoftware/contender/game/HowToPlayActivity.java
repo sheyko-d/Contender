@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.util.Util;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class HowToPlayActivity extends AppCompatActivity {
@@ -56,6 +57,7 @@ public class HowToPlayActivity extends AppCompatActivity {
         initStatusBar();
         initActionBar();
         initViewPager();
+        Util.setTutorialShown();
     }
 
     /**
