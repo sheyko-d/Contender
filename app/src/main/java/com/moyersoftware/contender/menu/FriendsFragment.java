@@ -416,6 +416,7 @@ public class FriendsFragment extends Fragment {
                 ArrayList<Friendship> friendships = dataSnapshot.getValue(t);
                 for (int i = 0; i < friendships.size(); i++) {
                     Friendship friendship = friendships.get(i);
+                    if (friendship == null) continue;
                     if (friendship.getUser1Id().equals(id) && friendship.getUser2Id()
                             .equals(mMyId)) {
                         friendship.setPending(false);
