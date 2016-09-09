@@ -137,11 +137,15 @@ public class JoinIdFragment extends Fragment {
         mGames.clear();
         if (mMyId != null) {
             for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
+                try {
+                    GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
 
-                if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
-                        && !game.getAuthor().getUserId().equals(mMyId)) {
-                    mGames.add(game);
+                    if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
+                            && !game.getAuthor().getUserId().equals(mMyId)) {
+                        mGames.add(game);
+                    }
+                } catch (Exception e) {
+                    Util.Log("The game is corrupted");
                 }
             }
         }

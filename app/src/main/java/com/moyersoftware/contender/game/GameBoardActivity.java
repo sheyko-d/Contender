@@ -788,6 +788,10 @@ public class GameBoardActivity extends AppCompatActivity {
                                             }
                                         }
 
+                                        mInvitedFriendIds.add(mGame.getAuthor().getUserId());
+                                        if (mFriendsAdapter != null) {
+                                            mFriendsAdapter.notifyDataSetChanged();
+                                        }
                                         for (final Friend friend : mFriends) {
                                             FirebaseDatabase.getInstance().getReference()
                                                     .child("game_invites").child(friend.getId())
