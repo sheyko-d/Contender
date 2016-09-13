@@ -148,6 +148,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private String mAuthorImage;
     private String mCode;
     private Long mEventTime;
+    private Boolean mFirstFreeGame = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +165,28 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initGoogleClient();
         initCodes();
         loadEvents();
+        loadFirstGameState();
+    }
+
+    private void loadFirstGameState() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid()).child("free_first_game")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null || dataSnapshot.getValue(Boolean.class)) {
+                    mFirstFreeGame = true;
+                    mCodeEditTxt.setEnabled(false);
+                    Toast.makeText(HostActivity.this, "First game is free, enjoy!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void initCodes() {
@@ -279,23 +302,23 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                 try {
                                     Event event = eventSnapshot.getValue(Event.class);
                                     if (event != null) {
-                                        Util.Log("event time dif: "+(event.getTime()-60*60*1000-System.currentTimeMillis())/1000/60);
-                                        if (event.getTime()-60*60*1000 > System.currentTimeMillis()) {
+                                        Util.Log("event time dif: " + (event.getTime() - 60 * 60 * 1000 - System.currentTimeMillis()) / 1000 / 60);
+                                        if (event.getTime() - 60 * 60 * 1000 > System.currentTimeMillis()) {
                                             if (mEvents.size() == 0 || !event.getWeek()
                                                     .equals(previousEventWeek)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime()-60*60*1000, null, event.getWeek(),
+                                                mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000, null, event.getWeek(),
                                                         HostEventsAdapter.TYPE_HEADER));
                                             }
 
-                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime()-60*60*1000)
+                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime() - 60 * 60 * 1000)
                                                     .equals(previousEventDate)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime()-60*60*1000,
+                                                mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000,
                                                         null, "Date", HostEventsAdapter.TYPE_DATE));
                                             }
 
-                                            Util.Log("Add event: "+event.getTeamHome().getName()+", "+(event.getTime()-60*60*1000));
+                                            Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime() - 60 * 60 * 1000));
                                             previousEventWeek = event.getWeek();
-                                            previousEventDate = Util.formatDate(event.getTime()-60*60*1000);
+                                            previousEventDate = Util.formatDate(event.getTime() - 60 * 60 * 1000);
 
                                             mEvents.add(event);
                                         }
@@ -620,9 +643,13 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
-        } else if (BuildConfig.DEBUG) {
+        } else if (mFirstFreeGame){
+            FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid()).child("free_first_game").setValue(false);
             createGame();
-        } else if (TextUtils.isEmpty(mCode)) {
+        }  else if (BuildConfig.DEBUG) {
+            createGame();
+        }else if (TextUtils.isEmpty(mCode)) {
             if (mService != null) {
                 try {
                     Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),

@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -452,6 +453,12 @@ public class GameBoardActivity extends AppCompatActivity {
         mRowRecycler.setHasFixedSize(true);
         mRowAdapter = new GameRowAdapter(mRowNumbers);
         mRowRecycler.setAdapter(mRowAdapter);
+        mRowRecycler.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
     }
 
     private void initColumnRecycler() {
@@ -460,6 +467,12 @@ public class GameBoardActivity extends AppCompatActivity {
         mColumnRecycler.setHasFixedSize(true);
         mColumnAdapter = new GameRowAdapter(mColumnNumbers);
         mColumnRecycler.setAdapter(mColumnAdapter);
+        mColumnRecycler.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
     }
 
     private void initHorizontalScrollView() {
