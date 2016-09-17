@@ -116,7 +116,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="-8dp"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapWords" />
 
             <TextView
                 fontPath="fonts/segoe_ui_medium.ttf"
@@ -522,7 +522,7 @@
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="-8dp"
-                android:inputType="textNoSuggestions" />
+                android:inputType="textNoSuggestions|textCapCharacters" />
 
             <Button
                 fontPath="fonts/segoe_ui_bold.ttf"
