@@ -36,7 +36,7 @@ public class GameFriendsSquaresAdapter extends RecyclerView.Adapter<GameFriendsS
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Player player = mPlayers.get(position);
         holder.nameTxt.setText(player.getName());
-        holder.squaresTxt.setText("☐ " + mSelectedSquaresCount.get(position) + " selected");
+        holder.squaresTxt.setText("◻ " + mSelectedSquaresCount.get(position) + " selected");
     }
 
     @Override

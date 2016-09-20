@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,7 +21,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -406,7 +404,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
         mBoardAdapter.refresh(mSelectedSquares);
 
         updateLiveState();
@@ -707,7 +705,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
 
         int squaresLimit = mGame.getSquaresLimit();
         if (squaresLimit == 0) squaresLimit = 100;
@@ -733,23 +731,11 @@ public class GameBoardActivity extends AppCompatActivity {
                     position));
             mBoardAdapter.refresh(mSelectedSquares, position);
 
-            if (mPendingUpload) {
-                mHandler.removeCallbacks(updateSquaresRunnable);
-            }
-            mPendingUpload = true;
-            mHandler.postDelayed(updateSquaresRunnable, 500);
+            uploadSquares();
         }
 
         updateLiveState();
     }
-
-    Runnable updateSquaresRunnable = new Runnable() {
-        @Override
-        public void run() {
-            //noinspection unchecked
-            AsyncTaskCompat.executeParallel(new UpdateSquareTask());
-        }
-    };
 
     public void onAddPlayerButtonClicked(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
@@ -793,7 +779,7 @@ public class GameBoardActivity extends AppCompatActivity {
                                             mySelectedSquares++;
                                         }
                                     }
-                                    mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+                                    mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
                                 }
 
                                 @Override
@@ -830,7 +816,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
     }
 
     public void onInviteFriendsButtonClicked(View view) {
@@ -978,13 +964,9 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
 
-        if (mPendingUpload) {
-            mHandler.removeCallbacks(updateSquaresRunnable);
-        }
-        mPendingUpload = true;
-        mHandler.postDelayed(updateSquaresRunnable, 500);
+        uploadSquares();
         return super.onContextItemSelected(item);
     }
 
@@ -1008,16 +990,11 @@ public class GameBoardActivity extends AppCompatActivity {
         dialogBuilder.create().show();
     }
 
-    private class UpdateSquareTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected final Void doInBackground(Void... params) {
-            mIgnoreUpdate = true;
-            mDatabase.child("games").child(mGameId).child("selectedSquares")
-                    .setValue(mSelectedSquares);
-            mPendingUpload = false;
-            return null;
-        }
-
+    private void uploadSquares(){
+        mIgnoreUpdate = true;
+        mDatabase.child("games").child(mGameId).child("selectedSquares")
+                .setValue(mSelectedSquares);
+        mPendingUpload = false;
     }
 
     private void updateLiveState() {

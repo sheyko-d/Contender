@@ -151,7 +151,7 @@ public class GamesFragment extends Fragment {
                             mGameTimes.add(mEventTimes.get(game.getEventId()));
                             Util.Log("add game time: " + mEventTimes.get(game.getEventId()));
                             game.setEventTime(mEventTimes.get(game.getEventId()));
-                            mGames.add(game);
+                            if (!mGames.contains(game)) mGames.add(game);
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                                     && game.getSelectedSquares().size() < 100))
                                     && (mEventTimes.get(game.getEventId()) == -2
@@ -206,7 +206,8 @@ public class GamesFragment extends Fragment {
                                                 game.setEventTime(mEventTimes.get(game.getEventId()));
                                                 game.setInviteName(gameInvite.getName());
                                                 game.setInviteId(gameInviteSnapshot.getKey());
-                                                mGames.add(game);
+
+                                                if (!mGames.contains(game)) mGames.add(game);
                                             }
                                         }
                                     } catch (Exception e) {

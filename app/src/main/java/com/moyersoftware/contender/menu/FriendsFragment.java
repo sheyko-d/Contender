@@ -154,33 +154,36 @@ public class FriendsFragment extends Fragment {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     mFoundFriends.clear();
                                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                        User user = userSnapshot.getValue(User.class);
-                                        if (user.getName().toLowerCase(Locale.US).contains
-                                                (username.toLowerCase(Locale.US))
-                                                || Util.parseUsername(user.getEmail())
-                                                .toLowerCase(Locale.US).contains(username
-                                                        .toLowerCase(Locale.US))
-                                                || Util.parseUsername(user.getName())
-                                                .toLowerCase(Locale.US).contains(username
-                                                        .toLowerCase(Locale.US))) {
-                                            boolean alreadyFriends = false;
-                                            for (DataSnapshot friendshipSnapshot : mDataSnapshot.getChildren()) {
-                                                Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
-                                                if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
-                                                        .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
-                                                        && friendship.getUser1Id().equals(user.getId()))) {
-                                                    alreadyFriends = true;
+                                        try {
+                                            User user = userSnapshot.getValue(User.class);
+                                            if (user.getName().toLowerCase(Locale.US).contains
+                                                    (username.toLowerCase(Locale.US))
+                                                    || Util.parseUsername(user.getEmail())
+                                                    .toLowerCase(Locale.US).contains(username
+                                                            .toLowerCase(Locale.US))
+                                                    || Util.parseUsername(user.getName())
+                                                    .toLowerCase(Locale.US).contains(username
+                                                            .toLowerCase(Locale.US))) {
+                                                boolean alreadyFriends = false;
+                                                for (DataSnapshot friendshipSnapshot : mDataSnapshot.getChildren()) {
+                                                    Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                                                    if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
+                                                            .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
+                                                            && friendship.getUser1Id().equals(user.getId()))) {
+                                                        alreadyFriends = true;
+                                                    }
                                                 }
-                                            }
 
-                                            if (!alreadyFriends) {
-                                                Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
-                                                        Util.parseUsername(user), user.getImage(), user.getEmail(), false);
-                                                if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
-                                                    mFoundFriends.add(friend);
-                                                    mAdapter.notifyDataSetChanged();
+                                                if (!alreadyFriends) {
+                                                    Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
+                                                            Util.parseUsername(user), user.getImage(), user.getEmail(), false);
+                                                    if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
+                                                        mFoundFriends.add(friend);
+                                                        mAdapter.notifyDataSetChanged();
+                                                    }
                                                 }
                                             }
+                                        } catch (Exception e) {
                                         }
                                     }
 
