@@ -323,6 +323,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initGameDetails(GameInvite.Game game) {
+        Util.Log("game limit: " + game.getSquaresLimit());
 
         Util.Log("initGameDetails");
         if (mIgnoreUpdate) {
@@ -696,6 +697,27 @@ public class GameBoardActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
+        int mySelectedSquares = 0;
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
+        }
+        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+
+        int squaresLimit = mGame.getSquaresLimit();
+        if (squaresLimit == 0) squaresLimit = 100;
+        if (mySelectedSquares >= squaresLimit) {
+            Toast.makeText(this, "You can't select more than " + mGame.getSquaresLimit()
+                            + " squares",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean squareExists = false;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
             if (selectedSquare.getPosition() == position) squareExists = true;
@@ -717,18 +739,6 @@ public class GameBoardActivity extends AppCompatActivity {
             mPendingUpload = true;
             mHandler.postDelayed(updateSquaresRunnable, 500);
         }
-
-        int mySelectedSquares = 0;
-        for (SelectedSquare selectedSquare : mSelectedSquares) {
-            String playerId = Util.getCurrentPlayerId();
-            if (TextUtils.isEmpty(playerId)) {
-                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            }
-            if (selectedSquare.getAuthorId().equals(playerId)) {
-                mySelectedSquares++;
-            }
-        }
-        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
 
         updateLiveState();
     }

@@ -110,6 +110,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     EditText mQuarter3PriceEditTxt;
     @Bind(R.id.host_final_price_edit_txt)
     EditText mFinalPriceEditTxt;
+    @Bind(R.id.host_square_limit_edit_txt)
+    EditText mSquareLimitEditTxt;
     @Bind(R.id.host_total_price_txt)
     TextView mTotalPriceTxt;
     @Bind(R.id.host_img_progress_bar)
@@ -149,6 +151,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private String mCode;
     private Long mEventTime;
     private Boolean mFirstFreeGame = false;
+    private Integer mSquaresLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,21 +175,21 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                 .getCurrentUser().getUid()).child("free_first_game")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null || dataSnapshot.getValue(Boolean.class)) {
-                    mFirstFreeGame = true;
-                    mCodeEditTxt.setEnabled(false);
-                    Toast.makeText(HostActivity.this, "First game is free, enjoy!",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null || dataSnapshot.getValue(Boolean.class)) {
+                            mFirstFreeGame = true;
+                            mCodeEditTxt.setEnabled(false);
+                            Toast.makeText(HostActivity.this, "First game is free, enjoy!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
     private void initCodes() {
@@ -558,6 +561,27 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             public void afterTextChanged(Editable s) {
             }
         });
+
+        mSquareLimitEditTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String limitTxt = mSquareLimitEditTxt.getText().toString();
+                if (TextUtils.isEmpty(limitTxt)) return;
+                int limit = Integer.parseInt(limitTxt);
+                if (limit > 100) {
+                    mSquareLimitEditTxt.setText("100");
+                    mSquareLimitEditTxt.setSelection(3);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     private void updateOtherPrices(EditText editText) {
@@ -641,15 +665,17 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Some fields are empty", Toast.LENGTH_SHORT).show();
         } else if (mPassword.length() < MIN_PASSWORD_LENGTH) {
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
+        } else if (mSquaresLimit == 0) {
+            Toast.makeText(this, "Squares limit is empty", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
-        } else if (mFirstFreeGame){
+        } else if (mFirstFreeGame) {
             FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
             createGame();
-        }  else if (BuildConfig.DEBUG) {
+        } else if (BuildConfig.DEBUG) {
             createGame();
-        }else if (TextUtils.isEmpty(mCode)) {
+        } else if (TextUtils.isEmpty(mCode)) {
             if (mService != null) {
                 try {
                     Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
@@ -739,6 +765,13 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         } else {
             mTotalPrice = -1;
         }
+        String squaresLimit = mSquareLimitEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(squaresLimit)) {
+            mSquaresLimit = Integer.valueOf(squaresLimit);
+        } else {
+            mSquaresLimit = 100;
+        }
+
     }
 
     private void uploadData(String imageUrl) {
@@ -747,7 +780,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode))
+                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode,
+                mSquaresLimit))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
