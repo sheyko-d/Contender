@@ -60,6 +60,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
 import com.moyersoftware.contender.game.adapter.GameFriendsAdapter;
+import com.moyersoftware.contender.game.adapter.GameFriendsSquaresAdapter;
 import com.moyersoftware.contender.game.adapter.GamePlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -147,6 +148,8 @@ public class GameBoardActivity extends AppCompatActivity {
     ImageView mWinner3Img;
     @Bind(R.id.board_info_final_winner_img)
     ImageView mWinnerFinalImg;
+    @Bind(R.id.board_info_squares_txt)
+    TextView mSquaresTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -180,7 +183,9 @@ public class GameBoardActivity extends AppCompatActivity {
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
     private int mRemoveSquarePos;
     private ArrayList<String> mFriendIds = new ArrayList<>();
+    private ArrayList<Integer> mSelectedSquaresCount = new ArrayList<>();
     private GameInvite.Game mGame;
+    private GameFriendsSquaresAdapter mFriendsSquaresAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +195,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
         mGameId = getIntent().getStringExtra(EXTRA_GAME_ID);
         if (TextUtils.isEmpty(mGameId)) return;
+
+        Util.setCurrentPlayerId(null);
 
         initUser();
         initRowRecycler();
@@ -216,14 +223,32 @@ public class GameBoardActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mPlayers.clear();
+                        mSelectedSquaresCount.clear();
                         if (mAuthorId.equals(mMyId)) {
                             mPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
+                            int playerSquares = 0;
+                            for (SelectedSquare selectedSquare : mSelectedSquares) {
+                                String playerId = mMyId;
+                                if (selectedSquare.getAuthorId().equals(playerId)) {
+                                    playerSquares++;
+                                }
+                            }
+                            mSelectedSquaresCount.add(playerSquares);
                         }
                         for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
                             Player player = playerSnapshot.getValue(Player.class);
                             if (!TextUtils.isEmpty(player.getCreatedByUserId())
                                     && player.getCreatedByUserId().equals(mDeviceOwnerId)) {
                                 mPlayers.add(player);
+
+                                int playerSquares = 0;
+                                for (SelectedSquare selectedSquare : mSelectedSquares) {
+                                    String playerId = player.getUserId();
+                                    if (selectedSquare.getAuthorId().equals(playerId)) {
+                                        playerSquares++;
+                                    }
+                                }
+                                mSelectedSquaresCount.add(playerSquares);
                             }
                         }
                         if (mPlayersAdapter != null) {
@@ -369,9 +394,18 @@ public class GameBoardActivity extends AppCompatActivity {
         ArrayList<SelectedSquare> selectedSquares = game.getSelectedSquares();
         if (selectedSquares == null) selectedSquares = new ArrayList<>();
 
+        int mySelectedSquares = 0;
         for (SelectedSquare selectedSquare : selectedSquares) {
             mSelectedSquares.add(selectedSquare);
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
         }
+        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
         mBoardAdapter.refresh(mSelectedSquares);
 
         updateLiveState();
@@ -684,6 +718,18 @@ public class GameBoardActivity extends AppCompatActivity {
             mHandler.postDelayed(updateSquaresRunnable, 500);
         }
 
+        int mySelectedSquares = 0;
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
+        }
+        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+
         updateLiveState();
     }
 
@@ -726,6 +772,18 @@ public class GameBoardActivity extends AppCompatActivity {
 
                                     mDatabase.child("games").child(mGameId).child("players")
                                             .setValue(players);
+
+                                    int mySelectedSquares = 0;
+                                    for (SelectedSquare selectedSquare : mSelectedSquares) {
+                                        String playerId = Util.getCurrentPlayerId();
+                                        if (TextUtils.isEmpty(playerId)) {
+                                            playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                        }
+                                        if (selectedSquare.getAuthorId().equals(playerId)) {
+                                            mySelectedSquares++;
+                                        }
+                                    }
+                                    mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
                                 }
 
                                 @Override
@@ -751,18 +809,42 @@ public class GameBoardActivity extends AppCompatActivity {
         mMyName = player.getName();
         mMyPhoto = player.getPhoto();
         mPlayersAdapter.setCurrentPlayerId(mMyId);
+
+        int mySelectedSquares = 0;
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
+        }
+        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
     }
 
     public void onInviteFriendsButtonClicked(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
-        dialogBuilder.setTitle("Invite friends");
-        @SuppressLint("InflateParams")
-        RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
-                (R.layout.dialog_invite_friends, null);
-        mFriendsAdapter = new GameFriendsAdapter(this, mFriends, mInvitedFriendIds);
-        recycler.setAdapter(mFriendsAdapter);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        dialogBuilder.setView(recycler);
+
+        if (!mGameLive) {
+            dialogBuilder.setTitle("Invite friends");
+            @SuppressLint("InflateParams")
+            RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
+                    (R.layout.dialog_invite_friends, null);
+            mFriendsAdapter = new GameFriendsAdapter(this, mFriends, mInvitedFriendIds);
+            recycler.setAdapter(mFriendsAdapter);
+            recycler.setLayoutManager(new LinearLayoutManager(this));
+            dialogBuilder.setView(recycler);
+        } else {
+            dialogBuilder.setTitle("Players");
+            @SuppressLint("InflateParams")
+            RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
+                    (R.layout.dialog_invite_friends, null);
+            mFriendsSquaresAdapter = new GameFriendsSquaresAdapter(mPlayers, mSelectedSquaresCount);
+            recycler.setAdapter(mFriendsSquaresAdapter);
+            recycler.setLayoutManager(new LinearLayoutManager(this));
+            dialogBuilder.setView(recycler);
+        }
         dialogBuilder.setNegativeButton("Close", null);
         mInviteFriendsDialog = dialogBuilder.create();
         mInviteFriendsDialog.show();
@@ -876,6 +958,18 @@ public class GameBoardActivity extends AppCompatActivity {
 
         mBoardAdapter.refresh(mSelectedSquares, mRemoveSquarePos);
 
+        int mySelectedSquares = 0;
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
+        }
+        mSquaresTxt.setText("☐ " + mySelectedSquares + " selected");
+
         if (mPendingUpload) {
             mHandler.removeCallbacks(updateSquaresRunnable);
         }
@@ -928,8 +1022,9 @@ public class GameBoardActivity extends AppCompatActivity {
             mRowAdapter.notifyDataSetChanged();
             mColumnAdapter.notifyDataSetChanged();
 
-            mInviteFriendsImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) ? View.VISIBLE
-                    : View.GONE);
+            mInviteFriendsImg.setVisibility(mAuthorId.equals(mMyId) ? View.VISIBLE : View.GONE);
+            mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
+                    : R.drawable.friend_invite_live);
         }
     }
 
