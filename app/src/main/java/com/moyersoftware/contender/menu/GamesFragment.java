@@ -352,12 +352,20 @@ public class GamesFragment extends Fragment {
                             ArrayList<Player> players = dataSnapshot.getValue(t);
                             if (players == null) players = new ArrayList<>();
 
-                            for (Player player : players) {
-                                if (player.getUserId().equals(FirebaseAuth.getInstance()
-                                        .getCurrentUser().getUid())) {
-                                    players.remove(player);
+                            ArrayList<Player> playersCopy = new ArrayList<>(players);
+
+                            try {
+                                for (Player player : players) {
+                                    if (player.getUserId().equals(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid())) {
+                                        playersCopy.remove(player);
+                                    }
                                 }
+                            } catch (Exception e) {
+                                // Can't delete game
                             }
+
+                            players = playersCopy;
 
                             FirebaseDatabase.getInstance().getReference().child("games")
                                     .child(mRemoveGame.getId()).child("players")
