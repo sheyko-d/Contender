@@ -256,7 +256,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="How much squares each user can take"
+                android:text="Maximum squares a player can claim"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
