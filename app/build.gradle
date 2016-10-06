@@ -23,8 +23,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -34,6 +34,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:9.4.0'
     compile 'com.google.firebase:firebase-storage:9.4.0'
     compile 'com.google.firebase:firebase-invites:9.4.0'
+    //noinspection GradleDependency
     compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.itextpdf:itextpdf:5.3.2'
     compile 'com.squareup.okhttp3:okhttp:3.4.0-RC1'

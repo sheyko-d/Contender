@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
@@ -168,12 +169,47 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initGoogleClient();
         initCodes();
         loadEvents();
-        loadFirstGameState();
+    }
+
+    protected void onPostResume() {
+        super.onPostResume();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstGameState();
+            }
+        }, 500L);
     }
 
     private void loadFirstGameState() {
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
-                .getCurrentUser().getUid()).child("free_first_game")
+        FirebaseDatabase.getInstance().getReference().child("free_first_game_enabled")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Boolean enabled;
+                        try {
+                            enabled = dataSnapshot.getValue(Boolean.class);
+                        } catch (Exception e) {
+                            enabled = true;
+                        }
+                        if (enabled == null) {
+                            enabled = true;
+                        }
+                        if (enabled) {
+                            checkFreeGameState();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void checkFreeGameState() {
+        FirebaseDatabase.getInstance().getReference().child("users").child
+                (FirebaseAuth.getInstance().getCurrentUser().getUid()).child("free_first_game")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
