@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     private HashMap<Integer, SelectedSquare> mSelectedPositions = new HashMap<>();
     private Boolean mLive = false;
     private boolean mPrintMode = false;
+    private Integer mHomeScore = null;
+    private Integer mAwayScore = null;
+    private ArrayList<Integer> mRowNumbers = new ArrayList<>();
+    private ArrayList<Integer> mColumnNumbers = new ArrayList<>();
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
@@ -37,6 +42,19 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
     public void setLive(Boolean live) {
         mLive = live;
+    }
+
+    public void setScore(int home, int away) {
+        mHomeScore = home;
+        mAwayScore = away;
+    }
+
+    public void setRowNumbers(ArrayList<Integer> rowNumbers) {
+        mRowNumbers = rowNumbers;
+    }
+
+    public void setColumnNumbers(ArrayList<Integer> columnNumbers) {
+        mColumnNumbers = columnNumbers;
     }
 
     public void refresh(ArrayList<SelectedSquare> selectedSquares) {
@@ -100,6 +118,42 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         }
 
         holder.itemView.setClickable(!mLive);
+
+        if (mHomeScore != null && mAwayScore != null) {
+            String lastHomeDigit;
+            if (String.valueOf(mHomeScore).length() == 1) {
+                lastHomeDigit = String.valueOf(mHomeScore);
+            } else {
+                lastHomeDigit = (String.valueOf(mHomeScore).substring(String
+                        .valueOf(mHomeScore).length() - 1, String.valueOf(mHomeScore).length()));
+            }
+            String lastAwayDigit;
+            if (String.valueOf(mAwayScore).length() == 1) {
+                lastAwayDigit = String.valueOf(mAwayScore);
+            } else {
+                lastAwayDigit = (String.valueOf(mAwayScore).substring(String
+                        .valueOf(mAwayScore).length() - 1, String.valueOf(mAwayScore).length()));
+            }
+            int column = position;
+            int row = 0;
+            while (column >= 10) {
+                row++;
+                column -= 10;
+            }
+
+            //Util.Log("lastHomeDigit = " + lastHomeDigit + ", " + lastAwayDigit);
+
+            if (lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
+                    && lastHomeDigit.equals(String.valueOf(mRowNumbers.get(column)))) {
+                Util.Log("row = " + row + ", row2 = " + mColumnNumbers.get(row));
+                Util.Log("column = " + column + ", column2 = " + mRowNumbers.get(column));
+                holder.winningView.setVisibility(View.VISIBLE);
+            } else {
+                holder.winningView.setVisibility(View.GONE);
+            }
+        } else {
+            holder.winningView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -114,6 +168,8 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         TextView nameTxt;
         @Bind(R.id.cell_img)
         ImageView img;
+        @Bind(R.id.cell_winning_view)
+        View winningView;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -407,6 +407,10 @@ public class GameBoardActivity extends AppCompatActivity {
         mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
         mBoardAdapter.refresh(mSelectedSquares);
 
+        // TODO: Remove
+        mBoardAdapter.setRowNumbers(mRowNumbers);
+        mBoardAdapter.setColumnNumbers(mColumnNumbers);
+
         updateLiveState();
 
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
@@ -420,6 +424,12 @@ public class GameBoardActivity extends AppCompatActivity {
                             mColumnAdapter.setLive(mGameLive);
                             mRowAdapter.setLive(mGameLive);
                             mBoardAdapter.setLive(mGameLive);
+                            try {
+                                mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                        .getScore().getTotal()), Integer.parseInt(event
+                                        .getTeamAway().getScore().getTotal()));
+                            } catch (Exception e) {
+                            }
                             mColumnAdapter.notifyDataSetChanged();
                             mRowAdapter.notifyDataSetChanged();
                             mBoardAdapter.notifyDataSetChanged();
@@ -990,7 +1000,7 @@ public class GameBoardActivity extends AppCompatActivity {
         dialogBuilder.create().show();
     }
 
-    private void uploadSquares(){
+    private void uploadSquares() {
         mIgnoreUpdate = true;
         mDatabase.child("games").child(mGameId).child("selectedSquares")
                 .setValue(mSelectedSquares);
