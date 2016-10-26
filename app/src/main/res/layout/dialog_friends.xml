@@ -15,7 +15,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         fontPath="fonts/segoe_ui_medium.ttf"
-        android:hint="Enter friend's username"
+        android:hint="Enter Friend's Username"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         tools:ignore="MissingPrefix" />

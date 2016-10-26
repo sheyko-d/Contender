@@ -12,8 +12,8 @@
     <string name="register_name">Name</string>
     <string name="register_email">Email</string>
     <string name="register_password">Password</string>
-    <string name="register_repeat_password">Repeat password</string>
-    <string name="register_submit">Create an account</string>
+    <string name="register_repeat_password">Repeat Password</string>
+    <string name="register_submit">Create an Account</string>
 
     <!-- Login screen -->
     <string name="login_email">Email</string>
@@ -23,8 +23,8 @@
     <!-- Games screen -->
     <string name="games_title">Your Games</string>
     <string name="games_title_empty">No games found</string>
-    <string name="games_host">Host a game</string>
-    <string name="games_join">Join a game</string>
+    <string name="games_host">Host a Game</string>
+    <string name="games_join">Join a Game</string>
     <string name="games_score">%1$d/100</string>
 
     <!-- Settings screen -->
@@ -39,7 +39,7 @@
     <string name="friends_social_title">Social Media Friends</string>
 
     <!-- Host a game screen -->
-    <string name="host_create">Create a game</string>
+    <string name="host_create">Create a Game</string>
     <string name="host_default_square_price">1</string>
     <string name="host_default_square_limit">100</string>
 

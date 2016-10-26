@@ -2,6 +2,6 @@
 <resources>
     <string-array name="join_tabs">
         <item>Join by ID</item>
-        <item>Join by location</item>
+        <item>Join by Location</item>
     </string-array>
 </resources>
