@@ -42,6 +42,8 @@
     <string name="host_create">Create a Game</string>
     <string name="host_default_square_price">1</string>
     <string name="host_default_square_limit">100</string>
+    <string name="host_game_info_title">Game Information</string>
+    <string name="host_game_options">Options</string>
 
     <!-- Join a game screen -->
     <string name="join_btn">Join</string>

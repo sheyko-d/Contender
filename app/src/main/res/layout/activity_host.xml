@@ -70,6 +70,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:text="@string/host_game_info_title"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="Game ID"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
@@ -203,7 +213,6 @@
                 android:layout_marginTop="-8dp"
                 android:inputType="number"
                 tools:ignore="TextFields" />
-
             <TextView
                 fontPath="fonts/segoe_ui_medium.ttf"
                 android:layout_width="match_parent"
@@ -211,77 +220,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="12dp"
-                android:text="Points Per Square"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp" />
-
-            <TextView
-                fontPath="fonts/segoe_ui.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="2dp"
-                android:text="How much each square will cost"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/host_square_price_edit_txt"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="-8dp"
-                android:inputType="number"
-                android:maxLength="3"
-                android:text="@string/host_default_square_price" />
-
-            <TextView
-                fontPath="fonts/segoe_ui_medium.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12dp"
-                android:text="Squares Limit"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp" />
-
-            <TextView
-                fontPath="fonts/segoe_ui.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="2dp"
-                android:text="Maximum squares a player can claim"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/host_square_limit_edit_txt"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="-8dp"
-                android:hint="@string/host_default_square_limit"
-                android:inputType="number"
-                android:max="3"
-                android:text="@string/host_default_square_limit"
-                android:textColorHint="@color/secondary_text" />
-
-            <TextView
-                fontPath="fonts/segoe_ui_medium.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12dp"
-                android:text="Game event"
+                android:text="NFL Game"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp" />
 
@@ -339,7 +278,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="How much is paid out per quarter"
+                android:text="How many points each quarter is worth"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
@@ -510,7 +449,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="Total"
-                        android:textColor="@color/secondary_text"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="14sp" />
 
                     <TextView
@@ -523,7 +462,7 @@
                         android:background="@null"
                         android:gravity="center"
                         android:text="100"
-                        android:textColor="@color/primary_text"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -534,10 +473,91 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:text="@string/host_game_options"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:text="Points Per Square"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="2dp"
+                android:text="How many points each square will cost"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/host_square_price_edit_txt"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="-8dp"
+                android:inputType="number"
+                android:maxLength="3"
+                android:text="@string/host_default_square_price" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:text="Squares Limit"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="2dp"
+                android:text="Maximum squares a player can claim"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/host_square_limit_edit_txt"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="-8dp"
+                android:hint="@string/host_default_square_limit"
+                android:inputType="number"
+                android:max="3"
+                android:text="@string/host_default_square_limit"
+                android:textColorHint="@color/secondary_text" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Have a secret code?"
                 android:textColor="@color/primary_text"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:id="@+id/textView" />
 
             <TextView
                 fontPath="fonts/segoe_ui.ttf"
