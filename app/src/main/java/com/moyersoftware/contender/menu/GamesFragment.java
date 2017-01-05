@@ -108,12 +108,15 @@ public class GamesFragment extends Fragment {
                     mEventTimes.clear();
                     for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                         Util.Log("event: " + eventSnapshot);
-                        final Event event = eventSnapshot.getValue(Event.class);
+                        try {
+                            final Event event = eventSnapshot.getValue(Event.class);
 
-                        if (event.getTime() > 0) {
-                            mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
-                        } else {
-                            mEventTimes.put(event.getId(), event.getTime());
+                            if (event.getTime() > 0) {
+                                mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
+                            } else {
+                                mEventTimes.put(event.getId(), event.getTime());
+                            }
+                        } catch (Exception e) {
                         }
                     }
 

@@ -705,7 +705,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
-        int mySelectedSquares = 0;
+        int mySelectedSquares = 1;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
             String playerId = Util.getCurrentPlayerId();
             if (TextUtils.isEmpty(playerId)) {
@@ -779,7 +779,7 @@ public class GameBoardActivity extends AppCompatActivity {
                                     mDatabase.child("games").child(mGameId).child("players")
                                             .setValue(players);
 
-                                    int mySelectedSquares = 0;
+                                    int mySelectedSquares = 1;
                                     for (SelectedSquare selectedSquare : mSelectedSquares) {
                                         String playerId = Util.getCurrentPlayerId();
                                         if (TextUtils.isEmpty(playerId)) {
@@ -816,7 +816,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mMyPhoto = player.getPhoto();
         mPlayersAdapter.setCurrentPlayerId(mMyId);
 
-        int mySelectedSquares = 0;
+        int mySelectedSquares = 1;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
             String playerId = Util.getCurrentPlayerId();
             if (TextUtils.isEmpty(playerId)) {
