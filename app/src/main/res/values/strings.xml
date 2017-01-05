@@ -3,10 +3,10 @@
     <string name="facebook_app_id">1228412957223237</string>
 
     <!-- Loading screen -->
-    <string name="loading_email">Sign in with email</string>
+    <string name="loading_email">Sign in with Email</string>
     <string name="loading_facebook">Sign in with Facebook</string>
     <string name="loading_register">Register</string>
-    <string name="loading_code_desc">Enter a secret code to add them to friends</string>
+    <string name="loading_code_desc">Enter a secret code to add them to your friends</string>
 
     <!-- Register screen -->
     <string name="register_name">Name</string>
@@ -61,7 +61,7 @@
         games. To read how it is played, go to this link: http://www.footballsquares.net/pages/help.
     </string>
     <string name="settings_about_copyright">Copyright © 2016 MoyerSoftware LLC
-        \nhttp://www.moyersoftware.com
+        \nhttp://www.MoyerSoftware.com
     </string>
     <string name="games_how_to">How to Play</string>
 

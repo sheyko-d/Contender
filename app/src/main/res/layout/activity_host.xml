@@ -199,7 +199,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="Needs to be at least 4 numbers"
+                android:text="Enter at least 4 numbers"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
@@ -277,7 +277,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="How many points each square will cost"
+                android:text="How much will each square cost?"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
@@ -311,7 +311,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="How many points each quarter is worth"
+                android:text="How many points will each quarter be worth?"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
@@ -529,7 +529,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="2dp"
-                android:text="Maximum squares a player can claim"
+                android:text="What is the maximum amount of squares a player can claim?"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
