@@ -184,6 +184,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private ArrayList<Integer> mSelectedSquaresCount = new ArrayList<>();
     private GameInvite.Game mGame;
     private GameFriendsSquaresAdapter mFriendsSquaresAdapter;
+    private Event mEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,6 +420,8 @@ public class GameBoardActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Event event = dataSnapshot.getValue(Event.class);
                         if (event != null) {
+                            mEvent = event;
+
                             mGameLive = (event.getTime() != -1 && System.currentTimeMillis()
                                     > event.getTime()) || mSelectedSquares.size() == 100;
                             mColumnAdapter.setLive(mGameLive);
@@ -705,7 +708,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
-        int mySelectedSquares = 1;
+        int mySelectedSquares = 0;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
             String playerId = Util.getCurrentPlayerId();
             if (TextUtils.isEmpty(playerId)) {
@@ -715,7 +718,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
 
         int squaresLimit = mGame.getSquaresLimit();
         if (squaresLimit == 0) squaresLimit = 100;
@@ -745,6 +747,18 @@ public class GameBoardActivity extends AppCompatActivity {
         }
 
         updateLiveState();
+
+        mySelectedSquares = 0;
+        for (SelectedSquare selectedSquare : mSelectedSquares) {
+            String playerId = Util.getCurrentPlayerId();
+            if (TextUtils.isEmpty(playerId)) {
+                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            }
+            if (selectedSquare.getAuthorId().equals(playerId)) {
+                mySelectedSquares++;
+            }
+        }
+        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
     }
 
     public void onAddPlayerButtonClicked(View view) {
@@ -779,7 +793,7 @@ public class GameBoardActivity extends AppCompatActivity {
                                     mDatabase.child("games").child(mGameId).child("players")
                                             .setValue(players);
 
-                                    int mySelectedSquares = 1;
+                                    int mySelectedSquares = 0;
                                     for (SelectedSquare selectedSquare : mSelectedSquares) {
                                         String playerId = Util.getCurrentPlayerId();
                                         if (TextUtils.isEmpty(playerId)) {
@@ -816,7 +830,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mMyPhoto = player.getPhoto();
         mPlayersAdapter.setCurrentPlayerId(mMyId);
 
-        int mySelectedSquares = 1;
+        int mySelectedSquares = 0;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
             String playerId = Util.getCurrentPlayerId();
             if (TextUtils.isEmpty(playerId)) {
@@ -1010,8 +1024,14 @@ public class GameBoardActivity extends AppCompatActivity {
     private void updateLiveState() {
         if (mSelectedSquares.size() == 100 != mGameLive) {
             mGameLive = mSelectedSquares.size() == 100;
-            mPrintImg.setVisibility(mGameLive ? View.VISIBLE : View.GONE);
-            mPdfImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) ? View.VISIBLE : View.GONE);
+            mPrintImg.setVisibility(mGameLive && mEvent != null
+                    && !mEvent.getTeamAway().getName().equals("TBA")
+                    && !mEvent.getTeamHome().getName().equals("TBA")
+                    ? View.VISIBLE : View.GONE);
+            mPdfImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) && mEvent != null
+                    && !mEvent.getTeamAway().getName().equals("TBA")
+                    && !mEvent.getTeamHome().getName().equals("TBA")
+                    ? View.VISIBLE : View.GONE);
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
             mColumnAdapter.setLive(mGameLive);
