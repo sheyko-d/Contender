@@ -379,8 +379,8 @@ public class FriendsFragment extends Fragment {
     }
 
     private void sendInvite(String code) {
-        Intent intent = new AppInviteInvitation.IntentBuilder("Be a Sports Contender")
-                .setMessage("Hey check this game out! (use this code: " + code + ")")
+        Intent intent = new AppInviteInvitation.IntentBuilder("Contender - Invite Friends")
+                .setMessage("Hey join my Superbowl Squares game on the app Contender! (use this code: " + code + ")")
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
     }

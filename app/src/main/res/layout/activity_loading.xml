@@ -38,7 +38,7 @@
             android:layout_height="64dp"
             android:onClick="onLoginButtonClicked"
             android:text="@string/loading_email"
-            android:theme="@style/Button" />
+            android:theme="@style/Button.Host" />
 
         <Button
             fontPath="fonts/segoe_ui_bold.ttf"

@@ -186,10 +186,10 @@ public class RegisterActivity extends AppCompatActivity {
         String repeatedPassword = mRepeatPasswordEditTxt.getText().toString();
         if (TextUtils.isEmpty(mNameEditTxt.getText().toString()) || TextUtils.isEmpty(email)
                 || TextUtils.isEmpty(password)) {
-            Toast.makeText(RegisterActivity.this, "Some fields are empty", Toast.LENGTH_SHORT)
+            Toast.makeText(RegisterActivity.this, "Some fields are empty!", Toast.LENGTH_SHORT)
                     .show();
         } else if (!password.equals(repeatedPassword)) {
-            Toast.makeText(RegisterActivity.this, "Passwords don't match", Toast.LENGTH_SHORT)
+            Toast.makeText(RegisterActivity.this, "Passwords don't match!", Toast.LENGTH_SHORT)
                     .show();
         } else {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this,

@@ -87,6 +87,6 @@
             android:onClick="onRegisterButtonClicked"
             android:layout_marginBottom="16dp"
             android:text="@string/register_submit"
-            android:theme="@style/Button" />
+            android:theme="@style/Button.Host" />
     </LinearLayout>
 </FrameLayout>

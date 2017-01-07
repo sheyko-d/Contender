@@ -60,7 +60,7 @@
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:text="@string/games_host"
-            android:theme="@style/Button" />
+            android:theme="@style/Button.Host" />
 
         <Button
             android:id="@+id/games_join_btn"
@@ -72,6 +72,6 @@
             android:layout_marginRight="14dp"
             android:layout_marginTop="8dp"
             android:text="@string/games_join"
-            android:theme="@style/Button" />
+            android:theme="@style/Button.Host" />
     </LinearLayout>
 </ScrollView>

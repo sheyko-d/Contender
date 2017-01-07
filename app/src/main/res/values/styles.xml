@@ -32,6 +32,10 @@
         <item name="android:paddingRight">20dp</item>
     </style>
 
+    <style name="Button.Host" parent="Button">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
     <style name="Button.Facebook" parent="Button">
         <item name="colorButtonNormal">@color/facebook</item>
     </style>
