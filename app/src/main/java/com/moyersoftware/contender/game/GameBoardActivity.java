@@ -185,6 +185,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private GameInvite.Game mGame;
     private GameFriendsSquaresAdapter mFriendsSquaresAdapter;
     private Event mEvent;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,6 +254,23 @@ public class GameBoardActivity extends AppCompatActivity {
                         if (mPlayersAdapter != null) {
                             mPlayersAdapter.notifyDataSetChanged();
                         }
+
+                        final int playersSize = mPlayers.size() - 1;
+                        Util.Log("scroll to bottom");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            recycler.scrollToPosition(playersSize);
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                });
+                            }
+                        }, 1000);
                     }
 
                     @Override
@@ -766,7 +784,7 @@ public class GameBoardActivity extends AppCompatActivity {
         dialogBuilder.setTitle("Select player");
         @SuppressLint("InflateParams")
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_player, null);
-        RecyclerView recycler = (RecyclerView) dialogView.findViewById
+        recycler = (RecyclerView) dialogView.findViewById
                 (R.id.friends_select_recycler);
         final EditText editTxt = (EditText) dialogView.findViewById(R.id.friends_select_edit_txt);
         View addBtn = dialogView.findViewById(R.id.friends_select_add_btn);
@@ -804,6 +822,8 @@ public class GameBoardActivity extends AppCompatActivity {
                                         }
                                     }
                                     mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
+
+                                    editTxt.setText("");
                                 }
 
                                 @Override
