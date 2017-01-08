@@ -1061,7 +1061,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         mEventTime = event.getTime();
         mEventsDialog.cancel();
 
-        eventTxt.setText(event.getTeamAway().getName() + " — " + event.getTeamHome().getName()
-                + ", " + Util.formatTime(event.getTime()));
+        try {
+            eventTxt.setText(event.getTeamAway().getName() + " — " + event.getTeamHome().getName()
+                    + ", " + Util.formatTime(event.getTime()));
+        } catch (Exception e) {
+            // Event doesn't exist
+        }
     }
 }
