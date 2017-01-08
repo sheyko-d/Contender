@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +8,25 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:paddingTop="16dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo"
+        android:id="@+id/imageView" />
+
+    <TextView
+        android:text="@string/about_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:textStyle="normal|bold"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px" />
 
     <TextView
         fontPath="fonts/segoe_ui.ttf"
@@ -16,8 +36,10 @@
         android:lineSpacingExtra="2dp"
         android:text="@string/settings_about_affiliation"
         android:textColor="@color/primary_text"
-        android:textSize="16sp"
-        tools:ignore="MissingPrefix" />
+        android:textSize="12sp"
+        tools:ignore="MissingPrefix"
+        android:textAllCaps="false"
+        android:textAlignment="center" />
 
     <TextView
         fontPath="fonts/segoe_ui.ttf"
@@ -28,5 +50,6 @@
         android:text="@string/settings_about_copyright"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
-        tools:ignore="MissingPrefix" />
+        tools:ignore="MissingPrefix"
+        android:textAlignment="center" />
 </LinearLayout>

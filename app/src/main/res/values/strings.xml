@@ -6,7 +6,7 @@
     <string name="loading_email">Sign in with Email</string>
     <string name="loading_facebook">Sign in with Facebook</string>
     <string name="loading_register">Register</string>
-    <string name="loading_code_desc">Enter a secret code to add them to your friends</string>
+    <string name="loading_code_desc">Enter the code you were given to add them to your Friends List.</string>
 
     <!-- Register screen -->
     <string name="register_name">Name</string>
@@ -52,7 +52,7 @@
     <string name="join_found_title">Games found</string>
     <string name="join_id_title">Search by Game ID</string>
     <string name="join_location_title">Searching near your location…</string>
-    <string name="join_location_empty">No games found around you</string>
+    <string name="join_location_empty">No games were found around you</string>
 
     <!-- Settings screen -->
     <string name="settings_log_out">Log Out</string>
@@ -60,10 +60,11 @@
         events such as football games. Football Squares is a game played while watching Football
         games. To read how it is played, go to this link: http://www.footballsquares.net/pages/help.
     </string>
-    <string name="settings_about_copyright">Copyright © 2016 MoyerSoftware LLC
+    <string name="settings_about_copyright">Copyright © 2017 MoyerSoftware LLC
         \nhttp://www.MoyerSoftware.com
     </string>
     <string name="games_how_to">How to Play</string>
+    <string name="about_version">1.0.16</string>
 
     <!-- How to Play screen -->
     <string name="title_activity_how_to_play">How to Play</string>

@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSingleChoiceItems(new String[]{
                         "Support Issue",
                         "Report Abuse",
-                        "Submit Your Idea",
+                        "Suggestions",
                         "Other"
                 }, 0, null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (selectedPosition==1) {
                             subject = "Report Abuse (Contender)";
                         } else if (selectedPosition==2) {
-                            subject = "Submit Your Idea (Contender)";
+                            subject = "Suggestions (Contender)";
                         } else {
                             subject = "Feedback (Contender)";
                         }
@@ -378,12 +378,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0)
                     .versionName;
-            dialogBuilder.setTitle(getString(R.string.app_name) + " v" + versionName);
+            dialogBuilder.setTitle("");
         } catch (PackageManager.NameNotFoundException e) {
-            dialogBuilder.setTitle(getString(R.string.app_name));
+            dialogBuilder.setTitle("");
         }
         dialogBuilder.setView(R.layout.dialog_about);
-        dialogBuilder.setNegativeButton("Cancel", null);
+        dialogBuilder.setNegativeButton("OK", null);
         dialogBuilder.create().show();
     }
 }
