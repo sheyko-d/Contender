@@ -69,7 +69,6 @@ public class GamesFragment extends Fragment {
     private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
     private GamesAdapter mAdapter;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
-    private ArrayList<Long> mGameTimes = new ArrayList<>();
     private String mGameToRemoveId;
     private FirebaseUser mFirebaseUser;
     private GameInvite.Game mRemoveGame;
@@ -139,7 +138,6 @@ public class GamesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Update the games list
                 mGames.clear();
-                mGameTimes.clear();
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                     try {
                         final GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
@@ -149,10 +147,6 @@ public class GamesFragment extends Fragment {
                                 .contains(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(),
                                         Util.getDisplayName(), Util.getPhoto()))))) {
-                            Util.Log("will add game time: " + game.getEventId());
-
-                            mGameTimes.add(mEventTimes.get(game.getEventId()));
-                            Util.Log("add game time: " + mEventTimes.get(game.getEventId()));
                             game.setEventTime(mEventTimes.get(game.getEventId()));
                             if (!mGames.contains(game)) mGames.add(game);
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
@@ -205,7 +199,6 @@ public class GamesFragment extends Fragment {
                                         if (gameInvite.getGame() != null) {
                                             GameInvite.Game game = gameInvite.getGame();
                                             if (mEventTimes.get(game.getEventId()) > 0) {
-                                                mGameTimes.add(mEventTimes.get(game.getEventId()));
                                                 game.setEventTime(mEventTimes.get(game.getEventId()));
                                                 game.setInviteName(gameInvite.getName());
                                                 game.setInviteId(gameInviteSnapshot.getKey());
@@ -219,7 +212,6 @@ public class GamesFragment extends Fragment {
 
                                 try {
                                     Collections.sort(mGames, new GameComparator());
-                                    mAdapter.updateGameTimes(mGameTimes);
                                     mAdapter.notifyDataSetChanged();
 
                                     // Update the title text
@@ -232,7 +224,6 @@ public class GamesFragment extends Fragment {
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 Collections.sort(mGames, new GameComparator());
-                                mAdapter.updateGameTimes(mGameTimes);
                                 mAdapter.notifyDataSetChanged();
 
                                 // Update the title text

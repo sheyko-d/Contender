@@ -29,7 +29,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     private GamesFragment mFragment;
     private ArrayList<GameInvite.Game> mGames;
     private String mMyId;
-    private ArrayList<Long> mGameTimes;
 
     public GamesAdapter(MainActivity activity, GamesFragment fragment,
                         ArrayList<GameInvite.Game> games, String myId) {
@@ -53,28 +52,27 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.nameTxt.setText(game.getName());
 
         try {
-            if (mGameTimes != null) {
-                Util.Log("mGameTimes.get(position)  = " + mGameTimes.get(position));
-                if (mGameTimes.get(position) == -2) {
+            if (game.getEventTime() != null) {
+                if (game.getEventTime() == -2) {
                     holder.finalLayout.setVisibility(View.VISIBLE);
                     holder.timeTxt.setVisibility(View.GONE);
 
                     if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                             && game.getSelectedSquares().size() < 100))
-                            && (mGameTimes.get(position) == -2 || mGameTimes.get(position)
+                            && (game.getEventTime() == -2 || game.getEventTime()
                             < System.currentTimeMillis())) {
                         holder.finalTxt.setText("VOID (BOARD ISN'T FILLED)");
                     } else {
                         holder.finalTxt.setText("FINAL");
                     }
-                } else if (mGameTimes.get(position) == -1) {
+                } else if (game.getEventTime() == -1) {
                     holder.finalLayout.setVisibility(View.VISIBLE);
                     holder.timeTxt.setVisibility(View.GONE);
 
                     holder.finalTxt.setText("LIVE");
                 } else {
                     holder.timeTxt.setVisibility(View.VISIBLE);
-                    holder.timeTxt.setText(Util.formatDateTime(mGameTimes.get(position)));
+                    holder.timeTxt.setText(Util.formatDateTime(game.getEventTime()));
                     holder.finalLayout.setVisibility(View.GONE);
 
                     if (!TextUtils.isEmpty(game.getInviteName())) {
@@ -84,6 +82,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 }
             }
         } catch (Exception e) {
+            Util.Log("Can't display game: " + e);
         }
         if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
@@ -129,10 +128,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mGames.size();
-    }
-
-    public void updateGameTimes(ArrayList<Long> gameTimes) {
-        mGameTimes = gameTimes;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
