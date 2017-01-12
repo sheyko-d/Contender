@@ -63,11 +63,7 @@ public class WinnerService extends Service {
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                     try {
                         final Event event = gameSnapshot.getValue(Event.class);
-                        if (event.getTime() > 0) {
-                            mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
-                        } else {
-                            mEventTimes.put(event.getId(), event.getTime());
-                        }
+                        mEventTimes.put(event.getId(), event.getTime());
                     } catch (Exception e) {
                         // Can't retrieve game time
                     }

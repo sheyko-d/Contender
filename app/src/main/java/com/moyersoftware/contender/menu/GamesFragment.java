@@ -111,7 +111,7 @@ public class GamesFragment extends Fragment {
                             final Event event = eventSnapshot.getValue(Event.class);
 
                             if (event.getTime() > 0) {
-                                mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
+                                mEventTimes.put(event.getId(), event.getTime());
                             } else {
                                 mEventTimes.put(event.getId(), event.getTime());
                             }
