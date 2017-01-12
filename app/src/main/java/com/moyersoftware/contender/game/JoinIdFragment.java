@@ -23,10 +23,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +52,8 @@ public class JoinIdFragment extends Fragment {
     private String mMyEmail;
     private String mMyName;
     private String mMyPhoto;
+    private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private DataSnapshot mGamesSnapshot;
 
     public JoinIdFragment() {
         // Required empty public constructor
@@ -134,24 +138,62 @@ public class JoinIdFragment extends Fragment {
     private void updateGames(DataSnapshot dataSnapshot) {
         if (dataSnapshot == null) return;
 
-        mGames.clear();
-        if (mMyId != null) {
-            for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                try {
-                    GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
+        mGamesSnapshot = dataSnapshot;
 
-                    if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
-                            && !game.getAuthor().getUserId().equals(mMyId)) {
-                        mGames.add(game);
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Query query = database.child("events");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEventTimes.clear();
+                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                    try {
+                        final Event event = gameSnapshot.getValue(Event.class);
+                        if (event.getTime() > 0) {
+                            mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
+                        } else {
+                            mEventTimes.put(event.getId(), event.getTime());
+                        }
+                    } catch (Exception e) {
+                        // Can't retrieve game time
                     }
-                } catch (Exception e) {
-                    Util.Log("The game is corrupted");
                 }
-            }
-        }
-        mAdapter.notifyDataSetChanged();
+                mGames.clear();
+                if (mMyId != null) {
+                    for (DataSnapshot gameSnapshot : mGamesSnapshot.getChildren()) {
+                        try {
+                            GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
 
-        mTitleTxt.setVisibility(mGames.size() > 0 ? View.VISIBLE : View.GONE);
+                            if (!mEventTimes.containsKey(game.getEventId())) continue;
+
+                            game.setEventTime(mEventTimes.get(game.getEventId()));
+
+                            Util.Log("event time join id: " + game.getEventTime()+" < "+System.currentTimeMillis());
+
+                            if (!TextUtils.isEmpty(mQuery) && game.getId().contains(mQuery)
+                                    && game.getAuthor() != null && !game.getAuthor().getUserId()
+                                    .equals(mMyId) && game.getEventTime() != -1
+                                    && game.getEventTime() != -2 && game.getEventTime()
+                                    > System.currentTimeMillis()) {
+                                mGames.add(game);
+                            }
+                        } catch (Exception e) {
+                            Util.Log("The game is corrupted: " + e);
+                        }
+                    }
+                }
+                mAdapter.setGames(mGames);
+                mAdapter.notifyDataSetChanged();
+
+                mTitleTxt.setVisibility(mGames.size() > 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
     }
 
 }

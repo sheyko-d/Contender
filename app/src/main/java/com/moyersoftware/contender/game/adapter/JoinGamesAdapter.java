@@ -65,7 +65,12 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
 
     @Override
     public int getItemCount() {
+        Util.Log("games size: " + mGames.size());
         return mGames.size();
+    }
+
+    public void setGames(ArrayList<GameInvite.Game> games) {
+        mGames = games;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

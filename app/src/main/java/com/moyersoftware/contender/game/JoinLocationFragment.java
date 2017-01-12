@@ -28,10 +28,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,6 +64,8 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     private String mMyEmail;
     private String mMyName;
     private String mMyPhoto;
+    private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private DataSnapshot mGamesSnapshot;
 
     public JoinLocationFragment() {
         // Required empty public constructor
@@ -137,32 +141,60 @@ public class JoinLocationFragment extends Fragment implements GoogleApiClient.Co
     private void updateGames(DataSnapshot dataSnapshot) {
         if (dataSnapshot == null) return;
 
-        mGames.clear();
-        if (mMyId != null) {
-            for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
-                GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
+        mGamesSnapshot = dataSnapshot;
 
-                if (game.getLatitude() != 0 && game.getLongitude() != 0) {
-                    Location gameLocation = new Location("");
-                    gameLocation.setLatitude(game.getLatitude());
-                    gameLocation.setLongitude(game.getLongitude());
-                    if (mMyLocation != null && mMyLocation.distanceTo(gameLocation)
-                            < GAME_SEARCH_RADIUS_METERS && !game.getAuthor().getUserId()
-                            .equals(mMyId)) {
-                        mGames.add(game);
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Query query = database.child("events");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mEventTimes.clear();
+                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                    try {
+                        final Event event = gameSnapshot.getValue(Event.class);
+                        if (event.getTime() > 0) {
+                            mEventTimes.put(event.getId(), event.getTime() - 60 * 60 * 1000);
+                        } else {
+                            mEventTimes.put(event.getId(), event.getTime());
+                        }
+                    } catch (Exception e) {
+                        // Can't retrieve game time
                     }
                 }
-            }
-        }
-        mAdapter.notifyDataSetChanged();
 
-        mTitleTxt.setVisibility(mGames.size() > 0 ? View.VISIBLE : View.GONE);
-        if (mGames.size() > 0) {
-            mSearchTxt.setVisibility(View.GONE);
-        } else {
-            mSearchTxt.setText(R.string.join_location_empty);
-            mSearchTxt.setVisibility(View.VISIBLE);
-        }
+
+                mGames.clear();
+                if (mMyId != null) {
+                    for (DataSnapshot gameSnapshot : mGamesSnapshot.getChildren()) {
+                        GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
+
+                        if (game.getLatitude() != 0 && game.getLongitude() != 0) {
+                            Location gameLocation = new Location("");
+                            gameLocation.setLatitude(game.getLatitude());
+                            gameLocation.setLongitude(game.getLongitude());
+                            if (mMyLocation != null && mMyLocation.distanceTo(gameLocation)
+                                    < GAME_SEARCH_RADIUS_METERS && !game.getAuthor().getUserId()
+                                    .equals(mMyId)) {
+                                mGames.add(game);
+                            }
+                        }
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+
+                mTitleTxt.setVisibility(mGames.size() > 0 ? View.VISIBLE : View.GONE);
+                if (mGames.size() > 0) {
+                    mSearchTxt.setVisibility(View.GONE);
+                } else {
+                    mSearchTxt.setText(R.string.join_location_empty);
+                    mSearchTxt.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override

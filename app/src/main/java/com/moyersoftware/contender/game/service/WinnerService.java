@@ -131,22 +131,26 @@ public class WinnerService extends Service {
                                     firebaseUser.getEmail(),
                                     Util.getDisplayName(), Util.getPhoto()))))) {
 
+                        Util.Log("winner 1");
                         if (!TextUtils.isEmpty(game.getInviteName())) {
                             continue;
                         }
                         int emptySquaresCount;
+                        Util.Log("winner 2");
                         if (game.getSelectedSquares() != null) {
                             emptySquaresCount = 100 - game.getSelectedSquares().size();
                         } else {
                             emptySquaresCount = 100;
                         }
 
+                        Util.Log("winner 3");
                         if (emptySquaresCount == 100 && (mEventTimes.get(game.getEventId())
                                 == -2 || mEventTimes.get(game.getEventId())
                                 < System.currentTimeMillis())) {
                             continue;
                         }
 
+                        Util.Log("winner 4");
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
                                 && mEventTimes.get(game.getEventId()) -
                                 System.currentTimeMillis() < 1000 * 60 * 30) {
@@ -165,8 +169,7 @@ public class WinnerService extends Service {
 
                         String gameId = game.getId();
 
-                        Util.Log("CHECK FOR WINNERS: " + game.getName());
-                        Util.Log("Time left: " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()) / 1000 / 60 + " min");
+                        Util.Log("winner 5");
 
                         if (game.getQuarter1Winner() != null) {
                             if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
@@ -180,6 +183,7 @@ public class WinnerService extends Service {
                             database.child("games").child(gameId).child("quarter1Winner").child("consumed")
                                     .setValue(true);
                         }
+                        Util.Log("winner 6");
 
                         if (game.getQuarter2Winner() != null) {
                             Util.Log("show winner 1 " + game.getQuarter2Winner().getPlayer().getName() + ", " + game.getQuarter2Winner().getPlayer().getUserId() + " == " + myId);
@@ -195,6 +199,7 @@ public class WinnerService extends Service {
                             database.child("games").child(gameId).child("quarter2Winner").child("consumed")
                                     .setValue(true);
                         }
+                        Util.Log("winner 7");
 
                         if (game.getQuarter3Winner() != null) {
                             if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner().getPlayer() != null
