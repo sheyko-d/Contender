@@ -55,6 +55,7 @@ public class LoadingActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String mFacebookName = null;
     private String mFacebookPhoto = null;
+    private String mFacebookEmail = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +76,13 @@ public class LoadingActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    if (mFacebookName!=null){
+                    if (mFacebookName != null) {
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("name").setValue(mFacebookName);
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("image").setValue(mFacebookPhoto);
+                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
+                                .child("email").setValue(mFacebookEmail);
 
                         /*if (Util.isReferralAsked()) {
 
@@ -88,7 +91,7 @@ public class LoadingActivity extends AppCompatActivity {
                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                             finish();
                         } else {*/
-                            askReferral();
+                        askReferral();
                         //}
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("users")
@@ -116,7 +119,7 @@ public class LoadingActivity extends AppCompatActivity {
                                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                                             finish();
                                         } else {*/
-                                            askReferral();
+                                        askReferral();
                                         //}
                                     }
 
@@ -187,7 +190,7 @@ public class LoadingActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-                        GraphRequest.newMeRequest(
+                        GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(JSONObject me, GraphResponse response) {
@@ -199,16 +202,22 @@ public class LoadingActivity extends AppCompatActivity {
                                                         .get("name").toString();
                                                 mFacebookPhoto = "https://graph.facebook.com/" + response.getJSONObject()
                                                         .get("id").toString() + "/picture?type=large";
+                                                mFacebookEmail = response.getJSONObject()
+                                                        .get("email").toString();
 
                                                 Util.setDisplayName(mFacebookName);
                                                 Util.setPhoto(mFacebookPhoto);
                                             } catch (JSONException e) {
-                                                Util.Log("Can't retrieve Facebook name: "+e+", "+me.toString());
+                                                Util.Log("Can't retrieve Facebook name: " + e + ", " + me.toString());
                                             }
                                         }
                                         handleFacebookAccessToken(loginResult.getAccessToken());
                                     }
-                                }).executeAsync();
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     }
 
                     @Override
@@ -237,7 +246,7 @@ public class LoadingActivity extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LoadingActivity.this, "Authentication failed: "+task.getException(),
+                            Toast.makeText(LoadingActivity.this, "Authentication failed: " + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
