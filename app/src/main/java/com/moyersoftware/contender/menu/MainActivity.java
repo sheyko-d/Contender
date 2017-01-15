@@ -1,5 +1,6 @@
 package com.moyersoftware.contender.menu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.applinks.AppLinkData;
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         initTabs();
         initUser();
 
-        if (!Util.isTutorialShown()){
+        if (!Util.isTutorialShown()) {
             startActivity(new Intent(this, HowToPlayActivity.class));
         }
     }
@@ -339,11 +342,11 @@ public class MainActivity extends AppCompatActivity {
                         i.setType("message/rfc822");
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{Util.SUPPORT_EMAIL});
                         String subject;
-                        if (selectedPosition==0) {
+                        if (selectedPosition == 0) {
                             subject = "Support Issue (Contender)";
-                        } else if (selectedPosition==1) {
+                        } else if (selectedPosition == 1) {
                             subject = "Report Abuse (Contender)";
-                        } else if (selectedPosition==2) {
+                        } else if (selectedPosition == 2) {
                             subject = "Suggestions (Contender)";
                         } else {
                             subject = "Feedback (Contender)";
@@ -375,14 +378,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAboutButtonClicked(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        dialogBuilder.setTitle("");
+        @SuppressLint("InflateParams")
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_about, null);
+
+        // Show app version
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0)
                     .versionName;
-            dialogBuilder.setTitle("");
+            ((TextView) dialogView.findViewById(R.id.aboutVersionTxt)).setText(versionName);
         } catch (PackageManager.NameNotFoundException e) {
-            dialogBuilder.setTitle("");
+            Util.Log("Can't get app version");
         }
-        dialogBuilder.setView(R.layout.dialog_about);
+
+        dialogBuilder.setView(dialogView);
         dialogBuilder.setNegativeButton("OK", null);
         dialogBuilder.create().show();
     }
