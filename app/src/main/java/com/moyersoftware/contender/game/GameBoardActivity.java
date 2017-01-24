@@ -1044,14 +1044,8 @@ public class GameBoardActivity extends AppCompatActivity {
     private void updateLiveState() {
         if (mSelectedSquares.size() == 100 != mGameLive) {
             mGameLive = mSelectedSquares.size() == 100;
-            mPrintImg.setVisibility(mGameLive && mEvent != null
-                    && !mEvent.getTeamAway().getName().equals("TBA")
-                    && !mEvent.getTeamHome().getName().equals("TBA")
-                    ? View.VISIBLE : View.GONE);
-            mPdfImg.setVisibility(mGameLive && mAuthorId.equals(mMyId) && mEvent != null
-                    && !mEvent.getTeamAway().getName().equals("TBA")
-                    && !mEvent.getTeamHome().getName().equals("TBA")
-                    ? View.VISIBLE : View.GONE);
+            mPrintImg.setVisibility(View.VISIBLE);
+            mPdfImg.setVisibility(View.VISIBLE);
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
             mColumnAdapter.setLive(mGameLive);
