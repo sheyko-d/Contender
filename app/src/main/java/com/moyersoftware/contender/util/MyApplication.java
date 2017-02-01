@@ -21,7 +21,7 @@ public class MyApplication extends Application{
         FacebookSdk.sdkInitialize(this);
 
         // Init Firebase SDK
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
 
         // Init calligraphy library
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()

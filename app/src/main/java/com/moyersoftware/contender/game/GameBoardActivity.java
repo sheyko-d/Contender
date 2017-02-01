@@ -287,6 +287,9 @@ public class GameBoardActivity extends AppCompatActivity {
             mMyId = firebaseUser.getUid();
             Util.setCurrentPlayerId(mMyId);
             mMyName = Util.getDisplayName();
+            if (TextUtils.isEmpty(mMyName)) {
+                mMyName = firebaseUser.getEmail();
+            }
             mMyEmail = firebaseUser.getEmail();
             mMyPhoto = Util.getPhoto();
         }
@@ -847,6 +850,9 @@ public class GameBoardActivity extends AppCompatActivity {
         Util.setCurrentPlayerId(mMyId);
         mMyEmail = player.getEmail();
         mMyName = player.getName();
+        if (TextUtils.isEmpty(mMyName)) {
+            mMyName = player.getEmail();
+        }
         mMyPhoto = player.getPhoto();
         mPlayersAdapter.setCurrentPlayerId(mMyId);
 
