@@ -218,4 +218,9 @@ public class RegisterActivity extends AppCompatActivity {
     public void onBackButtonClicked(View view) {
         finish();
     }
+
+    public void onLoginButtonClicked(View view) {
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 }

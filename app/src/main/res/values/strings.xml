@@ -9,10 +9,10 @@
     <string name="loading_code_desc">Enter the code you were given to add them to your Friends List.</string>
 
     <!-- Register screen -->
-    <string name="register_name">Name</string>
-    <string name="register_email">Email</string>
-    <string name="register_password">Password</string>
-    <string name="register_repeat_password">Repeat Password</string>
+    <string name="register_name">NAME</string>
+    <string name="register_email">EMAIL</string>
+    <string name="register_password">PASSWORD</string>
+    <string name="register_repeat_password">PASSWORD (AGAIN)</string>
     <string name="register_submit">Create an Account</string>
 
     <!-- Login screen -->
@@ -74,4 +74,5 @@
     <string name="login_password_hint">PASSWORD</string>
     <string name="login_register">Don\'t have an account? REGISTER</string>
     <string name="go_back">Go back</string>
+    <string name="register_login">Already have an account? LOG IN</string>
 </resources>
