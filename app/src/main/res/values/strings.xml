@@ -65,6 +65,9 @@
     </string>
     <string name="games_how_to">How to Play\nSquares</string>
     <string name="about_version">1.0.16</string>
+    <string name="settings_how_to">How to Play Squares</string>
+    <string name="settings_how_to_use">How to Use Contender</string>
+    <string name="username_hint">Enter your username</string>
 
     <!-- How to Play screen -->
     <string name="title_activity_how_to_play">How to Play Squares</string>
@@ -79,4 +82,5 @@
     <string name="welcome_desc">Contender is your go to place to play football squares! Now squares doesn\'t have to just be during the Big Game!</string>
     <string name="games_how_to_use">How to use</string>
     <string name="title_activity_how_to_use">How to use</string>
+    <string name="edit_username">Edit username</string>
 </resources>

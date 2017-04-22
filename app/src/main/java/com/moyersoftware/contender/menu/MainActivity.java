@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.HowToPlayActivity;
+import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.login.LoadingActivity;
@@ -394,5 +395,13 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
         dialogBuilder.setNegativeButton("OK", null);
         dialogBuilder.create().show();
+    }
+
+    public void onHowToButtonClicked(View view) {
+        startActivity(new Intent(this, HowToPlayActivity.class));
+    }
+
+    public void onHowToUseButtonClicked(View view) {
+        startActivity(new Intent(this, HowToUseActivity.class));
     }
 }
