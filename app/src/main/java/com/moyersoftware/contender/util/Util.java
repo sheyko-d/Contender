@@ -46,6 +46,7 @@ public class Util {
     private static final String PREF_CURRENT_PLAYER_ID = "CurrentPlayerId";
     private static final String PREF_TUTORIAL_SHOWN = "TutorialShown";
     public static final String SUPPORT_EMAIL = "ryan@moyersoftware.com";
+    private static final String PREF_SHOW_WELCOME = "ShowWelcome";
 
     /**
      * Adds a message to LogCat.
@@ -170,9 +171,14 @@ public class Util {
                 .putBoolean(PREF_REFERRAL_ASKED, true).apply();
     }
 
-    public static Boolean isReferralAsked() {
+    public static void hideWelcomeBanner() {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putBoolean(PREF_SHOW_WELCOME, false).apply();
+    }
+
+    public static Boolean showWelcomeBanner() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
-                .getBoolean(PREF_REFERRAL_ASKED, false);
+                .getBoolean(PREF_SHOW_WELCOME, true);
     }
 
     public static String formatTime(Long time) {

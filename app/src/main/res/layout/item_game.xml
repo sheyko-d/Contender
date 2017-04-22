@@ -51,7 +51,7 @@
                     fontPath="fonts/segoe_ui_medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/green"
                     android:textSize="16sp"
                     tools:text="20 points" />
             </LinearLayout>

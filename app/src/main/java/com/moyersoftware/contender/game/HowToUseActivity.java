@@ -18,7 +18,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.util.Util;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class HowToPlayActivity extends AppCompatActivity {
+public class HowToUseActivity extends AppCompatActivity {
 
     // Hey Ryan, you can change colors here
     private int[] mColors = new int[]{
@@ -32,13 +32,13 @@ public class HowToPlayActivity extends AppCompatActivity {
     };
     // ... Images
     public static int[] mImages = new int[]{
-            R.drawable.how_to_play_1,
-            R.drawable.how_to_play_2,
-            R.drawable.how_to_play_3,
-            R.drawable.how_to_play_4,
-            R.drawable.how_to_play_5,
-            R.drawable.how_to_play_6,
-            R.drawable.how_to_play_7
+            R.drawable.how_to_use_1,
+            R.drawable.how_to_use_2,
+            R.drawable.how_to_use_3,
+            R.drawable.how_to_use_4,
+            R.drawable.how_to_use_5,
+            R.drawable.how_to_use_6,
+            R.drawable.how_to_use_7
     };
 
     private Toolbar mToolbar;
@@ -136,7 +136,7 @@ public class HowToPlayActivity extends AppCompatActivity {
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            return HowToPlayFragment.newInstance(position);
+            return HowToUseFragment.newInstance(position);
         }
 
         // Returns the page title for the top indicator

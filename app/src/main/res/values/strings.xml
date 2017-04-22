@@ -63,11 +63,11 @@
     <string name="settings_about_copyright">Copyright © 2017 MoyerSoftware LLC
         \nhttp://www.MoyerSoftware.com
     </string>
-    <string name="games_how_to">How to Play</string>
+    <string name="games_how_to">How to Play\nSquares</string>
     <string name="about_version">1.0.16</string>
 
     <!-- How to Play screen -->
-    <string name="title_activity_how_to_play">How to Play</string>
+    <string name="title_activity_how_to_play">How to Play Squares</string>
     <string name="skip">Skip</string>
     <string name="settings_about_affiliation">This app is not affiliated with or endorsed by the National Football League. Any trademarks used in the app are done so under \"fair use\" with the sole purpose of identifying the respective entities, and remain the property of their respective owners.</string>
     <string name="login_email_hint">EMAIL</string>
@@ -75,4 +75,8 @@
     <string name="login_register">Don\'t have an account? REGISTER</string>
     <string name="go_back">Go back</string>
     <string name="register_login">Already have an account? LOG IN</string>
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_desc">Contender is your go to place to play football squares! Now squares doesn\'t have to just be during the Big Game!</string>
+    <string name="games_how_to_use">How to use</string>
+    <string name="title_activity_how_to_use">How to use</string>
 </resources>

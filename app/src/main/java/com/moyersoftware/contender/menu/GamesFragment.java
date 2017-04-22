@@ -28,6 +28,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.HowToPlayActivity;
+import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
@@ -62,8 +63,14 @@ public class GamesFragment extends Fragment {
     Button mJoinBtn;
     @Bind(R.id.games_title_txt)
     TextView mTitleTxt;
+    @Bind(R.id.games_how_to_use_btn)
+    Button mHowToUseBtn;
     @Bind(R.id.games_how_to_btn)
     Button mHowToBtn;
+    @Bind(R.id.welcome_close_img)
+    View mCloseImg;
+    @Bind(R.id.welcome_layout)
+    View mWelcomeLayout;
 
     // Usual variables
     private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
@@ -90,8 +97,20 @@ public class GamesFragment extends Fragment {
         initRecycler();
         initDatabase();
         initButtons();
+        initWelcomeLayout();
 
         return view;
+    }
+
+    private void initWelcomeLayout() {
+        if (Util.showWelcomeBanner()) mWelcomeLayout.setVisibility(View.VISIBLE);
+        mCloseImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWelcomeLayout.setVisibility(View.GONE);
+                Util.hideWelcomeBanner();
+            }
+        });
     }
 
     public void initDatabase() {
@@ -276,6 +295,12 @@ public class GamesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), HowToPlayActivity.class));
+            }
+        });
+        mHowToUseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HowToUseActivity.class));
             }
         });
     }

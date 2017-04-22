@@ -1,77 +1,162 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".menu.GamesFragment"
     tools:ignore="MissingPrefix"
-    android:fillViewport="true"
-    tools:targetApi="lollipop"
-    android:layout_height="match_parent">
+    tools:targetApi="lollipop">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="12dp"
-        tools:ignore="ScrollViewSize">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/games_title_txt"
-            fontPath="fonts/segoe_ui.ttf"
+        <FrameLayout
+            android:id="@+id/welcome_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/games_title"
-            android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
+            android:visibility="gone"
+            tools:visibility="visible">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/games_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/background_light"
-            android:elevation="2dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/welcome_bg"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <Button
-            android:id="@+id/games_how_to_btn"
-            fontPath="fonts/segoe_ui_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/games_how_to"
-            android:theme="@style/Button" />
+                <TextView
+                    fontPath="fonts/segoe_ui_bold.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/welcome_title"
+                    android:textAllCaps="true"
+                    android:textColor="@color/green"
+                    android:textSize="18sp" />
 
-        <View
+                <TextView
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="2dp"
+                    android:text="@string/welcome_desc"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/games_how_to_use_btn"
+                        fontPath="fonts/segoe_ui_bold.ttf"
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/games_how_to_use"
+                        android:textSize="14sp"
+                        android:theme="@style/Button.Orange"
+                        tools:ignore="ButtonStyle" />
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/games_how_to_btn"
+                            fontPath="fonts/segoe_ui_bold.ttf"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginStart="4dp"
+                            android:maxLines="2"
+                            android:padding="0dp"
+                            android:singleLine="false"
+                            android:text="@string/games_how_to"
+                            android:textSize="14sp"
+                            android:theme="@style/Button.Host"
+                            tools:ignore="ButtonStyle" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/welcome_close_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:padding="20dp"
+                android:src="@drawable/close" />
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingTop="12dp"
+            tools:ignore="ScrollViewSize">
 
-        <Button
-            android:id="@+id/games_host_btn"
-            fontPath="fonts/segoe_ui_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:text="@string/games_host"
-            android:theme="@style/Button.Host" />
+            <TextView
+                android:id="@+id/games_title_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/games_title"
+                android:textColor="@color/secondary_text"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/games_join_btn"
-            fontPath="fonts/segoe_ui_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/games_join"
-            android:theme="@style/Button.Host" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/games_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/background_light"
+                android:elevation="2dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/games_host_btn"
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:text="@string/games_host"
+                android:theme="@style/Button.Host" />
+
+            <Button
+                android:id="@+id/games_join_btn"
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/games_join"
+                android:theme="@style/Button.Host" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
