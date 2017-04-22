@@ -17,7 +17,7 @@
     <style name="AppTheme.Loading" parent="AppTheme" tools:ignore="NewApi">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorAccent">@color/green</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">

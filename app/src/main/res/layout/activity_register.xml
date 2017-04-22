@@ -34,10 +34,10 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
-                android:onClick="onBackButtonClicked"
                 android:drawableLeft="@drawable/back"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/arrow_back"
+                android:onClick="onBackButtonClicked"
                 android:padding="16dp"
                 android:text="@string/go_back"
                 android:textAllCaps="true"
@@ -47,9 +47,9 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
+                android:layout_marginRight="16dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,11 +57,14 @@
                     android:orientation="vertical">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/register_photo_img"
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="16dp"
+                        android:clickable="true"
                         android:contentDescription="@null"
+                        android:onClick="onUpdatePhotoClicked"
                         android:src="@drawable/avatar_placeholder" />
 
                     <EditText
@@ -72,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:hint="@string/register_name"
-                        android:inputType="textCapWords|textPersonName"/>
+                        android:inputType="textCapWords|textPersonName" />
 
                     <EditText
                         android:id="@+id/register_email_edit_txt"
@@ -110,10 +113,10 @@
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:onClick="onRegisterButtonClicked"
-                android:layout_marginBottom="16dp"
                 android:text="@string/register_submit"
                 android:theme="@style/Button.Host" />
         </LinearLayout>

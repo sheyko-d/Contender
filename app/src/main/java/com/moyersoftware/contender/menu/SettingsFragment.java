@@ -55,6 +55,22 @@ public class SettingsFragment extends Fragment {
     private Bitmap mBitmap;
     private StorageReference mImageRef;
     private String mUserId;
+    private Target mTarget = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            mBitmap = bitmap;
+
+            uploadImage();
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+        }
+    };
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -111,27 +127,12 @@ public class SettingsFragment extends Fragment {
                         .centerCrop().fit().into(mPhotoImg);
 
                 Picasso.with(getActivity()).load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
-                        USER_PHOTO_SIZE_PX).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mBitmap = bitmap;
-
-                        uploadImage(mBitmap);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
+                        USER_PHOTO_SIZE_PX).into(mTarget);
             }
         }
     }
 
-    private void uploadImage(Bitmap bitmap) {
+    private void uploadImage() {
         initStorage();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

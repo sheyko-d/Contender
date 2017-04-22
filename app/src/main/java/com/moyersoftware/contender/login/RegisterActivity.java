@@ -1,9 +1,13 @@
 package com.moyersoftware.contender.login;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,24 +19,38 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.MainActivity;
 import com.moyersoftware.contender.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.ByteArrayOutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    // Constants
+    private static final int PICK_IMAGE_CODE = 0;
+    private static final int USER_PHOTO_SIZE_PX = 500;
 
     // Views
     @Bind(R.id.register_name_edit_txt)
@@ -43,10 +61,30 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mPasswordEditTxt;
     @Bind(R.id.register_repeat_password_edit_txt)
     EditText mRepeatPasswordEditTxt;
+    @Bind(R.id.register_photo_img)
+    ImageView mPhotoImg;
 
     // Usual variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Bitmap mBitmap;
+    private String mUserId;
+    private StorageReference mImageRef;
+    private ProgressDialog mDialog;
+    private Target mTarget = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            mBitmap = bitmap;
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +110,14 @@ public class RegisterActivity extends AppCompatActivity {
                             mNameEditTxt.getText().toString(), Util.parseUsername(user),
                             user.getEmail(), ""));
                     Util.setPhoto("");
-                    /*if (Util.isReferralAsked()) {
-                        finish();
-                        LoadingActivity.sActivity.finish();
-                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                    } else {*/
+
+                    if (mBitmap != null) {
+                        mDialog = ProgressDialog.show(RegisterActivity.this, "Loading...",
+                                "");
+                        uploadImage();
+                    } else {
                         askReferral();
-                    //}
+                    }
                 }
             }
         };
@@ -222,5 +261,76 @@ public class RegisterActivity extends AppCompatActivity {
     public void onLoginButtonClicked(View view) {
         finish();
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    public void onUpdatePhotoClicked(View v) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select a game image"),
+                PICK_IMAGE_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Picasso.with(this).load(data.getData()).placeholder(android.R.color.white)
+                        .centerCrop().fit().into(mPhotoImg);
+
+                Picasso.with(this).load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
+                        USER_PHOTO_SIZE_PX).into(mTarget);
+            }
+        }
+    }
+
+    private void uploadImage() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            mUserId = user.getUid();
+        }
+
+        initStorage();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        byte[] data = outputStream.toByteArray();
+
+        UploadTask uploadTask = mImageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Util.Log("File uploading failure: " + exception);
+
+                Toast.makeText(RegisterActivity.this, "Can't upload image", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                savePhoto(taskSnapshot.getDownloadUrl() + "");
+            }
+        });
+    }
+
+    private void savePhoto(String photo) {
+        Util.setPhoto(photo);
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(mUserId).child("image")
+                .setValue(photo);
+
+        mDialog.dismiss();
+        askReferral();
+    }
+
+    private void initStorage() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReferenceFromUrl
+                ("gs://contender-3ef7d.appspot.com");
+
+        // Create a reference the photo
+        mImageRef = storageRef.child(mUserId + ".jpg");
     }
 }
