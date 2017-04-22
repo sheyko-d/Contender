@@ -214,4 +214,8 @@ public class RegisterActivity extends AppCompatActivity {
                     });
         }
     }
+
+    public void onBackButtonClicked(View view) {
+        finish();
+    }
 }

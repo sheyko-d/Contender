@@ -435,6 +435,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
         updateLiveState();
 
+        Util.Log("game.getEventId() = "+game.getEventId());
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
                 (new ValueEventListener() {
                     @Override

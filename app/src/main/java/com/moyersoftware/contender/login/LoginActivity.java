@@ -164,4 +164,13 @@ public class LoginActivity extends AppCompatActivity {
                     });
         }
     }
+
+    public void onBackButtonClicked(View view) {
+        finish();
+    }
+
+    public void onRegisterButtonClicked(View view) {
+        finish();
+        startActivity(new Intent(this, RegisterActivity.class));
+    }
 }

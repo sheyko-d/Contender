@@ -11,4 +11,6 @@
     <color name="divider">#C6C6C6</color>
     <color name="button_disabled">#aaa</color>
     <color name="red">#F44336</color>
+    <color name="white">#fff</color>
+    <color name="green">#08bf22</color>
 </resources>

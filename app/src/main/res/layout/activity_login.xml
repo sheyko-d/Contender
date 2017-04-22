@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,58 +14,102 @@
         android:scaleType="centerCrop"
         android:src="@drawable/loading_bg" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="64dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="32dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="8dp">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:src="@drawable/logo" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:onClick="onBackButtonClicked"
+                android:drawableLeft="@drawable/back"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/arrow_back"
+                android:padding="16dp"
+                android:text="@string/go_back"
+                android:textAllCaps="true"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp" />
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:src="@drawable/icon" />
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
-                <EditText
-                    android:id="@+id/login_email_edit_txt"
-                    style="@style/EditText.Light"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="36dp"
-                    android:hint="@string/login_email"
-                    android:inputType="textEmailAddress" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/login_password_edit_txt"
-                    style="@style/EditText.Light"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/login_password"
-                    android:inputType="textPassword" />
-            </LinearLayout>
-        </ScrollView>
+                    <EditText
+                        android:id="@+id/login_email_edit_txt"
+                        style="@style/EditText.Green"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
+                        android:hint="@string/login_email_hint"
+                        android:inputType="textEmailAddress" />
 
-        <Button
-            fontPath="fonts/segoe_ui_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginBottom="16dp"
-            android:onClick="onLoginButtonClicked"
-            android:text="@string/login_submit"
-            android:theme="@style/Button.Host" />
-    </LinearLayout>
+                    <EditText
+                        android:id="@+id/login_password_edit_txt"
+                        style="@style/EditText.Green"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginTop="4dp"
+                        android:hint="@string/login_password_hint"
+                        android:inputType="textPassword" />
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onLoginButtonClicked"
+                android:text="@string/login_submit"
+                android:theme="@style/Button.Host" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <Button
+        style="@style/Button.Borderless"
+        fontPath="fonts/segoe_ui.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        android:onClick="onRegisterButtonClicked"
+        android:text="@string/login_register"
+        android:textAllCaps="false" />
 </FrameLayout>
