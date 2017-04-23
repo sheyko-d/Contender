@@ -30,9 +30,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,6 +123,10 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView eventTxt;
     @Bind(R.id.host_code_edit_txt)
     EditText mCodeEditTxt;
+    @Bind(R.id.host_game_radio_btn)
+    RadioButton mGameRadioBtn;
+    @Bind(R.id.host_custom_radio_btn)
+    RadioButton mCustomRadioBtn;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -168,7 +174,27 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initPrices();
         initGoogleClient();
         initCodes();
+        initFields();
         loadEvents();
+    }
+
+    private void initFields() {
+        mGameRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mCustomRadioBtn.setChecked(false);
+                }
+            }
+        });
+        mCustomRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    mGameRadioBtn.setChecked(false);
+                }
+            }
+        });
     }
 
     protected void onPostResume() {
