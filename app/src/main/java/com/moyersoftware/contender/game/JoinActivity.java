@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,8 +39,6 @@ public class JoinActivity extends AppCompatActivity {
     // Views
     @Bind(R.id.join_pager)
     ViewPager mPager;
-    @Bind(R.id.join_tab_layout)
-    TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +47,11 @@ public class JoinActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initPager();
-        initTabs();
         initDatabase();
     }
 
     private void initPager() {
         mPager.setAdapter(new JoinPagerAdapter(getSupportFragmentManager()));
-    }
-
-    private void initTabs() {
-        mTabLayout.setupWithViewPager(mPager);
     }
 
     private void initDatabase() {

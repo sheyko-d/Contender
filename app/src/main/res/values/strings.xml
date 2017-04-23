@@ -83,4 +83,5 @@
     <string name="games_how_to_use">How to use</string>
     <string name="title_activity_how_to_use">How to use</string>
     <string name="edit_username">Edit username</string>
+    <string name="games_nearby">Games nearby</string>
 </resources>

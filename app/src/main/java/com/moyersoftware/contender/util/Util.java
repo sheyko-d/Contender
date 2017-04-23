@@ -38,7 +38,6 @@ public class Util {
     public static final String INVITE_IMAGE = "http://moyersoftware.com/contender/images" +
             "/invite.png";
     private static final String PREF_REFERRAL_CODE = "ReferralCode";
-    private static final String PREF_REFERRAL_ASKED = "ReferralAsked";
     private static final String PREF_DISPLAY_NAME = "DisplayName";
     private static final String PREF_PHOTO = "Photo";
     private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
@@ -164,11 +163,6 @@ public class Util {
     public static String getReferralCode() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_REFERRAL_CODE, null);
-    }
-
-    public static void setReferralAsked() {
-        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
-                .putBoolean(PREF_REFERRAL_ASKED, true).apply();
     }
 
     public static void hideWelcomeBanner() {

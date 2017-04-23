@@ -1,22 +1,16 @@
 package com.moyersoftware.contender.login;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -116,61 +110,15 @@ public class RegisterActivity extends AppCompatActivity {
                                 "");
                         uploadImage();
                     } else {
-                        askReferral();
+                        finish();
+                        LoadingActivity.sActivity.finish();
+                        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid());
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                     }
                 }
             }
         };
-    }
-
-    private void askReferral() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder
-                (RegisterActivity.this, R.style.MaterialDialog);
-        dialogBuilder.setTitle("Did someone invite you?");
-        @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(RegisterActivity.this).inflate
-                (R.layout.dialog_code, null);
-        final EditText editTxt = (EditText) view.findViewById(R.id.loading_code_edit_txt);
-        editTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                Util.setReferralCode(editTxt.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        dialogBuilder.setView(view);
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Util.setReferralAsked();
-                finish();
-                LoadingActivity.sActivity.finish();
-                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid());
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-            }
-        });
-        dialogBuilder.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Util.setReferralAsked();
-                finish();
-                LoadingActivity.sActivity.finish();
-                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid());
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-            }
-        });
-        dialogBuilder.create().show();
     }
 
     @Override
@@ -321,7 +269,11 @@ public class RegisterActivity extends AppCompatActivity {
                 .setValue(photo);
 
         mDialog.dismiss();
-        askReferral();
+        finish();
+        LoadingActivity.sActivity.finish();
+        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid());
+        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 
     private void initStorage() {

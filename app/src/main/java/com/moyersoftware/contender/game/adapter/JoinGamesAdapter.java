@@ -49,17 +49,22 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         GameInvite.Game game = mGames.get(position);
 
-        holder.nameTxt.setText(game.getName());
-        holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
-                (game.getAuthor().getEmail())));
-        Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
-                .centerCrop().fit().into(holder.img);
+        try {
 
-        if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
-                mMyEmail, mMyName, mMyPhoto))) {
-            holder.joinBtn.setText(R.string.join_disabled_btn);
-        } else {
-            holder.joinBtn.setText(R.string.join_btn);
+            holder.nameTxt.setText(game.getName());
+            holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
+                    (game.getAuthor().getEmail())));
+            Picasso.with(mActivity).load(game.getImage()).placeholder(R.drawable.placeholder)
+                    .centerCrop().fit().into(holder.img);
+
+            if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
+                    mMyEmail, mMyName, mMyPhoto))) {
+                holder.joinBtn.setText(R.string.join_disabled_btn);
+            } else {
+                holder.joinBtn.setText(R.string.join_btn);
+            }
+        } catch (Exception e) {
+            Util.Log("can't show game");
         }
     }
 

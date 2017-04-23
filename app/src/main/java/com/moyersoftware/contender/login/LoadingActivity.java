@@ -1,19 +1,12 @@
 package com.moyersoftware.contender.login;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -84,15 +77,10 @@ public class LoadingActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("email").setValue(mFacebookEmail);
 
-                        /*if (Util.isReferralAsked()) {
-
-                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                                            .getCurrentUser().getUid());
-                            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                            finish();
-                        } else {*/
-                        askReferral();
-                        //}
+                        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid());
+                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                        finish();
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("users")
                                 .child(user.getUid()).child("image").addListenerForSingleValueEvent
@@ -113,14 +101,10 @@ public class LoadingActivity extends AppCompatActivity {
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                     user.getPhotoUrl() + ""));
                                         }
-                                        /*if (Util.isReferralAsked()) {
-                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                                            .getCurrentUser().getUid());
-                                            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                                            finish();
-                                        } else {*/
-                                        askReferral();
-                                        //}
+                                        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
+                                                .getCurrentUser().getUid());
+                                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                                        finish();
                                     }
 
                                     @Override
@@ -132,55 +116,6 @@ public class LoadingActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    private void askReferral() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder
-                (LoadingActivity.this, R.style.MaterialDialog);
-        dialogBuilder.setTitle("Did someone invite you?");
-        @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(LoadingActivity.this).inflate
-                (R.layout.dialog_code, null);
-        final EditText editTxt = (EditText) view.findViewById(R.id.loading_code_edit_txt);
-        editTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                Util.setReferralCode(editTxt.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        dialogBuilder.setView(view);
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Util.setReferralAsked();
-
-                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid());
-                startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        dialogBuilder.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Util.setReferralAsked();
-                Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid());
-                startActivity(new Intent(LoadingActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-        dialogBuilder.create().show();
     }
 
     private void initFacebook() {
