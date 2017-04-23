@@ -46,7 +46,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
 
     // Constants
     private static final int LOCATION_PERMISSION_CODE = 0;
-    private static final float GAME_SEARCH_RADIUS_MILES = 100;
+    private static final float GAME_SEARCH_RADIUS_MILES = 5;
     private static final float GAME_SEARCH_RADIUS_METERS = (float) (GAME_SEARCH_RADIUS_MILES
             * 1609.34);
 
