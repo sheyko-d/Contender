@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.moyersoftware.contender.game.JoinIdFragment;
+import com.moyersoftware.contender.game.JoinFragment;
 
 public class JoinPagerAdapter extends FragmentPagerAdapter {
 
@@ -25,6 +25,6 @@ public class JoinPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        return JoinIdFragment.newInstance();
+        return JoinFragment.newInstance();
     }
 }

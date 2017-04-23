@@ -42,7 +42,7 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class JoinIdFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
+public class JoinFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
 
     // Constants
     private static final int LOCATION_PERMISSION_CODE = 0;
@@ -59,8 +59,6 @@ public class JoinIdFragment extends Fragment implements GoogleApiClient.Connecti
     TextView mTitleIdTxt;
     @Bind(R.id.join_location_recycler)
     RecyclerView mGamesLocationRecycler;
-    @Bind(R.id.join_location_title_txt)
-    TextView mTitleLocationTxt;
     @Bind(R.id.join_location_search_txt)
     TextView mSearchTxt;
 
@@ -84,18 +82,18 @@ public class JoinIdFragment extends Fragment implements GoogleApiClient.Connecti
     private HashMap<String, Long> mLocationEventTimes = new HashMap<>();
     private DataSnapshot mLocationGamesSnapshot;
 
-    public JoinIdFragment() {
+    public JoinFragment() {
         // Required empty public constructor
     }
 
-    public static JoinIdFragment newInstance() {
-        return new JoinIdFragment();
+    public static JoinFragment newInstance() {
+        return new JoinFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join_id, container, false);
+        View view = inflater.inflate(R.layout.fragment_join, container, false);
         ButterKnife.bind(this, view);
 
         initUser();
@@ -286,7 +284,6 @@ public class JoinIdFragment extends Fragment implements GoogleApiClient.Connecti
                 }
                 mLocationAdapter.notifyDataSetChanged();
 
-                mTitleLocationTxt.setVisibility(mLocationGames.size() > 0 ? View.VISIBLE : View.GONE);
                 if (mLocationGames.size() > 0) {
                     mSearchTxt.setVisibility(View.GONE);
                 } else {
