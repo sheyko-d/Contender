@@ -37,6 +37,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,6 +69,8 @@ import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.data.Friend;
 import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.util.CustomLinearLayout;
+import com.moyersoftware.contender.util.StandardGestures;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -107,7 +110,7 @@ public class GameBoardActivity extends AppCompatActivity {
     @Bind(R.id.board_title_txt)
     TextView mTitleTxt;
     @Bind(R.id.board_layout)
-    View mLayout;
+    CustomLinearLayout mLayout;
     @Bind(R.id.board_away_name_txt)
     TextView mAwayNameTxt;
     @Bind(R.id.board_home_name_txt)
@@ -205,8 +208,37 @@ public class GameBoardActivity extends AppCompatActivity {
         initHorizontalScrollView();
         initBottomSheet();
         initDatabase();
+        initScaleLayout();
         loadPlayers();
         loadFriends();
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    private void initScaleLayout() {
+        mLayout.setOnTouchListener(new StandardGestures(this, mBoardAdapter, mRowAdapter,
+                mColumnAdapter, mRowRecycler, mColumnRecycler, mBoardRecycler));
+
+        int height = Util.getCellSize();
+
+        mColumnRecycler.getLayoutParams().width = height;
+        mColumnRecycler.getLayoutParams().height = height * 10;
+
+        mRowRecycler.getLayoutParams().width = height * 10;
+        mRowRecycler.getLayoutParams().height = height;
+
+        ((FrameLayout.LayoutParams) mBoardRecycler.getLayoutParams())
+                .topMargin = height;
+        mBoardRecycler.requestLayout();
+
+        ((FrameLayout.LayoutParams) mColumnRecycler.getLayoutParams())
+                .topMargin = height;
+        mColumnRecycler.requestLayout();
+
+        ((FrameLayout.LayoutParams) mRowRecycler.getLayoutParams())
+                .leftMargin = height;
+        mRowRecycler.requestLayout();
+
+        mBoardRecycler.setPadding(height, 0, 0, 0);
     }
 
     @Override
@@ -435,7 +467,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
         updateLiveState();
 
-        Util.Log("game.getEventId() = "+game.getEventId());
+        Util.Log("game.getEventId() = " + game.getEventId());
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
                 (new ValueEventListener() {
                     @Override
@@ -519,7 +551,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mRowLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mRowRecycler.setLayoutManager(mRowLayoutManager);
         mRowRecycler.setHasFixedSize(true);
-        mRowAdapter = new GameRowAdapter(mRowNumbers);
+        mRowAdapter = new GameRowAdapter(this, mRowNumbers);
         mRowRecycler.setAdapter(mRowAdapter);
         mRowRecycler.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -533,7 +565,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mColumnLayoutManager = new LinearLayoutManager(this);
         mColumnRecycler.setLayoutManager(mColumnLayoutManager);
         mColumnRecycler.setHasFixedSize(true);
-        mColumnAdapter = new GameRowAdapter(mColumnNumbers);
+        mColumnAdapter = new GameRowAdapter(this, mColumnNumbers);
         mColumnRecycler.setAdapter(mColumnAdapter);
         mColumnRecycler.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -9,220 +9,6 @@
     tools:targetApi="lollipop">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="@color/colorPrimary"
-            android:contentDescription="@null"
-            android:elevation="4dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="80dp"
-            android:paddingRight="80dp"
-            android:paddingTop="16dp"
-            android:src="@drawable/logo" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onBackButtonClicked"
-                android:src="@drawable/back" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/board_game_img"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                tools:src="@android:color/white" />
-
-            <TextView
-                android:id="@+id/board_title_txt"
-                fontPath="fonts/segoe_ui_bold.ttf"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                tools:text="Big Day" />
-
-            <ImageView
-                android:id="@+id/board_invite_friends_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onInviteFriendsButtonClicked"
-                android:src="@drawable/friend_invite" />
-
-            <ImageView
-                android:id="@+id/board_add_player_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onAddPlayerButtonClicked"
-                android:src="@drawable/player_add" />
-
-            <ImageView
-                android:id="@+id/board_print_img"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onPrintButtonClicked"
-                android:src="@drawable/print"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/board_pdf_img"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="4dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onPdfButtonClicked"
-                android:src="@drawable/pdf"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/board_progress_txt"
-            fontPath="fonts/segoe_ui_medium.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="12dp"
-            android:text="Loading..."
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/board_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/board_home_name_txt"
-                fontPath="fonts/wanted.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="3dp"
-                android:shadowColor="@android:color/white"
-                android:shadowRadius="10"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                tools:text="New England Patriots" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <HorizontalScrollView
-                    android:id="@+id/board_horizontal_scroll_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="32dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/board_recycler"
-                        android:layout_width="800dp"
-                        android:layout_height="match_parent"
-                        android:overScrollMode="never"
-                        android:paddingStart="@dimen/board_cell_size"
-                        android:paddingTop="@dimen/board_cell_size"
-                        tools:ignore="RtlSymmetry" />
-                </HorizontalScrollView>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/board_column_recycler"
-                    android:layout_width="@dimen/board_cell_size"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="@dimen/board_cell_size"
-                    android:background="@color/colorPrimary" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/board_row_recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/board_cell_size"
-                        android:layout_marginStart="@dimen/board_cell_size"
-                        android:background="@color/colorPrimary" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="32dp">
-
-                    <com.moyersoftware.contender.util.VerticalTextView
-                        android:id="@+id/board_away_name_txt"
-                        fontPath="fonts/wanted.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingBottom="6dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:paddingTop="10dp"
-                        android:shadowColor="@android:color/white"
-                        android:shadowRadius="10"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp"
-                        tools:ignore="RtlHardcoded"
-                        tools:text="New York Giants" />
-                </FrameLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/board_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -518,5 +304,219 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@null"
+            android:elevation="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="80dp"
+            android:paddingRight="80dp"
+            android:paddingTop="16dp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onBackButtonClicked"
+                android:src="@drawable/back" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/board_game_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                tools:src="@android:color/white" />
+
+            <TextView
+                android:id="@+id/board_title_txt"
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                tools:text="Big Day" />
+
+            <ImageView
+                android:id="@+id/board_invite_friends_img"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onInviteFriendsButtonClicked"
+                android:src="@drawable/friend_invite" />
+
+            <ImageView
+                android:id="@+id/board_add_player_img"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onAddPlayerButtonClicked"
+                android:src="@drawable/player_add" />
+
+            <ImageView
+                android:id="@+id/board_print_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onPrintButtonClicked"
+                android:src="@drawable/print"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/board_pdf_img"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="4dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:onClick="onPdfButtonClicked"
+                android:src="@drawable/pdf"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/board_progress_txt"
+            fontPath="fonts/segoe_ui_medium.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:text="Loading..."
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <com.moyersoftware.contender.util.CustomLinearLayout
+            android:id="@+id/board_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/board_home_name_txt"
+                fontPath="fonts/wanted.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="3dp"
+                android:shadowColor="@android:color/white"
+                android:shadowRadius="10"
+                android:textColor="@color/green"
+                android:textSize="16sp"
+                tools:text="New England Patriots" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <HorizontalScrollView
+                    android:id="@+id/board_horizontal_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/board_recycler"
+                        android:layout_width="800dp"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:paddingStart="@dimen/board_cell_size"
+                        android:paddingTop="@dimen/board_cell_size"
+                        tools:ignore="RtlSymmetry" />
+                </HorizontalScrollView>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/board_column_recycler"
+                    android:layout_width="@dimen/board_cell_size"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="@dimen/board_cell_size"
+                    android:background="@color/green" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/board_row_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/board_cell_size"
+                        android:layout_marginStart="@dimen/board_cell_size"
+                        android:background="@color/green" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="32dp">
+
+                    <com.moyersoftware.contender.util.VerticalTextView
+                        android:id="@+id/board_away_name_txt"
+                        fontPath="fonts/wanted.ttf"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="10dp"
+                        android:shadowColor="@android:color/white"
+                        android:shadowRadius="10"
+                        android:textColor="@color/green"
+                        android:textSize="16sp"
+                        tools:ignore="RtlHardcoded"
+                        tools:text="New York Giants" />
+                </FrameLayout>
+            </FrameLayout>
+        </com.moyersoftware.contender.util.CustomLinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

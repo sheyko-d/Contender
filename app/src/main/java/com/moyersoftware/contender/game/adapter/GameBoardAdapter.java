@@ -35,9 +35,13 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     private Integer mAwayScore = null;
     private ArrayList<Integer> mRowNumbers = new ArrayList<>();
     private ArrayList<Integer> mColumnNumbers = new ArrayList<>();
+    private int mHeight;
+    private int mDefaultHeight;
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
+        mDefaultHeight = Util.getCellSize();
+        mHeight = mDefaultHeight;
     }
 
     public void setLive(Boolean live) {
@@ -94,6 +98,9 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.itemView.getLayoutParams().height = mHeight;
+        holder.itemView.getLayoutParams().width = mHeight;
+
         if (mSelectedPositions.containsKey(position)) {
             SelectedSquare selectedSquare = mSelectedPositions.get(position);
             holder.nameTxt.setText(selectedSquare.getAuthorName());
@@ -159,6 +166,10 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     @Override
     public int getItemCount() {
         return CELLS_COUNT;
+    }
+
+    public void scale(int height) {
+        mHeight = height;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,

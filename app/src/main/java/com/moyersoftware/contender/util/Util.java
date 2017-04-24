@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.login.data.User;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class Util {
     private static final String PREF_DISPLAY_NAME = "DisplayName";
     private static final String PREF_PHOTO = "Photo";
     private static final String PREF_EMPTY_CELL_REMINDER_TIMES = "EmptyCellReminderTimes";
+    private static final String PREF_CELL_SIZE = "CellSize";
     public static final int HALF_HOUR_DURATION = 1000 * 60 * 30;
     private static final String PREF_CURRENT_PLAYER_ID = "CurrentPlayerId";
     private static final String PREF_TUTORIAL_SHOWN = "TutorialShown";
@@ -165,6 +167,17 @@ public class Util {
                 .getString(PREF_REFERRAL_CODE, null);
     }
 
+    public static void setCellSize(int cellSize) {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putInt(PREF_CELL_SIZE, cellSize).apply();
+    }
+
+    public static int getCellSize() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getInt(PREF_CELL_SIZE, (int) MyApplication.getContext().getResources().getDimension
+                        (R.dimen.board_cell_size));
+    }
+
     public static void hideWelcomeBanner() {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
                 .putBoolean(PREF_SHOW_WELCOME, false).apply();
@@ -243,9 +256,9 @@ public class Util {
     }
 
     public static void setTutorialShown() {
-            PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
-                    .putBoolean(PREF_TUTORIAL_SHOWN, true)
-                    .apply();
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putBoolean(PREF_TUTORIAL_SHOWN, true)
+                .apply();
     }
 
     public static boolean isTutorialShown() {
