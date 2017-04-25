@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/green</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
     </style>
 
     <style name="AppTheme.Translucent" parent="AppTheme">
@@ -82,5 +83,11 @@
     <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">#444</item>
+        <item name="pageColor">#aaa</item>
+        <item name="radius">3dp</item>
     </style>
 </resources>

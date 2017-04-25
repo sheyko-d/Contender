@@ -86,4 +86,5 @@
     <string name="games_nearby">Games nearby</string>
     <string name="or">or</string>
     <string name="custom_game_board">Custom game board</string>
+    <string name="copy_id">Copy ID</string>
 </resources>

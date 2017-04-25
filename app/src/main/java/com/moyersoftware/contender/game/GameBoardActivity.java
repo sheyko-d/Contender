@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.print.PrintHelper;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -74,6 +76,7 @@ import com.moyersoftware.contender.util.CustomLinearLayout;
 import com.moyersoftware.contender.util.StandardGestures;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -154,6 +157,10 @@ public class GameBoardActivity extends AppCompatActivity {
     ImageView mWinnerFinalImg;
     @Bind(R.id.board_info_squares_txt)
     TextView mSquaresTxt;
+    @Bind(R.id.page_indicator)
+    CirclePageIndicator mPageIndicator;
+    @Bind(R.id.board_details_txt)
+    TextView mDetailsTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -569,6 +576,9 @@ public class GameBoardActivity extends AppCompatActivity {
         mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+
+        mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br><br>ID: "
+                + mGameId));
     }
 
     @SuppressWarnings("deprecation")
@@ -672,8 +682,27 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void initBottomSheet() {
+        WizardPagerAdapter adapter = new WizardPagerAdapter();
+        final ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
         BottomSheetBehavior behavior = BottomSheetBehavior.from(mBottomSheet);
         behavior.setPeekHeight(Util.convertDpToPixel(48));
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    pager.setCurrentItem(0);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        mPageIndicator.setViewPager(pager);
     }
 
     /**
@@ -1152,24 +1181,12 @@ public class GameBoardActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
-    @SuppressWarnings("deprecation")
-    public void onInfoButtonClicked(View view) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
-        dialogBuilder.setTitle("Game info");
-        dialogBuilder.setMessage(Html.fromHtml("<b>Name:</b> " + mGameName + "<br><br><b>ID:</b> "
-                + mGameId));
-        dialogBuilder.setPositiveButton("Copy ID", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Game ID", mGameId);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(GameBoardActivity.this, "Game ID is copied to clipboard",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialogBuilder.setNegativeButton("Cancel", null);
-        dialogBuilder.create().show();
+    public void onCopyIdButtonClicked(View view) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Game ID", mGameId);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(GameBoardActivity.this, "Game ID is copied to clipboard",
+                Toast.LENGTH_SHORT).show();
     }
 
     private void uploadSquares() {
@@ -1221,5 +1238,33 @@ public class GameBoardActivity extends AppCompatActivity {
     public void setPlayerPaid(final String playerId, final boolean checked) {
         mDatabase.child("games").child(mGameId).child("paid_players").child(playerId)
                 .setValue(checked);
+    }
+
+
+    class WizardPagerAdapter extends PagerAdapter {
+
+        public Object instantiateItem(ViewGroup collection, int position) {
+
+            int resId = 0;
+            switch (position) {
+                case 0:
+                    resId = R.id.page_one;
+                    break;
+                case 1:
+                    resId = R.id.page_two;
+                    break;
+            }
+            return findViewById(resId);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            return arg0 == ((View) arg1);
+        }
     }
 }
