@@ -48,6 +48,7 @@ public class Util {
     private static final String PREF_TUTORIAL_SHOWN = "TutorialShown";
     public static final String SUPPORT_EMAIL = "ryan@moyersoftware.com";
     private static final String PREF_SHOW_WELCOME = "ShowWelcome";
+    private static final String PREF_RULES_SHOWN = "RulesShown";
 
     /**
      * Adds a message to LogCat.
@@ -165,6 +166,16 @@ public class Util {
     public static String getReferralCode() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getString(PREF_REFERRAL_CODE, null);
+    }
+
+    public static void setRulesShown(String gameId) {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putBoolean(PREF_RULES_SHOWN + gameId, true).apply();
+    }
+
+    public static boolean rulesShown(String gameId) {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_RULES_SHOWN + gameId, false);
     }
 
     public static void setCellSize(int cellSize) {

@@ -60,6 +60,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
 import com.moyersoftware.contender.game.adapter.GameFriendsAdapter;
 import com.moyersoftware.contender.game.adapter.GameFriendsSquaresAdapter;
+import com.moyersoftware.contender.game.adapter.GamePaidPlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GamePlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -133,14 +134,14 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mFinalScoreTxt;
     @Bind(R.id.board_info_time_txt)
     TextView mTimeTxt;
-    @Bind(R.id.board_print_img)
-    ImageView mPrintImg;
     @Bind(R.id.board_pdf_img)
     ImageView mPdfImg;
     @Bind(R.id.board_progress_txt)
     View mProgressBar;
     @Bind(R.id.board_invite_friends_img)
     ImageView mInviteFriendsImg;
+    @Bind(R.id.board_paid_players_img)
+    ImageView mPaidPlayersImg;
     @Bind(R.id.board_info_q1_winner_img)
     ImageView mWinner1Img;
     @Bind(R.id.board_info_q2_winner_img)
@@ -175,6 +176,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private String mAuthorId;
     private AlertDialog mPlayersDialog;
     private ArrayList<Player> mPlayers = new ArrayList<>();
+    private ArrayList<String> mPaidPlayers = new ArrayList<>();
     private GamePlayersAdapter mPlayersAdapter;
     private String mMyEmail;
     private String mDeviceOwnerId;
@@ -189,6 +191,8 @@ public class GameBoardActivity extends AppCompatActivity {
     private GameFriendsSquaresAdapter mFriendsSquaresAdapter;
     private Event mEvent;
     private RecyclerView recycler;
+    private boolean mIsHost;
+    private GamePaidPlayersAdapter mPaidPlayersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +214,33 @@ public class GameBoardActivity extends AppCompatActivity {
         initDatabase();
         initScaleLayout();
         loadPlayers();
+        loadPaidPlayers();
         loadFriends();
+    }
+
+    private void loadPaidPlayers() {
+        mDatabase.child("games").child(mGameId).child("paid_players").addValueEventListener
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        mPaidPlayers.clear();
+                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
+                            if (playerSnapshot.getValue(Boolean.class)) {
+                                mPaidPlayers.add(playerSnapshot.getKey());
+                            }
+                        }
+                        try {
+                            mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
+                            mPaidPlayersAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            // Dialog is not shown yet
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
@@ -436,6 +466,12 @@ public class GameBoardActivity extends AppCompatActivity {
         mPlayerEmails.clear();
         mPlayerEmails.add(game.getAuthor().getEmail());
         mAuthorId = game.getAuthor().getUserId();
+
+        mIsHost = mAuthorId.equals(mMyId);
+
+        // Show rules dialog
+        if (!Util.rulesShown(game.getId()) && !mIsHost) showRulesDialog(game);
+
         if (game.getPlayers() != null) {
             for (Player player : game.getPlayers()) {
                 mPlayerEmails.add(player.getEmail());
@@ -527,6 +563,49 @@ public class GameBoardActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
+
+        mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void showRulesDialog(GameInvite.Game game) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        if (!TextUtils.isEmpty(game.getRules())) {
+            dialogBuilder.setTitle("Rules");
+            dialogBuilder.setMessage(Html.fromHtml(
+                    game.getRules() +
+                            "<br><br>"
+                            + "<b>Points breakdown</b>"
+                            + "<br>"
+                            + "Q1: " + game.getQuarter1Price() + " points"
+                            + "<br>"
+                            + "Q2: " + game.getQuarter2Price() + " points"
+                            + "<br>"
+                            + "Q3: " + game.getQuarter3Price() + " points"
+                            + "<br>"
+                            + "Q4: " + game.getFinalPrice() + " points"));
+        } else {
+            dialogBuilder.setTitle("Points breakdown");
+
+            dialogBuilder.setMessage(Html.fromHtml(
+                    "Q1: " + game.getQuarter1Price() + " points"
+                            + "<br>"
+                            + "Q2: " + game.getQuarter2Price() + " points"
+                            + "<br>"
+                            + "Q3: " + game.getQuarter3Price() + " points"
+                            + "<br>"
+                            + "Q4: " + game.getFinalPrice() + " points"));
+        }
+        dialogBuilder.setPositiveButton("Got it", null);
+        dialogBuilder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        dialogBuilder.create().show();
+
+        Util.setRulesShown(game.getId());
     }
 
     private void initBoardRecycler() {
@@ -815,9 +894,9 @@ public class GameBoardActivity extends AppCompatActivity {
         mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
     }
 
-    public void onAddPlayerButtonClicked(View view) {
+    public void onManualAddButtonClicked(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
-        dialogBuilder.setTitle("Select player");
+        dialogBuilder.setTitle("Select or add player");
         @SuppressLint("InflateParams")
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_player, null);
         recycler = (RecyclerView) dialogView.findViewById
@@ -927,6 +1006,22 @@ public class GameBoardActivity extends AppCompatActivity {
         dialogBuilder.setNegativeButton("Close", null);
         mInviteFriendsDialog = dialogBuilder.create();
         mInviteFriendsDialog.show();
+    }
+
+    public void onPaidPlayersButtonClicked(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+
+        dialogBuilder.setTitle("Players who paid");
+        @SuppressLint("InflateParams")
+        RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
+                (R.layout.dialog_paid_players, null);
+        mPaidPlayersAdapter = new GamePaidPlayersAdapter(this, mPlayers);
+        mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
+        recycler.setAdapter(mPaidPlayersAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        dialogBuilder.setView(recycler);
+        dialogBuilder.setNegativeButton("Close", null);
+        dialogBuilder.create().show();
     }
 
     private void loadFriends() {
@@ -1083,7 +1178,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private void updateLiveState() {
         if (mSelectedSquares.size() == 100 != mGameLive) {
             mGameLive = mSelectedSquares.size() == 100;
-            mPrintImg.setVisibility(View.VISIBLE);
             mPdfImg.setVisibility(View.VISIBLE);
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
@@ -1092,7 +1186,7 @@ public class GameBoardActivity extends AppCompatActivity {
             mRowAdapter.notifyDataSetChanged();
             mColumnAdapter.notifyDataSetChanged();
 
-            mInviteFriendsImg.setVisibility(mAuthorId.equals(mMyId) ? View.VISIBLE : View.GONE);
+            mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
             mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
                     : R.drawable.friend_invite_live);
         }
@@ -1120,5 +1214,10 @@ public class GameBoardActivity extends AppCompatActivity {
         Toast.makeText(this, mGame.getFinalWinner().getPlayer().getName()
                 + " won the final quarter!", Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    public void setPlayerPaid(final String playerId, final boolean checked) {
+        mDatabase.child("games").child(mGameId).child("paid_players").child(playerId)
+                .setValue(checked);
     }
 }

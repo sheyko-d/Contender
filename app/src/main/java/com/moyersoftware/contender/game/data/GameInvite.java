@@ -60,6 +60,7 @@ public class GameInvite {
         public boolean current;
         public String currentQuarter;
         public String code;
+        public String rules;
         @Nullable
         public Long eventTime;
         @Nullable
@@ -80,7 +81,7 @@ public class GameInvite {
                     ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
                     ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
                     Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
-                    String currentQuarter, String code, int squaresLimit) {
+                    String currentQuarter, String code, String rules, int squaresLimit) {
             this.eventId = eventId;
             this.id = id;
             this.name = name;
@@ -108,6 +109,7 @@ public class GameInvite {
             this.current = current;
             this.currentQuarter = currentQuarter;
             this.code = code;
+            this.rules = rules;
             this.squaresLimit = squaresLimit;
         }
 
@@ -217,6 +219,10 @@ public class GameInvite {
 
         public String getCode() {
             return code;
+        }
+
+        public String getRules() {
+            return rules;
         }
 
         public Long getEventTime() {

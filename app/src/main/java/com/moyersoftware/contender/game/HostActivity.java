@@ -123,6 +123,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView eventTxt;
     @Bind(R.id.host_code_edit_txt)
     EditText mCodeEditTxt;
+    @Bind(R.id.host_rules_edit_txt)
+    EditText mRulesEditTxt;
     @Bind(R.id.host_game_radio_btn)
     RadioButton mGameRadioBtn;
     @Bind(R.id.host_custom_radio_btn)
@@ -159,6 +161,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private Long mEventTime;
     private Boolean mFirstFreeGame = false;
     private Integer mSquaresLimit;
+    private String mRules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -790,6 +793,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private void readFieldValues() {
         mName = mNameEditTxt.getText().toString();
         mPassword = mPasswordEditTxt.getText().toString();
+        mRules = mRulesEditTxt.getText().toString();
         String squarePrice = mSquarePriceEditTxt.getText().toString();
         if (!TextUtils.isEmpty(squarePrice)) {
             mSquarePrice = Integer.valueOf(squarePrice);
@@ -841,7 +845,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode,
+                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
                 mSquaresLimit))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
