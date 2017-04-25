@@ -142,6 +142,8 @@ public class GameBoardActivity extends AppCompatActivity {
     ImageView mInviteFriendsImg;
     @Bind(R.id.board_paid_players_img)
     ImageView mPaidPlayersImg;
+    @Bind(R.id.board_manual_add_img)
+    ImageView mManualAddImg;
     @Bind(R.id.board_info_q1_winner_img)
     ImageView mWinner1Img;
     @Bind(R.id.board_info_q2_winner_img)
@@ -565,6 +567,8 @@ public class GameBoardActivity extends AppCompatActivity {
                 });
 
         mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+        mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+        mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
     }
 
     @SuppressWarnings("deprecation")
@@ -1057,7 +1061,7 @@ public class GameBoardActivity extends AppCompatActivity {
                                             }
                                         }
 
-                                        mInvitedFriendIds.add(mGame.getAuthor().getUserId());
+                                        mInvitedFriendIds.add(mAuthorId);
                                         if (mFriendsAdapter != null) {
                                             mFriendsAdapter.notifyDataSetChanged();
                                         }
@@ -1178,7 +1182,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private void updateLiveState() {
         if (mSelectedSquares.size() == 100 != mGameLive) {
             mGameLive = mSelectedSquares.size() == 100;
-            mPdfImg.setVisibility(View.VISIBLE);
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
             mColumnAdapter.setLive(mGameLive);
@@ -1186,7 +1189,6 @@ public class GameBoardActivity extends AppCompatActivity {
             mRowAdapter.notifyDataSetChanged();
             mColumnAdapter.notifyDataSetChanged();
 
-            mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
             mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
                     : R.drawable.friend_invite_live);
         }

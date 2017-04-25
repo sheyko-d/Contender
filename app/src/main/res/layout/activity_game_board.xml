@@ -415,9 +415,7 @@
                 android:clickable="true"
                 android:contentDescription="@null"
                 android:onClick="onPdfButtonClicked"
-                android:src="@drawable/pdf"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:src="@drawable/pdf" />
         </LinearLayout>
 
         <TextView
