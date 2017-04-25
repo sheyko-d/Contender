@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.share.model.AppInviteContent;
-import com.facebook.share.widget.AppInviteDialog;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,10 +49,6 @@ public class FriendsFragment extends Fragment {
     RecyclerView mFriendsRecycler;
     @Bind(R.id.friends_pending_recycler)
     RecyclerView mFriendsPendingRecycler;
-    @Bind(R.id.friends_invite_btn)
-    Button mInviteBtn;
-    @Bind(R.id.friends_social_btn)
-    TextView mSocialBtn;
     @Bind(R.id.friends_title_txt)
     TextView mTitleTxt;
     @Bind(R.id.friends_pending_title_txt)
@@ -93,8 +87,6 @@ public class FriendsFragment extends Fragment {
         initDatabase();
         initRecycler();
         initPendingRecycler();
-        initInviteBtn();
-        initFacebookInviteBtn();
         initFindBtn();
         loadFriends();
 
@@ -302,40 +294,6 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-    private void initFacebookInviteBtn() {
-        boolean canInviteFacebook = AppInviteDialog.canShow();
-        mSocialBtn.setVisibility(canInviteFacebook ? View.VISIBLE : View.GONE);
-        if (canInviteFacebook) {
-            mSocialBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Retrieve the invite code for this user if it exists
-                    mDatabase.child("invites").child(mMyId).addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    String code = dataSnapshot.getValue(String.class);
-                                    if (code == null) {
-                                        code = createGameCode();
-                                    }
-
-                                    AppInviteContent content = new AppInviteContent.Builder()
-                                            .setApplinkUrl(Util.INVITE_LINK)
-                                            .setPreviewImageUrl(Util.INVITE_IMAGE)
-                                            .setPromotionDetails("Code", code)
-                                            .build();
-                                    AppInviteDialog.show(getActivity(), content);
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
-                }
-            });
-        }
-    }
-
     private void initRecycler() {
         mFriendsRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new FriendsAdapter(FriendsFragment.this, mFriends);
@@ -346,30 +304,6 @@ public class FriendsFragment extends Fragment {
         mFriendsPendingRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mPendingAdapter = new FriendsAdapter(FriendsFragment.this, mPendingFriends);
         mFriendsPendingRecycler.setAdapter(mPendingAdapter);
-    }
-
-    private void initInviteBtn() {
-        mInviteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Retrieve the invite code for this user if it exists
-                mDatabase.child("invites").child(mMyId).addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String code = dataSnapshot.getValue(String.class);
-                                if (code == null) {
-                                    code = createGameCode();
-                                }
-                                sendInvite(code);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-            }
-        });
     }
 
     private String createGameCode() {

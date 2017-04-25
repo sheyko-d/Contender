@@ -35,53 +35,19 @@
             android:elevation="2dp" />
 
         <Button
-            android:id="@+id/friends_social_btn"
+            android:id="@+id/friends_find_btn"
             fontPath="fonts/segoe_ui_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:text="Invite from facebook"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Find friends"
             android:textSize="18sp"
             android:theme="@style/Button" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:ignore="ButtonStyle">
-
-            <Button
-                android:id="@+id/friends_find_btn"
-                fontPath="fonts/segoe_ui_bold.ttf"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_marginEnd="4dp"
-                android:paddingLeft="8dp"
-                android:layout_marginBottom="16dp"
-                android:paddingRight="8dp"
-                android:layout_marginStart="14dp"
-                android:layout_weight="1"
-                android:text="Find friends"
-                android:textSize="16sp"
-                android:theme="@style/Button" />
-
-            <Button
-                android:id="@+id/friends_invite_btn"
-                fontPath="fonts/segoe_ui_bold.ttf"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="14dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:text="Invite friends"
-                android:textSize="16sp"
-                android:theme="@style/Button" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/friends_title_txt"
