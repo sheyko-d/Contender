@@ -87,4 +87,9 @@
     <string name="or">or</string>
     <string name="custom_game_board">Custom game board</string>
     <string name="copy_id">Copy ID</string>
+    <string name="find_friends">Find friends</string>
+    <string name="find_friends_desc">Add people to your friends list that already have Contender</string>
+    <string name="btn_continue">Continue</string>
+    <string name="loading">Loading…</string>
+    <string name="no_friends_found">No friends found.</string>
 </resources>

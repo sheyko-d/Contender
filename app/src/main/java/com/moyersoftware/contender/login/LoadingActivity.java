@@ -79,7 +79,13 @@ public class LoadingActivity extends AppCompatActivity {
 
                         Util.setCurrentPlayerId(FirebaseAuth.getInstance()
                                 .getCurrentUser().getUid());
-                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                        if (!Util.findFriendsShown()) {
+                            startActivity(new Intent(LoadingActivity.this,
+                                    FindFriendsActivity.class));
+                            Util.setFindFriendsShown();
+                        } else {
+                            startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                        }
                         finish();
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("users")
@@ -93,17 +99,24 @@ public class LoadingActivity extends AppCompatActivity {
                                             FirebaseDatabase.getInstance().getReference().child("users")
                                                     .child(user.getUid()).setValue(new User(user.getUid(),
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
-                                                    oldPhoto));
+                                                    oldPhoto, null));
                                         } else {
                                             Util.setPhoto(user.getPhotoUrl() + "");
                                             FirebaseDatabase.getInstance().getReference().child("users")
                                                     .child(user.getUid()).setValue(new User(user.getUid(),
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
-                                                    user.getPhotoUrl() + ""));
+                                                    user.getPhotoUrl() + "", null));
                                         }
                                         Util.setCurrentPlayerId(FirebaseAuth.getInstance()
                                                 .getCurrentUser().getUid());
-                                        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                                        if (!Util.findFriendsShown()) {
+                                            startActivity(new Intent(LoadingActivity.this,
+                                                    FindFriendsActivity.class));
+                                            Util.setFindFriendsShown();
+                                        } else {
+                                            startActivity(new Intent(LoadingActivity.this,
+                                                    MainActivity.class));
+                                        }
                                         finish();
                                     }
 

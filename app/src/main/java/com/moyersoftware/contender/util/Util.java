@@ -49,6 +49,7 @@ public class Util {
     public static final String SUPPORT_EMAIL = "ryan@moyersoftware.com";
     private static final String PREF_SHOW_WELCOME = "ShowWelcome";
     private static final String PREF_RULES_SHOWN = "RulesShown";
+    private static final String PREF_FIND_FRIENDS_SHOWN = "FindFriendsShown";
 
     /**
      * Adds a message to LogCat.
@@ -275,5 +276,16 @@ public class Util {
     public static boolean isTutorialShown() {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
                 .getBoolean(PREF_TUTORIAL_SHOWN, false);
+    }
+
+    public static boolean findFriendsShown() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_FIND_FRIENDS_SHOWN, false);
+    }
+
+    public static void setFindFriendsShown() {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putBoolean(PREF_FIND_FRIENDS_SHOWN, true)
+                .apply();
     }
 }

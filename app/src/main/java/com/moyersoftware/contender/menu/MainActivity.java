@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,10 +88,21 @@ public class MainActivity extends AppCompatActivity {
         initPager();
         initTabs();
         initUser();
+        updatePhoneNumber();
 
         if (!Util.isTutorialShown()) {
             startActivity(new Intent(this, HowToPlayActivity.class));
         }
+    }
+
+    private void updatePhoneNumber() {
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        @SuppressLint("HardwareIds") String phoneNumber = tMgr.getLine1Number();
+
+        Util.Log("my phoneNumber = "+phoneNumber);
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
+                .child("phone").setValue(phoneNumber);
     }
 
     private void checkFacebookInvite() {

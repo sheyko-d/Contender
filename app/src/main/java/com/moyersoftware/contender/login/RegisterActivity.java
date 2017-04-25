@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("users")
                             .child(user.getUid()).setValue(new User(user.getUid(),
                             mNameEditTxt.getText().toString(), Util.parseUsername(user),
-                            user.getEmail(), ""));
+                            user.getEmail(), "", null));
                     Util.setPhoto("");
 
                     if (mBitmap != null) {
@@ -114,7 +114,8 @@ public class RegisterActivity extends AppCompatActivity {
                         LoadingActivity.sActivity.finish();
                         Util.setCurrentPlayerId(FirebaseAuth.getInstance()
                                 .getCurrentUser().getUid());
-                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+
+                        startActivity(new Intent(RegisterActivity.this, FindFriendsActivity.class));
                     }
                 }
             }

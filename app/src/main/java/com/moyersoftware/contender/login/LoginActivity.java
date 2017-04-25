@@ -76,7 +76,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                     finish();
                                     LoadingActivity.sActivity.finish();
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    if (!Util.findFriendsShown()) {
+                                        startActivity(new Intent(LoginActivity.this,
+                                                FindFriendsActivity.class));
+                                        Util.setFindFriendsShown();
+                                    } else {
+                                        startActivity(new Intent(LoginActivity.this,
+                                                MainActivity.class));
+                                    }
                                 }
 
                                 @Override
