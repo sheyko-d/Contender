@@ -512,7 +512,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
         updateLiveState();
 
-        Util.Log("game = "+game.getId());
+        Util.Log("game = " + game.getId());
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
                 (new ValueEventListener() {
                     @Override
@@ -577,8 +577,9 @@ public class GameBoardActivity extends AppCompatActivity {
         mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
 
-        mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br><br>ID: "
-                + mGameId));
+        mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br>ID: "
+                + mGameId + "<br>Rules: " + (TextUtils.isEmpty(game.getRules())
+                ? "No additional rules" : game.getRules())));
     }
 
     @SuppressWarnings("deprecation")
