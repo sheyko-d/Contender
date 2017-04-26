@@ -30,6 +30,7 @@ import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -37,7 +38,9 @@ import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 
 public class WinnerService extends Service {
 
+    private static final int PAID_NOTIFICATION_CODE = 123;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
 
     @Nullable
     @Override
@@ -126,27 +129,22 @@ public class WinnerService extends Service {
                             .contains(new Player(firebaseUser.getUid(), null,
                                     firebaseUser.getEmail(),
                                     Util.getDisplayName(), Util.getPhoto()))))) {
-
-                        Util.Log("winner 1");
                         if (!TextUtils.isEmpty(game.getInviteName())) {
                             continue;
                         }
                         int emptySquaresCount;
-                        Util.Log("winner 2");
                         if (game.getSelectedSquares() != null) {
                             emptySquaresCount = 100 - game.getSelectedSquares().size();
                         } else {
                             emptySquaresCount = 100;
                         }
 
-                        Util.Log("winner 3");
                         if (emptySquaresCount == 100 && (mEventTimes.get(game.getEventId())
                                 == -2 || mEventTimes.get(game.getEventId())
                                 < System.currentTimeMillis())) {
                             continue;
                         }
 
-                        Util.Log("winner 4");
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
                                 && mEventTimes.get(game.getEventId()) -
                                 System.currentTimeMillis() < 1000 * 60 * 30) {
@@ -165,8 +163,6 @@ public class WinnerService extends Service {
 
                         String gameId = game.getId();
 
-                        Util.Log("winner 5");
-
                         if (game.getQuarter1Winner() != null) {
                             if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
                                     && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
@@ -179,8 +175,6 @@ public class WinnerService extends Service {
                             database.child("games").child(gameId).child("quarter1Winner").child("consumed")
                                     .setValue(true);
                         }
-                        Util.Log("winner 6");
-
                         if (game.getQuarter2Winner() != null) {
                             Util.Log("show winner 1 " + game.getQuarter2Winner().getPlayer().getName() + ", " + game.getQuarter2Winner().getPlayer().getUserId() + " == " + myId);
                             if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner().getPlayer() != null
@@ -195,7 +189,6 @@ public class WinnerService extends Service {
                             database.child("games").child(gameId).child("quarter2Winner").child("consumed")
                                     .setValue(true);
                         }
-                        Util.Log("winner 7");
 
                         if (game.getQuarter3Winner() != null) {
                             if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner().getPlayer() != null
@@ -222,12 +215,134 @@ public class WinnerService extends Service {
                             database.child("games").child(gameId).child("finalWinner").child("consumed")
                                     .setValue(true);
                         }
+
+
+                        // Warn if not all players paid
+                        if (game.getAuthor().getUserId().equals(myId) && mEventTimes.get
+                                (game.getEventId()) != -1 && mEventTimes.get(game.getEventId())
+                                != -2 && System.currentTimeMillis() < mEventTimes.get
+                                (game.getEventId()) + 60 * 60 * 1000) {
+                            loadPlayers(database, gameId, game.getName(),
+                                    mEventTimes.get(game.getEventId()) + 60 * 60 * 1000, myId);
+                        }
                     }
                 } catch (Exception e) {
                     Util.Log("Can't show winners: " + e);
                 }
             }
         }
+    }
+
+    private void loadPlayers(final DatabaseReference database, final String gameId,
+                             final String name, final long time, final String myId) {
+        database.child("games").child(gameId).child("players").addValueEventListener
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<String> players = new ArrayList<>();
+                        players.clear();
+                        players.add(myId);
+                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
+                            try {
+                                Player player = playerSnapshot.getValue(Player.class);
+                                players.add(player.getUserId());
+                                Util.Log("check existing player: " + player.getUserId());
+                            } catch (Exception e) {
+                                Util.Log("Can't parse player");
+                            }
+                        }
+
+                        loadPaidPlayers(database, gameId, players, name, time);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void loadPaidPlayers(DatabaseReference database, final String gameId,
+                                 final ArrayList<String> players, final String name,
+                                 final long time) {
+        database.child("games").child(gameId).child("paid_players").addValueEventListener
+                (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        ArrayList<String> paidPlayers = new ArrayList<>();
+                        paidPlayers.clear();
+                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
+                            if (playerSnapshot.getValue(Boolean.class)) {
+                                paidPlayers.add(playerSnapshot.getKey());
+                                Util.Log("paid player: " + paidPlayers);
+                            }
+                        }
+
+                        if (paidPlayers.size() != players.size()) {
+                            showPaidNotification(MyApplication.getContext(), gameId, name, time);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void showPaidNotification(Context context, String id, String name, long time) {
+        int minutesBefore;
+
+        if (time - System.currentTimeMillis() < 5 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 5)) {
+                minutesBefore = 5;
+            } else {
+                return;
+            }
+        } else if (time - System.currentTimeMillis() < 15 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 15)) {
+                minutesBefore = 15;
+            } else {
+                return;
+            }
+        } else if (time - System.currentTimeMillis() < 30 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 30)) {
+                minutesBefore = 30;
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.warning)
+                        .setContentTitle(name + " game starts in less than " + minutesBefore + " minutes")
+                        .setAutoCancel(true)
+                        .setOnlyAlertOnce(true)
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        mBuilder.setContentText("Not everybody paid for their squares yet!");
+        Intent resultIntent = new Intent(context, GameBoardActivity.class)
+                .putExtra(EXTRA_GAME_ID, id);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotifyMgr =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = mBuilder.build();
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(PAID_NOTIFICATION_CODE + Integer.parseInt(id), notification);
+
+        mShownPaidNotifications.add(PAID_NOTIFICATION_CODE + Integer.parseInt(id) + minutesBefore);
     }
 
     private void showReminderNotification(Context context, String id, String name, long time,

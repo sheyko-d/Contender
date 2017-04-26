@@ -160,8 +160,6 @@ public class GamesFragment extends Fragment {
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
                     try {
                         final GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
-                        Util.Log("game = " + game.getId() + ", " + game.getName()+", "+game.getEventId());
-
                         if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
                                 .contains(new Player(firebaseUser.getUid(), null,
