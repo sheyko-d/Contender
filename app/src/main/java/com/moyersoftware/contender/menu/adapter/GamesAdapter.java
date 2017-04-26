@@ -72,7 +72,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                     holder.finalTxt.setText("LIVE");
                 } else {
                     holder.timeTxt.setVisibility(View.VISIBLE);
-                    holder.timeTxt.setText(Util.formatDateTime(game.getEventTime()));
+                    if (!game.isCustom()) {
+                        holder.timeTxt.setText(Util.formatDateTime(game.getEventTime()));
+                    } else {
+                        holder.timeTxt.setText("Custom game board");
+                    }
                     holder.finalLayout.setVisibility(View.GONE);
 
                     if (!TextUtils.isEmpty(game.getInviteName())) {

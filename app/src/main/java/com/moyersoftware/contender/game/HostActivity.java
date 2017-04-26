@@ -60,7 +60,10 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.game.data.Score;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.game.data.TeamAway;
+import com.moyersoftware.contender.game.data.TeamHome;
 import com.moyersoftware.contender.game.receiver.BootReceiver;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.util.Util;
@@ -74,6 +77,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -129,6 +133,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     RadioButton mGameRadioBtn;
     @Bind(R.id.host_custom_radio_btn)
     RadioButton mCustomRadioBtn;
+    @Bind(R.id.host_custom_game_layout)
+    View mCustomGameLayout;
+    @Bind(R.id.host_custom_team_home_edit_txt)
+    EditText mCustomTeamHomeEditTxt;
+    @Bind(R.id.host_custom_team_away_edit_txt)
+    EditText mCustomTeamAwayEditTxt;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -162,6 +172,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private Boolean mFirstFreeGame = false;
     private Integer mSquaresLimit;
     private String mRules;
+    private String mImageUrl;
+    private boolean mCustom = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +208,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 if (checked) {
                     mGameRadioBtn.setChecked(false);
                 }
+                mCustomGameLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
             }
         });
     }
@@ -370,17 +383,19 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                 try {
                                     Event event = eventSnapshot.getValue(Event.class);
                                     if (event != null) {
+                                        if (event.isCustom()) continue;
+
                                         if (event.getTime() - 60 * 60 * 1000 > System.currentTimeMillis()) {
                                             if (mEvents.size() == 0 || !event.getWeek()
                                                     .equals(previousEventWeek)) {
                                                 mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000, null, event.getWeek(),
-                                                        HostEventsAdapter.TYPE_HEADER));
+                                                        HostEventsAdapter.TYPE_HEADER, true));
                                             }
 
                                             if (mEvents.size() == 0 || !Util.formatDate(event.getTime() - 60 * 60 * 1000)
                                                     .equals(previousEventDate)) {
                                                 mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000,
-                                                        null, "Date", HostEventsAdapter.TYPE_DATE));
+                                                        null, "Date", HostEventsAdapter.TYPE_DATE, true));
                                             }
 
                                             Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime() - 60 * 60 * 1000));
@@ -731,8 +746,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         } else if (mSquaresLimit == 0) {
             Toast.makeText(this, "Squares limit is empty", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mEventId)) {
+        } else if (!mCustomRadioBtn.isChecked() && TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
+        } else if (mCustomRadioBtn.isChecked() && (TextUtils.isEmpty(mCustomTeamHomeEditTxt
+                .getText().toString()) || TextUtils.isEmpty(mCustomTeamAwayEditTxt.getText()
+                .toString()))) {
+            Toast.makeText(this, "Enter team names for a custom event.", Toast.LENGTH_SHORT).show();
         } else if (mFirstFreeGame) {
             FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
@@ -840,13 +859,48 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void uploadData(String imageUrl) {
+        mImageUrl = imageUrl;
+
+        if (mCustomRadioBtn.isChecked()) {
+            createCustomEvent();
+        } else {
+            saveGame();
+        }
+    }
+
+    private void createCustomEvent() {
+        DatabaseReference ref = mDatabase.child("events").push();
+        mEventId = ref.getKey();
+        TeamHome teamHome = new TeamHome("http://moyersoftware.com/contender/images/tba.png",
+                mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0", "0", "0"));
+        TeamAway teamAway = new TeamAway("http://moyersoftware.com/contender/images/tba.png",
+                mCustomTeamAwayEditTxt.getText().toString(), new Score("0", "0", "0", "0", "0"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        ref.setValue(new Event(mEventId, teamAway, teamHome, calendar.getTimeInMillis(),
+                "Custom game board", "Custom games",
+                HostEventsAdapter.TYPE_ITEM, true)).addOnCompleteListener
+                (new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mCustom = true;
+                        saveGame();
+                    }
+                });
+    }
+
+    private void saveGame() {
         mDatabase.child("games").child(mGameId).setValue(new GameInvite.Game(mEventId, mGameId, mName,
-                System.currentTimeMillis(), imageUrl, "100/100", new Player(mAuthorId, null,
+                System.currentTimeMillis(), mImageUrl, "100/100", new Player(mAuthorId, null,
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
                 new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
-                mSquaresLimit))
+                mSquaresLimit, mCustom))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

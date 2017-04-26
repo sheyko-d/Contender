@@ -14,13 +14,14 @@ public class Event {
     public String timeText;
     public String week;
     public int type = HostEventsAdapter.TYPE_ITEM;
+    public boolean custom = false;
 
     public Event() {
         // Default constructor required for calls to DataSnapshot.getValue(Event.class)
     }
 
     public Event(String id, TeamAway teamAway, TeamHome teamHome, Long time, String timeText,
-                 String week, int type) {
+                 String week, int type, boolean custom) {
         this.id = id;
         this.teamAway = teamAway;
         this.teamHome = teamHome;
@@ -28,6 +29,7 @@ public class Event {
         this.timeText = timeText;
         this.week = week;
         this.type = type;
+        this.custom = custom;
     }
 
     public Event(String week) {
@@ -60,5 +62,9 @@ public class Event {
 
     public int getType() {
         return type;
+    }
+
+    public boolean isCustom() {
+        return custom;
     }
 }

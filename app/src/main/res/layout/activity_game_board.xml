@@ -57,6 +57,8 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textColor="@color/primary_text"
                             android:textSize="16sp"
                             tools:text="1st quarter - 5:34" />

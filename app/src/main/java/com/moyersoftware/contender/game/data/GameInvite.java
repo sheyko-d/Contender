@@ -69,6 +69,7 @@ public class GameInvite {
         public String inviteId;
         @Nullable
         public int squaresLimit;
+        public boolean custom;
 
         public Game() {
             // Default constructor required for calls to DataSnapshot.getValue(Game.class)
@@ -81,7 +82,8 @@ public class GameInvite {
                     ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
                     ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
                     Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
-                    String currentQuarter, String code, String rules, int squaresLimit) {
+                    String currentQuarter, String code, String rules, int squaresLimit,
+                    boolean custom) {
             this.eventId = eventId;
             this.id = id;
             this.name = name;
@@ -111,6 +113,7 @@ public class GameInvite {
             this.code = code;
             this.rules = rules;
             this.squaresLimit = squaresLimit;
+            this.custom = custom;
         }
 
         public String getEventId() {
@@ -251,6 +254,10 @@ public class GameInvite {
 
         public int getSquaresLimit() {
             return squaresLimit;
+        }
+
+        public boolean isCustom() {
+            return custom;
         }
     }
 }

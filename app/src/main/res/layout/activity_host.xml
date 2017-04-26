@@ -322,6 +322,71 @@
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp" />
 
+                    <LinearLayout
+                        android:id="@+id/host_custom_game_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                fontPath="fonts/segoe_ui_medium.ttf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="1dp"
+                                android:layout_marginRight="1dp"
+                                android:text="Home Team"
+                                android:textColor="@color/primary_text"
+                                android:textSize="16sp" />
+
+                            <EditText
+                                android:id="@+id/host_custom_team_home_edit_txt"
+                                style="@style/EditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                fontPath="fonts/segoe_ui_medium.ttf"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="1dp"
+                                android:layout_marginRight="1dp"
+                                android:text="Away Team"
+                                android:textColor="@color/primary_text"
+                                android:textSize="16sp" />
+
+                            <EditText
+                                android:id="@+id/host_custom_team_away_edit_txt"
+                                style="@style/EditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                     <TextView
                         fontPath="fonts/segoe_ui_medium.ttf"
                         android:layout_width="match_parent"
@@ -695,9 +760,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="4dp"
                         android:checkedButton="@+id/host_allow_radio_btn"
-                        android:layout_marginRight="10dp"
                         android:orientation="horizontal">
 
                         <RadioButton
