@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -139,6 +140,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     EditText mCustomTeamHomeEditTxt;
     @Bind(R.id.host_custom_team_away_edit_txt)
     EditText mCustomTeamAwayEditTxt;
+    @Bind(R.id.host_allow_radio_btn)
+    CheckBox mAllowIncompleteRadioBtn;
 
     // Usual variables
     private DatabaseReference mDatabase;
@@ -900,7 +903,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
                 new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
                 new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
-                mSquaresLimit, mCustom))
+                mSquaresLimit, mCustom, mAllowIncompleteRadioBtn.isChecked()))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

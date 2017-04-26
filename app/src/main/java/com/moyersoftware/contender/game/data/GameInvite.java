@@ -70,6 +70,7 @@ public class GameInvite {
         @Nullable
         public int squaresLimit;
         public boolean custom;
+        public boolean allow_incomplete;
 
         public Game() {
             // Default constructor required for calls to DataSnapshot.getValue(Game.class)
@@ -83,7 +84,7 @@ public class GameInvite {
                     ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
                     Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
                     String currentQuarter, String code, String rules, int squaresLimit,
-                    boolean custom) {
+                    boolean custom, boolean allow_incomplete) {
             this.eventId = eventId;
             this.id = id;
             this.name = name;
@@ -114,6 +115,7 @@ public class GameInvite {
             this.rules = rules;
             this.squaresLimit = squaresLimit;
             this.custom = custom;
+            this.allow_incomplete = allow_incomplete;
         }
 
         public String getEventId() {
@@ -258,6 +260,10 @@ public class GameInvite {
 
         public boolean isCustom() {
             return custom;
+        }
+
+        public boolean allowIncomplete() {
+            return allow_incomplete;
         }
     }
 }
