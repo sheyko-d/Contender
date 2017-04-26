@@ -124,6 +124,12 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
             holder.nameTxt.setText("");
         }
 
+        if (!mPrintMode) {
+            holder.nameTxt.setTextSize(10 * mHeight / mDefaultHeight);
+        } else {
+            holder.nameTxt.setTextSize(6 * mHeight / mDefaultHeight);
+        }
+
         holder.itemView.setClickable(!mLive);
 
         if (mHomeScore != null && mAwayScore != null) {

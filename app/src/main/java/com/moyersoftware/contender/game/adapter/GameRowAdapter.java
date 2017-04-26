@@ -2,12 +2,14 @@ package com.moyersoftware.contender.game.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -20,10 +22,13 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
     private ArrayList<Integer> mNumbers;
     private Boolean mLive = false;
     private int mHeight;
+    private final int mDefaultCellSize;
 
     public GameRowAdapter(Context context, ArrayList<Integer> numbers) {
         mNumbers = numbers;
         mHeight = Util.getCellSize();
+        mDefaultCellSize = (int) MyApplication.getContext().getResources().getDimension
+                (R.dimen.board_cell_size);
     }
 
     public void setLive(Boolean live) {
@@ -46,6 +51,9 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
         } else {
             ((TextView) holder.itemView).setText("-");
         }
+        ((TextView) holder.itemView).setTextSize(TypedValue.COMPLEX_UNIT_SP,
+                16 * mHeight / mDefaultCellSize);
+
     }
 
     @Override

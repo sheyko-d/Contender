@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -161,6 +163,18 @@ public class GameBoardActivity extends AppCompatActivity {
     CirclePageIndicator mPageIndicator;
     @Bind(R.id.board_details_txt)
     TextView mDetailsTxt;
+    @Bind(R.id.contender_logo)
+    View mContenderLogo;
+    @Bind(R.id.board)
+    View mBoard;
+    @Bind(R.id.board_pdf_q1_txt)
+    TextView mPdfQ1Txt;
+    @Bind(R.id.board_pdf_q2_txt)
+    TextView mPdfQ2Txt;
+    @Bind(R.id.board_pdf_q3_txt)
+    TextView mPdfQ3Txt;
+    @Bind(R.id.board_pdf_final_txt)
+    TextView mPdfFinalTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -225,6 +239,15 @@ public class GameBoardActivity extends AppCompatActivity {
         loadPlayers();
         loadPaidPlayers();
         loadFriends();
+        initBoardLayout();
+    }
+
+    private void initBoardLayout() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        mBoard.getLayoutParams().width = size.x;
+        mBoard.requestFocus();
     }
 
     private void loadPaidPlayers() {
@@ -445,6 +468,11 @@ public class GameBoardActivity extends AppCompatActivity {
         mQ2ScoreTxt.setText("Q2: " + game.getQuarter2Price() + " points");
         mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
         mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
+
+        mPdfQ1Txt.setText(String.valueOf(game.getQuarter1Price()));
+        mPdfQ2Txt.setText(String.valueOf(game.getQuarter2Price()));
+        mPdfQ3Txt.setText(String.valueOf(game.getQuarter3Price()));
+        mPdfFinalTxt.setText(String.valueOf(game.getFinalPrice()));
 
         // Update winners
         mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
@@ -789,6 +817,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mLayout.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
         mBoardAdapter.setPrintMode(true);
+        mContenderLogo.setVisibility(View.VISIBLE);
         mBoardRecycler.post(new Runnable() {
             @Override
             public void run() {
@@ -798,10 +827,42 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void makePdf() {
-        int boardSize = (int) (getResources().getDimension(R.dimen.board_cell_size) * 11
-                + Util.convertDpToPixel(32));
-        mLayout.getLayoutParams().width = boardSize;
-        mLayout.getLayoutParams().height = boardSize;
+        int height = (int) getResources().getDimension(R.dimen.board_cell_size);
+
+        mBoardAdapter.scale(height);
+        mColumnAdapter.scale(height);
+        mRowAdapter.scale(height);
+        mBoardAdapter.notifyDataSetChanged();
+        mColumnAdapter.notifyDataSetChanged();
+        mRowAdapter.notifyDataSetChanged();
+
+        mColumnRecycler.getLayoutParams().width = height;
+        mColumnRecycler.getLayoutParams().height = height * 10;
+
+        mRowRecycler.getLayoutParams().width = height * 10;
+        mRowRecycler.getLayoutParams().height = height;
+
+        ((FrameLayout.LayoutParams) mBoardRecycler.getLayoutParams())
+                .topMargin = height;
+        mBoardRecycler.requestLayout();
+
+        ((FrameLayout.LayoutParams) mColumnRecycler.getLayoutParams())
+                .topMargin = height;
+        mColumnRecycler.requestLayout();
+
+        ((FrameLayout.LayoutParams) mRowRecycler.getLayoutParams())
+                .leftMargin = height;
+        mRowRecycler.requestLayout();
+
+        mBoard.getLayoutParams().width = height * 11 + Util.convertDpToPixel(32);
+        mBoard.requestLayout();
+
+        mBoardRecycler.setPadding(height, 0, 0, 0);
+
+        int boardSize = height * 11 + Util.convertDpToPixel(32);
+        mLayout.getLayoutParams().width = boardSize + Util.convertDpToPixel(12)
+                + Util.convertDpToPixel(220);
+        mLayout.getLayoutParams().height = boardSize + Util.convertDpToPixel(12);
         mLayout.requestLayout();
         mLayout.post(new Runnable() {
             @Override
@@ -838,7 +899,9 @@ public class GameBoardActivity extends AppCompatActivity {
                         file);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(Intent.EXTRA_STREAM, uri);
-                startActivity(Intent.createChooser(intent, "Send email..."));
+                startActivity(Intent.createChooser(intent, "Send PDF..."));
+
+                mContenderLogo.setVisibility(View.GONE);
 
                 mLayout.getLayoutParams().width = ViewPager.LayoutParams.MATCH_PARENT;
                 mLayout.getLayoutParams().height = ViewPager.LayoutParams.MATCH_PARENT;
@@ -847,6 +910,15 @@ public class GameBoardActivity extends AppCompatActivity {
 
                 mProgressBar.setVisibility(View.GONE);
                 mLayout.setVisibility(View.VISIBLE);
+
+                mBoardAdapter.scale(Util.getCellSize());
+                mColumnAdapter.scale(Util.getCellSize());
+                mRowAdapter.scale(Util.getCellSize());
+                mBoardAdapter.notifyDataSetChanged();
+                mColumnAdapter.notifyDataSetChanged();
+                mRowAdapter.notifyDataSetChanged();
+                initScaleLayout();
+                initBoardLayout();
             }
         });
     }
