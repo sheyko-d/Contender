@@ -71,15 +71,16 @@ public class LoginActivity extends AppCompatActivity {
                                         Util.setPhoto(user.getPhotoUrl() + "");
                                     }
 
-                                    Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                                            .getCurrentUser().getUid());
+                                    String id = FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid();
+                                    Util.setCurrentPlayerId(id);
 
                                     finish();
                                     LoadingActivity.sActivity.finish();
-                                    if (!Util.findFriendsShown()) {
+                                    if (!Util.findFriendsShown(id)) {
                                         startActivity(new Intent(LoginActivity.this,
                                                 FindFriendsActivity.class));
-                                        Util.setFindFriendsShown();
+                                        Util.setFindFriendsShown(id);
                                     } else {
                                         startActivity(new Intent(LoginActivity.this,
                                                 MainActivity.class));

@@ -77,12 +77,12 @@ public class LoadingActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("email").setValue(mFacebookEmail);
 
-                        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                                .getCurrentUser().getUid());
-                        if (!Util.findFriendsShown()) {
+                        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        Util.setCurrentPlayerId(id);
+                        if (!Util.findFriendsShown(id)) {
                             startActivity(new Intent(LoadingActivity.this,
                                     FindFriendsActivity.class));
-                            Util.setFindFriendsShown();
+                            Util.setFindFriendsShown(id);
                         } else {
                             startActivity(new Intent(LoadingActivity.this, MainActivity.class));
                         }
@@ -107,12 +107,13 @@ public class LoadingActivity extends AppCompatActivity {
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                     user.getPhotoUrl() + "", null));
                                         }
-                                        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                                                .getCurrentUser().getUid());
-                                        if (!Util.findFriendsShown()) {
+                                        String id = FirebaseAuth.getInstance()
+                                                .getCurrentUser().getUid();
+                                        Util.setCurrentPlayerId(id);
+                                        if (!Util.findFriendsShown(id)) {
                                             startActivity(new Intent(LoadingActivity.this,
                                                     FindFriendsActivity.class));
-                                            Util.setFindFriendsShown();
+                                            Util.setFindFriendsShown(id);
                                         } else {
                                             startActivity(new Intent(LoadingActivity.this,
                                                     MainActivity.class));

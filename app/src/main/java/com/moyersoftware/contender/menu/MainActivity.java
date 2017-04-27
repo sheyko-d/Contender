@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         initUser();
         updatePhoneNumber();
 
-        if (!Util.isTutorialShown()) {
+        if (!Util.isTutorialShown(mFirebaseUser.getUid())) {
             startActivity(new Intent(this, HowToPlayActivity.class));
         }
     }

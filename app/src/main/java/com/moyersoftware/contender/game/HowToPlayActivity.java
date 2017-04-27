@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.util.Util;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -57,7 +58,7 @@ public class HowToPlayActivity extends AppCompatActivity {
         initStatusBar();
         initActionBar();
         initViewPager();
-        Util.setTutorialShown();
+        Util.setTutorialShown(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     /**

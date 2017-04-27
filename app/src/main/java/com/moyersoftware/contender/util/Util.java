@@ -191,14 +191,16 @@ public class Util {
                         (R.dimen.board_cell_size));
     }
 
-    public static void hideWelcomeBanner() {
+    public static void hideWelcomeBanner(String id) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
-                .putBoolean(PREF_SHOW_WELCOME, false).apply();
+                .putBoolean(PREF_SHOW_WELCOME + id, false).apply();
     }
 
-    public static Boolean showWelcomeBanner() {
+    public static Boolean showWelcomeBanner(String id) {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
-                .getBoolean(PREF_SHOW_WELCOME, true);
+                .getBoolean(PREF_SHOW_WELCOME, false) || PreferenceManager
+                .getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_SHOW_WELCOME + id, true);
     }
 
     public static String formatTime(Long time) {
@@ -268,25 +270,29 @@ public class Util {
                 .getString(PREF_CURRENT_PLAYER_ID, null);
     }
 
-    public static void setTutorialShown() {
+    public static void setTutorialShown(String id) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
-                .putBoolean(PREF_TUTORIAL_SHOWN, true)
+                .putBoolean(PREF_TUTORIAL_SHOWN + id, true)
                 .apply();
     }
 
-    public static boolean isTutorialShown() {
+    public static boolean isTutorialShown(String id) {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
-                .getBoolean(PREF_TUTORIAL_SHOWN, false);
+                .getBoolean(PREF_TUTORIAL_SHOWN, false)
+                || PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getBoolean(PREF_TUTORIAL_SHOWN + id, false);
     }
 
-    public static boolean findFriendsShown() {
+    public static boolean findFriendsShown(String id) {
         return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
-                .getBoolean(PREF_FIND_FRIENDS_SHOWN, false);
+                .getBoolean(PREF_FIND_FRIENDS_SHOWN, false) ||
+                PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                        .getBoolean(PREF_FIND_FRIENDS_SHOWN + id, false);
     }
 
-    public static void setFindFriendsShown() {
+    public static void setFindFriendsShown(String id) {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
-                .putBoolean(PREF_FIND_FRIENDS_SHOWN, true)
+                .putBoolean(PREF_FIND_FRIENDS_SHOWN + id, true)
                 .apply();
     }
 

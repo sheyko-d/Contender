@@ -103,12 +103,12 @@ public class GamesFragment extends Fragment {
     }
 
     private void initWelcomeLayout() {
-        if (Util.showWelcomeBanner()) mWelcomeLayout.setVisibility(View.VISIBLE);
+        if (Util.showWelcomeBanner(mFirebaseUser.getUid())) mWelcomeLayout.setVisibility(View.VISIBLE);
         mCloseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mWelcomeLayout.setVisibility(View.GONE);
-                Util.hideWelcomeBanner();
+                Util.hideWelcomeBanner(mFirebaseUser.getUid());
             }
         });
     }
