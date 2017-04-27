@@ -22,6 +22,7 @@ public class StandardGestures implements View.OnTouchListener, ScaleGestureDetec
     private final RecyclerView mColumnRecycler;
     private final RecyclerView mBoardRecycler;
     private final Context mContext;
+    private final float mOldScaleFactor;
     private View view;
     private ScaleGestureDetector gestureScale;
     private float scaleFactor = 1;
@@ -42,6 +43,8 @@ public class StandardGestures implements View.OnTouchListener, ScaleGestureDetec
         mBoardRecycler = boardRecycler;
 
         mDefaultHeight = (int) context.getResources().getDimension(R.dimen.board_cell_size);
+        mOldScaleFactor = Util.getScaleFactor();
+        scaleFactor += (mOldScaleFactor - 1);
     }
 
     @Override
@@ -55,6 +58,7 @@ public class StandardGestures implements View.OnTouchListener, ScaleGestureDetec
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
         scaleFactor *= detector.getScaleFactor();
+        Util.setScaleFactor(scaleFactor);
 
         int height = (int) (mDefaultHeight * scaleFactor);
 
@@ -87,9 +91,7 @@ public class StandardGestures implements View.OnTouchListener, ScaleGestureDetec
         mRowAdapter.notifyDataSetChanged();
 
         mColumnRecycler.getLayoutParams().width = height;
-        mColumnRecycler.getLayoutParams().height = height * 10;
 
-        mRowRecycler.getLayoutParams().width = height * 10;
         mRowRecycler.getLayoutParams().height = height;
 
         ((FrameLayout.LayoutParams) mBoardRecycler.getLayoutParams())

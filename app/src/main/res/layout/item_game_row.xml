@@ -5,6 +5,7 @@
     android:layout_width="@dimen/board_cell_size"
     android:layout_height="@dimen/board_cell_size"
     android:gravity="center"
+    android:background="@color/green"
     android:textColor="@color/white"
     android:textSize="20sp"
     tools:ignore="MissingPrefix"

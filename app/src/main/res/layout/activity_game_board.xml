@@ -360,7 +360,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                android:padding="8dp" />
+                android:padding="8dp"
+                app:strokeWidth="0dp" />
         </FrameLayout>
     </LinearLayout>
 
@@ -542,8 +543,7 @@
                         android:layout_width="@dimen/board_cell_size"
                         android:layout_height="match_parent"
                         android:layout_marginStart="32dp"
-                        android:layout_marginTop="@dimen/board_cell_size"
-                        android:background="@color/green" />
+                        android:layout_marginTop="@dimen/board_cell_size" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -554,8 +554,7 @@
                             android:id="@+id/board_row_recycler"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/board_cell_size"
-                            android:layout_marginStart="@dimen/board_cell_size"
-                            android:background="@color/green" />
+                            android:layout_marginStart="@dimen/board_cell_size" />
                     </FrameLayout>
 
                     <FrameLayout

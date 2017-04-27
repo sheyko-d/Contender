@@ -283,9 +283,7 @@ public class GameBoardActivity extends AppCompatActivity {
         int height = Util.getCellSize();
 
         mColumnRecycler.getLayoutParams().width = height;
-        mColumnRecycler.getLayoutParams().height = height * 10;
 
-        mRowRecycler.getLayoutParams().width = height * 10;
         mRowRecycler.getLayoutParams().height = height;
 
         ((FrameLayout.LayoutParams) mBoardRecycler.getLayoutParams())
@@ -350,7 +348,6 @@ public class GameBoardActivity extends AppCompatActivity {
                         }
 
                         final int playersSize = mPlayers.size() - 1;
-                        Util.Log("scroll to bottom");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {

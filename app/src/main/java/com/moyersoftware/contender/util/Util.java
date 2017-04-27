@@ -50,6 +50,7 @@ public class Util {
     private static final String PREF_SHOW_WELCOME = "ShowWelcome";
     private static final String PREF_RULES_SHOWN = "RulesShown";
     private static final String PREF_FIND_FRIENDS_SHOWN = "FindFriendsShown";
+    private static final String PREF_SCALE_FACTOR = "ScaleFactor";
 
     /**
      * Adds a message to LogCat.
@@ -286,6 +287,17 @@ public class Util {
     public static void setFindFriendsShown() {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
                 .putBoolean(PREF_FIND_FRIENDS_SHOWN, true)
+                .apply();
+    }
+
+    public static float getScaleFactor() {
+        return PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext())
+                .getFloat(PREF_SCALE_FACTOR, 1);
+    }
+
+    public static void setScaleFactor(float scaleFactor) {
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
+                .putFloat(PREF_SCALE_FACTOR, scaleFactor)
                 .apply();
     }
 }

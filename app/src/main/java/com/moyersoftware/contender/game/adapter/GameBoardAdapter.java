@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -40,8 +41,9 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
-        mDefaultHeight = Util.getCellSize();
-        mHeight = mDefaultHeight;
+        mDefaultHeight = (int) MyApplication.getContext().getResources().getDimension
+                (R.dimen.board_cell_size);
+        mHeight = Util.getCellSize();
     }
 
     public void setLive(Boolean live) {
