@@ -834,9 +834,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mRowAdapter.notifyDataSetChanged();
 
         mColumnRecycler.getLayoutParams().width = height;
-        mColumnRecycler.getLayoutParams().height = height * 10;
 
-        mRowRecycler.getLayoutParams().width = height * 10;
         mRowRecycler.getLayoutParams().height = height;
 
         ((FrameLayout.LayoutParams) mBoardRecycler.getLayoutParams())
@@ -904,6 +902,9 @@ public class GameBoardActivity extends AppCompatActivity {
                 mLayout.getLayoutParams().height = ViewPager.LayoutParams.MATCH_PARENT;
                 mLayout.requestLayout();
                 mBoardAdapter.setPrintMode(false);
+
+                mColumnRecycler.getLayoutParams().width = ViewPager.LayoutParams.MATCH_PARENT;
+                mRowRecycler.getLayoutParams().height = ViewPager.LayoutParams.MATCH_PARENT;
 
                 mProgressBar.setVisibility(View.GONE);
                 mLayout.setVisibility(View.VISIBLE);
