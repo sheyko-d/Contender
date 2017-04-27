@@ -141,7 +141,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     @Bind(R.id.host_custom_team_away_edit_txt)
     EditText mCustomTeamAwayEditTxt;
     @Bind(R.id.host_allow_radio_btn)
-    CheckBox mAllowIncompleteRadioBtn;
+    RadioButton mAllowIncompleteRadioBtn;
 
     // Usual variables
     private DatabaseReference mDatabase;
