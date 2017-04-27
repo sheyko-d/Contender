@@ -1,7 +1,6 @@
 package com.moyersoftware.contender.menu;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -304,19 +302,6 @@ public class FriendsFragment extends Fragment {
         mFriendsPendingRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mPendingAdapter = new FriendsAdapter(FriendsFragment.this, mPendingFriends);
         mFriendsPendingRecycler.setAdapter(mPendingAdapter);
-    }
-
-    private String createGameCode() {
-        String gameCode = Util.generateGameCode();
-        mDatabase.child("invites").child(mMyId).setValue(gameCode);
-        return gameCode;
-    }
-
-    private void sendInvite(String code) {
-        Intent intent = new AppInviteInvitation.IntentBuilder("Contender - Invite Friends")
-                .setMessage("Hey join my Superbowl Squares game on the app Contender! (use this code: " + code + ")")
-                .build();
-        startActivityForResult(intent, REQUEST_INVITE);
     }
 
     public void addFriend(final String userId) {
