@@ -199,6 +199,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private String mAuthorId;
     private AlertDialog mPlayersDialog;
     private ArrayList<Player> mPlayers = new ArrayList<>();
+    private ArrayList<Player> mAllPlayers = new ArrayList<>();
     private ArrayList<String> mPaidPlayers = new ArrayList<>();
     private GamePlayersAdapter mPlayersAdapter;
     private String mMyEmail;
@@ -255,10 +256,12 @@ public class GameBoardActivity extends AppCompatActivity {
                 (new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Util.Log("get paid players");
                         mPaidPlayers.clear();
                         for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
                             if (playerSnapshot.getValue(Boolean.class)) {
                                 mPaidPlayers.add(playerSnapshot.getKey());
+                                Util.Log("paid player");
                             }
                         }
                         try {
@@ -315,9 +318,11 @@ public class GameBoardActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mPlayers.clear();
+                        mAllPlayers.clear();
                         mSelectedSquaresCount.clear();
                         if (mAuthorId.equals(mMyId)) {
                             mPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
+                            mAllPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
                             int playerSquares = 0;
                             for (SelectedSquare selectedSquare : mSelectedSquares) {
                                 String playerId = mMyId;
@@ -342,6 +347,8 @@ public class GameBoardActivity extends AppCompatActivity {
                                 }
                                 mSelectedSquaresCount.add(playerSquares);
                             }
+
+                            mAllPlayers.add(player);
                         }
                         if (mPlayersAdapter != null) {
                             mPlayersAdapter.notifyDataSetChanged();
@@ -1123,7 +1130,7 @@ public class GameBoardActivity extends AppCompatActivity {
         @SuppressLint("InflateParams")
         RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
                 (R.layout.dialog_paid_players, null);
-        mPaidPlayersAdapter = new GamePaidPlayersAdapter(this, mPlayers);
+        mPaidPlayersAdapter = new GamePaidPlayersAdapter(this, mAllPlayers);
         mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
         recycler.setAdapter(mPaidPlayersAdapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
