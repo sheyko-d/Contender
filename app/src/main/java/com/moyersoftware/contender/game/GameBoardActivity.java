@@ -406,8 +406,8 @@ public class GameBoardActivity extends AppCompatActivity {
                     GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
 
                     if (mGame != game) {
-                        initGameDetails(game);
                         mGame = game;
+                        initGameDetails(game);
                     }
                 }
             }
@@ -434,6 +434,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initGameDetails(GameInvite.Game game) {
+
         Util.Log("game limit: " + game.getSquaresLimit());
 
         Util.Log("initGameDetails");
@@ -605,6 +606,9 @@ public class GameBoardActivity extends AppCompatActivity {
         mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br>ID: "
                 + mGameId + "<br>Rules: " + (TextUtils.isEmpty(game.getRules())
                 ? "No additional rules" : game.getRules())));
+
+        mBoardAdapter.setCustom(mGame.isCustom());
+        mBoardAdapter.notifyDataSetChanged();
     }
 
     @SuppressWarnings("deprecation")

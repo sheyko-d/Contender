@@ -26,6 +26,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
     // Constants
     private final static int CELLS_COUNT = 100;
+    private boolean mCustom = false;
 
     // Usual variables
     private GameBoardActivity mActivity;
@@ -44,6 +45,10 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         mDefaultHeight = (int) MyApplication.getContext().getResources().getDimension
                 (R.dimen.board_cell_size);
         mHeight = Util.getCellSize();
+    }
+
+    public void setCustom(boolean custom){
+        mCustom = custom;
     }
 
     public void setLive(Boolean live) {
@@ -156,12 +161,8 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 column -= 10;
             }
 
-            //Util.Log("lastHomeDigit = " + lastHomeDigit + ", " + lastAwayDigit);
-
-            if (lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
+            if (!mCustom && lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
                     && lastHomeDigit.equals(String.valueOf(mRowNumbers.get(column)))) {
-                Util.Log("row = " + row + ", row2 = " + mColumnNumbers.get(row));
-                Util.Log("column = " + column + ", column2 = " + mRowNumbers.get(column));
                 holder.winningView.setVisibility(View.VISIBLE);
             } else {
                 holder.winningView.setVisibility(View.GONE);
