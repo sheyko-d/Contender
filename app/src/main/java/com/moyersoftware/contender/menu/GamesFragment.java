@@ -322,8 +322,8 @@ public class GamesFragment extends Fragment {
                         mRemoveGame = game;
                         getActivity().openContextMenu(mGamesRecycler);
                     } else {
-                        if (event.getTimeText().toLowerCase().contains("final") || (game.getPlayers()
-                                == null && game.getSelectedSquares() == null)) {
+                        if (event.getTimeText().toLowerCase().contains("final")
+                                || (game.getSelectedSquares() == null)) {
                             mRemoveGame = game;
                             getActivity().openContextMenu(mGamesRecycler);
                         } else {

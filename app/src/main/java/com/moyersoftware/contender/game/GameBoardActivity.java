@@ -403,11 +403,7 @@ public class GameBoardActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Util.Log("data change: " + dataSnapshot.toString());
-
                 if (!dataSnapshot.exists()) {
-                    Toast.makeText(GameBoardActivity.this, "Game not found", Toast.LENGTH_SHORT)
-                            .show();
                     finish();
                 } else {
                     GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
