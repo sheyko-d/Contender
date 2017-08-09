@@ -88,7 +88,6 @@ public class Util {
     @SuppressLint("SimpleDateFormat")
     public static String formatDateTime(long time) {
         SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d @ h:mma");
-        fmtOut.setTimeZone(TimeZone.getTimeZone("EST"));
         return fmtOut.format(time).replace("AM", "am").replace("PM", "pm");
     }
 
@@ -206,7 +205,6 @@ public class Util {
     public static String formatTime(Long time) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
-        sdf.setTimeZone(TimeZone.getTimeZone("EST"));
         return sdf.format(new Date(time)).replace(":00", "");
     }
 

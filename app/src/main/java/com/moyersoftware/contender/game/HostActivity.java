@@ -30,7 +30,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -388,22 +387,22 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                     if (event != null) {
                                         if (event.isCustom()) continue;
 
-                                        if (event.getTime() - 60 * 60 * 1000 > System.currentTimeMillis()) {
+                                        if (event.getTime() > System.currentTimeMillis()) {
                                             if (mEvents.size() == 0 || !event.getWeek()
                                                     .equals(previousEventWeek)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000, null, event.getWeek(),
+                                                mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),
                                                         HostEventsAdapter.TYPE_HEADER, true));
                                             }
 
-                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime() - 60 * 60 * 1000)
+                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
                                                     .equals(previousEventDate)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime() - 60 * 60 * 1000,
+                                                mEvents.add(new Event(null, null, null, event.getTime(),
                                                         null, "Date", HostEventsAdapter.TYPE_DATE, true));
                                             }
 
-                                            Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime() - 60 * 60 * 1000));
+                                            Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime()));
                                             previousEventWeek = event.getWeek();
-                                            previousEventDate = Util.formatDate(event.getTime() - 60 * 60 * 1000);
+                                            previousEventDate = Util.formatDate(event.getTime());
 
                                             mEvents.add(event);
                                         }
