@@ -15,7 +15,6 @@ import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Random;
@@ -205,7 +204,7 @@ public class Util {
     public static String formatTime(Long time) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
-        return sdf.format(new Date(time)).replace(":00", "");
+        return sdf.format(time).replace(":00", "");
     }
 
     public static void setDisplayName(String name) {

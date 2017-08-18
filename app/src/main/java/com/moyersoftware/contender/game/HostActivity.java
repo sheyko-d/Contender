@@ -308,6 +308,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Util.Log("Got codes");
                 if (!response.isSuccessful()) return;
 
                 String responseTxt = response.body().string();

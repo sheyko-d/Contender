@@ -103,7 +103,8 @@ public class GamesFragment extends Fragment {
     }
 
     private void initWelcomeLayout() {
-        if (Util.showWelcomeBanner(mFirebaseUser.getUid())) mWelcomeLayout.setVisibility(View.VISIBLE);
+        if (Util.showWelcomeBanner(mFirebaseUser.getUid()))
+            mWelcomeLayout.setVisibility(View.VISIBLE);
         mCloseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +121,7 @@ public class GamesFragment extends Fragment {
         mFirebaseUser = firebaseAuth.getCurrentUser();
         if (mFirebaseUser != null) {
             Query query = database.child("events");
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mEventTimes.clear();
@@ -155,6 +156,7 @@ public class GamesFragment extends Fragment {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Util.Log("Update games home screen");
                 // Update the games list
                 mGames.clear();
                 for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
@@ -165,8 +167,13 @@ public class GamesFragment extends Fragment {
                                 .contains(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(),
                                         Util.getDisplayName(), Util.getPhoto()))))) {
+
+                            Util.Log("game " + game.getName() + ", " + game.getId());
                             game.setEventTime(mEventTimes.get(game.getEventId()));
-                            if (!mGames.contains(game)) mGames.add(game);
+                            if (!mGames.contains(game)) {
+                                mGames.add(game);
+                                Util.Log("game add: " + game.getEventId());
+                            }
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                                     && game.getSelectedSquares().size() < 100))
                                     && (mEventTimes.get(game.getEventId()) == -2
@@ -202,6 +209,7 @@ public class GamesFragment extends Fragment {
                         }
                     } catch (Exception e) {
                         // Can't parse game
+                        Util.Log("Can't parse game home screen: " + e);
                     }
                 }
 

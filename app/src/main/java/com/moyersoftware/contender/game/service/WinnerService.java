@@ -32,7 +32,6 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 
@@ -41,6 +40,7 @@ public class WinnerService extends Service {
     private static final int PAID_NOTIFICATION_CODE = 123;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
     private ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
+    private Handler mHandler;
 
     @Nullable
     @Override
@@ -87,18 +87,40 @@ public class WinnerService extends Service {
             }
         });
 
-        database.child("games").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                parseGames(database, FirebaseAuth.getInstance().getCurrentUser(), dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        mHandler = new Handler();
+        mStatusChecker.run();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mStatusChecker);
+    }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            Util.Log("Check winner status");
+            try {
+                final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                database.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        parseGames(database, FirebaseAuth.getInstance().getCurrentUser(), dataSnapshot);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                mHandler.postDelayed(mStatusChecker, 60 * 1000);
+            }
+        }
+    };
 
     private void getGames(final FirebaseUser firebaseUser, final DatabaseReference database) {
         database.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,6 +167,7 @@ public class WinnerService extends Service {
                             continue;
                         }
 
+                        Util.Log("Check reminder = " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()));
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
                                 && mEventTimes.get(game.getEventId()) -
                                 System.currentTimeMillis() < 1000 * 60 * 30) {
@@ -156,7 +179,7 @@ public class WinnerService extends Service {
                                         (game.getId() + "reminder", true).apply();
                                 showReminderNotification(MyApplication.getContext(),
                                         game.getId(), game.getName(),
-                                        mEventTimes.get(game.getEventId()) + 60 * 60 * 1000,
+                                        mEventTimes.get(game.getEventId()),
                                         emptySquaresCount);
                             }
                         }
@@ -221,9 +244,9 @@ public class WinnerService extends Service {
                         if (game.getAuthor().getUserId().equals(myId) && mEventTimes.get
                                 (game.getEventId()) != -1 && mEventTimes.get(game.getEventId())
                                 != -2 && System.currentTimeMillis() < mEventTimes.get
-                                (game.getEventId()) + 60 * 60 * 1000) {
+                                (game.getEventId())) {
                             loadPlayers(database, gameId, game.getName(),
-                                    mEventTimes.get(game.getEventId()) + 60 * 60 * 1000, myId);
+                                    mEventTimes.get(game.getEventId()), myId);
                         }
                     }
                 } catch (Exception e) {
@@ -290,8 +313,10 @@ public class WinnerService extends Service {
 
     private void showPaidNotification(Context context, String id, String name, long time) {
         int minutesBefore;
+        Util.Log("check paid = " + (time - System.currentTimeMillis()));
 
         if (time - System.currentTimeMillis() < 5 * 60 * 1000) {
+            Util.Log("check paid 5");
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 5)) {
                 minutesBefore = 5;
@@ -302,10 +327,13 @@ public class WinnerService extends Service {
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 15)) {
                 minutesBefore = 15;
+                Util.Log("check paid 15 = " + (time - System.currentTimeMillis()));
             } else {
+                Util.Log("check paid 15 no = " + (time - System.currentTimeMillis()));
                 return;
             }
         } else if (time - System.currentTimeMillis() < 30 * 60 * 1000) {
+            Util.Log("check paid 30");
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 30)) {
                 minutesBefore = 30;
@@ -313,8 +341,10 @@ public class WinnerService extends Service {
                 return;
             }
         } else {
+            Util.Log("check paid just no = "+(time - System.currentTimeMillis())+", "+(30 * 60 * 1000));
             return;
         }
+        Util.Log("check paid 2");
 
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
                 new NotificationCompat.Builder(context)
@@ -374,7 +404,7 @@ public class WinnerService extends Service {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notification.defaults |= Notification.DEFAULT_SOUND;
         // Builds the notification and issues it.
-        mNotifyMgr.notify(new Random().nextInt(), notification);
+        mNotifyMgr.notify(Integer.parseInt(id + 100), notification);
     }
 
 

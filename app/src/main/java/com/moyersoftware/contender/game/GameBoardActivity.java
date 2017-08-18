@@ -539,8 +539,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoardAdapter.setRowNumbers(mRowNumbers);
         mBoardAdapter.setColumnNumbers(mColumnNumbers);
 
-        updateLiveState();
-
         Util.Log("game = " + game.getId());
         mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
                 (new ValueEventListener() {
@@ -550,11 +548,8 @@ public class GameBoardActivity extends AppCompatActivity {
                         if (event != null) {
                             mEvent = event;
 
-                            mGameLive = (event.getTime() != -1 && System.currentTimeMillis()
-                                    > event.getTime()) || mSelectedSquares.size() == 100;
-                            mColumnAdapter.setLive(mGameLive);
-                            mRowAdapter.setLive(mGameLive);
-                            mBoardAdapter.setLive(mGameLive);
+                            updateLiveState();
+
                             try {
                                 mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
                                         .getScore().getTotal()), Integer.parseInt(event
@@ -1275,8 +1270,11 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void updateLiveState() {
-        if (mSelectedSquares.size() == 100 != mGameLive) {
-            mGameLive = mSelectedSquares.size() == 100;
+        Util.Log("Update live state1");
+        if (mSelectedSquares.size() == 100 != mGameLive || mGame.allowIncomplete()) {
+            mGameLive = mSelectedSquares.size() == 100
+                    || (mEvent.getTime() == -1 && mGame.allowIncomplete());
+            Util.Log("Update live state2 == " + mGameLive);
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
             mColumnAdapter.setLive(mGameLive);
