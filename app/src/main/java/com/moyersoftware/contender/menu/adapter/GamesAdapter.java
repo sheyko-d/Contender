@@ -57,10 +57,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                     holder.finalLayout.setVisibility(View.VISIBLE);
                     holder.timeTxt.setVisibility(View.GONE);
 
-                    if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
+                    if (((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                             && game.getSelectedSquares().size() < 100))
                             && (game.getEventTime() == -2 || game.getEventTime()
-                            < System.currentTimeMillis())) {
+                            < System.currentTimeMillis())) && !game.allowIncomplete()) {
                         holder.finalTxt.setText("VOID (BOARD ISN'T FILLED)");
                     } else {
                         holder.finalTxt.setText("FINAL");

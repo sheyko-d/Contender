@@ -400,7 +400,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private void initDatabase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Query query = mDatabase.child("games").child(mGameId);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
