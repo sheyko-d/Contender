@@ -22,7 +22,6 @@ public class MyApplication extends Application{
 
         // Init Firebase SDK
         FirebaseDatabase.getInstance().setPersistenceEnabled(false);
-        registerActivityLifecycleCallbacks(new FirebaseDatabaseConnectionHandler());
 
         // Init calligraphy library
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()

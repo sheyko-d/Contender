@@ -18,6 +18,9 @@ android {
     }
     productFlavors {
     }
+    dexOptions {
+        jumboMode = true
+    }
 }
 
 dependencies {
