@@ -53,9 +53,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
@@ -73,7 +72,9 @@ import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.data.Friend;
 import com.moyersoftware.contender.menu.data.Friendship;
+import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.CustomLinearLayout;
 import com.moyersoftware.contender.util.StandardGestures;
 import com.moyersoftware.contender.util.Util;
@@ -193,7 +194,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private String mMyPhoto;
     private GameBoardAdapter mBoardAdapter;
     private Boolean mGameLive = false;
-    private boolean mPendingUpload = false;
     private boolean mIgnoreUpdate = false;
     private ArrayList<String> mPlayerEmails = new ArrayList<>();
     private String mAuthorId;
@@ -236,11 +236,34 @@ public class GameBoardActivity extends AppCompatActivity {
         initHorizontalScrollView();
         initBottomSheet();
         initDatabase();
+        loadGame();
         initScaleLayout();
-        loadPlayers();
-        loadPaidPlayers();
         loadFriends();
         initBoardLayout();
+    }
+
+    private void loadGame() {
+        retrofit2.Call<GameInvite.Game> call = ApiFactory.getApiService().getGame(mGameId);
+        call.enqueue(new retrofit2.Callback<GameInvite.Game>() {
+            @Override
+            public void onResponse(retrofit2.Call<GameInvite.Game> call,
+                                   retrofit2.Response<GameInvite.Game> response) {
+                if (!response.isSuccessful()) finish();
+
+                GameInvite.Game game = response.body();
+
+                if (mGame != game) {
+                    mGame = game;
+
+                    Util.Log("author = " + new Gson().toJson(mGame));
+                    initGameDetails(game);
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<GameInvite.Game> call, Throwable t) {
+            }
+        });
     }
 
     private void initBoardLayout() {
@@ -251,31 +274,24 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoard.requestFocus();
     }
 
-    private void loadPaidPlayers() {
-        mDatabase.child("games").child(mGameId).child("paid_players").addValueEventListener
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Util.Log("get paid players");
-                        mPaidPlayers.clear();
-                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
-                            if (playerSnapshot.getValue(Boolean.class)) {
-                                mPaidPlayers.add(playerSnapshot.getKey());
-                                Util.Log("paid player");
-                            }
-                        }
-                        try {
-                            mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
-                            mPaidPlayersAdapter.notifyDataSetChanged();
-                        } catch (Exception e) {
-                            // Dialog is not shown yet
-                        }
-                    }
+    private void initPaidPlayers() {
+        Util.Log("get paid players");
+        mPaidPlayers.clear();
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+        if (mGame.getPaidPlayers() != null) {
+            for (PaidPlayer player : mGame.getPaidPlayers()) {
+                if (player.paid()) {
+                    mPaidPlayers.add(player.getUserId());
+                    Util.Log("paid player");
+                }
+            }
+        }
+        try {
+            mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
+            mPaidPlayersAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            // Dialog is not shown yet
+        }
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
@@ -312,71 +328,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mNotifyMgr.cancelAll();
     }
 
-    private void loadPlayers() {
-        mDatabase.child("games").child(mGameId).child("players").addValueEventListener
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        mPlayers.clear();
-                        mAllPlayers.clear();
-                        mSelectedSquaresCount.clear();
-                        if (mAuthorId.equals(mMyId)) {
-                            mPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
-                            mAllPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
-                            int playerSquares = 0;
-                            for (SelectedSquare selectedSquare : mSelectedSquares) {
-                                String playerId = mMyId;
-                                if (selectedSquare.getAuthorId().equals(playerId)) {
-                                    playerSquares++;
-                                }
-                            }
-                            mSelectedSquaresCount.add(playerSquares);
-                        }
-                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
-                            Player player = playerSnapshot.getValue(Player.class);
-                            if (!TextUtils.isEmpty(player.getCreatedByUserId())
-                                    && player.getCreatedByUserId().equals(mDeviceOwnerId)) {
-                                mPlayers.add(player);
-
-                                int playerSquares = 0;
-                                for (SelectedSquare selectedSquare : mSelectedSquares) {
-                                    String playerId = player.getUserId();
-                                    if (selectedSquare.getAuthorId().equals(playerId)) {
-                                        playerSquares++;
-                                    }
-                                }
-                                mSelectedSquaresCount.add(playerSquares);
-                            }
-
-                            mAllPlayers.add(player);
-                        }
-                        if (mPlayersAdapter != null) {
-                            mPlayersAdapter.notifyDataSetChanged();
-                        }
-
-                        final int playersSize = mPlayers.size() - 1;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            recycler.scrollToPosition(playersSize);
-                                        } catch (Exception e) {
-                                        }
-                                    }
-                                });
-                            }
-                        }, 1000);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-    }
-
     private void initUser() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -399,40 +350,6 @@ public class GameBoardActivity extends AppCompatActivity {
 
     private void initDatabase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        Query query = mDatabase.child("games").child(mGameId);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    finish();
-                } else {
-                    GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
-
-                    if (mGame != game) {
-                        mGame = game;
-                        initGameDetails(game);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        mDatabase.child("events").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (mGame != null) {
-                    initGameDetails(mGame);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -539,63 +456,65 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoardAdapter.setRowNumbers(mRowNumbers);
         mBoardAdapter.setColumnNumbers(mColumnNumbers);
 
-        Util.Log("game = " + game.getId());
-        mDatabase.child("events").child(game.getEventId()).addListenerForSingleValueEvent
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Event event = dataSnapshot.getValue(Event.class);
-                        if (event != null) {
-                            mEvent = event;
+        retrofit2.Call<Event> call = ApiFactory.getApiService().getEvent(game.getEventId());
+        call.enqueue(new retrofit2.Callback<Event>() {
+            @Override
+            public void onResponse(retrofit2.Call<Event> call,
+                                   retrofit2.Response<Event> response) {
+                if (!response.isSuccessful()) return;
 
-                            updateLiveState();
+                Event event = response.body();
+                if (event != null) {
+                    mEvent = event;
 
-                            try {
-                                mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
-                                        .getScore().getTotal()), Integer.parseInt(event
-                                        .getTeamAway().getScore().getTotal()));
-                            } catch (Exception e) {
-                            }
-                            mColumnAdapter.notifyDataSetChanged();
-                            mRowAdapter.notifyDataSetChanged();
-                            mBoardAdapter.notifyDataSetChanged();
+                    updateLiveState();
 
-                            mTimeTxt.setText(event.getTimeText());
-
-                            mAwayNameTxt.setText(event.getTeamAway().getName());
-                            mHomeNameTxt.setText(event.getTeamHome().getName());
-
-                            // Init bottom section info
-                            mInfoAwayNameTxt.setText(event.getTeamAway().getName());
-                            mInfoHomeNameTxt.setText(event.getTeamHome().getName());
-
-                            Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
-                                    .getImage()).into(mTeam1Img);
-                            Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
-                                    .getImage()).into(mTeam2Img);
-
-                            if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
-                                    (event.getTeamAway().getScore().getTotal()) && !TextUtils
-                                    .isEmpty(event.getTeamHome().getScore().getTotal())) {
-                                mInfoAwayTotalScoreTxt.setText(event.getTeamAway().getScore()
-                                        .getTotal());
-                                mInfoHomeTotalScoreTxt.setText(event.getTeamHome().getScore()
-                                        .getTotal());
-                            } else {
-                                mInfoAwayTotalScoreTxt.setText("00");
-                                mInfoHomeTotalScoreTxt.setText("00");
-                            }
-                        } else {
-                            Toast.makeText(GameBoardActivity.this, "Event not found",
-                                    Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                    try {
+                        mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                .getScore().getTotal()), Integer.parseInt(event
+                                .getTeamAway().getScore().getTotal()));
+                    } catch (Exception e) {
                     }
+                    mColumnAdapter.notifyDataSetChanged();
+                    mRowAdapter.notifyDataSetChanged();
+                    mBoardAdapter.notifyDataSetChanged();
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    mTimeTxt.setText(event.getTimeText());
+
+                    mAwayNameTxt.setText(event.getTeamAway().getName());
+                    mHomeNameTxt.setText(event.getTeamHome().getName());
+
+                    // Init bottom section info
+                    mInfoAwayNameTxt.setText(event.getTeamAway().getName());
+                    mInfoHomeNameTxt.setText(event.getTeamHome().getName());
+
+                    Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
+                            .getImage()).into(mTeam1Img);
+                    Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
+                            .getImage()).into(mTeam2Img);
+
+                    if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
+                            (event.getTeamAway().getScore().getTotal()) && !TextUtils
+                            .isEmpty(event.getTeamHome().getScore().getTotal())) {
+                        mInfoAwayTotalScoreTxt.setText(event.getTeamAway().getScore()
+                                .getTotal());
+                        mInfoHomeTotalScoreTxt.setText(event.getTeamHome().getScore()
+                                .getTotal());
+                    } else {
+                        mInfoAwayTotalScoreTxt.setText("00");
+                        mInfoHomeTotalScoreTxt.setText("00");
                     }
-                });
+                } else {
+                    Toast.makeText(GameBoardActivity.this, "Event not found",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Event> call, Throwable t) {
+            }
+        });
 
         mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
@@ -607,6 +526,63 @@ public class GameBoardActivity extends AppCompatActivity {
 
         mBoardAdapter.setCustom(mGame.isCustom());
         mBoardAdapter.notifyDataSetChanged();
+
+        initPlayers();
+        initPaidPlayers();
+    }
+
+    private void initPlayers() {
+        mPlayers.clear();
+        mAllPlayers.clear();
+        mSelectedSquaresCount.clear();
+        if (mAuthorId.equals(mMyId)) {
+            mPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
+            mAllPlayers.add(new Player(mMyId, null, mMyEmail, mMyName, mMyPhoto));
+            int playerSquares = 0;
+            for (SelectedSquare selectedSquare : mSelectedSquares) {
+                String playerId = mMyId;
+                if (selectedSquare.getAuthorId().equals(playerId)) {
+                    playerSquares++;
+                }
+            }
+            mSelectedSquaresCount.add(playerSquares);
+        }
+        for (Player player : mGame.getPlayers()) {
+            if (!TextUtils.isEmpty(player.getCreatedByUserId())
+                    && player.getCreatedByUserId().equals(mDeviceOwnerId)) {
+                mPlayers.add(player);
+
+                int playerSquares = 0;
+                for (SelectedSquare selectedSquare : mSelectedSquares) {
+                    String playerId = player.getUserId();
+                    if (selectedSquare.getAuthorId().equals(playerId)) {
+                        playerSquares++;
+                    }
+                }
+                mSelectedSquaresCount.add(playerSquares);
+            }
+
+            mAllPlayers.add(player);
+        }
+        if (mPlayersAdapter != null) {
+            mPlayersAdapter.notifyDataSetChanged();
+        }
+
+        final int playersSize = mPlayers.size() - 1;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            recycler.scrollToPosition(playersSize);
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+            }
+        }, 1000);
     }
 
     @SuppressWarnings("deprecation")
@@ -1016,41 +992,31 @@ public class GameBoardActivity extends AppCompatActivity {
                     Toast.makeText(GameBoardActivity.this, "Name is empty", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    mDatabase.child("games").child(mGameId).child("players")
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    GenericTypeIndicator<ArrayList<Player>> t
-                                            = new GenericTypeIndicator<ArrayList<Player>>() {
-                                    };
-                                    ArrayList<Player> players = dataSnapshot.getValue(t);
-                                    if (players == null) players = new ArrayList<>();
 
-                                    players.add(new Player(Util.generatePlayerId(), mDeviceOwnerId,
-                                            null, editTxt.getText().toString(), null));
+                    ArrayList<Player> players = mGame.getPlayers();
+                    if (players == null) players = new ArrayList<>();
 
-                                    mDatabase.child("games").child(mGameId).child("players")
-                                            .setValue(players);
+                    players.add(new Player(Util.generatePlayerId(), mDeviceOwnerId,
+                            null, editTxt.getText().toString(), null));
 
-                                    int mySelectedSquares = 0;
-                                    for (SelectedSquare selectedSquare : mSelectedSquares) {
-                                        String playerId = Util.getCurrentPlayerId();
-                                        if (TextUtils.isEmpty(playerId)) {
-                                            playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                        }
-                                        if (selectedSquare.getAuthorId().equals(playerId)) {
-                                            mySelectedSquares++;
-                                        }
-                                    }
-                                    mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
+                    mGame.setPlayers(players);
 
-                                    editTxt.setText("");
-                                }
+                    int mySelectedSquares = 0;
+                    for (SelectedSquare selectedSquare : mSelectedSquares) {
+                        String playerId = Util.getCurrentPlayerId();
+                        if (TextUtils.isEmpty(playerId)) {
+                            playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        }
+                        if (selectedSquare.getAuthorId().equals(playerId)) {
+                            mySelectedSquares++;
+                        }
+                    }
+                    mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
+                    editTxt.setText("");
+
+                    updateGameOnServer();
+                    initGameDetails(mGame);
                 }
             }
         });
@@ -1264,9 +1230,23 @@ public class GameBoardActivity extends AppCompatActivity {
 
     private void uploadSquares() {
         mIgnoreUpdate = true;
-        mDatabase.child("games").child(mGameId).child("selectedSquares")
-                .setValue(mSelectedSquares);
-        mPendingUpload = false;
+
+        mGame.setSelectedSquares(mSelectedSquares);
+        updateGameOnServer();
+    }
+
+    private void updateGameOnServer() {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(mGame);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 
     private void updateLiveState() {
@@ -1312,8 +1292,25 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     public void setPlayerPaid(final String playerId, final boolean checked) {
-        mDatabase.child("games").child(mGameId).child("paid_players").child(playerId)
-                .setValue(checked);
+        ArrayList<PaidPlayer> paidPlayers = mGame.getPaidPlayers();
+        if (paidPlayers == null) paidPlayers = new ArrayList<>();
+
+        boolean foundPaidPlayer = false;
+        for (PaidPlayer paidPlayer : paidPlayers) {
+            if (paidPlayer.getUserId().equals(playerId)) {
+                paidPlayer.setPaid(checked);
+                foundPaidPlayer = true;
+                break;
+            }
+        }
+
+        if (!foundPaidPlayer){
+            paidPlayers.add(new PaidPlayer(playerId, checked));
+        }
+        mGame.setPaidPlayers(paidPlayers);
+
+        initGameDetails(mGame);
+        updateGameOnServer();
     }
 
 

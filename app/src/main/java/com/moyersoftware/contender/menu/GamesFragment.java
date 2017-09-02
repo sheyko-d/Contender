@@ -21,8 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
@@ -34,6 +32,7 @@ import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
 
 import java.io.IOException;
@@ -79,6 +78,7 @@ public class GamesFragment extends Fragment {
     private String mGameToRemoveId;
     private FirebaseUser mFirebaseUser;
     private GameInvite.Game mRemoveGame;
+    private DatabaseReference mDatabase;
 
     public GamesFragment() {
         // Required empty public constructor
@@ -94,12 +94,46 @@ public class GamesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.bind(this, view);
 
-        initRecycler();
         initDatabase();
+        initRecycler();
         initButtons();
         initWelcomeLayout();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loadGames();
+    }
+
+    private void loadGames() {
+        retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
+        call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArrayList<Event>> call,
+                                   retrofit2.Response<ArrayList<Event>> response) {
+                if (!response.isSuccessful()) return;
+
+                mEventTimes.clear();
+                ArrayList<Event> events = response.body();
+                for (Event event : events) {
+                    if (event.getTime() > 0) {
+                        mEventTimes.put(event.getId(), event.getTime());
+                    } else {
+                        mEventTimes.put(event.getId(), event.getTime());
+                    }
+                }
+
+                getGames(mDatabase, mFirebaseUser);
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
+            }
+        });
     }
 
     private void initWelcomeLayout() {
@@ -115,53 +149,27 @@ public class GamesFragment extends Fragment {
     }
 
     public void initDatabase() {
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = firebaseAuth.getCurrentUser();
-        if (mFirebaseUser != null) {
-            Query query = database.child("events");
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    mEventTimes.clear();
-                    for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                        Util.Log("event: " + eventSnapshot);
-                        try {
-                            final Event event = eventSnapshot.getValue(Event.class);
-
-                            if (event.getTime() > 0) {
-                                mEventTimes.put(event.getId(), event.getTime());
-                            } else {
-                                mEventTimes.put(event.getId(), event.getTime());
-                            }
-                        } catch (Exception e) {
-                        }
-                    }
-
-                    getGames(database, mFirebaseUser);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-
-
-        }
     }
 
     private void getGames(final DatabaseReference database, final FirebaseUser firebaseUser) {
-        Query query = database.child("games").orderByChild("time");
-        query.addValueEventListener(new ValueEventListener() {
+        retrofit2.Call<ArrayList<GameInvite.Game>> call = ApiFactory.getApiService().getGames();
+        call.enqueue(new retrofit2.Callback<ArrayList<GameInvite.Game>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onResponse(retrofit2.Call<ArrayList<GameInvite.Game>> call,
+                                   retrofit2.Response<ArrayList<GameInvite.Game>> response) {
                 Util.Log("Update games home screen");
+
+                if (!response.isSuccessful()) return;
+
                 // Update the games list
                 mGames.clear();
-                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                for (final GameInvite.Game game : response.body()) {
+                    Util.Log("Find game = " + game.getId());
                     try {
-                        final GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
                         if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
                                 .contains(new Player(firebaseUser.getUid(), null,
@@ -257,11 +265,11 @@ public class GamesFragment extends Fragment {
                                         : R.string.games_title_empty);
                             }
                         });
-
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<ArrayList<GameInvite.Game>> call, Throwable t) {
+                Util.Log("Can't get games on home screen: " + t);
             }
         });
     }
@@ -320,10 +328,14 @@ public class GamesFragment extends Fragment {
     public void deleteGame(final GameInvite.Game game) {
         mGameToRemoveId = game.getId();
 
-        FirebaseDatabase.getInstance().getReference().child("events").child(game.getEventId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        retrofit2.Call<Event> call = ApiFactory.getApiService().getEvent(game.getEventId());
+        call.enqueue(new retrofit2.Callback<Event>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Event event = dataSnapshot.getValue(Event.class);
+            public void onResponse(retrofit2.Call<Event> call,
+                                   retrofit2.Response<Event> response) {
+                if (!response.isSuccessful()) return;
+
+                Event event = response.body();
                 if (event != null) {
 
                     if (!game.getAuthor().getUserId().equals(mFirebaseUser.getUid())) {
@@ -348,7 +360,7 @@ public class GamesFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<Event> call, Throwable t) {
             }
         });
     }
@@ -367,45 +379,61 @@ public class GamesFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (!mRemoveGame.getAuthor().getUserId().equals(mFirebaseUser.getUid())) {
-            FirebaseDatabase.getInstance().getReference().child("games").child(mRemoveGame.getId())
-                    .child("players")
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            GenericTypeIndicator<ArrayList<Player>> t
-                                    = new GenericTypeIndicator<ArrayList<Player>>() {
-                            };
-                            ArrayList<Player> players = dataSnapshot.getValue(t);
-                            if (players == null) players = new ArrayList<>();
+            ArrayList<Player> players = mRemoveGame.getPlayers();
+            if (players == null) players = new ArrayList<>();
 
-                            ArrayList<Player> playersCopy = new ArrayList<>(players);
+            ArrayList<Player> playersCopy = new ArrayList<>(players);
 
-                            try {
-                                for (Player player : players) {
-                                    if (player.getUserId().equals(FirebaseAuth.getInstance()
-                                            .getCurrentUser().getUid())) {
-                                        playersCopy.remove(player);
-                                    }
-                                }
-                            } catch (Exception e) {
-                                // Can't delete game
-                            }
+            try {
+                for (Player player : players) {
+                    if (player.getUserId().equals(FirebaseAuth.getInstance()
+                            .getCurrentUser().getUid())) {
+                        playersCopy.remove(player);
+                    }
+                }
+            } catch (Exception e) {
+                // Can't delete game
+            }
 
-                            players = playersCopy;
+            players = playersCopy;
 
-                            FirebaseDatabase.getInstance().getReference().child("games")
-                                    .child(mRemoveGame.getId()).child("players")
-                                    .setValue(players);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+            mRemoveGame.setPlayers(players);
+            updateGameOnServer(mRemoveGame);
         } else {
-            FirebaseDatabase.getInstance().getReference().child("games").child(mGameToRemoveId)
-                    .removeValue();
+            deleteGameOnServer(mGameToRemoveId);
         }
         return true;
+    }
+
+    private void deleteGameOnServer(String id) {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().deleteGame(id);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    loadGames();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
+    }
+
+    private void updateGameOnServer(GameInvite.Game game) {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(game);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                loadGames();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 }

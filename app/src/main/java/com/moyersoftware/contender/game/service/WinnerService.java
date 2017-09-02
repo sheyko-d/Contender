@@ -16,17 +16,13 @@ import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
 
@@ -57,33 +53,35 @@ public class WinnerService extends Service {
     }
 
     private void addGamesListener() {
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Query query = database.child("events");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
+        call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onResponse(retrofit2.Call<ArrayList<Event>> call,
+                                   retrofit2.Response<ArrayList<Event>> response) {
+                if (!response.isSuccessful()) return;
+
                 mEventTimes.clear();
-                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                ArrayList<Event> events = response.body();
+                for (Event event : events) {
                     try {
-                        final Event event = gameSnapshot.getValue(Event.class);
                         mEventTimes.put(event.getId(), event.getTime());
                     } catch (Exception e) {
                         // Can't retrieve game time
                     }
                 }
 
-                getGames(FirebaseAuth.getInstance().getCurrentUser(), database);
+                getGames(FirebaseAuth.getInstance().getCurrentUser());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getGames(FirebaseAuth.getInstance().getCurrentUser(), database);
+                        getGames(FirebaseAuth.getInstance().getCurrentUser());
                         new Handler().postDelayed(this, 60 * 1000);
                     }
                 }, 60 * 1000);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
             }
         });
 
@@ -100,20 +98,8 @@ public class WinnerService extends Service {
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
-            Util.Log("Check winner status");
             try {
-                final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                database.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        parseGames(database, FirebaseAuth.getInstance().getCurrentUser(), dataSnapshot);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                getGames(FirebaseAuth.getInstance().getCurrentUser());
             } finally {
                 // 100% guarantee that this always happens, even if
                 // your update method throws an exception
@@ -122,30 +108,30 @@ public class WinnerService extends Service {
         }
     };
 
-    private void getGames(final FirebaseUser firebaseUser, final DatabaseReference database) {
-        database.child("games").addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getGames(final FirebaseUser firebaseUser) {
+        retrofit2.Call<ArrayList<GameInvite.Game>> call = ApiFactory.getApiService().getGames();
+        call.enqueue(new retrofit2.Callback<ArrayList<GameInvite.Game>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                parseGames(database, firebaseUser, dataSnapshot);
+            public void onResponse(retrofit2.Call<ArrayList<GameInvite.Game>> call,
+                                   retrofit2.Response<ArrayList<GameInvite.Game>> response) {
+                parseGames(firebaseUser, response.body());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onFailure(retrofit2.Call<ArrayList<GameInvite.Game>> call, Throwable t) {
             }
         });
     }
 
-    private void parseGames(DatabaseReference database, FirebaseUser firebaseUser, DataSnapshot dataSnapshot) {
+    private void parseGames(FirebaseUser firebaseUser, ArrayList<GameInvite.Game> games) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String deviceOwnerId = user.getUid();
             String myId = Util.getCurrentPlayerId();
             if (myId == null) myId = deviceOwnerId;
 
-            for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+            for (GameInvite.Game game : games) {
                 try {
-                    GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
                     if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                             .getUid()) || (game.getPlayers() != null && game.getPlayers()
                             .contains(new Player(firebaseUser.getUid(), null,
@@ -167,7 +153,6 @@ public class WinnerService extends Service {
                             continue;
                         }
 
-                        Util.Log("Check reminder = " + (mEventTimes.get(game.getEventId()) - System.currentTimeMillis()));
                         if (emptySquaresCount > 0 && mEventTimes.get(game.getEventId()) != -2
                                 && mEventTimes.get(game.getEventId()) -
                                 System.currentTimeMillis() < 1000 * 60 * 30) {
@@ -195,22 +180,18 @@ public class WinnerService extends Service {
                                 showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
                                         .getName(), gameId);
                             }
-                            database.child("games").child(gameId).child("quarter1Winner").child("consumed")
-                                    .setValue(true);
+                            game.getQuarter1Winner().setConsumed(true);
                         }
                         if (game.getQuarter2Winner() != null) {
-                            Util.Log("show winner 1 " + game.getQuarter2Winner().getPlayer().getName() + ", " + game.getQuarter2Winner().getPlayer().getUserId() + " == " + myId);
                             if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner().getPlayer() != null
                                     && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
-                                Util.Log("show winner 2");
                                 showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
                             } else if (!game.getQuarter2Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter2Winner()
                                     .getPlayer().getCreatedByUserId())) {
                                 showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
                                         .getName(), gameId);
                             }
-                            database.child("games").child(gameId).child("quarter2Winner").child("consumed")
-                                    .setValue(true);
+                            game.getQuarter2Winner().setConsumed(true);
                         }
 
                         if (game.getQuarter3Winner() != null) {
@@ -222,8 +203,7 @@ public class WinnerService extends Service {
                                 showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
                                         .getName(), gameId);
                             }
-                            database.child("games").child(gameId).child("quarter3Winner").child("consumed")
-                                    .setValue(true);
+                            game.getQuarter3Winner().setConsumed(true);
                         }
 
                         if (game.getFinalWinner() != null) {
@@ -235,9 +215,10 @@ public class WinnerService extends Service {
                                 showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
                                         .getName(), gameId);
                             }
-                            database.child("games").child(gameId).child("finalWinner").child("consumed")
-                                    .setValue(true);
+                            game.getFinalWinner().setConsumed(true);
                         }
+
+                        updateGameOnServer(game);
 
 
                         // Warn if not all players paid
@@ -245,7 +226,7 @@ public class WinnerService extends Service {
                                 (game.getEventId()) != -1 && mEventTimes.get(game.getEventId())
                                 != -2 && System.currentTimeMillis() < mEventTimes.get
                                 (game.getEventId())) {
-                            loadPlayers(database, gameId, game.getName(),
+                            loadPlayers(game, gameId, game.getName(),
                                     mEventTimes.get(game.getEventId()), myId);
                         }
                     }
@@ -256,67 +237,59 @@ public class WinnerService extends Service {
         }
     }
 
-    private void loadPlayers(final DatabaseReference database, final String gameId,
-                             final String name, final long time, final String myId) {
-        database.child("games").child(gameId).child("players").addValueEventListener
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> players = new ArrayList<>();
-                        players.clear();
-                        players.add(myId);
-                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
-                            try {
-                                Player player = playerSnapshot.getValue(Player.class);
-                                players.add(player.getUserId());
-                                Util.Log("check existing player: " + player.getUserId());
-                            } catch (Exception e) {
-                                Util.Log("Can't parse player");
-                            }
-                        }
+    private void updateGameOnServer(GameInvite.Game game) {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(game);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+            }
 
-                        loadPaidPlayers(database, gameId, players, name, time);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 
-    private void loadPaidPlayers(DatabaseReference database, final String gameId,
+    private void loadPlayers(GameInvite.Game game, final String gameId,
+                             final String name, final long time, final String myId) {
+        ArrayList<String> players = new ArrayList<>();
+        players.clear();
+        players.add(myId);
+        if (game.getPlayers() != null) {
+            for (Player player : game.getPlayers()) {
+                try {
+                    players.add(player.getUserId());
+                } catch (Exception e) {
+                    Util.Log("Can't parse player");
+                }
+            }
+        }
+
+        loadPaidPlayers(game, gameId, players, name, time);
+    }
+
+    private void loadPaidPlayers(GameInvite.Game game, final String gameId,
                                  final ArrayList<String> players, final String name,
                                  final long time) {
-        database.child("games").child(gameId).child("paid_players").addValueEventListener
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> paidPlayers = new ArrayList<>();
-                        paidPlayers.clear();
-                        for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
-                            if (playerSnapshot.getValue(Boolean.class)) {
-                                paidPlayers.add(playerSnapshot.getKey());
-                                Util.Log("paid player: " + paidPlayers);
-                            }
-                        }
+        ArrayList<String> paidPlayers = new ArrayList<>();
+        if (game.getPaidPlayers() != null) {
+            for (PaidPlayer paidPlayer : game.getPaidPlayers()) {
+                if (paidPlayer.paid()) {
+                    paidPlayers.add(paidPlayer.getUserId());
+                }
+            }
+        }
 
-                        if (paidPlayers.size() != players.size()) {
-                            showPaidNotification(MyApplication.getContext(), gameId, name, time);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+        if (paidPlayers.size() != players.size()) {
+            showPaidNotification(MyApplication.getContext(), gameId, name, time);
+        }
     }
 
     private void showPaidNotification(Context context, String id, String name, long time) {
         int minutesBefore;
-        Util.Log("check paid = " + (time - System.currentTimeMillis()));
 
         if (time - System.currentTimeMillis() < 5 * 60 * 1000) {
-            Util.Log("check paid 5");
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 5)) {
                 minutesBefore = 5;
@@ -327,13 +300,10 @@ public class WinnerService extends Service {
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 15)) {
                 minutesBefore = 15;
-                Util.Log("check paid 15 = " + (time - System.currentTimeMillis()));
             } else {
-                Util.Log("check paid 15 no = " + (time - System.currentTimeMillis()));
                 return;
             }
         } else if (time - System.currentTimeMillis() < 30 * 60 * 1000) {
-            Util.Log("check paid 30");
             if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
                     + 30)) {
                 minutesBefore = 30;
@@ -341,10 +311,8 @@ public class WinnerService extends Service {
                 return;
             }
         } else {
-            Util.Log("check paid just no = "+(time - System.currentTimeMillis())+", "+(30 * 60 * 1000));
             return;
         }
-        Util.Log("check paid 2");
 
         NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
                 new NotificationCompat.Builder(context)

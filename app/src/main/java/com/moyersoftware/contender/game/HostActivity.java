@@ -41,10 +41,8 @@ import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -66,6 +64,7 @@ import com.moyersoftware.contender.game.data.TeamAway;
 import com.moyersoftware.contender.game.data.TeamHome;
 import com.moyersoftware.contender.game.receiver.BootReceiver;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -374,55 +373,55 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void loadEvents() {
-        mDatabase.child("events").orderByChild("time").addValueEventListener
-                (new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        mEvents.clear();
-                        if (dataSnapshot.exists()) {
-                            String previousEventWeek = null;
-                            String previousEventDate = null;
-                            for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                                try {
-                                    Event event = eventSnapshot.getValue(Event.class);
-                                    if (event != null) {
-                                        if (event.isCustom()) continue;
+        retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
+        call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArrayList<Event>> call,
+                                   retrofit2.Response<ArrayList<Event>> response) {
+                mEvents.clear();
+                if (response.isSuccessful()) {
+                    String previousEventWeek = null;
+                    String previousEventDate = null;
+                    ArrayList<Event> events = response.body();
+                    for (Event event : events) {
+                        try {
+                            if (event != null) {
+                                if (event.isCustom()) continue;
 
-                                        if (event.getTime() > System.currentTimeMillis()) {
-                                            if (mEvents.size() == 0 || !event.getWeek()
-                                                    .equals(previousEventWeek)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),
-                                                        HostEventsAdapter.TYPE_HEADER, true));
-                                            }
-
-                                            if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
-                                                    .equals(previousEventDate)) {
-                                                mEvents.add(new Event(null, null, null, event.getTime(),
-                                                        null, "Date", HostEventsAdapter.TYPE_DATE, true));
-                                            }
-
-                                            Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime()));
-                                            previousEventWeek = event.getWeek();
-                                            previousEventDate = Util.formatDate(event.getTime());
-
-                                            mEvents.add(event);
-                                        }
+                                if (event.getTime() > System.currentTimeMillis()) {
+                                    if (mEvents.size() == 0 || !event.getWeek()
+                                            .equals(previousEventWeek)) {
+                                        mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),
+                                                HostEventsAdapter.TYPE_HEADER, true));
                                     }
-                                } catch (Exception e) {
-                                    // Can't add event
+
+                                    if (mEvents.size() == 0 || !Util.formatDate(event.getTime())
+                                            .equals(previousEventDate)) {
+                                        mEvents.add(new Event(null, null, null, event.getTime(),
+                                                null, "Date", HostEventsAdapter.TYPE_DATE, true));
+                                    }
+
+                                    Util.Log("Add event: " + event.getTeamHome().getName() + ", " + (event.getTime()));
+                                    previousEventWeek = event.getWeek();
+                                    previousEventDate = Util.formatDate(event.getTime());
+
+                                    mEvents.add(event);
                                 }
                             }
-                        }
-                        if (mAdapter != null) {
-                            mAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            // Can't add event
                         }
                     }
+                }
+                if (mAdapter != null) {
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+            @Override
+            public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
+            }
+        });
     }
 
     private void initGoogleClient() {
@@ -872,8 +871,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void createCustomEvent() {
-        DatabaseReference ref = mDatabase.child("events").push();
-        mEventId = ref.getKey();
+        mEventId = Util.generateGameId();
         TeamHome teamHome = new TeamHome("http://moyersoftware.com/contender/images/tba.png",
                 mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0", "0", "0"));
         TeamAway teamAway = new TeamAway("http://moyersoftware.com/contender/images/tba.png",
@@ -884,38 +882,60 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
-        ref.setValue(new Event(mEventId, teamAway, teamHome, calendar.getTimeInMillis(),
-                "Custom game board", "Custom games",
-                HostEventsAdapter.TYPE_ITEM, true)).addOnCompleteListener
-                (new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        mCustom = true;
-                        saveGame();
-                    }
-                });
+
+        retrofit2.Call<Void> call = ApiFactory.getApiService().createEvent(new Event(mEventId,
+                teamAway, teamHome, calendar.getTimeInMillis(), "Custom game board", "Custom games",
+                HostEventsAdapter.TYPE_ITEM, true));
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    mCustom = true;
+                    saveGame();
+                } else {
+                    Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                mProgressDialog.cancel();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 
     private void saveGame() {
-        mDatabase.child("games").child(mGameId).setValue(new GameInvite.Game(mEventId, mGameId, mName,
+        retrofit2.Call<Void> call = ApiFactory.getApiService().createGame(new GameInvite.Game(mEventId, mGameId, mName,
                 System.currentTimeMillis(), mImageUrl, "100/100", new Player(mAuthorId, null,
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
-                new ArrayList<Player>(), Util.generateBoardNumbers(), Util.generateBoardNumbers(),
+                new ArrayList<Player>(), null, Util.generateBoardNumbers(), Util.generateBoardNumbers(),
                 new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
-                mSquaresLimit, mCustom, mAllowIncompleteRadioBtn.isChecked()))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        createEmptyCellsReminder();
+                mSquaresLimit, mCustom, mAllowIncompleteRadioBtn.isChecked()));
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    createEmptyCellsReminder();
 
-                        mProgressDialog.cancel();
-                        startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
-                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, mGameId));
+                    startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
+                            .putExtra(GameBoardActivity.EXTRA_GAME_ID, mGameId));
 
-                        finish();
-                    }
-                });
+                    finish();
+                } else {
+                    Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                mProgressDialog.cancel();
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 
     private void uploadImage() {
@@ -935,6 +955,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //noinspection VisibleForTests
                 uploadData(taskSnapshot.getDownloadUrl() + "");
             }
         });

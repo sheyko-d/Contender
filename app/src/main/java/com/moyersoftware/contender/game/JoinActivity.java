@@ -17,15 +17,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinPagerAdapter;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -115,36 +113,52 @@ public class JoinActivity extends AppCompatActivity {
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         // Retrieve current list of players for the game user wants to join
-        database.child("games").child(gameId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get game value
-                        GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
+        retrofit2.Call<GameInvite.Game> call = ApiFactory.getApiService().getGame(gameId);
+        call.enqueue(new retrofit2.Callback<GameInvite.Game>() {
+            @Override
+            public void onResponse(retrofit2.Call<GameInvite.Game> call,
+                                   retrofit2.Response<GameInvite.Game> response) {
+                if (!response.isSuccessful()) finish();
 
-                        if (firebaseUser != null) {
-                            ArrayList<Player> players = game.getPlayers();
-                            if (players == null) players = new ArrayList<>();
+                GameInvite.Game game = response.body();
 
-                            if (!players.contains(new Player(firebaseUser.getUid(), null,
-                                    firebaseUser.getEmail(), Util.getDisplayName(),
-                                    Util.getPhoto()))) {
-                                players.add(new Player(firebaseUser.getUid(), null,
-                                        firebaseUser.getEmail(), Util.getDisplayName(),
-                                        Util.getPhoto()));
-                            }
+                if (firebaseUser != null) {
+                    ArrayList<Player> players = game.getPlayers();
+                    if (players == null) players = new ArrayList<>();
 
-                            database.child("games").child(gameId).child("players")
-                                    .setValue(players);
-
-                            startActivity(new Intent(JoinActivity.this, GameBoardActivity.class)
-                                    .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
-                        }
+                    if (!players.contains(new Player(firebaseUser.getUid(), null,
+                            firebaseUser.getEmail(), Util.getDisplayName(),
+                            Util.getPhoto()))) {
+                        players.add(new Player(firebaseUser.getUid(), null,
+                                firebaseUser.getEmail(), Util.getDisplayName(),
+                                Util.getPhoto()));
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+                    game.setPlayers(players);
+
+                    updateGameOnServer(game);
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<GameInvite.Game> call, Throwable t) {
+            }
+        });
+    }
+
+    private void updateGameOnServer(final GameInvite.Game game) {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(game);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                startActivity(new Intent(JoinActivity.this, GameBoardActivity.class)
+                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, game.getId()));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 }

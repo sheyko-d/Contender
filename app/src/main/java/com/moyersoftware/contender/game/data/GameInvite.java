@@ -2,6 +2,7 @@ package com.moyersoftware.contender.game.data;
 
 import android.support.annotation.Nullable;
 
+import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class GameInvite {
         public double latitude;
         public double longitude;
         public ArrayList<Player> players;
+        public ArrayList<PaidPlayer> paidPlayers;
         public ArrayList<Integer> rowNumbers;
         public ArrayList<Integer> columnNumbers;
         public ArrayList<SelectedSquare> selectedSquares;
@@ -80,11 +82,11 @@ public class GameInvite {
                     Player author, String password, int squarePrice,
                     int quarter1Price, int quarter2Price, int quarter3Price, int finalPrice,
                     int totalPrice, double latitude, double longitude, ArrayList<Player> players,
-                    ArrayList<Integer> rowNumbers, ArrayList<Integer> columnNumbers,
-                    ArrayList<SelectedSquare> selectedSquares, Winner quarter1Winner,
-                    Winner quarter2Winner, Winner quarter3Winner, Winner finalWinner, boolean current,
-                    String currentQuarter, String code, String rules, int squaresLimit,
-                    boolean custom, boolean allow_incomplete) {
+                    ArrayList<PaidPlayer> paidPlayers, ArrayList<Integer> rowNumbers,
+                    ArrayList<Integer> columnNumbers, ArrayList<SelectedSquare> selectedSquares,
+                    Winner quarter1Winner, Winner quarter2Winner, Winner quarter3Winner,
+                    Winner finalWinner, boolean current, String currentQuarter, String code,
+                    String rules, int squaresLimit, boolean custom, boolean allow_incomplete) {
             this.eventId = eventId;
             this.id = id;
             this.name = name;
@@ -101,6 +103,7 @@ public class GameInvite {
             this.totalPrice = totalPrice;
             this.latitude = latitude;
             this.longitude = longitude;
+            this.paidPlayers = paidPlayers;
             this.players = players;
             this.rowNumbers = rowNumbers;
             this.columnNumbers = columnNumbers;
@@ -186,6 +189,10 @@ public class GameInvite {
             return players;
         }
 
+        public ArrayList<PaidPlayer> getPaidPlayers() {
+            return paidPlayers;
+        }
+
         public ArrayList<Integer> getRowNumbers() {
             return rowNumbers;
         }
@@ -264,6 +271,18 @@ public class GameInvite {
 
         public boolean allowIncomplete() {
             return allow_incomplete;
+        }
+
+        public void setSelectedSquares(ArrayList<SelectedSquare> selectedSquares) {
+            this.selectedSquares = selectedSquares;
+        }
+
+        public void setPlayers(ArrayList<Player> players) {
+            this.players = players;
+        }
+
+        public void setPaidPlayers(ArrayList<PaidPlayer> paidPlayers) {
+            this.paidPlayers = paidPlayers;
         }
     }
 }

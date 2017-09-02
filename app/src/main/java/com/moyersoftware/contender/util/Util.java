@@ -50,6 +50,8 @@ public class Util {
     private static final String PREF_RULES_SHOWN = "RulesShown";
     private static final String PREF_FIND_FRIENDS_SHOWN = "FindFriendsShown";
     private static final String PREF_SCALE_FACTOR = "ScaleFactor";
+    public static final String BASE_API_URL = "http://www.moyersoftware.com/contender/api/v1/";
+    private static final int DEBUG_MAX_LENGTH = 500;
 
     /**
      * Adds a message to LogCat.
@@ -302,5 +304,23 @@ public class Util {
         PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit()
                 .putFloat(PREF_SCALE_FACTOR, scaleFactor)
                 .apply();
+    }
+
+    /**
+     * Split output log by lines
+     *
+     * @param tag  tag
+     * @param data data to output
+     */
+    @SuppressWarnings("unused")
+    public static void splitOutput(String tag, String data) {
+        if (data == null)
+            return;
+        int i = 0;
+        while (i < data.length()) {
+            Log.d(tag, data.substring(i, i + DEBUG_MAX_LENGTH > data.length() ? data.length() : i
+                    + DEBUG_MAX_LENGTH));
+            i += DEBUG_MAX_LENGTH;
+        }
     }
 }

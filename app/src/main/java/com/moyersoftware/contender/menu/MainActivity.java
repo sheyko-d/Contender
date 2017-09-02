@@ -41,6 +41,7 @@ import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.menu.data.Player;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -301,38 +302,56 @@ public class MainActivity extends AppCompatActivity {
         final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         // Retrieve current list of players for the game user wants to join
-        database.child("games").child(gameId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get game value
-                        GameInvite.Game game = dataSnapshot.getValue(GameInvite.Game.class);
+        retrofit2.Call<GameInvite.Game> call = ApiFactory.getApiService().getGame(gameId);
+        call.enqueue(new retrofit2.Callback<GameInvite.Game>() {
+            @Override
+            public void onResponse(retrofit2.Call<GameInvite.Game> call,
+                                   retrofit2.Response<GameInvite.Game> response) {
+                if (!response.isSuccessful()) finish();
 
-                        if (firebaseUser != null) {
-                            ArrayList<Player> players = game.getPlayers();
-                            if (players == null) players = new ArrayList<>();
+                GameInvite.Game game = response.body();
 
-                            if (!game.getAuthor().getUserId().equals(firebaseUser.getUid())
-                                    && !players.contains(new Player(firebaseUser.getUid(), null,
-                                    firebaseUser.getEmail(), Util.getDisplayName(),
-                                    Util.getPhoto()))) {
-                                players.add(new Player(firebaseUser.getUid(), null,
-                                        firebaseUser.getEmail(), Util.getDisplayName(),
-                                        Util.getPhoto()));
+                if (firebaseUser != null) {
+                    ArrayList<Player> players = game.getPlayers();
+                    if (players == null) players = new ArrayList<>();
 
-                                database.child("games").child(gameId).child("players")
-                                        .setValue(players);
-                            }
+                    if (!game.getAuthor().getUserId().equals(firebaseUser.getUid())
+                            && !players.contains(new Player(firebaseUser.getUid(), null,
+                            firebaseUser.getEmail(), Util.getDisplayName(),
+                            Util.getPhoto()))) {
+                        players.add(new Player(firebaseUser.getUid(), null,
+                                firebaseUser.getEmail(), Util.getDisplayName(),
+                                Util.getPhoto()));
 
-                            startActivity(new Intent(MainActivity.this, GameBoardActivity.class)
-                                    .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
-                        }
+                        game.setPlayers(players);
+                        updateGameOnServer(game);
+                    } else {
+                        startActivity(new Intent(MainActivity.this, GameBoardActivity.class)
+                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, gameId));
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+            @Override
+            public void onFailure(retrofit2.Call<GameInvite.Game> call, Throwable t) {
+            }
+        });
+    }
+
+    private void updateGameOnServer(final GameInvite.Game game) {
+        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(game);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(retrofit2.Call<Void> call,
+                                   retrofit2.Response<Void> response) {
+                startActivity(new Intent(MainActivity.this, GameBoardActivity.class)
+                        .putExtra(GameBoardActivity.EXTRA_GAME_ID, game.getId()));
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+            }
+        });
     }
 
     private void initPager() {

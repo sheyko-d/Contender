@@ -26,4 +26,8 @@ public final class Winner {
     public boolean isConsumed() {
         return consumed;
     }
+
+    public void setConsumed(boolean consumed) {
+        this.consumed = consumed;
+    }
 }

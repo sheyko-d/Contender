@@ -25,15 +25,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.JoinGamesAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
@@ -72,15 +68,15 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     private String mMyName;
     private String mMyPhoto;
     private HashMap<String, Long> mIdEventTimes = new HashMap<>();
-    private DataSnapshot mIdGamesSnapshot;
+    private ArrayList<GameInvite.Game> mIdGamesSnapshot;
 
     private ArrayList<GameInvite.Game> mLocationGames = new ArrayList<>();
-    private DataSnapshot mDataSnapshot;
     private JoinGamesAdapter mLocationAdapter;
     private GoogleApiClient mGoogleApiClient;
     private Location mMyLocation;
     private HashMap<String, Long> mLocationEventTimes = new HashMap<>();
-    private DataSnapshot mLocationGamesSnapshot;
+    private ArrayList<GameInvite.Game> mLocationGamesSnapshot;
+    private ArrayList<GameInvite.Game> mGamesSnapshot;
 
     public JoinFragment() {
         // Required empty public constructor
@@ -137,7 +133,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mQuery = mIdEditTxt.getText().toString();
-                updateIdGames(mDataSnapshot);
+                updateIdGames(mGamesSnapshot);
             }
 
             @Override
@@ -164,40 +160,40 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void initDatabase() {
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-        Query query = database.child("games").orderByChild("time");
-        query.addValueEventListener(new ValueEventListener() {
+        retrofit2.Call<ArrayList<GameInvite.Game>> call = ApiFactory.getApiService().getGames();
+        call.enqueue(new retrofit2.Callback<ArrayList<GameInvite.Game>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mDataSnapshot = dataSnapshot;
-                updateIdGames(dataSnapshot);
+            public void onResponse(retrofit2.Call<ArrayList<GameInvite.Game>> call,
+                                   retrofit2.Response<ArrayList<GameInvite.Game>> response) {
+                mGamesSnapshot = response.body();
+                updateIdGames(mGamesSnapshot);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<ArrayList<GameInvite.Game>> call, Throwable t) {
             }
         });
     }
 
     /**
      * Updates the games list.
+     * @param gamesSnapshot
      */
-    private void updateIdGames(DataSnapshot dataSnapshot) {
-        if (dataSnapshot == null) return;
+    private void updateIdGames(ArrayList<GameInvite.Game> gamesSnapshot) {
+        if (gamesSnapshot == null) return;
 
-        mIdGamesSnapshot = dataSnapshot;
+        mIdGamesSnapshot = gamesSnapshot;
 
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Query query = database.child("events");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
+        call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Util.Log("find games0");
+            public void onResponse(retrofit2.Call<ArrayList<Event>> call,
+                                   retrofit2.Response<ArrayList<Event>> response) {
+                if (!response.isSuccessful()) return;
+
                 mIdEventTimes.clear();
-                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                for (Event event : response.body()) {
                     try {
-                        final Event event = gameSnapshot.getValue(Event.class);
                         if (event.getTime() > 0) {
                             mIdEventTimes.put(event.getId(), event.getTime());
                         } else {
@@ -209,10 +205,8 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
                 }
                 mIdGames.clear();
                 if (mMyId != null) {
-                    for (DataSnapshot gameSnapshot : mIdGamesSnapshot.getChildren()) {
+                    for (GameInvite.Game game : mIdGamesSnapshot) {
                         try {
-                            GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
-
                             if (!mIdEventTimes.containsKey(game.getEventId())) continue;
 
                             game.setEventTime(mIdEventTimes.get(game.getEventId()));
@@ -236,40 +230,38 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
             }
         });
     }
 
     /**
      * Updates the games list.
+     * @param dataSnapshot
      */
-    private void updateLocationGames(DataSnapshot dataSnapshot) {
+    private void updateLocationGames(ArrayList<GameInvite.Game> dataSnapshot) {
         if (dataSnapshot == null) return;
 
         mLocationGamesSnapshot = dataSnapshot;
 
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        Query query = database.child("events");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
+        call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onResponse(retrofit2.Call<ArrayList<Event>> call,
+                                   retrofit2.Response<ArrayList<Event>> response) {
+                if (!response.isSuccessful()) return;
                 mLocationEventTimes.clear();
-                for (DataSnapshot gameSnapshot : dataSnapshot.getChildren()) {
+                for (Event event : response.body()) {
                     try {
-                        final Event event = gameSnapshot.getValue(Event.class);
                         mLocationEventTimes.put(event.getId(), event.getTime());
                     } catch (Exception e) {
                         // Can't retrieve game time
                     }
                 }
 
-
                 mLocationGames.clear();
                 if (mMyId != null) {
-                    for (DataSnapshot gameSnapshot : mLocationGamesSnapshot.getChildren()) {
-                        GameInvite.Game game = gameSnapshot.getValue(GameInvite.Game.class);
-
+                    for (GameInvite.Game game : mLocationGamesSnapshot) {
                         if (game.getLatitude() != 0 && game.getLongitude() != 0) {
                             Location gameLocation = new Location("");
                             gameLocation.setLatitude(game.getLatitude());
@@ -293,7 +285,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
             }
         });
     }
@@ -314,7 +306,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
         } else {
             mMyLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
-        updateLocationGames(mDataSnapshot);
+        updateLocationGames(mGamesSnapshot);
     }
 
     @Override
