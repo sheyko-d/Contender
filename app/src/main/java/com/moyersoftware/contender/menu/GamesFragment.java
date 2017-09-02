@@ -1,7 +1,11 @@
 package com.moyersoftware.contender.menu;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +34,7 @@ import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.game.service.firebase.MyFirebaseMessagingService;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.network.ApiFactory;
@@ -107,6 +112,25 @@ public class GamesFragment extends Fragment {
         super.onResume();
 
         loadGames();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        registerRealTimeListener();
+    }
+
+    private void registerRealTimeListener() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MyFirebaseMessagingService.TYPE_GAMES_UPDATED);
+        filter.addAction(MyFirebaseMessagingService.TYPE_EVENTS_UPDATED);
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadGames();
+            }
+        }, filter);
     }
 
     private void loadGames() {

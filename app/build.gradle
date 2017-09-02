@@ -36,6 +36,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.2.1'
     compile 'com.google.firebase:firebase-database:10.2.1'
     compile 'com.google.firebase:firebase-storage:10.2.1'
+    compile 'com.google.firebase:firebase-messaging:10.2.1'
     compile 'com.google.android.gms:play-services-location:10.2.1'
     compile 'com.itextpdf:itextpdf:5.3.2'
     compile 'com.squareup.okhttp3:okhttp:3.4.0-RC1'

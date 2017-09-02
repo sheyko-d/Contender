@@ -83,12 +83,27 @@
             android:label="@string/title_activity_how_to_use"
             android:theme="@style/AppTheme.Translucent" />
 
-        <service android:name=".game.service.WinnerService"/>
+        <service android:name=".game.service.WinnerService" />
+        <service
+            android:name=".game.service.firebase.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".game.service.firebase.MyFirebaseInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
-        <receiver android:name=".game.receiver.BootReceiver"
+        <receiver
+            android:name=".game.receiver.BootReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

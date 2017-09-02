@@ -139,6 +139,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
         holder.itemView.setClickable(!mLive);
 
+        Util.Log("lastAwayDigit check");
         if (mHomeScore != null && mAwayScore != null) {
             String lastHomeDigit;
             if (String.valueOf(mHomeScore).length() == 1) {
@@ -161,6 +162,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 column -= 10;
             }
 
+            Util.Log("lastAwayDigit = "+lastAwayDigit+" == "+String.valueOf(mColumnNumbers.get(row)));
             if (!mCustom && lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
                     && lastHomeDigit.equals(String.valueOf(mRowNumbers.get(column)))) {
                 holder.winningView.setVisibility(View.VISIBLE);

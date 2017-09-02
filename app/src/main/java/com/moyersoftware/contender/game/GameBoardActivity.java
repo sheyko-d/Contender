@@ -3,11 +3,13 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -69,6 +71,7 @@ import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.data.SelectedSquare;
+import com.moyersoftware.contender.game.service.firebase.MyFirebaseMessagingService;
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.data.Friend;
 import com.moyersoftware.contender.menu.data.Friendship;
@@ -240,6 +243,19 @@ public class GameBoardActivity extends AppCompatActivity {
         initScaleLayout();
         loadFriends();
         initBoardLayout();
+        registerRealTimeListener();
+    }
+
+    private void registerRealTimeListener() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MyFirebaseMessagingService.TYPE_GAMES_UPDATED);
+        filter.addAction(MyFirebaseMessagingService.TYPE_EVENTS_UPDATED);
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadGame();
+            }
+        }, filter);
     }
 
     private void loadGame() {
@@ -470,10 +486,29 @@ public class GameBoardActivity extends AppCompatActivity {
                     updateLiveState();
 
                     try {
-                        mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
-                                .getScore().getTotal()), Integer.parseInt(event
-                                .getTeamAway().getScore().getTotal()));
+                        if (!TextUtils.isEmpty(event.getTeamAway().getScore().getTotal())) {
+                            mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                    .getScore().getTotal()), Integer.parseInt(event
+                                    .getTeamAway().getScore().getTotal()));
+                        } else if (!TextUtils.isEmpty(event.getTeamAway().getScore().getQ4())) {
+                            mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                    .getScore().getQ4()), Integer.parseInt(event
+                                    .getTeamAway().getScore().getQ4()));
+                        } else if (!TextUtils.isEmpty(event.getTeamAway().getScore().getQ3())) {
+                            mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                    .getScore().getQ3()), Integer.parseInt(event
+                                    .getTeamAway().getScore().getQ3()));
+                        } else if (!TextUtils.isEmpty(event.getTeamAway().getScore().getQ2())) {
+                            mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                    .getScore().getQ2()), Integer.parseInt(event
+                                    .getTeamAway().getScore().getQ2()));
+                        } else if (!TextUtils.isEmpty(event.getTeamAway().getScore().getQ1())) {
+                            mBoardAdapter.setScore(Integer.parseInt(event.getTeamHome()
+                                    .getScore().getQ1()), Integer.parseInt(event
+                                    .getTeamAway().getScore().getQ1()));
+                        }
                     } catch (Exception e) {
+                        Util.Log("Can't set scores: " + e);
                     }
                     mColumnAdapter.notifyDataSetChanged();
                     mRowAdapter.notifyDataSetChanged();
@@ -1250,11 +1285,10 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void updateLiveState() {
-        Util.Log("Update live state1");
         if (mSelectedSquares.size() == 100 != mGameLive || mGame.allowIncomplete()) {
             mGameLive = mSelectedSquares.size() == 100
-                    || (mEvent.getTime() == -1 && mGame.allowIncomplete());
-            Util.Log("Update live state2 == " + mGameLive);
+                    || (mEvent.getTime() == -1 && mGame.allowIncomplete())
+                    || mEvent.getTime() == -2;
             mBoardAdapter.setLive(mGameLive);
             mRowAdapter.setLive(mGameLive);
             mColumnAdapter.setLive(mGameLive);
@@ -1304,7 +1338,7 @@ public class GameBoardActivity extends AppCompatActivity {
             }
         }
 
-        if (!foundPaidPlayer){
+        if (!foundPaidPlayer) {
             paidPlayers.add(new PaidPlayer(playerId, checked));
         }
         mGame.setPaidPlayers(paidPlayers);

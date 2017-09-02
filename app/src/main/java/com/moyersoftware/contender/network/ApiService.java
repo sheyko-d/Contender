@@ -39,4 +39,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("game/delete_game.php")
     Call<Void> deleteGame(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("user/update_token.php")
+    Call<Void> updateToken(@Field("user_id") String userId, @Field("token") String token);
 }

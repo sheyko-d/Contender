@@ -5,9 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -63,6 +65,7 @@ import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.game.data.TeamAway;
 import com.moyersoftware.contender.game.data.TeamHome;
 import com.moyersoftware.contender.game.receiver.BootReceiver;
+import com.moyersoftware.contender.game.service.firebase.MyFirebaseMessagingService;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.Util;
@@ -192,6 +195,16 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initCodes();
         initFields();
         loadEvents();
+        registerRealTimeListener();
+    }
+
+    private void registerRealTimeListener() {
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadEvents();
+            }
+        }, new IntentFilter(MyFirebaseMessagingService.TYPE_EVENTS_UPDATED));
     }
 
     private void initFields() {
