@@ -130,6 +130,8 @@ public class WinnerService extends Service {
             String myId = Util.getCurrentPlayerId();
             if (myId == null) myId = deviceOwnerId;
 
+            if (games == null) return;
+
             for (GameInvite.Game game : games) {
                 try {
                     if (game != null && (game.getAuthor().getUserId().equals(firebaseUser

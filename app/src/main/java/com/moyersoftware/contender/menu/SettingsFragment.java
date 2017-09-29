@@ -166,10 +166,15 @@ public class SettingsFragment extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot != null
-                                    && !TextUtils.isEmpty(dataSnapshot.getValue().toString())) {
-                                mUsername = dataSnapshot.getValue().toString();
-                                mUsernameTxt.setText(mUsername);
+                            try {
+                                if (dataSnapshot != null
+                                        && !TextUtils.isEmpty(dataSnapshot.getValue().toString())) {
+                                    mUsername = dataSnapshot.getValue().toString();
+                                    mUsernameTxt.setText(mUsername);
+                                }
+                            } catch (Exception e) {
+                                mUsernameTxt.setText("");
+                                // Can't retrieve Firebase profile
                             }
                         }
 
