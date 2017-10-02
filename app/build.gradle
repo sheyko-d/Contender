@@ -7,8 +7,8 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 87
-        versionName '2.0.12'
+        versionCode 89
+        versionName '2.0.14'
     }
     buildTypes {
         release {
