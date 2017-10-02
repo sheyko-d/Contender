@@ -370,10 +370,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initGameDetails(GameInvite.Game game) {
+        if (game == null) return;
 
-        Util.Log("game limit: " + game.getSquaresLimit());
-
-        Util.Log("initGameDetails");
         if (mIgnoreUpdate) {
             mIgnoreUpdate = false;
             return;
