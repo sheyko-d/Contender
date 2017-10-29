@@ -2,13 +2,19 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 89
-        versionName '2.0.14'
+        versionCode 90
+        versionName '2.0.15'
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     buildTypes {
         release {
