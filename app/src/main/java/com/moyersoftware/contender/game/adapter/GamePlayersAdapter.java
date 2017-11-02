@@ -14,7 +14,7 @@ import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GamePlayersAdapter extends RecyclerView.Adapter<GamePlayersAdapter.ViewHolder> {
@@ -60,9 +60,9 @@ public class GamePlayersAdapter extends RecyclerView.Adapter<GamePlayersAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             CompoundButton.OnCheckedChangeListener {
 
-        @Bind(R.id.player_name_txt)
+        @BindView(R.id.player_name_txt)
         TextView nameTxt;
-        @Bind(R.id.player_radio_btn)
+        @BindView(R.id.player_radio_btn)
         RadioButton radioButton;
 
         public ViewHolder(View itemView) {

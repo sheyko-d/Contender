@@ -35,7 +35,7 @@ import com.moyersoftware.contender.util.Util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class JoinFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
@@ -47,15 +47,15 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
             * 1609.34);
 
     // Views
-    @Bind(R.id.join_id_recycler)
+    @BindView(R.id.join_id_recycler)
     RecyclerView mGamesIdRecycler;
-    @Bind(R.id.join_id_edit_txt)
+    @BindView(R.id.join_id_edit_txt)
     EditText mIdEditTxt;
-    @Bind(R.id.join_id_title_txt)
+    @BindView(R.id.join_id_title_txt)
     TextView mTitleIdTxt;
-    @Bind(R.id.join_location_recycler)
+    @BindView(R.id.join_location_recycler)
     RecyclerView mGamesLocationRecycler;
-    @Bind(R.id.join_location_search_txt)
+    @BindView(R.id.join_location_search_txt)
     TextView mSearchTxt;
 
     // Usual variables

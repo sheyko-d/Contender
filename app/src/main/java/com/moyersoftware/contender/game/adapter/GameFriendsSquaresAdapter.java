@@ -11,7 +11,7 @@ import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GameFriendsSquaresAdapter extends RecyclerView.Adapter<GameFriendsSquaresAdapter.ViewHolder> {
@@ -46,9 +46,9 @@ public class GameFriendsSquaresAdapter extends RecyclerView.Adapter<GameFriendsS
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.friend_invite_name_txt)
+        @BindView(R.id.friend_invite_name_txt)
         TextView nameTxt;
-        @Bind(R.id.friend_squares_txt)
+        @BindView(R.id.friend_squares_txt)
         TextView squaresTxt;
 
         public ViewHolder(View itemView) {

@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.ViewHolder> {
@@ -77,18 +77,18 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Nullable
-        @Bind(R.id.event_away_img)
+        @BindView(R.id.event_away_img)
         ImageView awayImg;
-        @Bind(R.id.event_away_name_txt)
+        @BindView(R.id.event_away_name_txt)
         TextView awayNameTxt;
         @Nullable
-        @Bind(R.id.event_home_img)
+        @BindView(R.id.event_home_img)
         ImageView homeImg;
         @Nullable
-        @Bind(R.id.event_home_name_txt)
+        @BindView(R.id.event_home_name_txt)
         TextView homeNameTxt;
         @Nullable
-        @Bind(R.id.event_time_txt)
+        @BindView(R.id.event_time_txt)
         TextView timeTxt;
 
         public ViewHolder(View itemView) {

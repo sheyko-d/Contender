@@ -36,7 +36,7 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -44,11 +44,11 @@ public class FindFriendsActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     // Views
-    @Bind(R.id.find_friends_progress_txt)
+    @BindView(R.id.find_friends_progress_txt)
     TextView mProgressTxt;
-    @Bind(R.id.find_friends_recycler)
+    @BindView(R.id.find_friends_recycler)
     RecyclerView mRecycler;
-    @Bind(R.id.find_friends_skip_btn)
+    @BindView(R.id.find_friends_skip_btn)
     Button mFriendsSkipBtn;
 
     private ArrayList<User> mUsers = new ArrayList<>();

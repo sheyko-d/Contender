@@ -13,7 +13,7 @@ import com.moyersoftware.contender.menu.data.Player;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GamePaidPlayersAdapter extends RecyclerView.Adapter<GamePaidPlayersAdapter.ViewHolder> {
@@ -53,7 +53,7 @@ public class GamePaidPlayersAdapter extends RecyclerView.Adapter<GamePaidPlayers
     public class ViewHolder extends RecyclerView.ViewHolder
             implements CompoundButton.OnCheckedChangeListener {
 
-        @Bind(R.id.friend_invite_name_txt)
+        @BindView(R.id.friend_invite_name_txt)
         CheckBox nameTxt;
 
         public ViewHolder(View itemView) {

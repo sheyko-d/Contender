@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
@@ -137,27 +137,27 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
 
-        @Bind(R.id.game_img)
+        @BindView(R.id.game_img)
         ImageView img;
-        @Bind(R.id.game_name_txt)
+        @BindView(R.id.game_name_txt)
         TextView nameTxt;
-        @Bind(R.id.game_time_txt)
+        @BindView(R.id.game_time_txt)
         TextView timeTxt;
-        @Bind(R.id.game_score_txt)
+        @BindView(R.id.game_score_txt)
         TextView scoreTxt;
-        @Bind(R.id.game_quarter_txt)
+        @BindView(R.id.game_quarter_txt)
         TextView quarterTxt;
-        @Bind(R.id.game_winnings_txt)
+        @BindView(R.id.game_winnings_txt)
         TextView winningsTxt;
-        @Bind(R.id.game_final_layout)
+        @BindView(R.id.game_final_layout)
         View finalLayout;
-        @Bind(R.id.game_final_txt)
+        @BindView(R.id.game_final_txt)
         TextView finalTxt;
-        @Bind(R.id.accept)
+        @BindView(R.id.accept)
         View accept;
-        @Bind(R.id.reject)
+        @BindView(R.id.reject)
         View reject;
-        @Bind(R.id.game_layout)
+        @BindView(R.id.game_layout)
         View layout;
 
         public ViewHolder(View itemView) {

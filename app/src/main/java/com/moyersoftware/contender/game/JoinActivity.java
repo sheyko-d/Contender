@@ -28,14 +28,14 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class JoinActivity extends AppCompatActivity {
 
     // Views
-    @Bind(R.id.join_pager)
+    @BindView(R.id.join_pager)
     ViewPager mPager;
 
     @Override

@@ -24,16 +24,16 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.menu.MainActivity;
 import com.moyersoftware.contender.util.Util;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
     // Views
-    @Bind(R.id.login_email_edit_txt)
+    @BindView(R.id.login_email_edit_txt)
     EditText mEmailEditTxt;
-    @Bind(R.id.login_password_edit_txt)
+    @BindView(R.id.login_password_edit_txt)
     EditText mPasswordEditTxt;
 
     // Usual variables

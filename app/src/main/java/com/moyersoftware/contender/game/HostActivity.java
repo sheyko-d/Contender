@@ -81,7 +81,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -101,47 +101,47 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final int LOCATION_PERMISSION_CODE = 0;
 
     // Views
-    @Bind(R.id.host_id_txt)
+    @BindView(R.id.host_id_txt)
     TextView mIdTxt;
-    @Bind(R.id.host_game_img)
+    @BindView(R.id.host_game_img)
     ImageView mGameImg;
-    @Bind(R.id.host_name_edit_txt)
+    @BindView(R.id.host_name_edit_txt)
     EditText mNameEditTxt;
-    @Bind(R.id.host_password_edit_txt)
+    @BindView(R.id.host_password_edit_txt)
     EditText mPasswordEditTxt;
-    @Bind(R.id.host_square_price_edit_txt)
+    @BindView(R.id.host_square_price_edit_txt)
     EditText mSquarePriceEditTxt;
-    @Bind(R.id.host_quarter1_price_edit_txt)
+    @BindView(R.id.host_quarter1_price_edit_txt)
     EditText mQuarter1PriceEditTxt;
-    @Bind(R.id.host_quarter2_price_edit_txt)
+    @BindView(R.id.host_quarter2_price_edit_txt)
     EditText mQuarter2PriceEditTxt;
-    @Bind(R.id.host_quarter3_price_edit_txt)
+    @BindView(R.id.host_quarter3_price_edit_txt)
     EditText mQuarter3PriceEditTxt;
-    @Bind(R.id.host_final_price_edit_txt)
+    @BindView(R.id.host_final_price_edit_txt)
     EditText mFinalPriceEditTxt;
-    @Bind(R.id.host_square_limit_edit_txt)
+    @BindView(R.id.host_square_limit_edit_txt)
     EditText mSquareLimitEditTxt;
-    @Bind(R.id.host_total_price_txt)
+    @BindView(R.id.host_total_price_txt)
     TextView mTotalPriceTxt;
-    @Bind(R.id.host_img_progress_bar)
+    @BindView(R.id.host_img_progress_bar)
     ProgressBar mProgressBar;
-    @Bind(R.id.host_event_txt)
+    @BindView(R.id.host_event_txt)
     TextView eventTxt;
-    @Bind(R.id.host_code_edit_txt)
+    @BindView(R.id.host_code_edit_txt)
     EditText mCodeEditTxt;
-    @Bind(R.id.host_rules_edit_txt)
+    @BindView(R.id.host_rules_edit_txt)
     EditText mRulesEditTxt;
-    @Bind(R.id.host_game_radio_btn)
+    @BindView(R.id.host_game_radio_btn)
     RadioButton mGameRadioBtn;
-    @Bind(R.id.host_custom_radio_btn)
+    @BindView(R.id.host_custom_radio_btn)
     RadioButton mCustomRadioBtn;
-    @Bind(R.id.host_custom_game_layout)
+    @BindView(R.id.host_custom_game_layout)
     View mCustomGameLayout;
-    @Bind(R.id.host_custom_team_home_edit_txt)
+    @BindView(R.id.host_custom_team_home_edit_txt)
     EditText mCustomTeamHomeEditTxt;
-    @Bind(R.id.host_custom_team_away_edit_txt)
+    @BindView(R.id.host_custom_team_away_edit_txt)
     EditText mCustomTeamAwayEditTxt;
-    @Bind(R.id.host_allow_radio_btn)
+    @BindView(R.id.host_allow_radio_btn)
     RadioButton mAllowIncompleteRadioBtn;
 
     // Usual variables

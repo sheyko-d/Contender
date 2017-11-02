@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -59,21 +59,21 @@ import okhttp3.Response;
 public class GamesFragment extends Fragment {
 
     // Views
-    @Bind(R.id.games_recycler)
+    @BindView(R.id.games_recycler)
     RecyclerView mGamesRecycler;
-    @Bind(R.id.games_host_btn)
+    @BindView(R.id.games_host_btn)
     Button mHostBtn;
-    @Bind(R.id.games_join_btn)
+    @BindView(R.id.games_join_btn)
     Button mJoinBtn;
-    @Bind(R.id.games_title_txt)
+    @BindView(R.id.games_title_txt)
     TextView mTitleTxt;
-    @Bind(R.id.games_how_to_use_btn)
+    @BindView(R.id.games_how_to_use_btn)
     Button mHowToUseBtn;
-    @Bind(R.id.games_how_to_btn)
+    @BindView(R.id.games_how_to_btn)
     Button mHowToBtn;
-    @Bind(R.id.welcome_close_img)
+    @BindView(R.id.welcome_close_img)
     View mCloseImg;
-    @Bind(R.id.welcome_layout)
+    @BindView(R.id.welcome_layout)
     View mWelcomeLayout;
 
     // Usual variables

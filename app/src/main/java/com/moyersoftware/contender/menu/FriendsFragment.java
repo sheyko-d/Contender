@@ -34,7 +34,7 @@ import com.moyersoftware.contender.util.Util;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FriendsFragment extends Fragment {
@@ -43,15 +43,15 @@ public class FriendsFragment extends Fragment {
     private static final int REQUEST_INVITE = 0;
 
     // Views
-    @Bind(R.id.friends_recycler)
+    @BindView(R.id.friends_recycler)
     RecyclerView mFriendsRecycler;
-    @Bind(R.id.friends_pending_recycler)
+    @BindView(R.id.friends_pending_recycler)
     RecyclerView mFriendsPendingRecycler;
-    @Bind(R.id.friends_title_txt)
+    @BindView(R.id.friends_title_txt)
     TextView mTitleTxt;
-    @Bind(R.id.friends_pending_title_txt)
+    @BindView(R.id.friends_pending_title_txt)
     TextView mPendingTitleTxt;
-    @Bind(R.id.friends_find_btn)
+    @BindView(R.id.friends_find_btn)
     Button mFindBtn;
 
     // Usual variables

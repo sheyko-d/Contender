@@ -47,16 +47,16 @@ import com.moyersoftware.contender.util.Util;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
     // Views
-    @Bind(R.id.main_tab_layout)
+    @BindView(R.id.main_tab_layout)
     TabLayout mTabLayout;
-    @Bind(R.id.main_pager)
+    @BindView(R.id.main_pager)
     ViewPager mPager;
 
     // Usual variables

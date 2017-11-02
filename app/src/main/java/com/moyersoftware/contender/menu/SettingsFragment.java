@@ -38,7 +38,7 @@ import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SettingsFragment extends Fragment {
@@ -48,17 +48,17 @@ public class SettingsFragment extends Fragment {
     private static final int USER_PHOTO_SIZE_PX = 500;
 
     // Views
-    @Bind(R.id.settings_name_txt)
+    @BindView(R.id.settings_name_txt)
     TextView mNameTxt;
-    @Bind(R.id.settings_username_txt)
+    @BindView(R.id.settings_username_txt)
     TextView mUsernameTxt;
-    @Bind(R.id.settings_email_txt)
+    @BindView(R.id.settings_email_txt)
     TextView mEmailTxt;
-    @Bind(R.id.settings_photo_img)
+    @BindView(R.id.settings_photo_img)
     ImageView mPhotoImg;
-    @Bind(R.id.settings_photo_btn)
+    @BindView(R.id.settings_photo_btn)
     Button mPhotoBtn;
-    @Bind(R.id.editUsernameImg)
+    @BindView(R.id.editUsernameImg)
     View mEditUsernameImg;
 
     // Usual variables

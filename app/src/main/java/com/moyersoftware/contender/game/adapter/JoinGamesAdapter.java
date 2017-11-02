@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.ViewHolder> {
@@ -80,13 +80,13 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.game_img)
+        @BindView(R.id.game_img)
         ImageView img;
-        @Bind(R.id.game_name_txt)
+        @BindView(R.id.game_name_txt)
         TextView nameTxt;
-        @Bind(R.id.game_author_txt)
+        @BindView(R.id.game_author_txt)
         TextView authorTxt;
-        @Bind(R.id.game_join_btn)
+        @BindView(R.id.game_join_btn)
         Button joinBtn;
 
         public ViewHolder(View itemView) {

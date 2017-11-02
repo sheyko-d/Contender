@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.ViewHolder> {
@@ -186,11 +186,11 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
 
-        @Bind(R.id.cell_name_txt)
+        @BindView(R.id.cell_name_txt)
         TextView nameTxt;
-        @Bind(R.id.cell_img)
+        @BindView(R.id.cell_img)
         ImageView img;
-        @Bind(R.id.cell_winning_view)
+        @BindView(R.id.cell_winning_view)
         View winningView;
 
         ViewHolder(View itemView) {

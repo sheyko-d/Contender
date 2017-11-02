@@ -36,7 +36,7 @@ import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -47,15 +47,15 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int USER_PHOTO_SIZE_PX = 500;
 
     // Views
-    @Bind(R.id.register_name_edit_txt)
+    @BindView(R.id.register_name_edit_txt)
     EditText mNameEditTxt;
-    @Bind(R.id.register_email_edit_txt)
+    @BindView(R.id.register_email_edit_txt)
     EditText mEmailEditTxt;
-    @Bind(R.id.register_password_edit_txt)
+    @BindView(R.id.register_password_edit_txt)
     EditText mPasswordEditTxt;
-    @Bind(R.id.register_repeat_password_edit_txt)
+    @BindView(R.id.register_repeat_password_edit_txt)
     EditText mRepeatPasswordEditTxt;
-    @Bind(R.id.register_photo_img)
+    @BindView(R.id.register_photo_img)
     ImageView mPhotoImg;
 
     // Usual variables

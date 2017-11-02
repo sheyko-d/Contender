@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
@@ -66,13 +66,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.friend_img)
+        @BindView(R.id.friend_img)
         ImageView img;
-        @Bind(R.id.friend_name_txt)
+        @BindView(R.id.friend_name_txt)
         TextView nameTxt;
-        @Bind(R.id.friend_username_txt)
+        @BindView(R.id.friend_username_txt)
         TextView usernameTxt;
-        @Bind(R.id.friend_add_img)
+        @BindView(R.id.friend_add_img)
         ImageView addImg;
 
         public ViewHolder(View itemView) {
