@@ -23,13 +23,17 @@ public class HowToUseActivity extends AppCompatActivity {
 
     // Hey Ryan, you can change colors here
     private int[] mColors = new int[]{
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72"),
-            Color.parseColor("#50bb72")
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882"),
+            Color.parseColor("#a5c882")
+
+
     };
     // ... Images
     public static int[] mImages = new int[]{
@@ -39,7 +43,9 @@ public class HowToUseActivity extends AppCompatActivity {
             R.drawable.how_to_use_4,
             R.drawable.how_to_use_5,
             R.drawable.how_to_use_6,
-            R.drawable.how_to_use_7
+            R.drawable.how_to_use_7,
+            R.drawable.how_to_use_8,
+            R.drawable.how_to_use_9
     };
 
     private Toolbar mToolbar;
