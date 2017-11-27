@@ -114,8 +114,14 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
             if (!mPrintMode) {
                 holder.img.setVisibility(View.VISIBLE);
-                Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
-                        (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+                if (!TextUtils.isEmpty(selectedSquare.getAuthorPhoto())) {
+                    try {
+                        Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
+                                (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+                    } catch (Exception e){
+                        holder.img.setImageResource(R.drawable.avatar_placeholder);
+                    }
+                }
                 holder.nameTxt.setTextColor(Color.WHITE);
                 holder.nameTxt.setEllipsize(TextUtils.TruncateAt.END);
                 holder.nameTxt.setMaxLines(1);
