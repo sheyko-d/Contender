@@ -87,6 +87,7 @@
             </ScrollView>
 
             <Button
+                android:id="@+id/login_sign_in_btn"
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
@@ -100,14 +101,29 @@
     </android.support.v7.widget.CardView>
 
     <Button
+        android:id="@+id/login_forgot_password_btn"
+        style="@style/Button.Borderless"
+        fontPath="fonts/segoe_ui.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="onRestorePasswordButtonClicked"
+        android:text="@string/login_forgot_password"
+        android:textAllCaps="false" />
+
+    <Button
         style="@style/Button.Borderless"
         fontPath="fonts/segoe_ui.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:onClick="onRegisterButtonClicked"
         android:text="@string/login_register"

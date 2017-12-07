@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,10 +36,15 @@ public class LoginActivity extends AppCompatActivity {
     EditText mEmailEditTxt;
     @BindView(R.id.login_password_edit_txt)
     EditText mPasswordEditTxt;
+    @BindView(R.id.login_forgot_password_btn)
+    Button mForgotPasswordBtn;
+    @BindView(R.id.login_sign_in_btn)
+    Button mSignInButton;
 
     // Usual variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private boolean mRestorePassword = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,32 +150,36 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonClicked(View view) {
-        String email = mEmailEditTxt.getText().toString();
-        String password = mPasswordEditTxt.getText().toString();
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginActivity.this, "Some fields are empty", Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this,
-                    new OnCompleteListener<AuthResult>() {
-                        @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (!task.isSuccessful()) {
-                                if (task.getException() != null && task.getException()
-                                        .getMessage() != null) {
-                                    Toast.makeText(LoginActivity.this, task.getException()
-                                            .getMessage(), Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Authentication failed",
-                                            Toast.LENGTH_LONG).show();
+        if (!mRestorePassword) {
+            String email = mEmailEditTxt.getText().toString();
+            String password = mPasswordEditTxt.getText().toString();
+            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                Toast.makeText(LoginActivity.this, "Some fields are empty", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this,
+                        new OnCompleteListener<AuthResult>() {
+                            @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    if (task.getException() != null && task.getException()
+                                            .getMessage() != null) {
+                                        Toast.makeText(LoginActivity.this, task.getException()
+                                                .getMessage(), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Authentication failed",
+                                                Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+            }
+        } else {
+            restorePassword();
         }
     }
 
@@ -180,5 +190,51 @@ public class LoginActivity extends AppCompatActivity {
     public void onRegisterButtonClicked(View view) {
         finish();
         startActivity(new Intent(this, RegisterActivity.class));
+    }
+
+    public void onRestorePasswordButtonClicked(View view) {
+        mPasswordEditTxt.setVisibility(View.INVISIBLE);
+        mForgotPasswordBtn.setVisibility(View.GONE);
+        mSignInButton.setText(R.string.reset_password);
+        mRestorePassword = true;
+    }
+
+    private void restorePassword() {
+        String email = mEmailEditTxt.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(LoginActivity.this, "Enter your email address", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        mSignInButton.setText(R.string.loading);
+        mSignInButton.setEnabled(false);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,
+                                    "Please follow instructions in the email",
+                                    Toast.LENGTH_SHORT).show();
+
+                            mPasswordEditTxt.setVisibility(View.VISIBLE);
+                            mPasswordEditTxt.setText("");
+                            mForgotPasswordBtn.setVisibility(View.VISIBLE);
+                            mSignInButton.setText(R.string.login_submit);
+                            mRestorePassword = false;
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Email address is invalid or doesn't exist",
+                                    Toast.LENGTH_SHORT).show();
+                            mSignInButton.setText(R.string.login_forgot_password);
+                        }
+
+                        mSignInButton.setEnabled(true);
+                    }
+                });
     }
 }

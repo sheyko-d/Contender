@@ -75,7 +75,8 @@
     <string name="settings_about_affiliation">This app is not affiliated with or endorsed by the National Football League. Any trademarks used in the app are done so under \"fair use\" with the sole purpose of identifying the respective entities, and remain the property of their respective owners.</string>
     <string name="login_email_hint">EMAIL</string>
     <string name="login_password_hint">PASSWORD</string>
-    <string name="login_register">Don\'t have an account? REGISTER</string>
+    <string name="login_forgot_password">FORGOT PASSWORD?</string>
+    <string name="login_register">REGISTER</string>
     <string name="go_back">Go back</string>
     <string name="register_login">Already have an account? LOG IN</string>
     <string name="welcome_title">Welcome!</string>
@@ -92,4 +93,5 @@
     <string name="btn_continue">Continue</string>
     <string name="loading">Loading…</string>
     <string name="no_friends_found">No friends found.</string>
+    <string name="reset_password">Reset password</string>
 </resources>
