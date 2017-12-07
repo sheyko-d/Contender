@@ -1,6 +1,7 @@
 package com.moyersoftware.contender.game.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,12 +24,17 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
     private Boolean mLive = false;
     private int mHeight;
     private final int mDefaultCellSize;
+    private final boolean mRow;
+    private final Context mContext;
+    private final static String mAlphabet = "abcdefghijklmnopqrstuvwxyz";
 
-    public GameRowAdapter(Context context, ArrayList<Integer> numbers) {
+    public GameRowAdapter(Context context, ArrayList<Integer> numbers, boolean row) {
+        mContext = context;
         mNumbers = numbers;
         mHeight = Util.getCellSize();
         mDefaultCellSize = (int) MyApplication.getContext().getResources().getDimension
                 (R.dimen.board_cell_size);
+        mRow = row;
     }
 
     public void setLive(Boolean live) {
@@ -44,12 +50,16 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.getLayoutParams().height = mHeight;
+        //noinspection SuspiciousNameCombination
         holder.itemView.getLayoutParams().width = mHeight;
 
         if (mLive) {
             ((TextView) holder.itemView).setText(String.valueOf(mNumbers.get(position)));
         } else {
-            ((TextView) holder.itemView).setText("-");
+            ((TextView) holder.itemView).setText(!mRow ? String.valueOf(position + 1)
+                    : String.valueOf(mAlphabet.charAt(position)).toUpperCase());
+            ((TextView) holder.itemView).setTextColor(ContextCompat.getColor(mContext, mLive
+                    ? R.color.white : R.color.text_inactive));
         }
         ((TextView) holder.itemView).setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 16 * mHeight / mDefaultCellSize);

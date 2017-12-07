@@ -681,7 +681,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mRowLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         mRowRecycler.setLayoutManager(mRowLayoutManager);
         mRowRecycler.setHasFixedSize(true);
-        mRowAdapter = new GameRowAdapter(this, mRowNumbers);
+        mRowAdapter = new GameRowAdapter(this, mRowNumbers, true);
         mRowRecycler.setAdapter(mRowAdapter);
         mRowRecycler.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -695,7 +695,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mColumnLayoutManager = new LinearLayoutManager(this);
         mColumnRecycler.setLayoutManager(mColumnLayoutManager);
         mColumnRecycler.setHasFixedSize(true);
-        mColumnAdapter = new GameRowAdapter(this, mColumnNumbers);
+        mColumnAdapter = new GameRowAdapter(this, mColumnNumbers, false);
         mColumnRecycler.setAdapter(mColumnAdapter);
         mColumnRecycler.setOnTouchListener(new View.OnTouchListener() {
             @Override

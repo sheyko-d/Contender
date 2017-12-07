@@ -16,5 +16,6 @@
     <color name="welcome_bg">#3f3f37</color><!--#b9f6ca-->
     <color name="welcome_text">#d8d8d8</color>
     <color name="orange">#ff7300</color>
+    <color name="text_inactive">#77ffffff</color>
 
 </resources>
