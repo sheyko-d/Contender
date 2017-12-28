@@ -1283,19 +1283,23 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void updateLiveState() {
-        if (mSelectedSquares.size() == 100 != mGameLive || mGame.allowIncomplete()) {
-            mGameLive = mSelectedSquares.size() == 100
-                    || (mEvent.getTime() == -1 && mGame.allowIncomplete())
-                    || mEvent.getTime() == -2;
-            mBoardAdapter.setLive(mGameLive);
-            mRowAdapter.setLive(mGameLive);
-            mColumnAdapter.setLive(mGameLive);
-            mBoardAdapter.notifyDataSetChanged();
-            mRowAdapter.notifyDataSetChanged();
-            mColumnAdapter.notifyDataSetChanged();
+        try {
+            if (mSelectedSquares.size() == 100 != mGameLive || mGame.allowIncomplete()) {
+                mGameLive = mSelectedSquares.size() == 100
+                        || (mEvent.getTime() == -1 && mGame.allowIncomplete())
+                        || mEvent.getTime() == -2;
+                mBoardAdapter.setLive(mGameLive);
+                mRowAdapter.setLive(mGameLive);
+                mColumnAdapter.setLive(mGameLive);
+                mBoardAdapter.notifyDataSetChanged();
+                mRowAdapter.notifyDataSetChanged();
+                mColumnAdapter.notifyDataSetChanged();
 
-            mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
-                    : R.drawable.friend_invite_live);
+                mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
+                        : R.drawable.friend_invite_live);
+            }
+        } catch (Exception e) {
+            Util.Log("Invalid game object: " + e);
         }
     }
 

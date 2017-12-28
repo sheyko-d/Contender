@@ -100,6 +100,8 @@ public class WinnerService extends Service {
         public void run() {
             try {
                 getGames(FirebaseAuth.getInstance().getCurrentUser());
+            } catch (Exception e) {
+                Util.Log("Can't retrieve games: "+e);
             } finally {
                 // 100% guarantee that this always happens, even if
                 // your update method throws an exception

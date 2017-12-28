@@ -117,9 +117,15 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         }
 
         holder.quarterTxt.setText(game.getCurrentQuarter() != null ? game.getCurrentQuarter() : "");
-        Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
-                (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
-                .into(holder.img);
+
+        try {
+            Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
+                    (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
+                    .into(holder.img);
+        } catch (Exception e) {
+            Picasso.with(mFragment.getActivity()).load(R.drawable.placeholder).centerCrop().fit()
+                    .into(holder.img);
+        }
 
         boolean invite = !TextUtils.isEmpty(game.getInviteName());
         holder.accept.setVisibility(invite ? View.VISIBLE : View.GONE);
