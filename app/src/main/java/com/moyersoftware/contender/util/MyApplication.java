@@ -3,10 +3,12 @@ package com.moyersoftware.contender.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.answers.Answers;
 import com.facebook.FacebookSdk;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
 
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class MyApplication extends Application{
@@ -15,6 +17,7 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Answers());
         sContext = this;
 
         // Init Facebook SDK
