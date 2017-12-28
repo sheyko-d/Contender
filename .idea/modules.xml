@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Contender.iml" filepath="$PROJECT_DIR$/Contender.iml" />
-      <module fileurl="file://C:\Projects\Contender\Contender.iml" filepath="C:\Projects\Contender\Contender.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Projects\Contender\app\app.iml" filepath="C:\Projects\Contender\app\app.iml" />
     </modules>
   </component>
 </project>
