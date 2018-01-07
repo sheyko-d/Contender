@@ -47,7 +47,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         mHeight = Util.getCellSize();
     }
 
-    public void setCustom(boolean custom){
+    public void setCustom(boolean custom) {
         mCustom = custom;
     }
 
@@ -114,13 +114,11 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
             if (!mPrintMode) {
                 holder.img.setVisibility(View.VISIBLE);
-                if (!TextUtils.isEmpty(selectedSquare.getAuthorPhoto())) {
-                    try {
-                        Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
-                                (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
-                    } catch (Exception e){
-                        holder.img.setImageResource(R.drawable.avatar_placeholder);
-                    }
+                try {
+                    Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
+                            (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+                } catch (Exception e) {
+                    holder.img.setImageResource(R.drawable.avatar_placeholder);
                 }
                 holder.nameTxt.setTextColor(Color.WHITE);
                 holder.nameTxt.setEllipsize(TextUtils.TruncateAt.END);
@@ -168,7 +166,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 column -= 10;
             }
 
-            Util.Log("lastAwayDigit = "+lastAwayDigit+" == "+String.valueOf(mColumnNumbers.get(row)));
+            Util.Log("lastAwayDigit = " + lastAwayDigit + " == " + String.valueOf(mColumnNumbers.get(row)));
             if (!mCustom && lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
                     && lastHomeDigit.equals(String.valueOf(mRowNumbers.get(column)))) {
                 holder.winningView.setVisibility(View.VISIBLE);
