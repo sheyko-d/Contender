@@ -452,15 +452,19 @@ public class GameBoardActivity extends AppCompatActivity {
         ArrayList<SelectedSquare> selectedSquares = game.getSelectedSquares();
         if (selectedSquares == null) selectedSquares = new ArrayList<>();
 
+        Util.Log("Init game details");
         int mySelectedSquares = 0;
         for (SelectedSquare selectedSquare : selectedSquares) {
-            mSelectedSquares.add(selectedSquare);
-            String playerId = Util.getCurrentPlayerId();
-            if (TextUtils.isEmpty(playerId)) {
-                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            }
-            if (selectedSquare.getAuthorId().equals(playerId)) {
-                mySelectedSquares++;
+            if (selectedSquare.getPosition() != -1) {
+                mSelectedSquares.add(selectedSquare);
+
+                String playerId = Util.getCurrentPlayerId();
+                if (TextUtils.isEmpty(playerId)) {
+                    playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                }
+                if (selectedSquare.getAuthorId().equals(playerId)) {
+                    mySelectedSquares++;
+                }
             }
         }
         mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
@@ -956,14 +960,18 @@ public class GameBoardActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
+        if (position == -1) return;
+
         int mySelectedSquares = 0;
         for (SelectedSquare selectedSquare : mSelectedSquares) {
-            String playerId = Util.getCurrentPlayerId();
-            if (TextUtils.isEmpty(playerId)) {
-                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            }
-            if (selectedSquare.getAuthorId().equals(playerId)) {
-                mySelectedSquares++;
+            if (selectedSquare.getPosition() != -1) {
+                String playerId = Util.getCurrentPlayerId();
+                if (TextUtils.isEmpty(playerId)) {
+                    playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                }
+                if (selectedSquare.getAuthorId().equals(playerId)) {
+                    mySelectedSquares++;
+                }
             }
         }
 
@@ -1284,6 +1292,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
     private void updateLiveState() {
         try {
+            Util.Log("Selected squares size = " + mSelectedSquares.size());
             if (mSelectedSquares.size() == 100 != mGameLive || mGame.allowIncomplete()) {
                 mGameLive = mSelectedSquares.size() == 100
                         || (mEvent.getTime() == -1 && mGame.allowIncomplete())
