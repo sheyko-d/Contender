@@ -65,7 +65,11 @@ public class GamePaidPlayersAdapter extends RecyclerView.Adapter<GamePaidPlayers
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-            mActivity.setPlayerPaid(mPlayers.get(getAdapterPosition()).getUserId(), checked);
+            try {
+                mActivity.setPlayerPaid(mPlayers.get(getAdapterPosition()).getUserId(), checked);
+            } catch (Exception e) {
+                // Android bug: adapter position is "-1"
+            }
         }
     }
 }
