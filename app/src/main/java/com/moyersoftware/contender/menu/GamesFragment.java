@@ -371,6 +371,7 @@ public class GamesFragment extends Fragment {
                             mRemoveGame = game;
                             getActivity().openContextMenu(mGamesRecycler);
                         } else {
+                            if (getActivity() == null) return;
                             Toast.makeText(getActivity(),
                                     "You can only delete this game if it's finished or empty",
                                     Toast.LENGTH_LONG).show();
