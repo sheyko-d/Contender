@@ -975,7 +975,12 @@ public class GameBoardActivity extends AppCompatActivity {
             }
         }
 
-        int squaresLimit = mGame.getSquaresLimit();
+        int squaresLimit;
+        try {
+            squaresLimit = mGame.getSquaresLimit();
+        } catch (Exception e) {
+            squaresLimit = 100;
+        }
         if (squaresLimit == 0) squaresLimit = 100;
         if (mySelectedSquares >= squaresLimit) {
             Toast.makeText(this, "You can't select more than " + mGame.getSquaresLimit()
