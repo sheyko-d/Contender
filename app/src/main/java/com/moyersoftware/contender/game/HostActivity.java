@@ -924,7 +924,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 System.currentTimeMillis(), mImageUrl, "100/100", new Player(mAuthorId, null,
                 mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
                 mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
-                new ArrayList<Player>(), null, Util.generateBoardNumbers(), Util.generateBoardNumbers(),
+                null, Util.generateBoardNumbers(), Util.generateBoardNumbers(),
                 new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
                 mSquaresLimit, mCustom, mAllowIncompleteRadioBtn.isChecked()));
         call.enqueue(new retrofit2.Callback<Void>() {

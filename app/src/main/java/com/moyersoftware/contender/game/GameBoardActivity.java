@@ -65,7 +65,6 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.GameBoardAdapter;
 import com.moyersoftware.contender.game.adapter.GameFriendsAdapter;
 import com.moyersoftware.contender.game.adapter.GameFriendsSquaresAdapter;
-import com.moyersoftware.contender.game.adapter.GamePaidPlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GamePlayersAdapter;
 import com.moyersoftware.contender.game.adapter.GameRowAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -75,7 +74,6 @@ import com.moyersoftware.contender.game.service.firebase.MyFirebaseMessagingServ
 import com.moyersoftware.contender.login.data.User;
 import com.moyersoftware.contender.menu.data.Friend;
 import com.moyersoftware.contender.menu.data.Friendship;
-import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.CustomLinearLayout;
@@ -149,8 +147,6 @@ public class GameBoardActivity extends AppCompatActivity {
     View mProgressBar;
     @BindView(R.id.board_invite_friends_img)
     ImageView mInviteFriendsImg;
-    @BindView(R.id.board_paid_players_img)
-    ImageView mPaidPlayersImg;
     @BindView(R.id.board_manual_add_img)
     ImageView mManualAddImg;
     @BindView(R.id.board_info_q1_winner_img)
@@ -203,7 +199,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private AlertDialog mPlayersDialog;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private ArrayList<Player> mAllPlayers = new ArrayList<>();
-    private ArrayList<String> mPaidPlayers = new ArrayList<>();
     private GamePlayersAdapter mPlayersAdapter;
     private String mMyEmail;
     private String mDeviceOwnerId;
@@ -219,7 +214,6 @@ public class GameBoardActivity extends AppCompatActivity {
     private Event mEvent;
     private RecyclerView recycler;
     private boolean mIsHost;
-    private GamePaidPlayersAdapter mPaidPlayersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,26 +282,6 @@ public class GameBoardActivity extends AppCompatActivity {
         display.getSize(size);
         mBoard.getLayoutParams().width = size.x;
         mBoard.requestFocus();
-    }
-
-    private void initPaidPlayers() {
-        Util.Log("get paid players");
-        mPaidPlayers.clear();
-
-        if (mGame.getPaidPlayers() != null) {
-            for (PaidPlayer player : mGame.getPaidPlayers()) {
-                if (player.paid()) {
-                    mPaidPlayers.add(player.getUserId());
-                    Util.Log("paid player");
-                }
-            }
-        }
-        try {
-            mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
-            mPaidPlayersAdapter.notifyDataSetChanged();
-        } catch (Exception e) {
-            // Dialog is not shown yet
-        }
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
@@ -553,7 +527,6 @@ public class GameBoardActivity extends AppCompatActivity {
             }
         });
 
-        mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
 
@@ -565,7 +538,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoardAdapter.notifyDataSetChanged();
 
         initPlayers();
-        initPaidPlayers();
     }
 
     private void initPlayers() {
@@ -1126,22 +1098,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mInviteFriendsDialog.show();
     }
 
-    public void onPaidPlayersButtonClicked(View view) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
-
-        dialogBuilder.setTitle("Players who paid");
-        @SuppressLint("InflateParams")
-        RecyclerView recycler = (RecyclerView) LayoutInflater.from(this).inflate
-                (R.layout.dialog_paid_players, null);
-        mPaidPlayersAdapter = new GamePaidPlayersAdapter(this, mAllPlayers);
-        mPaidPlayersAdapter.setPaidPlayers(mPaidPlayers);
-        recycler.setAdapter(mPaidPlayersAdapter);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        dialogBuilder.setView(recycler);
-        dialogBuilder.setNegativeButton("Close", null);
-        dialogBuilder.create().show();
-    }
-
     private void loadFriends() {
         mDatabase.child("friends").addValueEventListener(new ValueEventListener() {
             @Override
@@ -1340,29 +1296,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 + " won the final quarter!", Toast.LENGTH_SHORT)
                 .show();
     }
-
-    public void setPlayerPaid(final String playerId, final boolean checked) {
-        ArrayList<PaidPlayer> paidPlayers = mGame.getPaidPlayers();
-        if (paidPlayers == null) paidPlayers = new ArrayList<>();
-
-        boolean foundPaidPlayer = false;
-        for (PaidPlayer paidPlayer : paidPlayers) {
-            if (paidPlayer.getUserId().equals(playerId)) {
-                paidPlayer.setPaid(checked);
-                foundPaidPlayer = true;
-                break;
-            }
-        }
-
-        if (!foundPaidPlayer) {
-            paidPlayers.add(new PaidPlayer(playerId, checked));
-        }
-        mGame.setPaidPlayers(paidPlayers);
-
-        initGameDetails(mGame);
-        updateGameOnServer();
-    }
-
 
     class WizardPagerAdapter extends PagerAdapter {
 
