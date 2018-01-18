@@ -20,6 +20,7 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
 import com.moyersoftware.contender.network.ApiFactory;
 import com.moyersoftware.contender.util.MyApplication;
@@ -32,7 +33,9 @@ import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 
 public class WinnerService extends Service {
 
+    private static final int PAID_NOTIFICATION_CODE = 123;
     private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
     private Handler mHandler;
 
     @Nullable
@@ -220,6 +223,16 @@ public class WinnerService extends Service {
                         }
 
                         updateGameOnServer(game);
+
+
+                        // Warn if not all players paid
+                        if (game.getAuthor().getUserId().equals(myId) && mEventTimes.get
+                                (game.getEventId()) != -1 && mEventTimes.get(game.getEventId())
+                                != -2 && System.currentTimeMillis() < mEventTimes.get
+                                (game.getEventId())) {
+                            loadPlayers(game, gameId, game.getName(),
+                                    mEventTimes.get(game.getEventId()), myId);
+                        }
                     }
                 } catch (Exception e) {
                     Util.Log("Can't show winners: " + e);
@@ -240,6 +253,98 @@ public class WinnerService extends Service {
             public void onFailure(retrofit2.Call<Void> call, Throwable t) {
             }
         });
+    }
+
+    private void loadPlayers(GameInvite.Game game, final String gameId,
+                             final String name, final long time, final String myId) {
+        ArrayList<String> players = new ArrayList<>();
+        players.clear();
+        players.add(myId);
+        if (game.getPlayers() != null) {
+            for (Player player : game.getPlayers()) {
+                try {
+                    players.add(player.getUserId());
+                } catch (Exception e) {
+                    Util.Log("Can't parse player");
+                }
+            }
+        }
+
+        loadPaidPlayers(game, gameId, players, name, time);
+    }
+
+    private void loadPaidPlayers(GameInvite.Game game, final String gameId,
+                                 final ArrayList<String> players, final String name,
+                                 final long time) {
+        ArrayList<String> paidPlayers = new ArrayList<>();
+        if (game.getPaidPlayers() != null) {
+            for (PaidPlayer paidPlayer : game.getPaidPlayers()) {
+                if (paidPlayer.paid()) {
+                    paidPlayers.add(paidPlayer.getUserId());
+                }
+            }
+        }
+
+        if (paidPlayers.size() != players.size()) {
+            showPaidNotification(MyApplication.getContext(), gameId, name, time);
+        }
+    }
+
+    private void showPaidNotification(Context context, String id, String name, long time) {
+        int minutesBefore;
+
+        if (time - System.currentTimeMillis() < 5 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 5)) {
+                minutesBefore = 5;
+            } else {
+                return;
+            }
+        } else if (time - System.currentTimeMillis() < 15 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 15)) {
+                minutesBefore = 15;
+            } else {
+                return;
+            }
+        } else if (time - System.currentTimeMillis() < 30 * 60 * 1000) {
+            if (!mShownPaidNotifications.contains(PAID_NOTIFICATION_CODE + Integer.parseInt(id)
+                    + 30)) {
+                minutesBefore = 30;
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.warning)
+                        .setContentTitle(name + " game starts in less than " + minutesBefore + " minutes")
+                        .setAutoCancel(true)
+                        .setOnlyAlertOnce(true)
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        mBuilder.setContentText("Not everybody paid for their squares yet!");
+        Intent resultIntent = new Intent(context, GameBoardActivity.class)
+                .putExtra(EXTRA_GAME_ID, id);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotifyMgr =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = mBuilder.build();
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(PAID_NOTIFICATION_CODE + Integer.parseInt(id), notification);
+
+        mShownPaidNotifications.add(PAID_NOTIFICATION_CODE + Integer.parseInt(id) + minutesBefore);
     }
 
     private void showReminderNotification(Context context, String id, String name, long time,
