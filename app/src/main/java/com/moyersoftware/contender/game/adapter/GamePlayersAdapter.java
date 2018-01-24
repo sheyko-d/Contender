@@ -81,7 +81,11 @@ public class GamePlayersAdapter extends RecyclerView.Adapter<GamePlayersAdapter.
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                mActivity.selectPlayer(mPlayers.get(getAdapterPosition()));
+                try {
+                    mActivity.selectPlayer(mPlayers.get(getAdapterPosition()));
+                } catch (Exception e) {
+                    // Adapter position is -1
+                }
             }
         }
     }

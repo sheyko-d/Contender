@@ -1277,8 +1277,13 @@ public class GameBoardActivity extends AppCompatActivity {
     private void uploadSquares() {
         mIgnoreUpdate = true;
 
-        mGame.setSelectedSquares(mSelectedSquares);
-        updateGameOnServer();
+        if (mSelectedSquares == null) {
+            mSelectedSquares = new ArrayList<>();
+        }
+        if (mGame != null) {
+            mGame.setSelectedSquares(mSelectedSquares);
+            updateGameOnServer();
+        }
     }
 
     private void updateGameOnServer() {
