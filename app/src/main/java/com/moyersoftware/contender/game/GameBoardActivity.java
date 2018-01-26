@@ -1025,7 +1025,8 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     public void onManualAddButtonClicked(View view) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameBoardActivity.this,
+                R.style.MaterialDialog);
         dialogBuilder.setTitle("Select or add player");
         @SuppressLint("InflateParams")
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_player, null);
@@ -1040,7 +1041,7 @@ public class GameBoardActivity extends AppCompatActivity {
                     Toast.makeText(GameBoardActivity.this, "Name is empty", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-
+                    if (mGame == null) return;
                     ArrayList<Player> players = mGame.getPlayers();
                     if (players == null) players = new ArrayList<>();
 
