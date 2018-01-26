@@ -91,6 +91,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class GameBoardActivity extends AppCompatActivity {
@@ -220,6 +221,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private RecyclerView recycler;
     private boolean mIsHost;
     private GamePaidPlayersAdapter mPaidPlayersAdapter;
+    private Call<Void> mPaidPlayersCall = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1061,7 +1063,6 @@ public class GameBoardActivity extends AppCompatActivity {
 
                     editTxt.setText("");
 
-                    updateGameOnServer();
                     initGameDetails(mGame);
                 }
             }
@@ -1139,6 +1140,12 @@ public class GameBoardActivity extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         dialogBuilder.setView(recycler);
         dialogBuilder.setNegativeButton("Close", null);
+        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                updateGameOnServer();
+            }
+        });
         dialogBuilder.create().show();
     }
 
@@ -1287,8 +1294,13 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void updateGameOnServer() {
-        retrofit2.Call<Void> call = ApiFactory.getApiService().updateGame(mGame);
-        call.enqueue(new retrofit2.Callback<Void>() {
+        if (mPaidPlayersCall != null) {
+            mPaidPlayersCall.cancel();
+            mPaidPlayersCall = null;
+        }
+
+        mPaidPlayersCall = ApiFactory.getApiService().updateGame(mGame);
+        mPaidPlayersCall.enqueue(new retrofit2.Callback<Void>() {
             @Override
             public void onResponse(retrofit2.Call<Void> call,
                                    retrofit2.Response<Void> response) {
@@ -1346,7 +1358,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void setPlayerPaid(final String playerId, final boolean checked) {
+    public void setPlayerPaid(final String playerId, final boolean checked, int adapterPosition) {
         ArrayList<PaidPlayer> paidPlayers = mGame.getPaidPlayers();
         if (paidPlayers == null) paidPlayers = new ArrayList<>();
 
@@ -1363,9 +1375,7 @@ public class GameBoardActivity extends AppCompatActivity {
             paidPlayers.add(new PaidPlayer(playerId, checked));
         }
         mGame.setPaidPlayers(paidPlayers);
-
-        initGameDetails(mGame);
-        updateGameOnServer();
+        initPaidPlayers();
     }
 
 
