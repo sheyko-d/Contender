@@ -626,7 +626,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @SuppressWarnings("deprecation")
     private void showRulesDialog(GameInvite.Game game) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameBoardActivity.this);
         if (!TextUtils.isEmpty(game.getRules())) {
             dialogBuilder.setTitle("Rules");
             dialogBuilder.setMessage(Html.fromHtml(
