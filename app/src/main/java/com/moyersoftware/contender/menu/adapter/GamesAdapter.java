@@ -204,6 +204,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
+            if (getAdapterPosition() == -1) return;
             if (TextUtils.isEmpty(mGames.get(getAdapterPosition()).getInviteName())) {
                 mFragment.joinGame(mGames.get(getAdapterPosition()).getId());
             } else {
