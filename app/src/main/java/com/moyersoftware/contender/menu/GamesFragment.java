@@ -245,50 +245,55 @@ public class GamesFragment extends Fragment {
                     }
                 }
 
-                database.child("game_invites").child(mFirebaseUser.getUid()).addValueEventListener
-                        (new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
-                                    try {
-                                        GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                        Util.Log("add game = " + gameInvite.getGame().getEventTime());
-                                        Util.Log(gameInvite.getName() + " invited you");
-                                        if (gameInvite.getGame() != null) {
-                                            GameInvite.Game game = gameInvite.getGame();
-                                            if (mEventTimes.get(game.getEventId()) > 0) {
-                                                game.setEventTime(mEventTimes.get(game.getEventId()));
-                                                game.setInviteName(gameInvite.getName());
-                                                game.setInviteId(gameInviteSnapshot.getKey());
+                if (mFirebaseUser == null) return;
+                try {
+                    database.child("game_invites").child(mFirebaseUser.getUid()).addValueEventListener
+                            (new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
+                                        try {
+                                            GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                            Util.Log("add game = " + gameInvite.getGame().getEventTime());
+                                            Util.Log(gameInvite.getName() + " invited you");
+                                            if (gameInvite.getGame() != null) {
+                                                GameInvite.Game game = gameInvite.getGame();
+                                                if (mEventTimes.get(game.getEventId()) > 0) {
+                                                    game.setEventTime(mEventTimes.get(game.getEventId()));
+                                                    game.setInviteName(gameInvite.getName());
+                                                    game.setInviteId(gameInviteSnapshot.getKey());
 
-                                                if (!mGames.contains(game)) mGames.add(game);
+                                                    if (!mGames.contains(game)) mGames.add(game);
+                                                }
                                             }
+                                        } catch (Exception e) {
                                         }
+                                    }
+
+                                    try {
+                                        Collections.sort(mGames, new GameComparator());
+                                        mAdapter.notifyDataSetChanged();
+
+                                        // Update the title text
+                                        mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
+                                                : R.string.games_title_empty);
                                     } catch (Exception e) {
                                     }
                                 }
 
-                                try {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
                                     Collections.sort(mGames, new GameComparator());
                                     mAdapter.notifyDataSetChanged();
 
                                     // Update the title text
                                     mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
                                             : R.string.games_title_empty);
-                                } catch (Exception e) {
                                 }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Collections.sort(mGames, new GameComparator());
-                                mAdapter.notifyDataSetChanged();
-
-                                // Update the title text
-                                mTitleTxt.setText(mGames.size() > 0 ? R.string.games_title
-                                        : R.string.games_title_empty);
-                            }
-                        });
+                            });
+                } catch (Exception e) {
+                    // User already logged out
+                }
             }
 
             @Override

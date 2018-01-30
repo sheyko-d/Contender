@@ -920,35 +920,39 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void saveGame() {
-        retrofit2.Call<Void> call = ApiFactory.getApiService().createGame(new GameInvite.Game(mEventId, mGameId, mName,
-                System.currentTimeMillis(), mImageUrl, "100/100", new Player(mAuthorId, null,
-                mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
-                mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
-                new ArrayList<Player>(), null, Util.generateBoardNumbers(), Util.generateBoardNumbers(),
-                new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
-                mSquaresLimit, mCustom, mAllowIncompleteRadioBtn.isChecked()));
-        call.enqueue(new retrofit2.Callback<Void>() {
-            @Override
-            public void onResponse(retrofit2.Call<Void> call,
-                                   retrofit2.Response<Void> response) {
-                if (response.isSuccessful()) {
-                    createEmptyCellsReminder();
+        try {
+            retrofit2.Call<Void> call = ApiFactory.getApiService().createGame(new GameInvite.Game(mEventId, mGameId, mName,
+                    System.currentTimeMillis(), mImageUrl, "100/100", new Player(mAuthorId, null,
+                    mAuthorEmail, mAuthorName, mAuthorImage), mPassword, mSquarePrice, mQuarter1Price,
+                    mQuarter2Price, mQuarter3Price, mFinalPrice, mTotalPrice, mLatitude, mLongitude,
+                    new ArrayList<Player>(), null, Util.generateBoardNumbers(), Util.generateBoardNumbers(),
+                    new ArrayList<SelectedSquare>(), null, null, null, null, false, "", mCode, mRules,
+                    mSquaresLimit, mCustom, mAllowIncompleteRadioBtn == null || mAllowIncompleteRadioBtn.isChecked()));
+            call.enqueue(new retrofit2.Callback<Void>() {
+                @Override
+                public void onResponse(retrofit2.Call<Void> call,
+                                       retrofit2.Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        createEmptyCellsReminder();
 
-                    startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
-                            .putExtra(GameBoardActivity.EXTRA_GAME_ID, mGameId));
+                        startActivity(new Intent(HostActivity.this, GameBoardActivity.class)
+                                .putExtra(GameBoardActivity.EXTRA_GAME_ID, mGameId));
 
-                    finish();
-                } else {
-                    Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
-                            .show();
+                        finish();
+                    } else {
+                        Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    mProgressDialog.cancel();
                 }
-                mProgressDialog.cancel();
-            }
 
-            @Override
-            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-            }
-        });
+                @Override
+                public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                }
+            });
+        } catch (Exception e) {
+            // Game is not loaded yet
+        }
     }
 
     private void uploadImage() {
