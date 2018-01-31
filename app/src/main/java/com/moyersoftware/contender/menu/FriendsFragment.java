@@ -210,6 +210,8 @@ public class FriendsFragment extends Fragment {
                 mPendingFriends.clear();
                 for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
                     final Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                    if (friendship == null || friendship.getUser1Id() == null || friendship.getUser2Id() == null)
+                        continue;
                     if (friendship.getUser1Id().equals(mMyId)
                             || friendship.getUser2Id().equals(mMyId)) {
                         String friendId = friendship.getUser1Id().equals(mMyId)
