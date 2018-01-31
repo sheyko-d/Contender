@@ -56,7 +56,7 @@ public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHold
         if (mLive) {
             ((TextView) holder.itemView).setText(String.valueOf(mNumbers.get(position)));
         } else {
-            ((TextView) holder.itemView).setText(!mRow ? String.valueOf(position + 1)
+            ((TextView) holder.itemView).setText(mRow ? String.valueOf(position + 1)
                     : String.valueOf(mAlphabet.charAt(position)).toUpperCase());
         }
         ((TextView) holder.itemView).setTextColor(ContextCompat.getColor(mContext, mLive
