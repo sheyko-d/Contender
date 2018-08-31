@@ -366,23 +366,36 @@
         android:layout_marginBottom="48dp"
         android:orientation="vertical">
 
-        <ImageView
+        <TextView
+            fontPath="fonts/gothic.ttf"
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="@color/colorPrimary"
-            android:contentDescription="@null"
+            android:background="@color/color_gray"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/app_title1"
+            android:textColor="@color/color_green"
+            android:textSize="24sp"
+            android:elevation="4dp"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            fontPath="fonts/gothic.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_gray"
             android:elevation="4dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="80dp"
-            android:paddingRight="80dp"
-            android:paddingTop="16dp"
-            android:src="@drawable/logo" />
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/app_title2"
+            android:textColor="@color/color_lightgray"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/color_gray"
             android:elevation="4dp"
             android:orientation="horizontal">
 
@@ -407,7 +420,7 @@
 
             <TextView
                 android:id="@+id/board_title_txt"
-                fontPath="fonts/segoe_ui_bold.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -498,17 +511,16 @@
 
                 <TextView
                     android:id="@+id/board_home_name_txt"
-                    fontPath="fonts/wanted.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="3dp"
-                    android:shadowColor="@android:color/white"
-                    android:shadowRadius="10"
-                    android:textColor="@color/green"
-                    android:textSize="16sp"
+                    android:textColor="@color/color_green"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
                     tools:text="New England Patriots" />
 
                 <FrameLayout
@@ -559,7 +571,8 @@
 
                         <com.moyersoftware.contender.util.VerticalTextView
                             android:id="@+id/board_away_name_txt"
-                            fontPath="fonts/wanted.ttf"
+                            fontPath="fonts/gothic.ttf"
+                            android:textAllCaps="true"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -567,10 +580,8 @@
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:paddingTop="10dp"
-                            android:shadowColor="@android:color/white"
-                            android:shadowRadius="10"
-                            android:textColor="@color/green"
-                            android:textSize="16sp"
+                            android:textColor="@color/color_green"
+                            android:textSize="14sp"
                             tools:ignore="RtlHardcoded"
                             tools:text="New York Giants" />
                     </FrameLayout>

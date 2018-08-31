@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Contender</string>
+    <string name="app_name">Football Squares</string>
     <string name="facebook_app_id">1228412957223237</string>
 
     <!-- Loading screen -->
@@ -80,7 +80,7 @@
     <string name="go_back">Go back</string>
     <string name="register_login">Already have an account? LOG IN</string>
     <string name="welcome_title">Welcome!</string>
-    <string name="welcome_desc">Contender is your go to place to play football squares! Now squares doesn\'t have to just be during the Big Game!</string>
+    <string name="welcome_desc">Contender is your go-to place to play Football Squares! Now squares doesn\'t have to only be during the Big Game!</string>
     <string name="games_how_to_use">How to use</string>
     <string name="title_activity_how_to_use">How to use</string>
     <string name="edit_username">Edit username</string>
@@ -94,4 +94,8 @@
     <string name="loading">Loading…</string>
     <string name="no_friends_found">No friends found.</string>
     <string name="reset_password">Reset password</string>
+
+    <!-- Home screen -->
+    <string name="app_title1">FOOTBALL SQUARES</string>
+    <string name="app_title2">CONTENDER</string>
 </resources>

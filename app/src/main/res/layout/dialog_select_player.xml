@@ -22,7 +22,7 @@
 
         <EditText
             android:id="@+id/friends_select_edit_txt"
-            fontPath="fonts/segoe_ui_medium.ttf"
+            fontPath="fonts/gothic.ttf"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

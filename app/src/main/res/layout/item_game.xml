@@ -36,7 +36,7 @@
 
                 <TextView
                     android:id="@+id/game_name_txt"
-                    fontPath="fonts/segoe_ui_medium.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -48,7 +48,7 @@
 
                 <TextView
                     android:id="@+id/game_winnings_txt"
-                    fontPath="fonts/segoe_ui_medium.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/green"
@@ -64,7 +64,7 @@
 
                 <TextView
                     android:id="@+id/game_time_txt"
-                    fontPath="fonts/segoe_ui.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -85,7 +85,7 @@
 
                     <TextView
                         android:id="@+id/game_final_txt"
-                        fontPath="fonts/segoe_ui_bold.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/red"
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/game_quarter_txt"
-                    fontPath="fonts/segoe_ui.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
@@ -112,7 +112,7 @@
 
                 <TextView
                     android:id="@+id/game_score_txt"
-                    fontPath="fonts/segoe_ui_medium.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAllCaps="true"

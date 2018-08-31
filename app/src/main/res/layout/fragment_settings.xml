@@ -13,14 +13,15 @@
         tools:targetApi="lollipop">
 
         <TextView
-            fontPath="fonts/segoe_ui.ttf"
+            fontPath="fonts/gothic.ttf"
+            android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="My Account"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +34,8 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothicbold.ttf"
+                android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
@@ -46,7 +48,7 @@
 
             <TextView
                 android:id="@+id/settings_name_txt"
-                fontPath="fonts/segoe_ui_medium.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -75,7 +77,8 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothicbold.ttf"
+                        android:textAllCaps="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
@@ -88,7 +91,7 @@
 
                     <TextView
                         android:id="@+id/settings_username_txt"
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -119,7 +122,8 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothicbold.ttf"
+                android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
@@ -132,7 +136,7 @@
 
             <TextView
                 android:id="@+id/settings_email_txt"
-                fontPath="fonts/segoe_ui_medium.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -150,7 +154,8 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothicbold.ttf"
+                android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
@@ -178,7 +183,7 @@
 
                 <Button
                     android:id="@+id/settings_photo_btn"
-                    fontPath="fonts/segoe_ui_bold.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
                     android:layout_gravity="center_vertical"
@@ -193,7 +198,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -207,7 +212,8 @@
         </LinearLayout>
 
         <TextView
-            fontPath="fonts/segoe_ui.ttf"
+            fontPath="fonts/gothic.ttf"
+            android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -215,7 +221,7 @@
             android:layout_marginTop="16dp"
             android:text="Support"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -229,7 +235,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -247,7 +253,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -265,7 +271,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -284,7 +290,7 @@
 
             <TextView
                 android:id="@+id/settings_rate_txt"
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -303,7 +309,7 @@
 
             <TextView
                 android:id="@+id/settings_about_txt"
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"

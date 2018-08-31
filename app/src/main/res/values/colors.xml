@@ -18,4 +18,8 @@
     <color name="orange">#ff7300</color>
     <color name="text_inactive">#77ffffff</color>
 
+    <color name="color_gray">#252525</color>
+    <color name="color_green">#60b864</color>
+    <color name="color_lightgray">#727272</color>
+
 </resources>

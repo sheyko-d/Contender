@@ -9,23 +9,38 @@
     tools:ignore="MissingPrefix"
     tools:targetApi="lollipop">
 
-    <ImageView
+    <TextView
+        fontPath="fonts/gothic.ttf"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:background="@color/colorPrimary"
-        android:contentDescription="@null"
+        android:background="@color/color_gray"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/app_title1"
+        android:textColor="@color/color_green"
+        android:textSize="24sp"
+        android:elevation="4dp"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        fontPath="fonts/gothic.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_gray"
         android:elevation="4dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="80dp"
-        android:paddingRight="80dp"
-        android:paddingTop="16dp"
-        android:src="@drawable/logo" />
+        android:fontFamily="sans-serif"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/app_title2"
+        android:textColor="@color/color_lightgray"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/color_gray"
         android:elevation="4dp"
         android:orientation="horizontal">
 
@@ -42,7 +57,7 @@
             android:src="@drawable/back" />
 
         <TextView
-            fontPath="fonts/segoe_ui_bold.ttf"
+            fontPath="fonts/gothic.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -66,14 +81,15 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/segoe_ui_medium.ttf"
+                fontPath="fonts/gothicbold.ttf"
+                android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/host_game_info_title"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -90,7 +106,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -102,7 +118,7 @@
 
                     <TextView
                         android:id="@+id/host_id_txt"
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -113,7 +129,7 @@
                         tools:text="54897678" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -124,7 +140,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -135,6 +151,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_name_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -145,7 +162,7 @@
                         android:inputType="textCapWords" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -184,7 +201,7 @@
                         </FrameLayout>
 
                         <Button
-                            fontPath="fonts/segoe_ui_bold.ttf"
+                            fontPath="fonts/gothic.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="52dp"
                             android:layout_gravity="center_vertical"
@@ -198,7 +215,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -209,7 +226,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -220,6 +237,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_password_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -231,7 +249,7 @@
                         tools:ignore="TextFields" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -273,7 +291,7 @@
 
                             <TextView
                                 android:id="@+id/host_event_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingBottom="12dp"
@@ -297,7 +315,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -310,7 +328,7 @@
 
                     <RadioButton
                         android:id="@+id/host_custom_radio_btn"
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -343,7 +361,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="1dp"
@@ -353,6 +371,7 @@
                                 android:textSize="16sp" />
 
                             <EditText
+                                fontPath="fonts/gothic.ttf"
                                 android:id="@+id/host_custom_team_home_edit_txt"
                                 style="@style/EditText"
                                 android:layout_width="match_parent"
@@ -369,7 +388,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="1dp"
@@ -379,6 +398,7 @@
                                 android:textSize="16sp" />
 
                             <EditText
+                                fontPath="fonts/gothic.ttf"
                                 android:id="@+id/host_custom_team_away_edit_txt"
                                 style="@style/EditText"
                                 android:layout_width="match_parent"
@@ -388,7 +408,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -399,7 +419,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -410,6 +430,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_square_price_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -422,7 +443,7 @@
                         android:text="@string/host_default_square_price" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -433,7 +454,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -461,7 +482,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui.ttf"
+                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -472,7 +493,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter1_price_edit_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -497,7 +518,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui.ttf"
+                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -508,7 +529,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter2_price_edit_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -533,7 +554,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui.ttf"
+                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -544,7 +565,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter3_price_edit_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -569,7 +590,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui.ttf"
+                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -580,7 +601,7 @@
 
                             <EditText
                                 android:id="@+id/host_final_price_edit_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -605,7 +626,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/segoe_ui.ttf"
+                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
@@ -616,7 +637,7 @@
 
                             <TextView
                                 android:id="@+id/host_total_price_txt"
-                                fontPath="fonts/segoe_ui_medium.ttf"
+                                fontPath="fonts/gothicbold.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -630,7 +651,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -641,7 +662,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -652,6 +673,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_rules_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -674,14 +696,15 @@
 
             <TextView
                 android:id="@+id/textView2"
-                fontPath="fonts/segoe_ui_medium.ttf"
+                fontPath="fonts/gothicbold.ttf"
+                android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/host_game_options"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <android.support.v7.widget.CardView
@@ -699,7 +722,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -710,7 +733,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -721,6 +744,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_square_limit_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -735,7 +759,7 @@
                         android:textColorHint="@color/secondary_text" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -746,13 +770,13 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="2dp"
-                        android:text="If a board is not 100% filled in, allow the game to be played? Points that are not won due to the board not being filled will be roller over to the FINAL score winnings."
+                        android:text="If a board is not 100% filled in, allow the game to be played? Points that are not won due to the board not being filled will be rolled over to the FINAL score winnings."
                         android:textColor="@color/secondary_text"
                         android:textSize="14sp" />
 
@@ -767,7 +791,7 @@
 
                         <RadioButton
                             android:id="@+id/host_allow_radio_btn"
-                            fontPath="fonts/segoe_ui_medium.ttf"
+                            fontPath="fonts/gothicbold.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Allow Incomplete"
@@ -776,7 +800,7 @@
 
                         <RadioButton
                             android:id="@+id/host_dont_allow_radio_btn"
-                            fontPath="fonts/segoe_ui_medium.ttf"
+                            fontPath="fonts/gothicbold.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
@@ -788,7 +812,7 @@
 
                     <TextView
                         android:id="@+id/textView"
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        fontPath="fonts/gothicbold.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -799,7 +823,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -810,6 +834,7 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/host_code_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -821,7 +846,7 @@
                         android:inputType="textNoSuggestions|textCapCharacters" />
 
                     <Button
-                        fontPath="fonts/segoe_ui_bold.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_marginBottom="16dp"

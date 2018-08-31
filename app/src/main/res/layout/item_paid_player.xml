@@ -12,7 +12,7 @@
 
     <CheckBox
         android:id="@+id/friend_invite_name_txt"
-        fontPath="fonts/segoe_ui_medium.ttf"
+        fontPath="fonts/gothic.ttf"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

@@ -12,10 +12,11 @@ buildscript {
             url "https://jitpack.io"
         }
         jcenter()
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
 
@@ -35,6 +36,7 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
+        jcenter()
     }
     tasks.withType(JavaCompile) {
         configure(options) {

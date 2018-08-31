@@ -30,6 +30,7 @@
             android:orientation="vertical">
 
             <TextView
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -68,9 +69,9 @@
                         android:src="@drawable/avatar_placeholder" />
 
                     <EditText
+                        fontPath="fonts/gothic.ttf"
                         android:id="@+id/register_name_edit_txt"
                         style="@style/EditText.Green"
-                        fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -80,7 +81,7 @@
                     <EditText
                         android:id="@+id/register_email_edit_txt"
                         style="@style/EditText.Green"
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -90,7 +91,7 @@
                     <EditText
                         android:id="@+id/register_password_edit_txt"
                         style="@style/EditText.Green"
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -100,7 +101,7 @@
                     <EditText
                         android:id="@+id/register_repeat_password_edit_txt"
                         style="@style/EditText.Green"
-                        fontPath="fonts/segoe_ui.ttf"
+                        fontPath="fonts/gothic.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -110,7 +111,7 @@
             </ScrollView>
 
             <Button
-                fontPath="fonts/segoe_ui_bold.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginBottom="16dp"
@@ -124,7 +125,7 @@
 
     <Button
         style="@style/Button.Borderless"
-        fontPath="fonts/segoe_ui.ttf"
+        fontPath="fonts/gothic.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

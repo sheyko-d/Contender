@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/segoe_ui_medium.ttf"
+                fontPath="fonts/gothicbold.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -39,10 +39,10 @@
                 android:text="@string/find_friends"
                 android:textAllCaps="true"
                 android:textColor="@color/primary_text"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
-                fontPath="fonts/segoe_ui.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -67,7 +67,7 @@
 
                 <TextView
                     android:id="@+id/find_friends_progress_txt"
-                    fontPath="fonts/segoe_ui_medium.ttf"
+                    fontPath="fonts/gothic.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -80,7 +80,7 @@
 
             <Button
                 android:id="@+id/find_friends_skip_btn"
-                fontPath="fonts/segoe_ui_bold.ttf"
+                fontPath="fonts/gothic.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginBottom="16dp"

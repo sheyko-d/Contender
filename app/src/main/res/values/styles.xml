@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/green</item>
+        <item name="colorPrimaryDark">@color/color_gray</item>
+        <item name="colorAccent">@color/color_green</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
 
@@ -17,7 +17,7 @@
     <style name="AppTheme.Loading" parent="AppTheme" tools:ignore="NewApi">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="colorAccent">@color/green</item>
+        <item name="colorAccent">@color/color_green</item>
     </style>
 
     <style name="Button" parent="Widget.AppCompat.Button">
@@ -27,13 +27,13 @@
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
-        <item name="colorButtonNormal">@color/button_selector</item>
+        <item name="colorButtonNormal">@color/color_green</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
     </style>
 
     <style name="Button.Host" parent="Button">
-        <item name="colorButtonNormal">@color/green</item>
+        <item name="colorButtonNormal">@color/color_green</item>
     </style>
 
     <style name="Button.Orange" parent="Button">
@@ -51,7 +51,7 @@
     </style>
 
     <style name="EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:textColor">@color/green</item>
+        <item name="android:textColor">@color/color_green</item>
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:textSize">20sp</item>
         <item name="android:paddingTop">16dp</item>
@@ -76,11 +76,11 @@
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">16dp</item>
-        <item name="backgroundTint">@color/green</item>
+        <item name="backgroundTint">@color/color_green</item>
     </style>
 
     <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/color_green</item>
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 </resources>

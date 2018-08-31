@@ -22,7 +22,7 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 22
         targetSdkVersion 26
-        versionCode 110
+        versionCode 113
         versionName '2.2.00'
     }
     buildTypes {

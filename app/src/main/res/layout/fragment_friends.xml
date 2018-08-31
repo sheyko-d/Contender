@@ -14,14 +14,15 @@
 
         <TextView
             android:id="@+id/friends_pending_title_txt"
-            fontPath="fonts/segoe_ui.ttf"
+            fontPath="fonts/gothic.ttf"
+            android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/friends_pending_title"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/friends_pending_recycler"
@@ -36,7 +37,7 @@
 
         <Button
             android:id="@+id/friends_find_btn"
-            fontPath="fonts/segoe_ui_bold.ttf"
+            fontPath="fonts/gothic.ttf"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="16dp"
@@ -51,14 +52,15 @@
 
         <TextView
             android:id="@+id/friends_title_txt"
-            fontPath="fonts/segoe_ui.ttf"
+            fontPath="fonts/gothic.ttf"
+            android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/friends_title"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/friends_recycler"

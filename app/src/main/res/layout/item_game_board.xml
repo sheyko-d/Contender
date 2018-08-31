@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/cell_name_txt"
-        fontPath="fonts/segoe_ui_medium.ttf"
+        fontPath="fonts/gothic.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

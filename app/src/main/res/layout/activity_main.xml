@@ -8,26 +8,39 @@
     tools:context="com.moyersoftware.contender.menu.MainActivity"
     tools:targetApi="lollipop">
 
-    <ImageView
+    <TextView
+        fontPath="fonts/gothic.ttf"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:background="@color/colorPrimary"
-        android:contentDescription="@null"
+        android:background="@color/color_gray"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/app_title1"
+        android:textColor="@color/color_green"
+        android:textSize="24sp"
+        android:elevation="4dp"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        fontPath="fonts/gothic.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_gray"
         android:elevation="4dp"
-        android:paddingBottom="4dp"
-        android:paddingLeft="80dp"
-        android:paddingRight="80dp"
-        android:paddingTop="16dp"
-        android:src="@drawable/logo" />
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/app_title2"
+        android:textColor="@color/color_lightgray"
+        android:textSize="12sp" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
-        app:tabIndicatorColor="@android:color/white"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp" />
+        android:background="@color/color_gray"
+        android:elevation="4dp"
+        app:tabIndicatorColor="@color/color_green" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_pager"
