@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -258,7 +259,9 @@ public class RegisterActivity extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                savePhoto(taskSnapshot.getDownloadUrl() + "");
+                @SuppressWarnings("ConstantConditions")
+                Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                savePhoto(downUrl.getResult().toString());
             }
         });
     }

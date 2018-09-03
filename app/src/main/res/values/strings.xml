@@ -21,7 +21,7 @@
     <string name="login_submit">Sign in</string>
 
     <!-- Games screen -->
-    <string name="games_title">Your Games</string>
+    <string name="games_title">Current Games</string>
     <string name="games_title_empty">No games found</string>
     <string name="games_host">Host a Game</string>
     <string name="games_join">Join a Game</string>
@@ -98,4 +98,11 @@
     <!-- Home screen -->
     <string name="app_title1">FOOTBALL SQUARES</string>
     <string name="app_title2">CONTENDER</string>
+    <string name="player_details">Player Details</string>
+    <string name="list_of_players">List of Players</string>
+    <string name="create_pdf">Create PDF</string>
+    <string name="game_information">Game Information</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="add_players">Add Players</string>
+    <string name="paid_players">Players Who Paid</string>
 </resources>

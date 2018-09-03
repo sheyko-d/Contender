@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:background="@color/background_light"
         android:elevation="16dp"
         android:orientation="vertical"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+        android:visibility="gone">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -366,31 +366,57 @@
         android:layout_marginBottom="48dp"
         android:orientation="vertical">
 
-        <TextView
-            fontPath="fonts/gothic.ttf"
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_gray"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="@string/app_title1"
-            android:textColor="@color/color_green"
-            android:textSize="24sp"
-            android:elevation="4dp"/>
-
-        <TextView
-            android:id="@+id/textView4"
-            fontPath="fonts/gothic.ttf"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_gray"
             android:elevation="4dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="@string/app_title2"
-            android:textColor="@color/color_lightgray"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    fontPath="fonts/gothic.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/app_title1"
+                    android:textColor="@color/color_green"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    fontPath="fonts/gothic.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="@string/app_title2"
+                    android:textColor="@color/color_lightgray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/menuBtn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:focusable="true"
+                android:onClick="onMenuButtonClicked"
+                android:padding="16dp"
+                android:src="@drawable/menu" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -432,57 +458,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 tools:text="Big Day" />
-
-            <ImageView
-                android:id="@+id/board_invite_friends_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onInviteFriendsButtonClicked"
-                android:src="@drawable/friend_invite" />
-
-            <ImageView
-                android:id="@+id/board_paid_players_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onPaidPlayersButtonClicked"
-                android:src="@drawable/player_add"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/board_manual_add_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onManualAddButtonClicked"
-                android:src="@drawable/manual_add" />
-
-            <ImageView
-                android:id="@+id/board_pdf_img"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="4dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:onClick="onPdfButtonClicked"
-                android:src="@drawable/pdf" />
         </LinearLayout>
 
         <TextView
@@ -518,8 +493,8 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="3dp"
-                    android:textColor="@color/color_green"
                     android:textAllCaps="true"
+                    android:textColor="#305396"
                     android:textSize="14sp"
                     tools:text="New England Patriots" />
 
@@ -572,7 +547,6 @@
                         <com.moyersoftware.contender.util.VerticalTextView
                             android:id="@+id/board_away_name_txt"
                             fontPath="fonts/gothic.ttf"
-                            android:textAllCaps="true"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -580,7 +554,8 @@
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:paddingTop="10dp"
-                            android:textColor="@color/color_green"
+                            android:textAllCaps="true"
+                            android:textColor="#00AFF0"
                             android:textSize="14sp"
                             tools:ignore="RtlHardcoded"
                             tools:text="New York Giants" />
@@ -806,4 +781,84 @@
             </FrameLayout>
         </com.moyersoftware.contender.util.CustomLinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/color_gray"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="Q2 | 14:53"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="#00AFF0"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="CAR Panters"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:includeFontPadding="false"
+                android:text="07"
+                android:textColor="@android:color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="#305396"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                fontPath="fonts/segoe_ui_bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="14"
+                android:textColor="@android:color/white"
+                android:textSize="28sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:includeFontPadding="false"
+                android:text="NE Patriots"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

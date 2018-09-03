@@ -37,11 +37,13 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -144,16 +146,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mFinalScoreTxt;
     @BindView(R.id.board_info_time_txt)
     TextView mTimeTxt;
-    @BindView(R.id.board_pdf_img)
-    ImageView mPdfImg;
     @BindView(R.id.board_progress_txt)
     View mProgressBar;
-    @BindView(R.id.board_invite_friends_img)
-    ImageView mInviteFriendsImg;
-    @BindView(R.id.board_paid_players_img)
-    ImageView mPaidPlayersImg;
-    @BindView(R.id.board_manual_add_img)
-    ImageView mManualAddImg;
     @BindView(R.id.board_info_q1_winner_img)
     ImageView mWinner1Img;
     @BindView(R.id.board_info_q2_winner_img)
@@ -180,6 +174,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mPdfQ3Txt;
     @BindView(R.id.board_pdf_final_txt)
     TextView mPdfFinalTxt;
+    @BindView(R.id.menuBtn)
+    ImageView mMenuBtn;
 
     // Usual variables
     private int mTotalScrollY;
@@ -472,7 +468,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
         mBoardAdapter.refresh(mSelectedSquares);
 
-        // TODO: Remove
         mBoardAdapter.setRowNumbers(mRowNumbers);
         mBoardAdapter.setColumnNumbers(mColumnNumbers);
 
@@ -554,10 +549,6 @@ public class GameBoardActivity extends AppCompatActivity {
             public void onFailure(retrofit2.Call<Event> call, Throwable t) {
             }
         });
-
-        mPaidPlayersImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
-        mManualAddImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
-        mInviteFriendsImg.setVisibility(mIsHost ? View.VISIBLE : View.GONE);
 
         mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br>ID: "
                 + mGameId + "<br>Rules: " + (TextUtils.isEmpty(game.getRules())
@@ -681,6 +672,7 @@ public class GameBoardActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(mBoardRecycler);
+        registerForContextMenu(mMenuBtn);
     }
 
     private void initRowRecycler() {
@@ -729,7 +721,7 @@ public class GameBoardActivity extends AppCompatActivity {
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(mBottomSheet);
+        /*BottomSheetBehavior behavior = BottomSheetBehavior.from(mBottomSheet);
         behavior.setPeekHeight(Util.convertDpToPixel(48));
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -743,7 +735,7 @@ public class GameBoardActivity extends AppCompatActivity {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 
             }
-        });
+        });*/
 
         mPageIndicator.setViewPager(pager);
     }
@@ -1244,34 +1236,63 @@ public class GameBoardActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Remove this square");
+        if (v.getId() == R.id.menuBtn) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(mGameLive ? R.menu.menu_game_open : R.menu.menu_game, menu);
+
+            if (menu.findItem(R.id.invite_friends) != null) {
+                menu.findItem(R.id.invite_friends).setVisible(mIsHost);
+            }
+            if (menu.findItem(R.id.paid_players) != null) {
+                menu.findItem(R.id.paid_players).setVisible(mIsHost);
+            }
+        } else {
+            menu.add("Remove this square");
+        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        for (SelectedSquare selectedSquare : mSelectedSquares) {
-            if (selectedSquare.getPosition() == mRemoveSquarePos) {
-                mSelectedSquares.remove(selectedSquare);
-                break;
+        if (item.getItemId() == R.id.create_pdf) {
+            onPdfButtonClicked(null);
+        } else if (item.getItemId() == R.id.add_players) {
+            onManualAddButtonClicked(null);
+        } else if (item.getItemId() == R.id.invite_friends
+                || item.getItemId() == R.id.list_players) {
+            onInviteFriendsButtonClicked(null);
+        } else if (item.getItemId() == R.id.paid_players) {
+            onPaidPlayersButtonClicked(null);
+        } else if (item.getItemId() == R.id.game_information) {
+            onGameInformationButtonClicked();
+        } else {
+            for (SelectedSquare selectedSquare : mSelectedSquares) {
+                if (selectedSquare.getPosition() == mRemoveSquarePos) {
+                    mSelectedSquares.remove(selectedSquare);
+                    break;
+                }
             }
+
+            mBoardAdapter.refresh(mSelectedSquares, mRemoveSquarePos);
+
+            int mySelectedSquares = 0;
+            for (SelectedSquare selectedSquare : mSelectedSquares) {
+                String playerId = Util.getCurrentPlayerId();
+                if (TextUtils.isEmpty(playerId)) {
+                    playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                }
+                if (selectedSquare.getAuthorId().equals(playerId)) {
+                    mySelectedSquares++;
+                }
+            }
+            mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
+
+            uploadSquares();
         }
-
-        mBoardAdapter.refresh(mSelectedSquares, mRemoveSquarePos);
-
-        int mySelectedSquares = 0;
-        for (SelectedSquare selectedSquare : mSelectedSquares) {
-            String playerId = Util.getCurrentPlayerId();
-            if (TextUtils.isEmpty(playerId)) {
-                playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            }
-            if (selectedSquare.getAuthorId().equals(playerId)) {
-                mySelectedSquares++;
-            }
-        }
-        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
-
-        uploadSquares();
         return super.onContextItemSelected(item);
+    }
+
+    private void onGameInformationButtonClicked() {
+        Toast.makeText(this, "This will show game information", Toast.LENGTH_SHORT).show();
     }
 
     public void onCopyIdButtonClicked(View view) {
@@ -1326,9 +1347,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 mBoardAdapter.notifyDataSetChanged();
                 mRowAdapter.notifyDataSetChanged();
                 mColumnAdapter.notifyDataSetChanged();
-
-                mInviteFriendsImg.setImageResource(!mGameLive ? R.drawable.friend_invite
-                        : R.drawable.friend_invite_live);
             }
         } catch (Exception e) {
             Util.Log("Invalid game object: " + e);
@@ -1379,6 +1397,9 @@ public class GameBoardActivity extends AppCompatActivity {
         initPaidPlayers();
     }
 
+    public void onMenuButtonClicked(View view) {
+        openContextMenu(view);
+    }
 
     class WizardPagerAdapter extends PagerAdapter {
 

@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -183,6 +185,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+        Util.Log("load eventsstart");
         ButterKnife.bind(this);
 
         initBilling();
@@ -386,11 +389,13 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void loadEvents() {
+        Util.Log("load events");
         retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
         call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Event>> call,
                                    retrofit2.Response<ArrayList<Event>> response) {
+                Util.Log("load events2");
                 mEvents.clear();
                 if (response.isSuccessful()) {
                     String previousEventWeek = null;
@@ -433,6 +438,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onFailure(retrofit2.Call<ArrayList<Event>> call, Throwable t) {
+                Util.Log("load events error");
+                Toast.makeText(HostActivity.this, "Can't retrieve events",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -973,7 +981,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //noinspection VisibleForTests
-                uploadData(taskSnapshot.getDownloadUrl() + "");
+                @SuppressWarnings("ConstantConditions")
+                Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                uploadData(downUrl.getResult().toString());
             }
         });
     }
