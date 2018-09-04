@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context="com.moyersoftware.contender.game.GameBoardActivity"
     tools:ignore="MissingPrefix"
     tools:targetApi="lollipop">
@@ -778,6 +778,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bottom_sheet_teams"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom"
@@ -787,7 +788,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8">
+            android:layout_weight="9"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onTimeButtonClicked">
 
             <TextView
                 android:id="@+id/board_info_time_txt"
@@ -804,7 +809,7 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_weight="10"
             android:background="#00AFF0"
             android:paddingHorizontal="10dp">
 
@@ -834,7 +839,7 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_weight="10"
             android:background="#305396"
             android:paddingHorizontal="10dp">
 
@@ -863,15 +868,23 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bottom_sheet_scores"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom"
+        android:paddingVertical="2dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onTeamsButtonClicked"
         android:background="@color/color_gray"
         android:orientation="horizontal"
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="64dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -906,7 +919,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -922,6 +936,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/board_home_q1_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -933,6 +948,7 @@
                 tools:text="07" />
 
             <TextView
+                android:id="@+id/board_away_q1_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -945,7 +961,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -961,6 +978,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/board_home_q2_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -972,6 +990,7 @@
                 tools:text="07" />
 
             <TextView
+                android:id="@+id/board_away_q2_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -984,7 +1003,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -1000,6 +1020,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/board_home_q3_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -1011,6 +1032,7 @@
                 tools:text="07" />
 
             <TextView
+                android:id="@+id/board_away_q3_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -1023,7 +1045,51 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:text="@string/q4"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/board_home_q4_score_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="07" />
+
+            <TextView
+                android:id="@+id/board_away_q4_score_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="24dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -1039,6 +1105,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/board_home_final_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -1050,6 +1117,7 @@
                 tools:text="07" />
 
             <TextView
+                android:id="@+id/board_away_final_score_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"

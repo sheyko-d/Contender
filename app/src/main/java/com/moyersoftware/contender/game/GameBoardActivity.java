@@ -180,6 +180,30 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mQuarterHomeTxt;
     @BindView(R.id.board_quarter_away_txt)
     TextView mQuarterAwayTxt;
+    @BindView(R.id.board_home_q1_score_txt)
+    TextView mHomeQ1ScoreTxt;
+    @BindView(R.id.board_away_q1_score_txt)
+    TextView mAwayQ1ScoreTxt;
+    @BindView(R.id.board_home_q2_score_txt)
+    TextView mHomeQ2ScoreTxt;
+    @BindView(R.id.board_away_q2_score_txt)
+    TextView mAwayQ2ScoreTxt;
+    @BindView(R.id.board_home_q3_score_txt)
+    TextView mHomeQ3ScoreTxt;
+    @BindView(R.id.board_away_q3_score_txt)
+    TextView mAwayQ3ScoreTxt;
+    @BindView(R.id.board_home_q4_score_txt)
+    TextView mHomeQ4ScoreTxt;
+    @BindView(R.id.board_away_q4_score_txt)
+    TextView mAwayQ4ScoreTxt;
+    @BindView(R.id.board_home_final_score_txt)
+    TextView mHomeFinalScoreTxt;
+    @BindView(R.id.board_away_final_score_txt)
+    TextView mAwayFinalScoreTxt;
+    @BindView(R.id.bottom_sheet_teams)
+    View bottomSheetTeams;
+    @BindView(R.id.bottom_sheet_scores)
+    View bottomSheetScores;
 
     // Usual variables
     private int mTotalScrollY;
@@ -483,13 +507,22 @@ public class GameBoardActivity extends AppCompatActivity {
                                    retrofit2.Response<Event> response) {
                 if (!response.isSuccessful()) return;
 
-                Util.Log("event = "+new Gson().toJson(response.body()));
-
                 Event event = response.body();
                 if (event != null) {
                     mEvent = event;
 
                     updateLiveState();
+
+                    mHomeQ1ScoreTxt.setText(event.getTeamHome().getScore().getQ1());
+                    mHomeQ2ScoreTxt.setText(event.getTeamHome().getScore().getQ2());
+                    mHomeQ3ScoreTxt.setText(event.getTeamHome().getScore().getQ3());
+                    mHomeQ4ScoreTxt.setText(event.getTeamHome().getScore().getQ4());
+                    mHomeFinalScoreTxt.setText(event.getTeamHome().getScore().getTotal());
+                    mAwayQ1ScoreTxt.setText(event.getTeamAway().getScore().getQ1());
+                    mAwayQ2ScoreTxt.setText(event.getTeamAway().getScore().getQ2());
+                    mAwayQ3ScoreTxt.setText(event.getTeamAway().getScore().getQ3());
+                    mAwayQ4ScoreTxt.setText(event.getTeamAway().getScore().getQ4());
+                    mAwayFinalScoreTxt.setText(event.getTeamAway().getScore().getTotal());
 
                     try {
                         if (!TextUtils.isEmpty(event.getTeamAway().getScore().getTotal())) {
@@ -761,6 +794,15 @@ public class GameBoardActivity extends AppCompatActivity {
 
     public void onBackButtonClicked(View view) {
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (bottomSheetScores.getVisibility() == View.VISIBLE) {
+            bottomSheetScores.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void onPrintButtonClicked(View view) {
@@ -1410,6 +1452,14 @@ public class GameBoardActivity extends AppCompatActivity {
 
     public void onMenuButtonClicked(View view) {
         openContextMenu(view);
+    }
+
+    public void onTimeButtonClicked(View view) {
+        bottomSheetScores.setVisibility(View.VISIBLE);
+    }
+
+    public void onTeamsButtonClicked(View v) {
+        bottomSheetScores.setVisibility(View.GONE);
     }
 
     class WizardPagerAdapter extends PagerAdapter {
