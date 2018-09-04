@@ -894,9 +894,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private void createCustomEvent() {
         mEventId = Util.generateGameId();
         TeamHome teamHome = new TeamHome("http://moyersoftware.com/contender/images/tba.png",
-                mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0", "0", "0"));
+                mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0",
+                "0", "0"), "", "", "", "");
         TeamAway teamAway = new TeamAway("http://moyersoftware.com/contender/images/tba.png",
-                mCustomTeamAwayEditTxt.getText().toString(), new Score("0", "0", "0", "0", "0"));
+                mCustomTeamAwayEditTxt.getText().toString(), new Score("0", "0", "0",
+                "0", "0"), "", "", "", "");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);

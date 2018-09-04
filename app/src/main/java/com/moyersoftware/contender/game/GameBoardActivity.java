@@ -176,6 +176,10 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mPdfFinalTxt;
     @BindView(R.id.menuBtn)
     ImageView mMenuBtn;
+    @BindView(R.id.board_quarter_home_txt)
+    TextView mQuarterHomeTxt;
+    @BindView(R.id.board_quarter_away_txt)
+    TextView mQuarterAwayTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -471,12 +475,15 @@ public class GameBoardActivity extends AppCompatActivity {
         mBoardAdapter.setRowNumbers(mRowNumbers);
         mBoardAdapter.setColumnNumbers(mColumnNumbers);
 
+        Util.Log("test");
         retrofit2.Call<Event> call = ApiFactory.getApiService().getEvent(game.getEventId());
         call.enqueue(new retrofit2.Callback<Event>() {
             @Override
             public void onResponse(retrofit2.Call<Event> call,
                                    retrofit2.Response<Event> response) {
                 if (!response.isSuccessful()) return;
+
+                Util.Log("event = "+new Gson().toJson(response.body()));
 
                 Event event = response.body();
                 if (event != null) {
@@ -519,8 +526,12 @@ public class GameBoardActivity extends AppCompatActivity {
                     mHomeNameTxt.setText(event.getTeamHome().getName());
 
                     // Init bottom section info
-                    mInfoAwayNameTxt.setText(event.getTeamAway().getName());
-                    mInfoHomeNameTxt.setText(event.getTeamHome().getName());
+                    mInfoAwayNameTxt.setText(event.getTeamAway().getName() + " "
+                            + event.getTeamAway().getAbbrev());
+                    mInfoHomeNameTxt.setText(event.getTeamHome().getName() + " "
+                            + event.getTeamHome().getAbbrev());
+                    mQuarterHomeTxt.setText(event.getTeamAway().getAbbrev());
+                    mQuarterAwayTxt.setText(event.getTeamHome().getAbbrev());
 
                     Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
                             .getImage()).into(mTeam1Img);

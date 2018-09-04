@@ -50,7 +50,6 @@
                             android:src="@drawable/arrow_bottom_sheet" />
 
                         <TextView
-                            android:id="@+id/board_info_time_txt"
                             fontPath="fonts/segoe_ui_medium.ttf"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -96,7 +95,6 @@
                                 android:contentDescription="@null" />
 
                             <TextView
-                                android:id="@+id/board_info_home_name_txt"
                                 fontPath="fonts/segoe_ui_medium.ttf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -107,7 +105,6 @@
                                 tools:text="Patriots" />
 
                             <TextView
-                                android:id="@+id/board_info_home_total_score_txt"
                                 fontPath="fonts/wanted.ttf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -142,7 +139,6 @@
                                 android:contentDescription="@null" />
 
                             <TextView
-                                android:id="@+id/board_info_away_name_txt"
                                 fontPath="fonts/segoe_ui_medium.ttf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -153,7 +149,6 @@
                                 tools:text="Giants" />
 
                             <TextView
-                                android:id="@+id/board_info_away_total_score_txt"
                                 fontPath="fonts/wanted.ttf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -795,14 +790,15 @@
             android:layout_weight="8">
 
             <TextView
+                android:id="@+id/board_info_time_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text="Q2 | 14:53"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="Q2 | 14:53" />
         </LinearLayout>
 
         <FrameLayout
@@ -813,16 +809,18 @@
             android:paddingHorizontal="10dp">
 
             <TextView
+                android:id="@+id/board_info_away_name_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:includeFontPadding="false"
-                android:text="CAR Panters"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="13sp"
+                tools:text="CAR Panters" />
 
             <TextView
+                android:id="@+id/board_info_away_total_score_txt"
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -841,6 +839,7 @@
             android:paddingHorizontal="10dp">
 
             <TextView
+                android:id="@+id/board_info_home_total_score_txt"
                 fontPath="fonts/segoe_ui_bold.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -851,14 +850,215 @@
                 android:textSize="28sp" />
 
             <TextView
+                android:id="@+id/board_info_home_name_txt"
                 fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:includeFontPadding="false"
-                android:text="NE Patriots"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="13sp"
+                tools:text="NE Patriots" />
         </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/color_gray"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/board_quarter_home_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="CAR" />
+
+            <TextView
+                android:id="@+id/board_quarter_away_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="NE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:text="@string/q1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="07" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:text="@string/q2"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="07" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:text="@string/q3"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="07" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:text="@string/quarter_final"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="07" />
+
+            <TextView
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="14" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
