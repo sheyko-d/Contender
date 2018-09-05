@@ -10,6 +10,9 @@ public class TeamAway {
     public Score score;
     public String abbrev;
     public String color;
+    public String colorOff;
+    public String font;
+    public String fontoff;
     public String location;
     public String img;
 
@@ -18,14 +21,17 @@ public class TeamAway {
     }
 
     public TeamAway(String image, String name, Score score, String abbrev, String color,
-                    String location, String img) {
+                    String location, String img, String colorOff, String font, String fontOff) {
         this.image = image;
         this.name = name;
         this.score = score;
         this.abbrev = abbrev;
-        this.color = color;
         this.location = location;
         this.img = img;
+        this.color = color;
+        this.colorOff = colorOff;
+        this.font = font;
+        this.fontoff = fontOff;
     }
 
     public String getImage() {
@@ -44,15 +50,27 @@ public class TeamAway {
         return abbrev;
     }
 
-    public String getColor() {
-        return color;
-    }
-
     public String getLocation() {
         return location;
     }
 
     public String getImg() {
         return img;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getColorOff() {
+        return colorOff;
+    }
+
+    public String getFont() {
+        return font;
+    }
+
+    public String getFontOff() {
+        return fontoff;
     }
 }

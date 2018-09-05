@@ -365,7 +365,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_gray"
-            android:elevation="4dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -380,11 +379,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="4dp"
+                    android:includeFontPadding="false"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="@string/app_title1"
                     android:textColor="@color/color_green"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -399,26 +399,69 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/menuBtn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:background="?selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:focusable="true"
-                android:onClick="onMenuButtonClicked"
-                android:padding="16dp"
-                android:src="@drawable/menu" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/menuBtn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="-3dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@null"
+                    android:focusable="true"
+                    android:onClick="onMenuButtonClicked"
+                    android:padding="16dp"
+                    android:src="@drawable/menu"
+                    android:tint="@color/green" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginEnd="18dp">
+
+                    <TextView
+                        android:id="@+id/board_title_txt"
+                        fontPath="fonts/segoe_ui.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green"
+                        android:textSize="12sp"
+                        tools:text="Wicked Picks" />
+
+                    <TextView
+                        android:id="@+id/board_score_txt"
+                        fontPath="fonts/segoe_ui_italic.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="1,000 pts"
+                        android:textColor="@color/color_lightgray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:rotation="180"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_toolbar_triangle" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/color_gray"
-            android:elevation="4dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -440,7 +483,6 @@
                 tools:src="@android:color/white" />
 
             <TextView
-                android:id="@+id/board_title_txt"
                 fontPath="fonts/gothic.ttf"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -807,11 +849,13 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/team_away_bg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#00AFF0"
-            android:paddingHorizontal="10dp">
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            tools:background="#00AFF0">
 
             <TextView
                 android:id="@+id/board_info_away_name_txt"
@@ -837,11 +881,13 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/team_home_bg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#305396"
-            android:paddingHorizontal="10dp">
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            tools:background="#305396">
 
             <TextView
                 android:id="@+id/board_info_home_total_score_txt"
@@ -872,20 +918,20 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom"
-        android:paddingVertical="2dp"
-        android:foreground="?selectableItemBackground"
+        android:background="@color/color_gray"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?selectableItemBackground"
         android:onClick="onTeamsButtonClicked"
-        android:background="@color/color_gray"
         android:orientation="horizontal"
+        android:paddingVertical="2dp"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <View
@@ -920,8 +966,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -962,8 +1008,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -1004,8 +1050,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -1046,8 +1092,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -1088,9 +1134,9 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="24dp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView

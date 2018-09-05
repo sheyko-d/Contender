@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
@@ -89,7 +90,9 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -204,6 +207,12 @@ public class GameBoardActivity extends AppCompatActivity {
     View bottomSheetTeams;
     @BindView(R.id.bottom_sheet_scores)
     View bottomSheetScores;
+    @BindView(R.id.team_home_bg)
+    View mHomeBg;
+    @BindView(R.id.team_away_bg)
+    View mAwayBg;
+    @BindView(R.id.board_score_txt)
+    TextView mBoardTotalScoreTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -432,6 +441,9 @@ public class GameBoardActivity extends AppCompatActivity {
         mPdfQ3Txt.setText(String.valueOf(game.getQuarter3Price()));
         mPdfFinalTxt.setText(String.valueOf(game.getFinalPrice()));
 
+        mBoardTotalScoreTxt.setText(NumberFormat.getNumberInstance(Locale.US)
+                .format(game.getTotalPrice()) + " pts");
+
         // Update winners
         mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
         if (game.getQuarter1Winner() != null) {
@@ -512,6 +524,20 @@ public class GameBoardActivity extends AppCompatActivity {
                     mEvent = event;
 
                     updateLiveState();
+
+                    mHomeBg.setBackgroundColor(Color.parseColor(event.getTeamHome().getColor()));
+                    mAwayBg.setBackgroundColor(Color.parseColor(event.getTeamAway().getColor()));
+                    mInfoHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome().getFont()));
+                    mInfoAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway().getFont()));
+                    mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamHome()
+                            .getFont()));
+                    mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamAway()
+                            .getFont()));
+
+                    mHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome()
+                            .getColor()));
+                    mAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway()
+                            .getColor()));
 
                     mHomeQ1ScoreTxt.setText(event.getTeamHome().getScore().getQ1());
                     mHomeQ2ScoreTxt.setText(event.getTeamHome().getScore().getQ2());
