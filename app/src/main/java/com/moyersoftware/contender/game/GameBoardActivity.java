@@ -203,10 +203,6 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mHomeFinalScoreTxt;
     @BindView(R.id.board_away_final_score_txt)
     TextView mAwayFinalScoreTxt;
-    @BindView(R.id.bottom_sheet_teams)
-    View bottomSheetTeams;
-    @BindView(R.id.bottom_sheet_scores)
-    View bottomSheetScores;
     @BindView(R.id.team_home_bg)
     View mHomeBg;
     @BindView(R.id.team_away_bg)
@@ -255,6 +251,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private boolean mIsHost;
     private GamePaidPlayersAdapter mPaidPlayersAdapter;
     private Call<Void> mPaidPlayersCall = null;
+    private ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -788,24 +785,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
     private void initBottomSheet() {
         WizardPagerAdapter adapter = new WizardPagerAdapter();
-        final ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pager.setAdapter(adapter);
-
-        /*BottomSheetBehavior behavior = BottomSheetBehavior.from(mBottomSheet);
-        behavior.setPeekHeight(Util.convertDpToPixel(48));
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    pager.setCurrentItem(0);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });*/
 
         mPageIndicator.setViewPager(pager);
     }
@@ -820,15 +801,6 @@ public class GameBoardActivity extends AppCompatActivity {
 
     public void onBackButtonClicked(View view) {
         finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (bottomSheetScores.getVisibility() == View.VISIBLE) {
-            bottomSheetScores.setVisibility(View.GONE);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     public void onPrintButtonClicked(View view) {
@@ -1480,12 +1452,12 @@ public class GameBoardActivity extends AppCompatActivity {
         openContextMenu(view);
     }
 
-    public void onTimeButtonClicked(View view) {
-        bottomSheetScores.setVisibility(View.VISIBLE);
-    }
-
-    public void onTeamsButtonClicked(View v) {
-        bottomSheetScores.setVisibility(View.GONE);
+    public void onScoresPressed(View view) {
+        if (pager.getCurrentItem() == 0) {
+            pager.setCurrentItem(1);
+        } else {
+            pager.setCurrentItem(0);
+        }
     }
 
     class WizardPagerAdapter extends PagerAdapter {
