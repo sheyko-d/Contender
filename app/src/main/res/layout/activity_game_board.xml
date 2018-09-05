@@ -513,7 +513,8 @@
             android:id="@+id/board_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/board"
@@ -817,6 +818,96 @@
                 </LinearLayout>
             </FrameLayout>
         </com.moyersoftware.contender.util.CustomLinearLayout>
+
+        <LinearLayout
+            android:id="@+id/game_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/board_info_title_txt"
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/green"
+                    android:textSize="12sp"
+                    tools:text="Wicked Picks" />
+
+                <TextView
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/regular_style"
+                    android:textColor="@color/color_lightgray"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/board_info_score_txt"
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textColor="@color/color_lightgray"
+                    android:textSize="12sp"
+                    tools:text="1,000 pts total" />
+            </FrameLayout>
+
+            <TextView
+                fontPath="fonts/segoe_ui_italic.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:text="RULES"
+                android:textColor="@color/green"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/board_rules_txt"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:textColor="@color/color_lightgray"
+                android:textSize="12sp"
+                tools:text="@string/rules_default" />
+
+            <TextView
+                fontPath="fonts/segoe_ui_italic.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/the_players"
+                android:textColor="@color/green"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/player_bg"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="RM"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -835,10 +926,10 @@
                 android:id="@+id/page_one"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:onClick="onScoresPressed"
-                android:focusable="true"
                 android:baselineAligned="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onScoresPressed"
                 android:orientation="horizontal">
 
                 <TextView
@@ -921,18 +1012,18 @@
             <LinearLayout
                 android:id="@+id/page_two"
                 android:layout_width="match_parent"
-                android:clickable="true"
-                android:onClick="onScoresPressed"
-                android:focusable="true"
                 android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onScoresPressed"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:focusable="false"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:focusable="false"
                     android:orientation="vertical">
 
                     <View

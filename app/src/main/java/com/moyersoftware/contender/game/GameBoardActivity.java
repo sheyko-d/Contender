@@ -209,6 +209,14 @@ public class GameBoardActivity extends AppCompatActivity {
     View mAwayBg;
     @BindView(R.id.board_score_txt)
     TextView mBoardTotalScoreTxt;
+    @BindView(R.id.game_info_layout)
+    View mGameInfoLayout;
+    @BindView(R.id.board_info_title_txt)
+    TextView mInfoTitleTxt;
+    @BindView(R.id.board_info_score_txt)
+    TextView mInfoScoreTxt;
+    @BindView(R.id.board_rules_txt)
+    TextView mRulesTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -416,6 +424,7 @@ public class GameBoardActivity extends AppCompatActivity {
         // Set game name
         mGameName = game.getName();
         mTitleTxt.setText(mGameName);
+        mInfoTitleTxt.setText(mGameName);
 
         // Update row numbers
         mRowNumbers.clear();
@@ -440,6 +449,8 @@ public class GameBoardActivity extends AppCompatActivity {
 
         mBoardTotalScoreTxt.setText(NumberFormat.getNumberInstance(Locale.US)
                 .format(game.getTotalPrice()) + " pts");
+        mInfoScoreTxt.setText(NumberFormat.getNumberInstance(Locale.US)
+                .format(game.getTotalPrice()) + " pts total");
 
         // Update winners
         mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
@@ -621,6 +632,9 @@ public class GameBoardActivity extends AppCompatActivity {
                 + mGameId + "<br>Rules: " + (TextUtils.isEmpty(game.getRules())
                 ? "No additional rules" : game.getRules())));
 
+        mRulesTxt.setText(TextUtils.isEmpty(game.getRules()) ? getString(R.string.rules_default)
+                : game.getRules());
+
         mBoardAdapter.setCustom(mGame.isCustom());
         mBoardAdapter.notifyDataSetChanged();
 
@@ -801,6 +815,15 @@ public class GameBoardActivity extends AppCompatActivity {
 
     public void onBackButtonClicked(View view) {
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mGameInfoLayout.getVisibility() == View.VISIBLE){
+            onGameInformationButtonClicked();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void onPrintButtonClicked(View view) {
@@ -1297,6 +1320,9 @@ public class GameBoardActivity extends AppCompatActivity {
             if (menu.findItem(R.id.paid_players) != null) {
                 menu.findItem(R.id.paid_players).setVisible(mIsHost);
             }
+
+            menu.findItem(R.id.game_information).setTitle(mGameInfoLayout.getVisibility()
+                    == View.GONE ? "Game Information" : "Close Game Information");
         } else {
             menu.add("Remove this square");
         }
@@ -1343,7 +1369,13 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private void onGameInformationButtonClicked() {
-        Toast.makeText(this, "This will show game information", Toast.LENGTH_SHORT).show();
+        if (mGameInfoLayout.getVisibility() == View.GONE) {
+            mGameInfoLayout.setVisibility(View.VISIBLE);
+            mLayout.setVisibility(View.GONE);
+        } else {
+            mGameInfoLayout.setVisibility(View.GONE);
+            mLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onCopyIdButtonClicked(View view) {

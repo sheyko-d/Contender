@@ -110,4 +110,7 @@
     <string name="q3">Q3</string>
     <string name="quarter_final">FINAL</string>
     <string name="q4">Q4</string>
+    <string name="regular_style">Regular Style</string>
+    <string name="rules_default"><![CDATA[There is a winner at the end of each quarter & the final score. Winners are based on the last digit of the score of each team.]]></string>
+    <string name="the_players">The Players</string>
 </resources>
