@@ -2,7 +2,6 @@ package com.moyersoftware.contender.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -77,7 +77,7 @@ public class LoadingActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("email").setValue(mFacebookEmail);
 
-                        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                         Util.setCurrentPlayerId(id);
                         if (!Util.findFriendsShown(id)) {
                             startActivity(new Intent(LoadingActivity.this,
@@ -92,7 +92,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 .child(user.getUid()).child("image").addListenerForSingleValueEvent
                                 (new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             String oldPhoto = dataSnapshot.getValue(String.class);
                                             Util.setPhoto(oldPhoto);
@@ -107,8 +107,8 @@ public class LoadingActivity extends AppCompatActivity {
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                     user.getPhotoUrl() + "", null));
                                         }
-                                        String id = FirebaseAuth.getInstance()
-                                                .getCurrentUser().getUid();
+                                        String id = Objects.requireNonNull(FirebaseAuth.getInstance()
+                                                .getCurrentUser()).getUid();
                                         Util.setCurrentPlayerId(id);
                                         if (!Util.findFriendsShown(id)) {
                                             startActivity(new Intent(LoadingActivity.this,
@@ -122,7 +122,7 @@ public class LoadingActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                     }
                                 });
@@ -216,11 +216,9 @@ public class LoadingActivity extends AppCompatActivity {
      * Makes the status bar translucent.
      */
     private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     /**

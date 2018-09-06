@@ -217,6 +217,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mInfoScoreTxt;
     @BindView(R.id.board_rules_txt)
     TextView mRulesTxt;
+    @BindView(R.id.players_layout)
+    ViewGroup mPlayersLayout;
 
     // Usual variables
     private int mTotalScrollY;
@@ -408,7 +410,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "InflateParams"})
     private void initGameDetails(GameInvite.Game game) {
         if (game == null) return;
 
@@ -441,6 +443,21 @@ public class GameBoardActivity extends AppCompatActivity {
         mQ2ScoreTxt.setText("Q2: " + game.getQuarter2Price() + " points");
         mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
         mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
+
+        mPlayersLayout.removeAllViews();
+
+        View playerLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_player_avatar, null);
+        TextView playerName = playerLayout.findViewById(R.id.player_name);
+        playerName.setText(parseNameAbbr(game.getAuthor().getName()));
+        mPlayersLayout.addView(playerLayout);
+        for (Player player : game.getPlayers()) {
+            playerLayout = LayoutInflater.from(this)
+                    .inflate(R.layout.item_player_avatar, null);
+            playerName = playerLayout.findViewById(R.id.player_name);
+            playerName.setText(parseNameAbbr(player.getName()));
+            mPlayersLayout.addView(playerLayout);
+        }
 
         mPdfQ1Txt.setText(String.valueOf(game.getQuarter1Price()));
         mPdfQ2Txt.setText(String.valueOf(game.getQuarter2Price()));
@@ -642,6 +659,16 @@ public class GameBoardActivity extends AppCompatActivity {
         initPaidPlayers();
     }
 
+    private String parseNameAbbr(String name) {
+        String[] parts = name.split(" ");
+        StringBuilder abbr = new StringBuilder();
+        for (String part : parts) {
+            if (abbr.length() == 2) break;
+            abbr.append(part.substring(0, 1));
+        }
+        return abbr.toString();
+    }
+
     private void initPlayers() {
         mPlayers.clear();
         mAllPlayers.clear();
@@ -819,7 +846,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mGameInfoLayout.getVisibility() == View.VISIBLE){
+        if (mGameInfoLayout.getVisibility() == View.VISIBLE) {
             onGameInformationButtonClicked();
         } else {
             super.onBackPressed();
