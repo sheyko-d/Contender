@@ -89,7 +89,7 @@ public class Util {
     @SuppressLint("SimpleDateFormat")
     public static String formatDateTime(long time) {
         SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d @ h:mma");
-        return fmtOut.format(time).replace("AM", "am").replace("PM", "pm");
+        return fmtOut.format(time).replace("AM", "a").replace("PM", "p");
     }
 
     /**

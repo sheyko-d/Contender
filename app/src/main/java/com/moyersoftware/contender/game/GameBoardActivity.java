@@ -476,10 +476,10 @@ public class GameBoardActivity extends AppCompatActivity {
 
         mPlayersLayout.removeAllViews();
 
-        if (!game.getQuarter1Winner().getPlayer().getName().equals("Nobody")
-                && !game.getQuarter2Winner().getPlayer().getName().equals("Nobody")
-                && !game.getQuarter3Winner().getPlayer().getName().equals("Nobody")
-                && !game.getFinalWinner().getPlayer().getName().equals("Nobody")) {
+        if (game.getQuarter1Winner() != null
+                && game.getQuarter2Winner() != null
+                && game.getQuarter3Winner() != null
+                && game.getFinalWinner() != null) {
             mScoreQ1Title.setText(parseNameAbbr(game.getQuarter1Winner().getPlayer().getName()));
             mScoreQ1Desc.setText(game.getQuarter1Price() + " pts");
             mScoreQ2Title.setText(parseNameAbbr(game.getQuarter2Winner().getPlayer().getName()));
@@ -1399,7 +1399,7 @@ public class GameBoardActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         if (v.getId() == R.id.menuBtn) {
             MenuInflater inflater = getMenuInflater();
-            inflater.inflate(mGameLive ? R.menu.menu_game_open : R.menu.menu_game, menu);
+            inflater.inflate(mGameLive ? R.menu.menu_game : R.menu.menu_game_open, menu);
 
             if (menu.findItem(R.id.invite_friends) != null) {
                 menu.findItem(R.id.invite_friends).setVisible(mIsHost);
@@ -1422,7 +1422,8 @@ public class GameBoardActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.create_pdf) {
             onPdfButtonClicked(null);
-        } else if (item.getItemId() == R.id.add_players) {
+        } else if (item.getItemId() == R.id.add_players
+                || item.getItemId() == R.id.player_details) {
             onManualAddButtonClicked(null);
         } else if (item.getItemId() == R.id.invite_friends
                 || item.getItemId() == R.id.list_players) {

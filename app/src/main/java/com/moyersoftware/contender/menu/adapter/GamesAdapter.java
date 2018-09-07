@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.menu.GamesFragment;
 import com.moyersoftware.contender.menu.MainActivity;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
+    private ArrayList<Event> mEvents;
     private MainActivity mActivity;
     private GamesFragment mFragment;
     private ArrayList<GameInvite.Game> mGames;
@@ -92,31 +94,9 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
             holder.scoreTxt.setText("Current");
         } else {
             holder.scoreTxt.setText(mFragment.getResources().getString(R.string.games_score,
+                    game.getSelectedSquares() != null ? game.getSelectedSquares().size() : 0,
                     game.getSelectedSquares() != null ? game.getSelectedSquares().size() : 0));
         }
-        if (mMyId != null) {
-            int totalWinnings = 0;
-            if (game.getQuarter1Winner() != null && game.getQuarter1Winner().getPlayer().getUserId()
-                    .equals(mMyId)) {
-                totalWinnings += game.getQuarter1Price();
-            }
-            if (game.getQuarter2Winner() != null && game.getQuarter2Winner().getPlayer().getUserId()
-                    .equals(mMyId)) {
-                totalWinnings += game.getQuarter2Price();
-            }
-            if (game.getQuarter3Winner() != null && game.getQuarter3Winner().getPlayer().getUserId()
-                    .equals(mMyId)) {
-                totalWinnings += game.getQuarter3Price();
-            }
-            if (game.getFinalWinner() != null && game.getFinalWinner().getPlayer().getUserId()
-                    .equals(mMyId)) {
-                totalWinnings += game.getFinalPrice();
-            }
-            holder.winningsTxt.setVisibility(totalWinnings > 0 ? View.VISIBLE : View.GONE);
-            holder.winningsTxt.setText(totalWinnings + " points");
-        }
-
-        holder.quarterTxt.setText(game.getCurrentQuarter() != null ? game.getCurrentQuarter() : "");
 
         try {
             Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
@@ -133,11 +113,17 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.scoreTxt.setVisibility(invite ? View.GONE : View.VISIBLE);
         holder.layout.setClickable(!invite);
         holder.itemView.setClickable(!invite);
+        holder.teamsTxt.setText(mEvents.get(position).getTeamHome().getAbbrev() + " @ "
+                + mEvents.get(position).getTeamAway().getAbbrev());
     }
 
     @Override
     public int getItemCount() {
         return mGames.size();
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        mEvents = events;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
@@ -151,10 +137,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView timeTxt;
         @BindView(R.id.game_score_txt)
         TextView scoreTxt;
-        @BindView(R.id.game_quarter_txt)
-        TextView quarterTxt;
-        @BindView(R.id.game_winnings_txt)
-        TextView winningsTxt;
         @BindView(R.id.game_final_layout)
         View finalLayout;
         @BindView(R.id.game_final_txt)
@@ -165,6 +147,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         View reject;
         @BindView(R.id.game_layout)
         View layout;
+        @BindView(R.id.game_teams_txt)
+        TextView teamsTxt;
 
         public ViewHolder(View itemView) {
             super(itemView);

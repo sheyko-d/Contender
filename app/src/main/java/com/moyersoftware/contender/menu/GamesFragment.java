@@ -150,6 +150,7 @@ public class GamesFragment extends Fragment {
                         mEventTimes.put(event.getId(), event.getTime());
                     }
                 }
+                mAdapter.setEvents(events);
 
                 getGames(mDatabase, mFirebaseUser);
             }

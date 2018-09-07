@@ -25,7 +25,7 @@
     <string name="games_title_empty">No games found</string>
     <string name="games_host">Host a Game</string>
     <string name="games_join">Join a Game</string>
-    <string name="games_score">%1$d/100</string>
+    <string name="games_score">%1$d squares - %2$d/100</string>
 
     <!-- Settings screen -->
     <string name="settings_title">Settings</string>
@@ -98,7 +98,7 @@
     <!-- Home screen -->
     <string name="app_title1">FOOTBALL SQUARES</string>
     <string name="app_title2">CONTENDER</string>
-    <string name="player_details">Player Details</string>
+    <string name="player_details">Select a Player</string>
     <string name="list_of_players">List of Players</string>
     <string name="create_pdf">Create PDF</string>
     <string name="game_information">Game Information</string>
