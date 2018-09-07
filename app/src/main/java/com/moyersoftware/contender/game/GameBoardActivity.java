@@ -1407,6 +1407,9 @@ public class GameBoardActivity extends AppCompatActivity {
             if (menu.findItem(R.id.paid_players) != null) {
                 menu.findItem(R.id.paid_players).setVisible(mIsHost);
             }
+            if (menu.findItem(R.id.invite_friends) != null) {
+                menu.findItem(R.id.invite_friends).setVisible(!mGameLive);
+            }
 
             menu.findItem(R.id.game_information).setTitle(mGameInfoLayout.getVisibility()
                     == View.GONE ? "Game Information" : "Close Game Information");
