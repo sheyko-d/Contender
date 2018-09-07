@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.menu.GamesFragment;
 import com.moyersoftware.contender.menu.MainActivity;
 import com.moyersoftware.contender.util.Util;
@@ -90,11 +91,23 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         } catch (Exception e) {
             Util.Log("Can't display game: " + e);
         }
-        if (game.isCurrent()) {
+
+        boolean invite = !TextUtils.isEmpty(game.getInviteName());
+        if (invite) {
+            holder.scoreTxt.setText(game.getSquarePrice() + " pts / square");
+        } else if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
         } else {
+            int mySquaresCount = 0;
+            if (game.getSelectedSquares() != null) {
+                for (SelectedSquare selectedSquare : game.getSelectedSquares()) {
+                    if (selectedSquare.authorId.equals(mMyId)) {
+                        mySquaresCount++;
+                    }
+                }
+            }
             holder.scoreTxt.setText(mFragment.getResources().getString(R.string.games_score,
-                    game.getSelectedSquares() != null ? game.getSelectedSquares().size() : 0,
+                    mySquaresCount,
                     game.getSelectedSquares() != null ? game.getSelectedSquares().size() : 0));
         }
 
@@ -107,14 +120,15 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                     .into(holder.img);
         }
 
-        boolean invite = !TextUtils.isEmpty(game.getInviteName());
         holder.accept.setVisibility(invite ? View.VISIBLE : View.GONE);
         holder.reject.setVisibility(invite ? View.VISIBLE : View.GONE);
-        holder.scoreTxt.setVisibility(invite ? View.GONE : View.VISIBLE);
+        holder.mDetailsLayout.setVisibility(invite ? View.GONE : View.VISIBLE);
         holder.layout.setClickable(!invite);
         holder.itemView.setClickable(!invite);
-        holder.teamsTxt.setText(mEvents.get(position).getTeamHome().getAbbrev() + " @ "
-                + mEvents.get(position).getTeamAway().getAbbrev());
+        if (mEvents != null) {
+            holder.teamsTxt.setText(mEvents.get(position).getTeamHome().getAbbrev() + " @ "
+                    + mEvents.get(position).getTeamAway().getAbbrev());
+        }
     }
 
     @Override
@@ -149,6 +163,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         View layout;
         @BindView(R.id.game_teams_txt)
         TextView teamsTxt;
+        @BindView(R.id.game_details_layout)
+        View mDetailsLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

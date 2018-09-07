@@ -135,17 +135,23 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mDataSnapshot = dataSnapshot;
+                final ArrayList<Friendship> mFriendships = new ArrayList<>();
+                for (DataSnapshot friendshipSnapshot : mDataSnapshot.getChildren()) {
+                    Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
+                    mFriendships.add(friendship);
+                }
 
                 mFoundFriends.clear();
                 if (!TextUtils.isEmpty(username)) {
                     mDatabase.child("users").addListenerForSingleValueEvent
                             (new ValueEventListener() {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                public void onDataChange(DataSnapshot dataSnapshotUsers) {
                                     mFoundFriends.clear();
-                                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+
+                                    for (final DataSnapshot userSnapshot : dataSnapshotUsers.getChildren()) {
                                         try {
-                                            User user = userSnapshot.getValue(User.class);
+                                            final User user = userSnapshot.getValue(User.class);
                                             if (user.getName().toLowerCase(Locale.US).contains
                                                     (username.toLowerCase(Locale.US))
                                                     || Util.parseUsername(user.getEmail())
@@ -154,24 +160,29 @@ public class FriendsFragment extends Fragment {
                                                     || Util.parseUsername(user.getName())
                                                     .toLowerCase(Locale.US).contains(username
                                                             .toLowerCase(Locale.US))) {
-                                                boolean alreadyFriends = false;
-                                                for (DataSnapshot friendshipSnapshot : mDataSnapshot.getChildren()) {
-                                                    Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
-                                                    if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
-                                                            .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
-                                                            && friendship.getUser1Id().equals(user.getId()))) {
-                                                        alreadyFriends = true;
-                                                    }
-                                                }
+                                                final boolean[] alreadyFriends = {false};
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        for (Friendship friendship : mFriendships) {
+                                                            if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
+                                                                    .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
+                                                                    && friendship.getUser1Id().equals(user.getId()))) {
+                                                                alreadyFriends[0] = true;
+                                                            }
+                                                        }
 
-                                                if (!alreadyFriends) {
-                                                    Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
-                                                            Util.parseUsername(user), user.getImage(), user.getEmail(), false);
-                                                    if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
-                                                        mFoundFriends.add(friend);
-                                                        mAdapter.notifyDataSetChanged();
+                                                        if (!alreadyFriends[0]) {
+                                                            Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
+                                                                    Util.parseUsername(user), user.getImage(), user.getEmail(), false);
+                                                            if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
+                                                                mFoundFriends.add(friend);
+                                                                mAdapter.notifyDataSetChanged();
+                                                            }
+                                                        }
+
                                                     }
-                                                }
+                                                });
                                             }
                                         } catch (Exception e) {
                                         }
