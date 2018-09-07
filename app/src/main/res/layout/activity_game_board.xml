@@ -514,7 +514,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/board"
@@ -827,7 +827,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="match_parent"
