@@ -21,7 +21,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -44,7 +45,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -219,6 +219,28 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mRulesTxt;
     @BindView(R.id.players_layout)
     ViewGroup mPlayersLayout;
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
+    @BindView(R.id.scoresPager)
+    ViewPager mScoresPager;
+    @BindView(R.id.score_q1_title)
+    TextView mScoreQ1Title;
+    @BindView(R.id.score_q1_desc)
+    TextView mScoreQ1Desc;
+    @BindView(R.id.score_q2_title)
+    TextView mScoreQ2Title;
+    @BindView(R.id.score_q2_desc)
+    TextView mScoreQ2Desc;
+    @BindView(R.id.score_q3_title)
+    TextView mScoreQ3Title;
+    @BindView(R.id.score_q3_desc)
+    TextView mScoreQ3Desc;
+    @BindView(R.id.score_final_title)
+    TextView mScoreFinalTitle;
+    @BindView(R.id.score_final_desc)
+    TextView mScoreFinalDesc;
+    @BindView(R.id.scores_layout)
+    View mScoresLayout;
 
     // Usual variables
     private int mTotalScrollY;
@@ -286,6 +308,14 @@ public class GameBoardActivity extends AppCompatActivity {
         loadFriends();
         initBoardLayout();
         registerRealTimeListener();
+        initScoresPager();
+    }
+
+    private void initScoresPager() {
+        ScoresPagerAdapter myPagerAdapter = new ScoresPagerAdapter();
+        mScoresPager.setOffscreenPageLimit(4);
+        mScoresPager.setAdapter(myPagerAdapter);
+        mTabLayout.setupWithViewPager(mScoresPager);
     }
 
     private void registerRealTimeListener() {
@@ -445,6 +475,22 @@ public class GameBoardActivity extends AppCompatActivity {
         mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
 
         mPlayersLayout.removeAllViews();
+
+        if (!game.getQuarter1Winner().getPlayer().getName().equals("Nobody")
+                && !game.getQuarter2Winner().getPlayer().getName().equals("Nobody")
+                && !game.getQuarter3Winner().getPlayer().getName().equals("Nobody")
+                && !game.getFinalWinner().getPlayer().getName().equals("Nobody")) {
+            mScoreQ1Title.setText(parseNameAbbr(game.getQuarter1Winner().getPlayer().getName()));
+            mScoreQ1Desc.setText(game.getQuarter1Price() + " pts");
+            mScoreQ2Title.setText(parseNameAbbr(game.getQuarter2Winner().getPlayer().getName()));
+            mScoreQ2Desc.setText(game.getQuarter2Price() + " pts");
+            mScoreQ3Title.setText(parseNameAbbr(game.getQuarter3Winner().getPlayer().getName()));
+            mScoreQ3Desc.setText(game.getQuarter3Price() + " pts");
+            mScoreFinalTitle.setText(parseNameAbbr(game.getFinalWinner().getPlayer().getName()));
+            mScoreFinalDesc.setText(game.getFinalPrice() + " pts");
+        } else {
+            mScoresLayout.setVisibility(View.GONE);
+        }
 
         View playerLayout = LayoutInflater.from(this)
                 .inflate(R.layout.item_player_avatar, null);
@@ -1550,8 +1596,63 @@ public class GameBoardActivity extends AppCompatActivity {
         }
 
         @Override
+        public void destroyItem(View arg0, int arg1, Object arg2) {
+        }
+
+        @Override
         public int getCount() {
             return 2;
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            return arg0 == ((View) arg1);
+        }
+    }
+
+    class ScoresPagerAdapter extends PagerAdapter {
+
+        public Object instantiateItem(ViewGroup collection, int position) {
+
+            int resId = 0;
+            switch (position) {
+                case 0:
+                    resId = R.id.page_scores_q1;
+                    break;
+                case 1:
+                    resId = R.id.page_scores_q2;
+                    break;
+                case 2:
+                    resId = R.id.page_scores_q3;
+                    break;
+                case 3:
+                    resId = R.id.page_scores_final;
+                    break;
+            }
+            return findViewById(resId);
+        }
+
+        @Override
+        public void destroyItem(View arg0, int arg1, Object arg2) {
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                return "Q1";
+            } else if (position == 1) {
+                return "Q2";
+            } else if (position == 2) {
+                return "Q3";
+            } else {
+                return "FINAL";
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
         }
 
         @Override
