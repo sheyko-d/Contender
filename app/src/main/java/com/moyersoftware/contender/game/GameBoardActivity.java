@@ -449,12 +449,26 @@ public class GameBoardActivity extends AppCompatActivity {
         View playerLayout = LayoutInflater.from(this)
                 .inflate(R.layout.item_player_avatar, null);
         TextView playerName = playerLayout.findViewById(R.id.player_name);
+        ImageView playerImage = playerLayout.findViewById(R.id.player_photo);
+        if (TextUtils.isEmpty(game.getAuthor().getPhoto())) {
+            playerImage.setVisibility(View.GONE);
+        } else {
+            playerImage.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(game.getAuthor().getPhoto()).into(playerImage);
+        }
         playerName.setText(parseNameAbbr(game.getAuthor().getName()));
         mPlayersLayout.addView(playerLayout);
         for (Player player : game.getPlayers()) {
             playerLayout = LayoutInflater.from(this)
                     .inflate(R.layout.item_player_avatar, null);
             playerName = playerLayout.findViewById(R.id.player_name);
+            playerImage = playerLayout.findViewById(R.id.player_photo);
+            if (TextUtils.isEmpty(player.getPhoto())) {
+                playerImage.setVisibility(View.GONE);
+            } else {
+                playerImage.setVisibility(View.VISIBLE);
+                Picasso.with(this).load(player.getPhoto()).into(playerImage);
+            }
             playerName.setText(parseNameAbbr(player.getName()));
             mPlayersLayout.addView(playerLayout);
         }
@@ -650,7 +664,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 ? "No additional rules" : game.getRules())));
 
         mRulesTxt.setText(TextUtils.isEmpty(game.getRules()) ? getString(R.string.rules_default)
-                : game.getRules());
+                : getString(R.string.rules_default) + "\n\n" + game.getRules());
 
         mBoardAdapter.setCustom(mGame.isCustom());
         mBoardAdapter.notifyDataSetChanged();

@@ -6,14 +6,26 @@
     android:paddingEnd="3dp"
     android:paddingStart="3dp">
 
-    <TextView
-        android:id="@+id/player_name"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/player_bg"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        tools:text="RM" />
+        tools:ignore="UselessParent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/player_photo"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:foreground="@drawable/player_shade_bg" />
+
+        <TextView
+            android:id="@+id/player_name"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="RM" />
+    </FrameLayout>
 </FrameLayout>
