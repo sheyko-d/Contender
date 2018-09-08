@@ -85,7 +85,6 @@ import com.moyersoftware.contender.util.CustomLinearLayout;
 import com.moyersoftware.contender.util.StandardGestures;
 import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
-import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -117,12 +116,6 @@ public class GameBoardActivity extends AppCompatActivity {
     RecyclerView mColumnRecycler;
     @BindView(R.id.board_horizontal_scroll_view)
     HorizontalScrollView mHorizontalScrollView;
-    @BindView(R.id.board_bottom_sheet)
-    View mBottomSheet;
-    @BindView(R.id.board_info_home_img)
-    ImageView mTeam1Img;
-    @BindView(R.id.board_info_away_img)
-    ImageView mTeam2Img;
     @BindView(R.id.board_title_txt)
     TextView mTitleTxt;
     @BindView(R.id.board_layout)
@@ -139,32 +132,10 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mInfoHomeTotalScoreTxt;
     @BindView(R.id.board_info_away_total_score_txt)
     TextView mInfoAwayTotalScoreTxt;
-    @BindView(R.id.board_info_q1_score_txt)
-    TextView mQ1ScoreTxt;
-    @BindView(R.id.board_info_q2_score_txt)
-    TextView mQ2ScoreTxt;
-    @BindView(R.id.board_info_q3_score_txt)
-    TextView mQ3ScoreTxt;
-    @BindView(R.id.board_info_final_score_txt)
-    TextView mFinalScoreTxt;
     @BindView(R.id.board_info_time_txt)
     TextView mTimeTxt;
     @BindView(R.id.board_progress_txt)
     View mProgressBar;
-    @BindView(R.id.board_info_q1_winner_img)
-    ImageView mWinner1Img;
-    @BindView(R.id.board_info_q2_winner_img)
-    ImageView mWinner2Img;
-    @BindView(R.id.board_info_q3_winner_img)
-    ImageView mWinner3Img;
-    @BindView(R.id.board_info_final_winner_img)
-    ImageView mWinnerFinalImg;
-    @BindView(R.id.board_info_squares_txt)
-    TextView mSquaresTxt;
-    @BindView(R.id.page_indicator)
-    CirclePageIndicator mPageIndicator;
-    @BindView(R.id.board_details_txt)
-    TextView mDetailsTxt;
     @BindView(R.id.contender_logo)
     View mContenderLogo;
     @BindView(R.id.board)
@@ -468,12 +439,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mColumnNumbers.addAll(game.getColumnNumbers());
         mColumnAdapter.notifyDataSetChanged();
 
-        // Update prices
-        mQ1ScoreTxt.setText("Q1: " + game.getQuarter1Price() + " points");
-        mQ2ScoreTxt.setText("Q2: " + game.getQuarter2Price() + " points");
-        mQ3ScoreTxt.setText("Q3: " + game.getQuarter3Price() + " points");
-        mFinalScoreTxt.setText("FINAL: " + game.getFinalPrice() + " points");
-
         mPlayersLayout.removeAllViews();
 
         if (game.getQuarter1Winner() != null
@@ -529,8 +494,8 @@ public class GameBoardActivity extends AppCompatActivity {
         mInfoScoreTxt.setText(NumberFormat.getNumberInstance(Locale.US)
                 .format(game.getTotalPrice()) + " pts total");
 
-        // Update winners
-        mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
+        // TODO: Update winners
+        /*mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
         if (game.getQuarter1Winner() != null) {
             Picasso.with(this).load(game.getQuarter1Winner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinner1Img);
@@ -552,7 +517,7 @@ public class GameBoardActivity extends AppCompatActivity {
         if (game.getFinalWinner() != null) {
             Picasso.with(this).load(game.getFinalWinner().getPlayer().getPhoto()).fit()
                     .placeholder(R.drawable.avatar_placeholder).into(mWinnerFinalImg);
-        }
+        }*/
 
         // Get players
         mPlayerEmails.clear();
@@ -590,7 +555,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 }
             }
         }
-        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
         mBoardAdapter.refresh(mSelectedSquares);
 
         mBoardAdapter.setRowNumbers(mRowNumbers);
@@ -677,11 +641,6 @@ public class GameBoardActivity extends AppCompatActivity {
                     mQuarterHomeTxt.setText(event.getTeamAway().getAbbrev());
                     mQuarterAwayTxt.setText(event.getTeamHome().getAbbrev());
 
-                    Picasso.with(GameBoardActivity.this).load(event.getTeamHome()
-                            .getImage()).into(mTeam1Img);
-                    Picasso.with(GameBoardActivity.this).load(event.getTeamAway()
-                            .getImage()).into(mTeam2Img);
-
                     if (event.getTeamAway().getScore() != null && !TextUtils.isEmpty
                             (event.getTeamAway().getScore().getTotal()) && !TextUtils
                             .isEmpty(event.getTeamHome().getScore().getTotal())) {
@@ -704,10 +663,6 @@ public class GameBoardActivity extends AppCompatActivity {
             public void onFailure(retrofit2.Call<Event> call, Throwable t) {
             }
         });
-
-        mDetailsTxt.setText(Html.fromHtml("Name: " + mGameName + "<br>ID: "
-                + mGameId + "<br>Rules: " + (TextUtils.isEmpty(game.getRules())
-                ? "No additional rules" : game.getRules())));
 
         mRulesTxt.setText(TextUtils.isEmpty(game.getRules()) ? getString(R.string.rules_default)
                 : getString(R.string.rules_default) + "\n\n" + game.getRules());
@@ -888,8 +843,6 @@ public class GameBoardActivity extends AppCompatActivity {
         WizardPagerAdapter adapter = new WizardPagerAdapter();
         pager = findViewById(R.id.pager);
         pager.setAdapter(adapter);
-
-        mPageIndicator.setViewPager(pager);
     }
 
     /**
@@ -1174,7 +1127,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
     }
 
     public void onManualAddButtonClicked(View view) {
@@ -1213,8 +1165,6 @@ public class GameBoardActivity extends AppCompatActivity {
                             mySelectedSquares++;
                         }
                     }
-                    mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
-
                     editTxt.setText("");
 
                     initGameDetails(mGame);
@@ -1251,7 +1201,6 @@ public class GameBoardActivity extends AppCompatActivity {
                 mySelectedSquares++;
             }
         }
-        mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
     }
 
     public void onInviteFriendsButtonClicked(View view) {
@@ -1452,7 +1401,6 @@ public class GameBoardActivity extends AppCompatActivity {
                     mySelectedSquares++;
                 }
             }
-            mSquaresTxt.setText("◻ " + mySelectedSquares + " selected");
 
             uploadSquares();
         }
