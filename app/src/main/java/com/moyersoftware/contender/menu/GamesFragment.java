@@ -186,14 +186,11 @@ public class GamesFragment extends Fragment {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<GameInvite.Game>> call,
                                    retrofit2.Response<ArrayList<GameInvite.Game>> response) {
-                Util.Log("Update games home screen");
-
                 if (!response.isSuccessful()) return;
 
                 // Update the games list
                 mGames.clear();
                 for (final GameInvite.Game game : response.body()) {
-                    Util.Log("Find game = " + game.getId());
                     try {
                         if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
@@ -201,11 +198,9 @@ public class GamesFragment extends Fragment {
                                         firebaseUser.getEmail(),
                                         Util.getDisplayName(), Util.getPhoto()))))) {
 
-                            Util.Log("game " + game.getName() + ", " + game.getId());
                             game.setEventTime(mEventTimes.get(game.getEventId()));
                             if (!mGames.contains(game)) {
                                 mGames.add(game);
-                                Util.Log("game add: " + game.getEventId());
                             }
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                                     && game.getSelectedSquares().size() < 100))
@@ -255,8 +250,6 @@ public class GamesFragment extends Fragment {
                                     for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
                                         try {
                                             GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                            Util.Log("add game = " + gameInvite.getGame().getEventTime());
-                                            Util.Log(gameInvite.getName() + " invited you");
                                             if (gameInvite.getGame() != null) {
                                                 GameInvite.Game game = gameInvite.getGame();
                                                 if (mEventTimes.get(game.getEventId()) > 0) {
@@ -306,7 +299,11 @@ public class GamesFragment extends Fragment {
 
     public class GameComparator implements Comparator<GameInvite.Game> {
         public int compare(GameInvite.Game game1, GameInvite.Game game2) {
-            return game1.getEventTime().compareTo(game2.getEventTime());
+            int c;
+            c = game2.getInviteIdCompare().compareTo(game1.getInviteIdCompare());
+            if (c == 0)
+                c = game2.getEventTime().compareTo(game1.getEventTime());
+            return c;
         }
     }
 

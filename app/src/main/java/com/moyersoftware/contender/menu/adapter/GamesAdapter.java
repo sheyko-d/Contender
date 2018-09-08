@@ -32,6 +32,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     private GamesFragment mFragment;
     private ArrayList<GameInvite.Game> mGames;
     private String mMyId;
+    private Integer mFirstInvitePos;
 
     public GamesAdapter(MainActivity activity, GamesFragment fragment,
                         ArrayList<GameInvite.Game> games, String myId) {
@@ -95,9 +96,16 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         boolean invite = !TextUtils.isEmpty(game.getInviteName());
         if (invite) {
             holder.scoreTxt.setText(game.getSquarePrice() + " pts / square");
+            holder.mInviteTxt.setText(game.getInviteName() + " has invited you");
+            if (mFirstInvitePos == null || position == mFirstInvitePos) {
+                holder.itemView.setPadding(0, 24, 0, 0);
+                mFirstInvitePos = position;
+            }
         } else if (game.isCurrent()) {
             holder.scoreTxt.setText("Current");
+            holder.itemView.setPadding(0, 0, 0, 0);
         } else {
+            holder.itemView.setPadding(0, 0, 0, 0);
             int mySquaresCount = 0;
             if (game.getSelectedSquares() != null) {
                 for (SelectedSquare selectedSquare : game.getSelectedSquares()) {
@@ -122,9 +130,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         holder.accept.setVisibility(invite ? View.VISIBLE : View.GONE);
         holder.reject.setVisibility(invite ? View.VISIBLE : View.GONE);
+        holder.inviteLayout.setVisibility(invite ? View.VISIBLE : View.GONE);
         holder.mDetailsLayout.setVisibility(invite ? View.GONE : View.VISIBLE);
         holder.layout.setClickable(!invite);
         holder.itemView.setClickable(!invite);
+
         if (mEvents != null) {
             holder.teamsTxt.setText(mEvents.get(position).getTeamHome().getAbbrev() + " @ "
                     + mEvents.get(position).getTeamAway().getAbbrev());
@@ -165,12 +175,16 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView teamsTxt;
         @BindView(R.id.game_details_layout)
         View mDetailsLayout;
+        @BindView(R.id.invite_layout)
+        View inviteLayout;
+        @BindView(R.id.game_invite_txt)
+        TextView mInviteTxt;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(this);
+            layout.setOnClickListener(this);
             try {
                 itemView.setClickable(!TextUtils.isEmpty(mGames.get(getAdapterPosition())
                         .getInviteName()));

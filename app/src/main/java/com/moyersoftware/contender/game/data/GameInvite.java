@@ -284,6 +284,10 @@ public class GameInvite {
         public void setPaidPlayers(ArrayList<PaidPlayer> paidPlayers) {
             this.paidPlayers = paidPlayers;
         }
+
+        public String getInviteIdCompare() {
+            return inviteId == null ? "0" : inviteId;
+        }
     }
 }
 
