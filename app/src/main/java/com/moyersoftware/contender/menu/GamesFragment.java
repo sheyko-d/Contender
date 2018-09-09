@@ -142,6 +142,7 @@ public class GamesFragment extends Fragment {
                 if (!response.isSuccessful()) return;
 
                 mEventTimes.clear();
+                HashMap<String, Event> eventsMap = new HashMap<>();
                 ArrayList<Event> events = response.body();
                 for (Event event : events) {
                     if (event.getTime() > 0) {
@@ -149,8 +150,9 @@ public class GamesFragment extends Fragment {
                     } else {
                         mEventTimes.put(event.getId(), event.getTime());
                     }
+                    eventsMap.put(event.getId(), event);
                 }
-                mAdapter.setEvents(events);
+                mAdapter.setEvents(eventsMap);
 
                 getGames(mDatabase, mFirebaseUser);
             }
@@ -189,6 +191,7 @@ public class GamesFragment extends Fragment {
                 if (!response.isSuccessful()) return;
 
                 // Update the games list
+                mAdapter.resetInvitePos();
                 mGames.clear();
                 for (final GameInvite.Game game : response.body()) {
                     try {

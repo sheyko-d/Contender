@@ -494,31 +494,6 @@ public class GameBoardActivity extends AppCompatActivity {
         mInfoScoreTxt.setText(NumberFormat.getNumberInstance(Locale.US)
                 .format(game.getTotalPrice()) + " pts total");
 
-        // TODO: Update winners
-        /*mWinner1Img.setVisibility(game.getQuarter1Winner() == null ? View.GONE : View.VISIBLE);
-        if (game.getQuarter1Winner() != null) {
-            Picasso.with(this).load(game.getQuarter1Winner().getPlayer().getPhoto()).fit()
-                    .placeholder(R.drawable.avatar_placeholder).into(mWinner1Img);
-
-        }
-        mWinner2Img.setVisibility(game.getQuarter2Winner() == null ? View.GONE : View.VISIBLE);
-        if (game.getQuarter2Winner() != null) {
-            Picasso.with(this).load(game.getQuarter2Winner().getPlayer().getPhoto()).fit()
-                    .placeholder(R.drawable.avatar_placeholder).into(mWinner2Img);
-        }
-        mWinner3Img.setVisibility(game.getQuarter3Winner() == null ? View.GONE : View.VISIBLE);
-        if (game.getQuarter3Winner() != null) {
-            Picasso.with(this).load(game.getQuarter3Winner().getPlayer().getPhoto()).fit()
-                    .placeholder(R.drawable.avatar_placeholder).into(mWinner3Img);
-
-        }
-        mWinnerFinalImg.setVisibility(game.getFinalWinner() == null ? View.GONE
-                : View.VISIBLE);
-        if (game.getFinalWinner() != null) {
-            Picasso.with(this).load(game.getFinalWinner().getPlayer().getPhoto()).fit()
-                    .placeholder(R.drawable.avatar_placeholder).into(mWinnerFinalImg);
-        }*/
-
         // Get players
         mPlayerEmails.clear();
         mPlayerEmails.add(game.getAuthor().getEmail());

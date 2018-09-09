@@ -21,13 +21,14 @@ import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
-    private ArrayList<Event> mEvents;
+    private HashMap<String, Event> mEvents;
     private MainActivity mActivity;
     private GamesFragment mFragment;
     private ArrayList<GameInvite.Game> mGames;
@@ -136,9 +137,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.itemView.setClickable(!invite);
 
         if (mEvents != null) {
-            holder.teamsTxt.setText(mEvents.get(position).getTeamHome().getAbbrev() + " @ "
-                    + mEvents.get(position).getTeamAway().getAbbrev());
+            holder.teamsTxt.setText(mEvents.get(game.getEventId()).getTeamAway().getAbbrev() + " @ "
+                    + mEvents.get(game.getEventId()).getTeamHome().getAbbrev());
         }
+    }
+
+    public void resetInvitePos() {
+        mFirstInvitePos = null;
     }
 
     @Override
@@ -146,7 +151,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         return mGames.size();
     }
 
-    public void setEvents(ArrayList<Event> events) {
+    public void setEvents(HashMap<String, Event> events) {
         mEvents = events;
     }
 
