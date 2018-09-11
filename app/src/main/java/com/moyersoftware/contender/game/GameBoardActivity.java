@@ -212,6 +212,16 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mScoreFinalDesc;
     @BindView(R.id.scores_layout)
     View mScoresLayout;
+    @BindView(R.id.board_home_q1_title_txt)
+    TextView mHomeQ1TitleTxt;
+    @BindView(R.id.board_home_q2_title_txt)
+    TextView mHomeQ2TitleTxt;
+    @BindView(R.id.board_home_q3_title_txt)
+    TextView mHomeQ3TitleTxt;
+    @BindView(R.id.board_home_q4_title_txt)
+    TextView mHomeQ4TitleTxt;
+    @BindView(R.id.board_home_final_title_txt)
+    TextView mHomeFinalTitleTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -573,6 +583,22 @@ public class GameBoardActivity extends AppCompatActivity {
                     mAwayQ3ScoreTxt.setText(event.getTeamAway().getScore().getQ3());
                     mAwayQ4ScoreTxt.setText(event.getTeamAway().getScore().getQ4());
                     mAwayFinalScoreTxt.setText(event.getTeamAway().getScore().getTotal());
+
+                    mHomeQ1TitleTxt.setTextColor(ContextCompat.getColor
+                            (GameBoardActivity.this, event.getTimeText().contains("Q1")
+                                    ? R.color.color_green : android.R.color.white));
+                    mHomeQ2TitleTxt.setTextColor(ContextCompat.getColor
+                            (GameBoardActivity.this, event.getTimeText().contains("Q2")
+                                    ? R.color.color_green : android.R.color.white));
+                    mHomeQ3TitleTxt.setTextColor(ContextCompat.getColor
+                            (GameBoardActivity.this, event.getTimeText().contains("Q3")
+                                    ? R.color.color_green : android.R.color.white));
+                    mHomeQ4TitleTxt.setTextColor(ContextCompat.getColor
+                            (GameBoardActivity.this, event.getTimeText().contains("Q4")
+                                    ? R.color.color_green : android.R.color.white));
+                    mHomeFinalTitleTxt.setTextColor(ContextCompat.getColor
+                            (GameBoardActivity.this, event.getTimeText().contains("Final")
+                                    ? R.color.color_green : android.R.color.white));
 
                     try {
                         if (!TextUtils.isEmpty(event.getTeamAway().getScore().getTotal())) {
