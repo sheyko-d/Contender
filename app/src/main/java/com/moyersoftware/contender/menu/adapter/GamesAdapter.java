@@ -196,7 +196,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
             } catch (Exception e) {
                 // Can't set item clickable
             }
-            itemView.setOnLongClickListener(this);
+            layout.setOnLongClickListener(this);
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
