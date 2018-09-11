@@ -452,17 +452,24 @@ public class GameBoardActivity extends AppCompatActivity {
         mPlayersLayout.removeAllViews();
 
         if (game.getQuarter1Winner() != null
-                && game.getQuarter2Winner() != null
-                && game.getQuarter3Winner() != null
-                && game.getFinalWinner() != null) {
+                || game.getQuarter2Winner() != null
+                || game.getQuarter3Winner() != null
+                || game.getFinalWinner() != null) {
+            mScoresLayout.setVisibility(View.VISIBLE);
             mScoreQ1Title.setText(parseNameAbbr(game.getQuarter1Winner().getPlayer().getName()));
             mScoreQ1Desc.setText(game.getQuarter1Price() + " pts");
-            mScoreQ2Title.setText(parseNameAbbr(game.getQuarter2Winner().getPlayer().getName()));
-            mScoreQ2Desc.setText(game.getQuarter2Price() + " pts");
-            mScoreQ3Title.setText(parseNameAbbr(game.getQuarter3Winner().getPlayer().getName()));
-            mScoreQ3Desc.setText(game.getQuarter3Price() + " pts");
-            mScoreFinalTitle.setText(parseNameAbbr(game.getFinalWinner().getPlayer().getName()));
-            mScoreFinalDesc.setText(game.getFinalPrice() + " pts");
+            if (game.getQuarter2Winner() != null) {
+                mScoreQ2Title.setText(parseNameAbbr(game.getQuarter2Winner().getPlayer().getName()));
+                mScoreQ2Desc.setText(game.getQuarter2Price() + " pts");
+            }
+            if (game.getQuarter3Winner() != null) {
+                mScoreQ3Title.setText(parseNameAbbr(game.getQuarter3Winner().getPlayer().getName()));
+                mScoreQ3Desc.setText(game.getQuarter3Price() + " pts");
+            }
+            if (game.getFinalWinner() != null) {
+                mScoreFinalTitle.setText(parseNameAbbr(game.getFinalWinner().getPlayer().getName()));
+                mScoreFinalDesc.setText(game.getFinalPrice() + " pts");
+            }
         } else {
             mScoresLayout.setVisibility(View.GONE);
         }
