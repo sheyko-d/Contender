@@ -406,7 +406,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                             if (event != null) {
                                 if (event.isCustom()) continue;
 
-                                //if (event.getTime() > System.currentTimeMillis()) {
+                                if (event.getTime() > System.currentTimeMillis()) {
                                     if (mEvents.size() == 0 || !event.getWeek()
                                             .equals(previousEventWeek)) {
                                         mEvents.add(new Event(null, null, null, event.getTime(), null, event.getWeek(),
@@ -424,7 +424,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                     previousEventDate = Util.formatDate(event.getTime());
 
                                     mEvents.add(event);
-                                //}
+                                }
                             }
                         } catch (Exception e) {
                             // Can't add event
