@@ -893,7 +893,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/board_home_q1_score_txt"
+                        android:id="@+id/board_away_q1_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -905,7 +905,7 @@
                         tools:text="07" />
 
                     <TextView
-                        android:id="@+id/board_away_q1_score_txt"
+                        android:id="@+id/board_home_q1_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -936,7 +936,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/board_home_q2_score_txt"
+                        android:id="@+id/board_away_q2_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -948,7 +948,7 @@
                         tools:text="07" />
 
                     <TextView
-                        android:id="@+id/board_away_q2_score_txt"
+                        android:id="@+id/board_home_q2_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -979,7 +979,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/board_home_q3_score_txt"
+                        android:id="@+id/board_away_q3_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -991,7 +991,7 @@
                         tools:text="07" />
 
                     <TextView
-                        android:id="@+id/board_away_q3_score_txt"
+                        android:id="@+id/board_home_q3_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -1022,7 +1022,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/board_home_q4_score_txt"
+                        android:id="@+id/board_away_q4_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -1034,7 +1034,7 @@
                         tools:text="07" />
 
                     <TextView
-                        android:id="@+id/board_away_q4_score_txt"
+                        android:id="@+id/board_home_q4_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -1066,7 +1066,7 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/board_home_final_score_txt"
+                        android:id="@+id/board_away_final_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -1078,7 +1078,7 @@
                         tools:text="07" />
 
                     <TextView
-                        android:id="@+id/board_away_final_score_txt"
+                        android:id="@+id/board_home_final_score_txt"
                         fontPath="fonts/segoe_ui.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
