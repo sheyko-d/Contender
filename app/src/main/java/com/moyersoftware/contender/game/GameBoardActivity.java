@@ -683,13 +683,17 @@ public class GameBoardActivity extends AppCompatActivity {
     }
 
     private String parseNameAbbr(String name) {
-        String[] parts = name.split(" ");
-        StringBuilder abbr = new StringBuilder();
-        for (String part : parts) {
-            if (abbr.length() == 2) break;
-            abbr.append(part.substring(0, 1));
+        try {
+            String[] parts = name.split(" ");
+            StringBuilder abbr = new StringBuilder();
+            for (String part : parts) {
+                if (abbr.length() == 2) break;
+                abbr.append(part.substring(0, 1));
+            }
+            return abbr.toString();
+        } catch (Exception e) {
+            return name;
         }
-        return abbr.toString();
     }
 
     private void initPlayers() {
