@@ -692,7 +692,11 @@ public class GameBoardActivity extends AppCompatActivity {
             }
             return abbr.toString();
         } catch (Exception e) {
-            return name;
+            try {
+                return name.substring(0, 2).toLowerCase(Locale.US);
+            } catch (Exception e2) {
+                return name;
+            }
         }
     }
 
