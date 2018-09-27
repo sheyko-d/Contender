@@ -222,6 +222,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mHomeQ4TitleTxt;
     @BindView(R.id.board_home_final_title_txt)
     TextView mHomeFinalTitleTxt;
+    @BindView(R.id.board_info_game_id_txt)
+    TextView mGameIdTxt;
 
     // Usual variables
     private int mTotalScrollY;
@@ -429,6 +431,8 @@ public class GameBoardActivity extends AppCompatActivity {
             mIgnoreUpdate = false;
             return;
         }
+
+        mGameIdTxt.setText(game.getId());
 
         // Set game image
         Picasso.with(this).load(game.getImage()).centerCrop().fit()

@@ -114,4 +114,5 @@
     <string name="rules_default"><![CDATA[There is a winner at the end of each quarter & the final score. Winners are based on the last digit of the score of each team.]]></string>
     <string name="the_players">The Players</string>
     <string name="score">Score</string>
+    <string name="game_id">Game ID:</string>
 </resources>
