@@ -17,13 +17,13 @@ repositories {
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 113
-        versionName '2.2.00'
+        versionCode 1209
+        versionName '2.2.00 Build 09'
     }
     buildTypes {
         release {

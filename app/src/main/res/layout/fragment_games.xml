@@ -28,7 +28,7 @@
                 android:padding="16dp">
 
                 <TextView
-                    fontPath="fonts/gothic.ttf"
+                    fontPath="fonts/gothic_bold.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
