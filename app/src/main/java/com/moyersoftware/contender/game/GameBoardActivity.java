@@ -45,10 +45,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +100,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.moyersoftware.contender.util.MyApplication.getContext;
 
 public class GameBoardActivity extends AppCompatActivity {
 
@@ -267,6 +272,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private GamePaidPlayersAdapter mPaidPlayersAdapter;
     private Call<Void> mPaidPlayersCall = null;
     private ViewPager pager;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -686,6 +692,54 @@ public class GameBoardActivity extends AppCompatActivity {
         initPaidPlayers();
     }
 
+    public PopupWindow popupDisplay() {
+        popupWindow = new PopupWindow(this);
+
+        // inflate your layout or dynamically add view
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view;
+        if (mGameLive) {
+            view = inflater.inflate(R.layout.popup_window, null);
+
+            view.findViewById(R.id.player_details).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.list_players).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.paid_players).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.create_pdf).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.game_information).setOnClickListener(menuClickListener);
+        } else {
+            view = inflater.inflate(R.layout.popup_window_closed, null);
+
+            view.findViewById(R.id.invite_friends).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.list_players).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.add_players).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.create_pdf).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.game_information).setOnClickListener(menuClickListener);
+        }
+
+        if (view.findViewById(R.id.paid_players) != null) {
+            view.findViewById(R.id.paid_players).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+            view.findViewById(R.id.paid_players_divider).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+        }
+        if (view.findViewById(R.id.invite_friends) != null) {
+            view.findViewById(R.id.invite_friends).setVisibility(!mGameLive && mIsHost ? View.VISIBLE
+                    : View.GONE);
+            view.findViewById(R.id.invite_friends_divider).setVisibility(!mGameLive && mIsHost ? View.VISIBLE
+                    : View.GONE);
+        }
+
+        ((TextView) view.findViewById(R.id.game_information_txt)).setText
+                (mGameInfoLayout.getVisibility() == View.GONE
+                        ? "Game Information" : "Close Game Information");
+
+        popupWindow.setFocusable(true);
+        popupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(view);
+
+        return popupWindow;
+    }
+
     private String parseNameAbbr(String name) {
         try {
             String[] parts = name.split(" ");
@@ -815,7 +869,13 @@ public class GameBoardActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(mBoardRecycler);
-        registerForContextMenu(mMenuBtn);
+        mMenuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupWindow popupwindow_obj = popupDisplay();
+                popupwindow_obj.showAsDropDown(mMenuBtn, 0, -10);
+            }
+        });
     }
 
     private void initRowRecycler() {
@@ -1366,26 +1426,51 @@ public class GameBoardActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.menuBtn) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(mGameLive ? R.menu.menu_game : R.menu.menu_game_open, menu);
-
-            if (menu.findItem(R.id.invite_friends) != null) {
-                menu.findItem(R.id.invite_friends).setVisible(mIsHost);
-            }
-            if (menu.findItem(R.id.paid_players) != null) {
-                menu.findItem(R.id.paid_players).setVisible(mIsHost);
-            }
-            if (menu.findItem(R.id.invite_friends) != null) {
-                menu.findItem(R.id.invite_friends).setVisible(!mGameLive);
-            }
-
-            menu.findItem(R.id.game_information).setTitle(mGameInfoLayout.getVisibility()
-                    == View.GONE ? "Game Information" : "Close Game Information");
-        } else {
-            menu.add("Remove this square");
-        }
+        menu.add("Remove this square");
     }
+
+    View.OnClickListener menuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            popupWindow.dismiss();
+
+            if (v.getId() == R.id.create_pdf) {
+                onPdfButtonClicked(null);
+            } else if (v.getId() == R.id.add_players
+                    || v.getId() == R.id.player_details) {
+                onManualAddButtonClicked(null);
+            } else if (v.getId() == R.id.invite_friends
+                    || v.getId() == R.id.list_players) {
+                onInviteFriendsButtonClicked(null);
+            } else if (v.getId() == R.id.paid_players) {
+                onPaidPlayersButtonClicked(null);
+            } else if (v.getId() == R.id.game_information) {
+                onGameInformationButtonClicked();
+            } else {
+                for (SelectedSquare selectedSquare : mSelectedSquares) {
+                    if (selectedSquare.getPosition() == mRemoveSquarePos) {
+                        mSelectedSquares.remove(selectedSquare);
+                        break;
+                    }
+                }
+
+                mBoardAdapter.refresh(mSelectedSquares, mRemoveSquarePos);
+
+                int mySelectedSquares = 0;
+                for (SelectedSquare selectedSquare : mSelectedSquares) {
+                    String playerId = Util.getCurrentPlayerId();
+                    if (TextUtils.isEmpty(playerId)) {
+                        playerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    }
+                    if (selectedSquare.getAuthorId().equals(playerId)) {
+                        mySelectedSquares++;
+                    }
+                }
+
+                uploadSquares();
+            }
+        }
+    };
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
