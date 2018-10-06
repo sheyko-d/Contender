@@ -179,50 +179,60 @@ public class WinnerService extends Service {
                             if (!game.getQuarter1Winner().isConsumed() && game.getQuarter1Winner().getPlayer() != null
                                     && game.getQuarter1Winner().getPlayer().getUserId().equals(myId)) {
                                 showWinDialog(game.getQuarter1Price(), "1st", null, gameId);
+                                game.getQuarter1Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             } else if (!game.getQuarter1Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter1Winner()
                                     .getPlayer().getCreatedByUserId())) {
                                 showWinDialog(game.getQuarter1Price(), "1st", game.getQuarter1Winner().getPlayer()
                                         .getName(), gameId);
+                                game.getQuarter1Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             }
-                            game.getQuarter1Winner().setConsumed(true);
                         }
                         if (game.getQuarter2Winner() != null) {
                             if (!game.getQuarter2Winner().isConsumed() && game.getQuarter2Winner().getPlayer() != null
                                     && game.getQuarter2Winner().getPlayer().getUserId().equals(myId)) {
                                 showWinDialog(game.getQuarter2Price(), "2nd", null, gameId);
+                                game.getQuarter2Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             } else if (!game.getQuarter2Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter2Winner()
                                     .getPlayer().getCreatedByUserId())) {
                                 showWinDialog(game.getQuarter2Price(), "2nd", game.getQuarter2Winner().getPlayer()
                                         .getName(), gameId);
+                                game.getQuarter2Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             }
-                            game.getQuarter2Winner().setConsumed(true);
                         }
 
                         if (game.getQuarter3Winner() != null) {
                             if (!game.getQuarter3Winner().isConsumed() && game.getQuarter3Winner().getPlayer() != null
                                     && game.getQuarter3Winner().getPlayer().getUserId().equals(myId)) {
                                 showWinDialog(game.getQuarter3Price(), "3rd", null, gameId);
+                                game.getQuarter3Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             } else if (!game.getQuarter3Winner().isConsumed() && deviceOwnerId.equals(game.getQuarter3Winner()
                                     .getPlayer().getCreatedByUserId())) {
                                 showWinDialog(game.getQuarter3Price(), "3rd", game.getQuarter3Winner().getPlayer()
                                         .getName(), gameId);
+                                game.getQuarter3Winner().setConsumed(true);
+                                updateGameOnServer(game);
                             }
-                            game.getQuarter3Winner().setConsumed(true);
                         }
 
                         if (game.getFinalWinner() != null) {
                             if (!game.getFinalWinner().isConsumed() && game.getFinalWinner().getPlayer() != null
                                     && game.getFinalWinner().getPlayer().getUserId().equals(myId)) {
                                 showWinDialog(game.getFinalPrice(), "final", null, gameId);
+                                game.getFinalWinner().setConsumed(true);
+                                updateGameOnServer(game);
                             } else if (!game.getFinalWinner().isConsumed() && deviceOwnerId.equals(game.getFinalWinner()
                                     .getPlayer().getCreatedByUserId())) {
                                 showWinDialog(game.getFinalPrice(), "final", game.getFinalWinner().getPlayer()
                                         .getName(), gameId);
+                                game.getFinalWinner().setConsumed(true);
+                                updateGameOnServer(game);
                             }
-                            game.getFinalWinner().setConsumed(true);
                         }
-
-                        updateGameOnServer(game);
 
 
                         // Warn if not all players paid
