@@ -3,6 +3,7 @@ package com.moyersoftware.contender.game.adapter;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.moyersoftware.contender.game.GameBoardActivity;
 import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.util.MyApplication;
 import com.moyersoftware.contender.util.Util;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -109,7 +112,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
         holder.itemView.getLayoutParams().width = mHeight;
 
         if (mSelectedPositions.containsKey(position)) {
-            SelectedSquare selectedSquare = mSelectedPositions.get(position);
+            final SelectedSquare selectedSquare = mSelectedPositions.get(position);
             holder.nameTxt.setText(selectedSquare.getAuthorName());
 
             if (!mPrintMode) {
@@ -117,6 +120,37 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 try {
                     Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
                             (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
+
+                    Picasso.with(mActivity)
+                            .load(selectedSquare.getAuthorPhoto())
+                            .networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
+                            .into(holder.img, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError() {
+                                    //Try again online if cache failed
+                                    Picasso.with(mActivity)
+                                            .load(selectedSquare.getAuthorPhoto())
+                                            .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
+                                            .error(R.color.red)
+                                            .into(holder.img, new Callback() {
+                                                @Override
+                                                public void onSuccess() {
+
+                                                }
+
+                                                @Override
+                                                public void onError() {
+                                                    Log.v("Picasso", "Could not fetch image");
+                                                }
+                                            });
+                                }
+                            });
                 } catch (Exception e) {
                     holder.img.setImageResource(R.drawable.avatar_placeholder);
                 }
