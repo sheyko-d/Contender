@@ -699,7 +699,7 @@ public class GameBoardActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view;
-        if (mGameLive) {
+        if (!mGameLive) {
             view = inflater.inflate(R.layout.popup_window, null);
 
             view.findViewById(R.id.player_details).setOnClickListener(menuClickListener);
@@ -710,22 +710,19 @@ public class GameBoardActivity extends AppCompatActivity {
         } else {
             view = inflater.inflate(R.layout.popup_window_closed, null);
 
-            view.findViewById(R.id.invite_friends).setOnClickListener(menuClickListener);
             view.findViewById(R.id.list_players).setOnClickListener(menuClickListener);
-            view.findViewById(R.id.add_players).setOnClickListener(menuClickListener);
             view.findViewById(R.id.create_pdf).setOnClickListener(menuClickListener);
             view.findViewById(R.id.game_information).setOnClickListener(menuClickListener);
+            view.findViewById(R.id.paid_players).setOnClickListener(menuClickListener);
         }
-
         if (view.findViewById(R.id.paid_players) != null) {
             view.findViewById(R.id.paid_players).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
             view.findViewById(R.id.paid_players_divider).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         }
-        if (view.findViewById(R.id.invite_friends) != null) {
-            view.findViewById(R.id.invite_friends).setVisibility(!mGameLive && mIsHost ? View.VISIBLE
-                    : View.GONE);
-            view.findViewById(R.id.invite_friends_divider).setVisibility(!mGameLive && mIsHost ? View.VISIBLE
-                    : View.GONE);
+
+        if (view.findViewById(R.id.player_details) != null) {
+            view.findViewById(R.id.player_details).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
+            view.findViewById(R.id.player_details_divider).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         }
 
         ((TextView) view.findViewById(R.id.game_information_txt)).setText
@@ -1436,11 +1433,9 @@ public class GameBoardActivity extends AppCompatActivity {
 
             if (v.getId() == R.id.create_pdf) {
                 onPdfButtonClicked(null);
-            } else if (v.getId() == R.id.add_players
-                    || v.getId() == R.id.player_details) {
+            } else if (v.getId() == R.id.player_details) {
                 onManualAddButtonClicked(null);
-            } else if (v.getId() == R.id.invite_friends
-                    || v.getId() == R.id.list_players) {
+            } else if (v.getId() == R.id.list_players) {
                 onInviteFriendsButtonClicked(null);
             } else if (v.getId() == R.id.paid_players) {
                 onPaidPlayersButtonClicked(null);
@@ -1476,11 +1471,9 @@ public class GameBoardActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.create_pdf) {
             onPdfButtonClicked(null);
-        } else if (item.getItemId() == R.id.add_players
-                || item.getItemId() == R.id.player_details) {
+        } else if (item.getItemId() == R.id.player_details) {
             onManualAddButtonClicked(null);
-        } else if (item.getItemId() == R.id.invite_friends
-                || item.getItemId() == R.id.list_players) {
+        } else if (item.getItemId() == R.id.list_players) {
             onInviteFriendsButtonClicked(null);
         } else if (item.getItemId() == R.id.paid_players) {
             onPaidPlayersButtonClicked(null);
