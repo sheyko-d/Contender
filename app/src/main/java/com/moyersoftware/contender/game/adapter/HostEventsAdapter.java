@@ -2,6 +2,7 @@ package com.moyersoftware.contender.game.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.HostActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.util.Util;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,8 +51,8 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Event event = mEvents.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Event event = mEvents.get(position);
 
         if (getItemViewType(position) == TYPE_ITEM) {
             assert holder.homeNameTxt != null;
@@ -59,7 +62,34 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
             Picasso.with(mActivity).load(event.getTeamAway().getImage()).into(holder.awayImg);
 
             holder.homeNameTxt.setText(event.getTeamHome().getName());
-            Picasso.with(mActivity).load(event.getTeamHome().getImage()).into(holder.homeImg);
+
+            Picasso.with(mActivity)
+                    .load(event.getTeamHome().getImage()).networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(holder.homeImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(mActivity)
+                                    .load(event.getTeamHome().getImage())
+                                    .error(R.color.red)
+                                    .into(holder.homeImg, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso", "Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });
 
             holder.timeTxt.setText(Util.formatTime(event.getTime()));
         } else if (getItemViewType(position) == TYPE_DATE) {

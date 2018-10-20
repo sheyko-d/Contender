@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
@@ -137,6 +138,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.itemView.setClickable(!invite);
 
         if (mEvents != null) {
+
+            Util.Log(new Gson().toJson(mEvents.get(game.getEventId())));
             holder.teamsTxt.setText(mEvents.get(game.getEventId()).getTeamAway().getAbbrev() + " @ "
                     + mEvents.get(game.getEventId()).getTeamHome().getAbbrev());
         }
