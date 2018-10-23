@@ -118,9 +118,6 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
             if (!mPrintMode) {
                 holder.img.setVisibility(View.VISIBLE);
                 try {
-                    Picasso.with(mActivity).load(selectedSquare.getAuthorPhoto()).placeholder
-                            (R.drawable.avatar_placeholder).centerCrop().fit().into(holder.img);
-
                     Picasso.with(mActivity)
                             .load(selectedSquare.getAuthorPhoto())
                             .networkPolicy(NetworkPolicy.OFFLINE)
@@ -137,7 +134,6 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                                     Picasso.with(mActivity)
                                             .load(selectedSquare.getAuthorPhoto())
                                             .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
-                                            .error(R.color.red)
                                             .into(holder.img, new Callback() {
                                                 @Override
                                                 public void onSuccess() {
