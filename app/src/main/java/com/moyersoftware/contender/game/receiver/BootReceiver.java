@@ -9,6 +9,10 @@ import com.moyersoftware.contender.game.service.WinnerService;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startService(new Intent(context, WinnerService.class));
+        try {
+            context.startService(new Intent(context, WinnerService.class));
+        } catch (Exception e) {
+
+        }
     }
 }
