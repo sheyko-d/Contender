@@ -23,15 +23,10 @@ public class HowToUseActivity extends AppCompatActivity {
 
     // Hey Ryan, you can change colors here
     private int[] mColors = new int[]{
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882"),
-            Color.parseColor("#a5c882")
+            Color.parseColor("#252525"),
+            Color.parseColor("#252525"),
+            Color.parseColor("#252525"),
+            Color.parseColor("#252525")
 
 
     };
@@ -40,12 +35,7 @@ public class HowToUseActivity extends AppCompatActivity {
             R.drawable.how_to_use_1,
             R.drawable.how_to_use_2,
             R.drawable.how_to_use_3,
-            R.drawable.how_to_use_4,
-            R.drawable.how_to_use_5,
-            R.drawable.how_to_use_6,
-            R.drawable.how_to_use_7,
-            R.drawable.how_to_use_8,
-            R.drawable.how_to_use_9
+            R.drawable.how_to_use_4
     };
 
     private Toolbar mToolbar;

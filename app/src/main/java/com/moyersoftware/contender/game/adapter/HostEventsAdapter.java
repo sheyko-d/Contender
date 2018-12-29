@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.moyersoftware.contender.R.id.event_home_img;
+
 public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.ViewHolder> {
 
     // Constants
@@ -112,7 +114,7 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
         @BindView(R.id.event_away_name_txt)
         TextView awayNameTxt;
         @Nullable
-        @BindView(R.id.event_home_img)
+        @BindView(event_home_img)
         ImageView homeImg;
         @Nullable
         @BindView(R.id.event_home_name_txt)
