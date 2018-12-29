@@ -230,7 +230,12 @@ public class SettingsFragment extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 @SuppressWarnings("ConstantConditions")
                 Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                savePhoto(downUrl.getResult().toString());
+                downUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        savePhoto(uri.toString());
+                    }
+                });
             }
         });
     }
