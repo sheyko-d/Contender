@@ -28,7 +28,7 @@ public class MyApplication extends Application{
 
         // Init calligraphy library
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/segoe-ui.ttf")
+                .setDefaultFontPath("fonts/segoe_ui.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
     }

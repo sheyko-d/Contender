@@ -1339,8 +1339,8 @@ public class GameBoardActivity extends AppCompatActivity {
                 mFriendIds.clear();
                 for (DataSnapshot friendshipSnapshot : dataSnapshot.getChildren()) {
                     final Friendship friendship = friendshipSnapshot.getValue(Friendship.class);
-                    if (friendship.getUser1Id().equals(mMyId)
-                            || friendship.getUser2Id().equals(mMyId)) {
+                    if (TextUtils.equals(friendship.getUser1Id(), mMyId)
+                            || TextUtils.equals(friendship.getUser2Id(), mMyId)) {
                         final String friendId = friendship.getUser1Id().equals(mMyId)
                                 ? friendship.getUser2Id() : friendship.getUser1Id();
 
