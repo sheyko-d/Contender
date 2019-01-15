@@ -576,19 +576,32 @@ public class GameBoardActivity extends AppCompatActivity {
 
                     updateLiveState();
 
-                    mHomeBg.setBackgroundColor(Color.parseColor(event.getTeamHome().getColor()));
-                    mAwayBg.setBackgroundColor(Color.parseColor(event.getTeamAway().getColor()));
-                    mInfoHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome().getFont()));
-                    mInfoAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway().getFont()));
-                    mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamHome()
-                            .getFont()));
-                    mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamAway()
-                            .getFont()));
-
-                    mHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome()
-                            .getColor()));
-                    mAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway()
-                            .getColor()));
+                    try {
+                        mHomeBg.setBackgroundColor(Color.parseColor(event.getTeamHome().getColor()));
+                        mInfoHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome().getFont()));
+                        mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamHome()
+                                .getFont()));
+                        mHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome()
+                                .getColor()));
+                    } catch (Exception e) {
+                        mHomeBg.setBackgroundColor(Color.parseColor("#777"));
+                        mInfoHomeNameTxt.setTextColor(Color.parseColor("#FFF"));
+                        mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor("#FFF"));
+                        mHomeNameTxt.setTextColor(Color.parseColor("#777"));
+                    }
+                    try {
+                        mAwayBg.setBackgroundColor(Color.parseColor(event.getTeamAway().getColor()));
+                        mInfoAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway().getFont()));
+                        mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor(event.getTeamAway()
+                                .getFont()));
+                        mAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway()
+                                .getColor()));
+                    } catch (Exception e) {
+                        mAwayBg.setBackgroundColor(Color.parseColor("#777"));
+                        mInfoAwayNameTxt.setTextColor(Color.parseColor("#FFF"));
+                        mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor("#FFF"));
+                        mAwayNameTxt.setTextColor(Color.parseColor("#777"));
+                    }
 
                     mHomeQ1ScoreTxt.setText(event.getTeamHome().getScore().getQ1());
                     mHomeQ2ScoreTxt.setText(event.getTeamHome().getScore().getQ2());
@@ -1377,11 +1390,14 @@ public class GameBoardActivity extends AppCompatActivity {
                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                                     for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
                                                                         GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                                                        if (gameInvite.getGame().getId().equals(mGameId)) {
-                                                                            mInvitedFriendIds.add(friend.getId());
-                                                                            if (mFriendsAdapter != null) {
-                                                                                mFriendsAdapter.notifyDataSetChanged();
+                                                                        try {
+                                                                            if (gameInvite.getGame().getId().equals(mGameId)) {
+                                                                                mInvitedFriendIds.add(friend.getId());
+                                                                                if (mFriendsAdapter != null) {
+                                                                                    mFriendsAdapter.notifyDataSetChanged();
+                                                                                }
                                                                             }
+                                                                        } catch (Exception e) {
                                                                         }
                                                                     }
 
