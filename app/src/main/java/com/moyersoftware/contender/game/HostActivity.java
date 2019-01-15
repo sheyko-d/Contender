@@ -985,7 +985,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 //noinspection VisibleForTests
                 @SuppressWarnings("ConstantConditions")
                 Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                uploadData(downUrl.getResult().toString());
+                downUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        uploadData(uri.toString());
+                    }
+                });
             }
         });
     }
