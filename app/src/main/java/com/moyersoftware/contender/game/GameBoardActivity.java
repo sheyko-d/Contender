@@ -1357,63 +1357,68 @@ public class GameBoardActivity extends AppCompatActivity {
                         final String friendId = friendship.getUser1Id().equals(mMyId)
                                 ? friendship.getUser2Id() : friendship.getUser1Id();
 
-                        mDatabase.child("users").child(friendId).addListenerForSingleValueEvent
-                                (new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        User user = dataSnapshot.getValue(User.class);
-                                        Util.Log("data change: " + user.getName());
+                        try {
+                            if (!TextUtils.isEmpty(friendId)) {
+                                mDatabase.child("users").child(friendId).addListenerForSingleValueEvent
+                                        (new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                User user = dataSnapshot.getValue(User.class);
+                                                Util.Log("data change: " + user.getName());
 
-                                        if (!friendship.isPending()) {
-                                            Friend friend = new Friend(dataSnapshot.getKey(),
-                                                    user.getName(), user.getUsername(),
-                                                    user.getImage(), user.getEmail(), false);
-                                            if (!mFriendIds.contains(friend.getId())) {
-                                                mFriends.add(friend);
-                                                mFriendIds.add(friend.getId());
-                                            }
-                                            if (mFriendsAdapter != null) {
-                                                mFriendsAdapter.notifyDataSetChanged();
-                                            }
-                                        }
+                                                if (!friendship.isPending()) {
+                                                    Friend friend = new Friend(dataSnapshot.getKey(),
+                                                            user.getName(), user.getUsername(),
+                                                            user.getImage(), user.getEmail(), false);
+                                                    if (!mFriendIds.contains(friend.getId())) {
+                                                        mFriends.add(friend);
+                                                        mFriendIds.add(friend.getId());
+                                                    }
+                                                    if (mFriendsAdapter != null) {
+                                                        mFriendsAdapter.notifyDataSetChanged();
+                                                    }
+                                                }
 
-                                        mInvitedFriendIds.add(mAuthorId);
-                                        if (mFriendsAdapter != null) {
-                                            mFriendsAdapter.notifyDataSetChanged();
-                                        }
-                                        for (final Friend friend : mFriends) {
-                                            FirebaseDatabase.getInstance().getReference()
-                                                    .child("game_invites").child(friend.getId())
-                                                    .addListenerForSingleValueEvent
-                                                            (new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                    for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
-                                                                        GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
-                                                                        try {
-                                                                            if (gameInvite.getGame().getId().equals(mGameId)) {
-                                                                                mInvitedFriendIds.add(friend.getId());
-                                                                                if (mFriendsAdapter != null) {
-                                                                                    mFriendsAdapter.notifyDataSetChanged();
+                                                mInvitedFriendIds.add(mAuthorId);
+                                                if (mFriendsAdapter != null) {
+                                                    mFriendsAdapter.notifyDataSetChanged();
+                                                }
+                                                for (final Friend friend : mFriends) {
+                                                    FirebaseDatabase.getInstance().getReference()
+                                                            .child("game_invites").child(friend.getId())
+                                                            .addListenerForSingleValueEvent
+                                                                    (new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            for (DataSnapshot gameInviteSnapshot : dataSnapshot.getChildren()) {
+                                                                                GameInvite gameInvite = gameInviteSnapshot.getValue(GameInvite.class);
+                                                                                try {
+                                                                                    if (gameInvite.getGame().getId().equals(mGameId)) {
+                                                                                        mInvitedFriendIds.add(friend.getId());
+                                                                                        if (mFriendsAdapter != null) {
+                                                                                            mFriendsAdapter.notifyDataSetChanged();
+                                                                                        }
+                                                                                    }
+                                                                                } catch (Exception e) {
                                                                                 }
                                                                             }
-                                                                        } catch (Exception e) {
+
                                                                         }
-                                                                    }
 
-                                                                }
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+                                                                        }
+                                                                    });
+                                                }
+                                            }
 
-                                                                @Override
-                                                                public void onCancelled(DatabaseError databaseError) {
-                                                                }
-                                                            });
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                    }
-                                });
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                            }
+                                        });
+                            }
+                        } catch (Exception e) {
+                        }
                     }
                 }
             }
