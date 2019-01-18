@@ -584,10 +584,10 @@ public class GameBoardActivity extends AppCompatActivity {
                         mHomeNameTxt.setTextColor(Color.parseColor(event.getTeamHome()
                                 .getColor()));
                     } catch (Exception e) {
-                        mHomeBg.setBackgroundColor(Color.parseColor("#777"));
-                        mInfoHomeNameTxt.setTextColor(Color.parseColor("#FFF"));
-                        mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor("#FFF"));
-                        mHomeNameTxt.setTextColor(Color.parseColor("#777"));
+                        mHomeBg.setBackgroundColor(Color.parseColor("#777777"));
+                        mInfoHomeNameTxt.setTextColor(Color.parseColor("#FFFFFF"));
+                        mInfoHomeTotalScoreTxt.setTextColor(Color.parseColor("#FFFFFF"));
+                        mHomeNameTxt.setTextColor(Color.parseColor("#777777"));
                     }
                     try {
                         mAwayBg.setBackgroundColor(Color.parseColor(event.getTeamAway().getColor()));
@@ -597,10 +597,10 @@ public class GameBoardActivity extends AppCompatActivity {
                         mAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway()
                                 .getColor()));
                     } catch (Exception e) {
-                        mAwayBg.setBackgroundColor(Color.parseColor("#777"));
-                        mInfoAwayNameTxt.setTextColor(Color.parseColor("#FFF"));
-                        mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor("#FFF"));
-                        mAwayNameTxt.setTextColor(Color.parseColor("#777"));
+                        mAwayBg.setBackgroundColor(Color.parseColor("#77777"));
+                        mInfoAwayNameTxt.setTextColor(Color.parseColor("#FFFFFF"));
+                        mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor("#FFFFFF"));
+                        mAwayNameTxt.setTextColor(Color.parseColor("#777777"));
                     }
 
                     mHomeQ1ScoreTxt.setText(event.getTeamHome().getScore().getQ1());
