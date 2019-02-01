@@ -738,7 +738,9 @@ public class GameBoardActivity extends AppCompatActivity {
             view.findViewById(R.id.player_details_divider).setVisibility(mIsHost ? View.VISIBLE : View.GONE);
         }
 
-        ((TextView) view.findViewById(R.id.list_players_title)).setText(mGameLive ? R.string.list_of_players : R.string.invite_friends);
+        if (view.findViewById(R.id.list_players_title) != null) {
+            ((TextView) view.findViewById(R.id.list_players_title)).setText(mGameLive ? R.string.list_of_players : R.string.invite_friends);
+        }
 
         ((TextView) view.findViewById(R.id.game_information_txt)).setText
                 (mGameInfoLayout.getVisibility() == View.GONE
