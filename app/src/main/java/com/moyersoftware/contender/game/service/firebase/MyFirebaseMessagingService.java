@@ -33,4 +33,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Util.Log("Can't parse FCM message: " + e);
         }
     }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+    }
 }

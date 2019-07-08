@@ -205,7 +205,7 @@
                         android:overScrollMode="never"
                         android:scrollbars="none">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/board_recycler"
                             android:layout_width="800dp"
                             android:layout_height="match_parent"
@@ -215,7 +215,7 @@
                             tools:ignore="RtlSymmetry" />
                     </HorizontalScrollView>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/board_column_recycler"
                         android:layout_width="@dimen/board_cell_size"
                         android:layout_height="match_parent"
@@ -227,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/board_row_recycler"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/board_cell_size"
@@ -595,7 +595,7 @@
                     android:textColor="@color/green"
                     android:textSize="12sp" />
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
@@ -617,7 +617,7 @@
                     android:layout_marginTop="-2dp"
                     android:background="#808080" />
 
-                <android.support.v4.view.ViewPager
+                <androidx.viewpager.widget.ViewPager
                     android:id="@+id/scoresPager"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
@@ -742,7 +742,7 @@
                             android:textSize="12sp"
                             tools:text="200 pts" />
                     </LinearLayout>
-                </android.support.v4.view.ViewPager>
+                </androidx.viewpager.widget.ViewPager>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -754,7 +754,7 @@
         android:background="@color/color_gray"
         android:orientation="horizontal">
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -1109,6 +1109,6 @@
                         tools:text="14" />
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v4.view.ViewPager>
+        </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
 </FrameLayout>

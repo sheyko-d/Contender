@@ -13,7 +13,7 @@
         tools:ignore="MissingPrefix"
         tools:targetApi="lollipop">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -61,7 +61,7 @@
                     android:textSize="14sp"
                     android:visibility="gone" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/join_id_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -70,9 +70,9 @@
                     android:layout_marginTop="8dp"
                     android:paddingBottom="8dp" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -96,7 +96,7 @@
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/join_location_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,6 +105,6 @@
                     android:layout_marginTop="8dp"
                     android:elevation="2dp" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

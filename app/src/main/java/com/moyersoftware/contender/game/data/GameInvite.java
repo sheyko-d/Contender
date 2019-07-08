@@ -1,6 +1,6 @@
 package com.moyersoftware.contender.game.data;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.moyersoftware.contender.menu.data.PaidPlayer;
 import com.moyersoftware.contender.menu.data.Player;
