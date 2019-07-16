@@ -13,8 +13,8 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 1218
-        versionName '2.2.00 Build 1218'
+        versionCode 1222
+        versionName '2.2.03'
     }
     buildTypes {
         release {
@@ -35,14 +35,14 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13-beta-3'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.1.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-auth:18.0.0'
@@ -51,11 +51,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:19.0.1'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.itextpdf:itextpdf:5.5.13.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
     implementation 'com.viewpagerindicator:library:2.4.1'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation('com.crashlytics.sdk.android:answers:1.4.7@aar') {
         transitive = true
