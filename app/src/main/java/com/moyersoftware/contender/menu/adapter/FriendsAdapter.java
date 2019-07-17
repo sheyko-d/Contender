@@ -49,7 +49,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.nameTxt.setText(friend.getName());
         holder.usernameTxt.setText(friend.getUsername());
         if (!TextUtils.isEmpty(friend.getImage())) {
-            Picasso.with(mFragment.getActivity()).load(friend.getImage())
+            Picasso.get().load(friend.getImage())
                     .placeholder(R.drawable.avatar_placeholder)
                     .centerCrop().fit().into(holder.img);
         } else {

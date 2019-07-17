@@ -60,7 +60,7 @@ public class FoundFriendsAdapter extends RecyclerView.Adapter<FoundFriendsAdapte
             holder.usernameTxt.setText("@" + Util.parseUsername(user));
         }
         if (!TextUtils.isEmpty(user.getImage())) {
-            Picasso.with(mActivity).load(user.getImage()).fit().centerCrop().into(holder.img);
+            Picasso.get().load(user.getImage()).fit().centerCrop().into(holder.img);
         } else {
             holder.img.setImageResource(R.drawable.avatar_placeholder);
         }

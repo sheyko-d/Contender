@@ -77,7 +77,7 @@ public class SettingsFragment extends Fragment {
         }
 
         @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
         }
 
         @Override
@@ -154,7 +154,7 @@ public class SettingsFragment extends Fragment {
             }
             mUsernameTxt.setText(mUsername);
             mEmailTxt.setText(user.getEmail());
-            Picasso.with(getActivity()).load(Util.getPhoto())
+            Picasso.get().load(Util.getPhoto())
                     .placeholder(R.drawable.avatar_placeholder).fit().into(mPhotoImg);
             mPhotoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,10 +200,10 @@ public class SettingsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Picasso.with(getActivity()).load(data.getData()).placeholder(android.R.color.white)
+                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
                         .centerCrop().fit().into(mPhotoImg);
 
-                Picasso.with(getActivity()).load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
+                Picasso.get().load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
                         USER_PHOTO_SIZE_PX).into(mTarget);
             }
         }

@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
         }
 
         @Override
@@ -226,10 +226,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Picasso.with(this).load(data.getData()).placeholder(android.R.color.white)
+                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
                         .centerCrop().fit().into(mPhotoImg);
 
-                Picasso.with(this).load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
+                Picasso.get().load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
                         USER_PHOTO_SIZE_PX).into(mTarget);
             }
         }

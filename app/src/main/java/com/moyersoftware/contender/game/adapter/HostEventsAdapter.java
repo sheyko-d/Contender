@@ -61,11 +61,11 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
             assert holder.timeTxt != null;
 
             holder.awayNameTxt.setText(event.getTeamAway().getName());
-            Picasso.with(mActivity).load(event.getTeamAway().getImage()).into(holder.awayImg);
+            Picasso.get().load(event.getTeamAway().getImage()).into(holder.awayImg);
 
             holder.homeNameTxt.setText(event.getTeamHome().getName());
 
-            Picasso.with(mActivity)
+            Picasso.get()
                     .load(event.getTeamHome().getImage()).networkPolicy(NetworkPolicy.OFFLINE)
                     .into(holder.homeImg, new Callback() {
                         @Override
@@ -74,9 +74,9 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
                         }
 
                         @Override
-                        public void onError() {
+                        public void onError(Exception e) {
                             //Try again online if cache failed
-                            Picasso.with(mActivity)
+                            Picasso.get()
                                     .load(event.getTeamHome().getImage())
                                     .error(R.color.red)
                                     .into(holder.homeImg, new Callback() {
@@ -86,7 +86,7 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
                                         }
 
                                         @Override
-                                        public void onError() {
+                                        public void onError(Exception e) {
                                             Log.v("Picasso", "Could not fetch image");
                                         }
                                     });

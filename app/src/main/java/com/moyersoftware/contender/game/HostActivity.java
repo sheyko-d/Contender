@@ -1008,11 +1008,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Picasso.with(this).load(data.getData()).placeholder(android.R.color.white)
+                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
                         .centerCrop().fit().into(mGameImg);
 
                 mProgressBar.setVisibility(View.VISIBLE);
-                Picasso.with(this).load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
+                Picasso.get().load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
                         GAME_IMAGE_SIZE_PX).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -1021,7 +1021,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     }
 
                     @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                     }
 
                     @Override

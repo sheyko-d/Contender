@@ -122,11 +122,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         }
 
         try {
-            Picasso.with(mFragment.getActivity()).load(game.getImage()).placeholder
+            Picasso.get().load(game.getImage()).placeholder
                     (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
                     .into(holder.img);
         } catch (Exception e) {
-            Picasso.with(mFragment.getActivity()).load(R.drawable.placeholder).centerCrop().fit()
+            Picasso.get().load(R.drawable.placeholder).centerCrop().fit()
                     .into(holder.img);
         }
 

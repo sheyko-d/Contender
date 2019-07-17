@@ -118,7 +118,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
             if (!mPrintMode) {
                 holder.img.setVisibility(View.VISIBLE);
                 try {
-                    Picasso.with(mActivity)
+                    Picasso.get()
                             .load(selectedSquare.getAuthorPhoto())
                             .networkPolicy(NetworkPolicy.OFFLINE)
                             .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
@@ -129,9 +129,9 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                                 }
 
                                 @Override
-                                public void onError() {
+                                public void onError(Exception e) {
                                     //Try again online if cache failed
-                                    Picasso.with(mActivity)
+                                    Picasso.get()
                                             .load(selectedSquare.getAuthorPhoto())
                                             .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
                                             .into(holder.img, new Callback() {
@@ -141,7 +141,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                                                 }
 
                                                 @Override
-                                                public void onError() {
+                                                public void onError(Exception e) {
                                                     Log.v("Picasso", "Could not fetch image");
                                                 }
                                             });

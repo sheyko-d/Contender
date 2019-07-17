@@ -439,7 +439,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mGameIdTxt.setText(game.getId());
 
         // Set game image
-        Picasso.with(this).load(game.getImage()).centerCrop().fit()
+        Picasso.get().load(game.getImage()).centerCrop().fit()
                 .placeholder(R.drawable.placeholder).into(mGameImg);
 
         // Set game name
@@ -490,7 +490,7 @@ public class GameBoardActivity extends AppCompatActivity {
             playerImage.setVisibility(View.GONE);
         } else {
             playerImage.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(game.getAuthor().getPhoto()).into(playerImage);
+            Picasso.get().load(game.getAuthor().getPhoto()).into(playerImage);
         }
         playerName.setText(parseNameAbbr(game.getAuthor().getName()));
         mPlayersLayout.addView(playerLayout);
@@ -503,7 +503,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 playerImage.setVisibility(View.GONE);
             } else {
                 playerImage.setVisibility(View.VISIBLE);
-                Picasso.with(this).load(player.getPhoto()).into(playerImage);
+                Picasso.get().load(player.getPhoto()).into(playerImage);
             }
             playerName.setText(parseNameAbbr(player.getName()));
             mPlayersLayout.addView(playerLayout);
