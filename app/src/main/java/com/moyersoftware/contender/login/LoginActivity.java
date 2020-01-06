@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +28,7 @@ import com.moyersoftware.contender.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,14 +73,14 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
                                         String oldPhoto = dataSnapshot.getValue(String.class);
-                                        Util.setPhoto(oldPhoto);
+                                        Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
                                     } else {
-                                        Util.setPhoto(user.getPhotoUrl() + "");
+                                        Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
                                     }
 
                                     String id = FirebaseAuth.getInstance()
                                             .getCurrentUser().getUid();
-                                    Util.setCurrentPlayerId(id);
+                                    Util.setCurrentPlayerId("8KjTkKrKuhZvjfMbHD4sL3kTjHH2");
 
                                     finish();
                                     LoadingActivity.sActivity.finish();
@@ -146,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     public void onLoginButtonClicked(View view) {

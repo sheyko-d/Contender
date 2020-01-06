@@ -152,38 +152,38 @@ public class FriendsFragment extends Fragment {
                                     for (final DataSnapshot userSnapshot : dataSnapshotUsers.getChildren()) {
                                         try {
                                             final User user = userSnapshot.getValue(User.class);
-                                            if (user.getName().toLowerCase(Locale.US).contains
+                                            /*if (user.getName().toLowerCase(Locale.US).contains
                                                     (username.toLowerCase(Locale.US))
                                                     || Util.parseUsername(user.getEmail())
                                                     .toLowerCase(Locale.US).contains(username
                                                             .toLowerCase(Locale.US))
                                                     || Util.parseUsername(user.getName())
                                                     .toLowerCase(Locale.US).contains(username
-                                                            .toLowerCase(Locale.US))) {
+                                                            .toLowerCase(Locale.US))) {*/
                                                 final boolean[] alreadyFriends = {false};
                                                 getActivity().runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         for (Friendship friendship : mFriendships) {
-                                                            if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
-                                                                    .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
-                                                                    && friendship.getUser1Id().equals(user.getId()))) {
-                                                                alreadyFriends[0] = true;
-                                                            }
+                                                            //if ((friendship.getUser1Id().equals(mMyId) && friendship.getUser2Id()
+                                                            //        .equals(user.getId())) || (friendship.getUser2Id().equals(mMyId)
+                                                            //        && friendship.getUser1Id().equals(user.getId()))) {
+                                                            //    alreadyFriends[0] = true;
+                                                           // }
                                                         }
 
-                                                        if (!alreadyFriends[0]) {
+                                                        //if (!alreadyFriends[0]) {
                                                             Friend friend = new Friend(userSnapshot.getKey(), user.getName(),
                                                                     Util.parseUsername(user), user.getImage(), user.getEmail(), false);
                                                             if (!mFoundFriends.contains(friend) && !friend.getId().equals(mMyId)) {
                                                                 mFoundFriends.add(friend);
                                                                 mAdapter.notifyDataSetChanged();
                                                             }
-                                                        }
+                                                        //}
 
                                                     }
                                                 });
-                                            }
+                                            //}
                                         } catch (Exception e) {
                                         }
                                     }
