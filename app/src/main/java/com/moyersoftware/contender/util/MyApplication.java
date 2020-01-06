@@ -9,9 +9,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.moyersoftware.contender.R;
 
 import io.fabric.sdk.android.Fabric;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
 
-public class MyApplication extends Application{
+public class MyApplication extends Application {
     private static Context sContext;
 
     @Override
@@ -27,9 +29,12 @@ public class MyApplication extends Application{
         FirebaseDatabase.getInstance().setPersistenceEnabled(false);
 
         // Init calligraphy library
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/segoe_ui.ttf")
-                .setFontAttrId(R.attr.fontPath)
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
                 .build());
     }
 

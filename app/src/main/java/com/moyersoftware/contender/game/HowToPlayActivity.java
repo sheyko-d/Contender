@@ -1,6 +1,7 @@
 package com.moyersoftware.contender.game;
 
 import android.animation.ArgbEvaluator;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.util.Util;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class HowToPlayActivity extends AppCompatActivity {
 
@@ -57,6 +60,10 @@ public class HowToPlayActivity extends AppCompatActivity {
         Util.setTutorialShown(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
     /**
      * Makes the status bar transparent.
      */

@@ -96,8 +96,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import retrofit2.Call;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.moyersoftware.contender.util.MyApplication.getContext;
 
@@ -942,7 +942,7 @@ public class GameBoardActivity extends AppCompatActivity {
      */
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     public void onBackButtonClicked(View view) {
