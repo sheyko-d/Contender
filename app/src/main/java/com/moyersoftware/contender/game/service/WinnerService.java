@@ -9,10 +9,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -101,7 +102,7 @@ public class WinnerService extends Service {
             try {
                 getGames(FirebaseAuth.getInstance().getCurrentUser());
             } catch (Exception e) {
-                Util.Log("Can't retrieve games: "+e);
+                Util.Log("Can't retrieve games: " + e);
             } finally {
                 // 100% guarantee that this always happens, even if
                 // your update method throws an exception
@@ -136,7 +137,7 @@ public class WinnerService extends Service {
 
             for (GameInvite.Game game : games) {
                 try {
-                    if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                    if (game != null && game.getAuthor() != null && (game.getAuthor().getUserId().equals(firebaseUser
                             .getUid()) || (game.getPlayers() != null && game.getPlayers()
                             .contains(new Player(firebaseUser.getUid(), null,
                                     firebaseUser.getEmail(),
@@ -236,7 +237,7 @@ public class WinnerService extends Service {
 
 
                         // Warn if not all players paid
-                        if (game.getAuthor().getUserId().equals(myId) && mEventTimes.get
+                        if (game.getAuthor() != null && game.getAuthor().getUserId().equals(myId) && mEventTimes.get
                                 (game.getEventId()) != -1 && mEventTimes.get(game.getEventId())
                                 != -2 && System.currentTimeMillis() < mEventTimes.get
                                 (game.getEventId())) {

@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -134,16 +135,19 @@ public class GamesFragment extends Fragment {
     }
 
     private void loadGames() {
+        Util.Log("Load games1");
         retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
         call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Event>> call,
                                    retrofit2.Response<ArrayList<Event>> response) {
+                Util.Log("Load games 2");
                 if (!response.isSuccessful()) return;
 
                 mEventTimes.clear();
                 HashMap<String, Event> eventsMap = new HashMap<>();
                 ArrayList<Event> events = response.body();
+                Util.Log("Load games 3");
                 for (Event event : events) {
                     if (event.getTime() > 0) {
                         mEventTimes.put(event.getId(), event.getTime());
@@ -153,6 +157,7 @@ public class GamesFragment extends Fragment {
                     eventsMap.put(event.getId(), event);
                 }
                 mAdapter.setEvents(eventsMap);
+                Util.Log("Load games 4 = " + events.size());
 
                 getGames(mDatabase, mFirebaseUser);
             }
@@ -188,23 +193,33 @@ public class GamesFragment extends Fragment {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<GameInvite.Game>> call,
                                    retrofit2.Response<ArrayList<GameInvite.Game>> response) {
+                Util.Log("Check game 0");
                 if (!response.isSuccessful()) return;
 
+
+                Util.Log("Check game 0.5");
+
+
+                Util.Log("Response, " + response.body().toString());
                 // Update the games list
                 mAdapter.resetInvitePos();
                 mGames.clear();
                 for (final GameInvite.Game game : response.body()) {
+                    Util.Log("Check game 1");
+                    Util.Log(game.toString());
                     try {
-                        if (game != null && (game.getAuthor().getUserId().equals(firebaseUser
+                        if (game != null && game.getAuthor() != null && (game.getAuthor().getUserId().equals(firebaseUser
                                 .getUid()) || (game.getPlayers() != null && game.getPlayers()
                                 .contains(new Player(firebaseUser.getUid(), null,
                                         firebaseUser.getEmail(),
                                         Util.getDisplayName(), Util.getPhoto()))))) {
+                            Util.Log("Check game 2 "+game.toString());
 
                             game.setEventTime(mEventTimes.get(game.getEventId()));
                             if (!mGames.contains(game)) {
                                 mGames.add(game);
                             }
+                            Util.Log("Check game 3");
                             if ((game.getSelectedSquares() == null || (game.getSelectedSquares() != null
                                     && game.getSelectedSquares().size() < 100))
                                     && (mEventTimes.get(game.getEventId()) == -2

@@ -50,7 +50,7 @@ public class Util {
     private static final String PREF_RULES_SHOWN = "RulesShown";
     private static final String PREF_FIND_FRIENDS_SHOWN = "FindFriendsShown";
     private static final String PREF_SCALE_FACTOR = "ScaleFactor";
-    public static final String BASE_API_URL = "http://www.moyersoftware.com/contender/api/v1/";
+    public static final String BASE_API_URL = "https://moyersoftware.com/contender/api/v1/";
     private static final int DEBUG_MAX_LENGTH = 500;
 
     /**
