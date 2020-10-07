@@ -73,14 +73,14 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
                                         String oldPhoto = dataSnapshot.getValue(String.class);
-                                        Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
+                                        Util.setPhoto(oldPhoto);
                                     } else {
-                                        Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
+                                        Util.setPhoto(user.getPhotoUrl() + "");
                                     }
 
                                     String id = FirebaseAuth.getInstance()
                                             .getCurrentUser().getUid();
-                                    Util.setCurrentPlayerId("8KjTkKrKuhZvjfMbHD4sL3kTjHH2");
+                                    Util.setCurrentPlayerId(id);
 
                                     finish();
                                     LoadingActivity.sActivity.finish();
