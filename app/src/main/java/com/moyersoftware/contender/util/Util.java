@@ -27,15 +27,15 @@ import java.util.TimeZone;
 public class Util {
 
     private static final String LOG_TAG = "ContenderDebug";
-    public static final String GET_CODES_URL = "http://www.moyersoftware.com/contender/" +
+    public static final String GET_CODES_URL = "https://moyersoftware.com/contender/" +
             "get_codes.php";
-    public static final String SET_CODE_EXPIRED_URL = "http://www.moyersoftware.com/contender/" +
+    public static final String SET_CODE_EXPIRED_URL = "https://moyersoftware.com/contender/" +
             "set_code_expired.php";
-    public static final String SET_CODE_VALID_URL = "http://www.moyersoftware.com/contender/" +
+    public static final String SET_CODE_VALID_URL = "https://moyersoftware.com/contender/" +
             "set_code_valid.php";
-    public static final String SUPPORT_URL = "http://www.moyersoftware.com";
+    public static final String SUPPORT_URL = "https://moyersoftware.com";
     public static final String INVITE_LINK = "https://fb.me/1791931414374088";
-    public static final String INVITE_IMAGE = "http://moyersoftware.com/contender/images" +
+    public static final String INVITE_IMAGE = "https://moyersoftware.com/contender/images" +
             "/invite.png";
     private static final String PREF_REFERRAL_CODE = "ReferralCode";
     private static final String PREF_DISPLAY_NAME = "DisplayName";

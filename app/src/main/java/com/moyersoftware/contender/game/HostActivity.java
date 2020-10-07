@@ -3,14 +3,12 @@ package com.moyersoftware.contender.game;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,8 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -42,7 +38,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.vending.billing.IInAppBillingService;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,7 +64,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.moyersoftware.contender.BuildConfig;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -83,6 +88,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,7 +101,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HostActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks {
+public class HostActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, PurchasesUpdatedListener {
 
     // Constants
     private static final int PICK_IMAGE_CODE = 0;
@@ -189,7 +195,6 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         Util.Log("load eventsstart");
         ButterKnife.bind(this);
 
-        initBilling();
         initId();
         initUser();
         initDatabase();
@@ -200,6 +205,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initFields();
         loadEvents();
         registerRealTimeListener();
+
+        setupBillingClient();
     }
 
     private void registerRealTimeListener() {
@@ -305,6 +312,55 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    private BillingClient mBillingClient;
+
+    private void setupBillingClient() {
+        try {
+            mBillingClient = BillingClient
+                    .newBuilder(this)
+                    .enablePendingPurchases()
+                    .setListener(this)
+                    .build();
+
+
+            mBillingClient.startConnection(new BillingClientStateListener() {
+                @Override
+                public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                    Util.Log("Billing setup finished " + billingResult.getResponseCode());
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        Util.Log("Billing setup finished");
+                    }
+
+                    Purchase.PurchasesResult purchasesResult = mBillingClient.queryPurchases("inapp");
+                    List<Purchase> list = purchasesResult.getPurchasesList();
+                    if (list != null && list.size() > 0) {
+                        ConsumeParams consumeParams = ConsumeParams
+                                .newBuilder()
+                                .setPurchaseToken(list.get(0).getPurchaseToken())
+                                .build();
+                        mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+                            @Override
+                            public void onConsumeResponse(BillingResult billingResult, String s) {
+                                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                    Util.Log("Consumed purchase");
+                                }
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onBillingServiceDisconnected() {
+                    // Try to restart the connection on the next request to
+                    // Google Play by calling the startConnection() method.
+                    Util.Log("onBillingServiceDisconnected");
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void loadCodes(String query) {
         OkHttpClient client = new OkHttpClient();
 
@@ -324,7 +380,6 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Util.Log("Got codes");
                 if (!response.isSuccessful()) return;
 
                 String responseTxt = response.body().string();
@@ -359,44 +414,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
-    private void initBilling() {
-        Intent serviceIntent =
-                new Intent("com.android.vending.billing.InAppBillingService.BIND");
-        serviceIntent.setPackage("com.android.vending");
-        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
-    }
-
-    IInAppBillingService mService;
-
-    ServiceConnection mServiceConn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name,
-                                       IBinder service) {
-            mService = IInAppBillingService.Stub.asInterface(service);
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mService != null) {
-            unbindService(mServiceConn);
-        }
-    }
-
     private void loadEvents() {
-        Util.Log("load events");
         retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
         call.enqueue(new retrofit2.Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(retrofit2.Call<ArrayList<Event>> call,
                                    retrofit2.Response<ArrayList<Event>> response) {
-                Util.Log("load events2");
                 mEvents.clear();
                 if (response.isSuccessful()) {
                     String previousEventWeek = null;
@@ -780,24 +803,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
             createGame();
-        } else if (BuildConfig.DEBUG) {
+        }/* else if (BuildConfig.DEBUG) {
             createGame();
-        } else if (TextUtils.isEmpty(mCode)) {
-            if (mService != null) {
-                try {
-                    Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                            "host_game", "inapp", "");
-                    PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
-                    assert pendingIntent != null;
-                    startIntentSenderForResult(pendingIntent.getIntentSender(),
-                            1001, new Intent(), 0, 0, 0);
-                } catch (Exception e) {
-                    Util.Log("exception: " + e);
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(this, "Can't pay to host the game right now", Toast.LENGTH_SHORT).show();
-            }
+        } else*/
+        if (TextUtils.isEmpty(mCode)) {
+            purchaseGame();
         } else {
             OkHttpClient client = new OkHttpClient();
 
@@ -831,6 +841,32 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             });
         }
+    }
+
+    private void purchaseGame() {
+        String skuToSell = "host_game";
+        List<String> skuList = new ArrayList<>();
+        skuList.add(skuToSell);
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+
+
+        mBillingClient.querySkuDetailsAsync(params.build(),
+                new SkuDetailsResponseListener() {
+                    @Override
+                    public void onSkuDetailsResponse(BillingResult billingResult,
+                                                     List<SkuDetails> skuDetailsList) {
+
+                        SkuDetails skuDetails = skuDetailsList.get(0);
+
+                        BillingFlowParams purchaseParams =
+                                BillingFlowParams.newBuilder()
+                                        .setSkuDetails(skuDetails)
+                                        .build();
+
+                        mBillingClient.launchBillingFlow(HostActivity.this, purchaseParams);
+                    }
+                });
     }
 
     private void readFieldValues() {
@@ -1031,7 +1067,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
             }
         } else if (requestCode == 1001) {
-            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+            /*String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
 
             if (resultCode == RESULT_OK) {
                 try {
@@ -1066,18 +1102,22 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     Toast.makeText(this, "Purchase failed", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
     }
 
     private void createGame() {
-        mProgressDialog = ProgressDialog.show(this, "Creating game...", null, false);
-        mProgressDialog.show();
+        try {
+            mProgressDialog = ProgressDialog.show(HostActivity.this, "Creating game...", null, false);
+            mProgressDialog.show();
 
-        if (mBitmap != null) {
-            uploadImage();
-        } else {
-            uploadData(null);
+            if (mBitmap != null) {
+                uploadImage();
+            } else {
+                uploadData(null);
+            }
+        } catch (Exception e) {
+            Toast.makeText(HostActivity.this, "Can't create game:" + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1208,6 +1248,46 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     + ", " + Util.formatTime(event.getTime()));
         } catch (Exception e) {
             // Event doesn't exist
+        }
+    }
+
+    @Override
+    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+        if (purchases == null) {
+            Util.Log("onPurchasesUpdated purchases is null ");
+        }
+        try {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+                for (Purchase purchase : purchases) {
+                    ConsumeParams consumeParams = ConsumeParams
+                            .newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+                    mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+                        @Override
+                        public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                createGame();
+                            } else {
+                                Toast.makeText(HostActivity.this, "Failed to consume purchase", Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        }
+                    });
+                }
+            } else {
+
+                if (purchases != null) {
+                    Toast.makeText(this, purchases.size(), Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(this, billingResult.toString() + " " + billingResult.getDebugMessage(), Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Payment failed: " + e.toString(), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }

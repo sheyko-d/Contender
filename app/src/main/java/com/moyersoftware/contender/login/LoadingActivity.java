@@ -79,7 +79,7 @@ public class LoadingActivity extends AppCompatActivity {
                                 .child("email").setValue(mFacebookEmail);
 
                         String id = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-                        Util.setCurrentPlayerId("8KjTkKrKuhZvjfMbHD4sL3kTjHH2");
+                        Util.setCurrentPlayerId(id);
                         if (!Util.findFriendsShown(id)) {
                             startActivity(new Intent(LoadingActivity.this,
                                     FindFriendsActivity.class));
@@ -96,13 +96,13 @@ public class LoadingActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             String oldPhoto = dataSnapshot.getValue(String.class);
-                                            Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
+                                            Util.setPhoto(oldPhoto);
                                             FirebaseDatabase.getInstance().getReference().child("users")
                                                     .child(user.getUid()).setValue(new User(user.getUid(),
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
                                                     oldPhoto, null));
                                         } else {
-                                            Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
+                                            Util.setPhoto(user.getPhotoUrl() + "");
                                             FirebaseDatabase.getInstance().getReference().child("users")
                                                     .child(user.getUid()).setValue(new User(user.getUid(),
                                                     user.getDisplayName(), Util.parseUsername(user), user.getEmail(),
@@ -110,7 +110,7 @@ public class LoadingActivity extends AppCompatActivity {
                                         }
                                         String id = Objects.requireNonNull(FirebaseAuth.getInstance()
                                                 .getCurrentUser()).getUid();
-                                        Util.setCurrentPlayerId("8KjTkKrKuhZvjfMbHD4sL3kTjHH2");
+                                        Util.setCurrentPlayerId(id);
                                         if (!Util.findFriendsShown(id)) {
                                             startActivity(new Intent(LoadingActivity.this,
                                                     FindFriendsActivity.class));
@@ -156,7 +156,7 @@ public class LoadingActivity extends AppCompatActivity {
                                                         .get("email").toString();
 
                                                 Util.setDisplayName(mFacebookName);
-                                                Util.setPhoto("https://firebasestorage.googleapis.com/v0/b/contender-3ef7d.appspot.com/o/8KjTkKrKuhZvjfMbHD4sL3kTjHH2.jpg?alt=media&token=9ad97d51-3652-43f8-ba9c-41d657bfbfe4");
+                                                Util.setPhoto(mFacebookPhoto);
                                             } catch (JSONException e) {
                                                 Util.Log("Can't retrieve Facebook name: " + e + ", " + me.toString());
                                             }
