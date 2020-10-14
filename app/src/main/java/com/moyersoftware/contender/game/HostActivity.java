@@ -64,6 +64,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.moyersoftware.contender.BuildConfig;
 import com.moyersoftware.contender.R;
 import com.moyersoftware.contender.game.adapter.HostEventsAdapter;
 import com.moyersoftware.contender.game.data.Event;
@@ -803,10 +804,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
             createGame();
-        }/* else if (BuildConfig.DEBUG) {
+        } else if (BuildConfig.DEBUG) {
             createGame();
-        } else*/
-        if (TextUtils.isEmpty(mCode)) {
+        } else if (TextUtils.isEmpty(mCode)) {
             purchaseGame();
         } else {
             OkHttpClient client = new OkHttpClient();
@@ -856,15 +856,16 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     @Override
                     public void onSkuDetailsResponse(BillingResult billingResult,
                                                      List<SkuDetails> skuDetailsList) {
+                        if (skuDetailsList.size() > 0) {
+                            SkuDetails skuDetails = skuDetailsList.get(0);
 
-                        SkuDetails skuDetails = skuDetailsList.get(0);
+                            BillingFlowParams purchaseParams =
+                                    BillingFlowParams.newBuilder()
+                                            .setSkuDetails(skuDetails)
+                                            .build();
 
-                        BillingFlowParams purchaseParams =
-                                BillingFlowParams.newBuilder()
-                                        .setSkuDetails(skuDetails)
-                                        .build();
-
-                        mBillingClient.launchBillingFlow(HostActivity.this, purchaseParams);
+                            mBillingClient.launchBillingFlow(HostActivity.this, purchaseParams);
+                        }
                     }
                 });
     }
