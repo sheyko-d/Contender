@@ -1,11 +1,13 @@
 package com.moyersoftware.contender.game.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -35,6 +37,7 @@ import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 public class WinnerService extends Service {
 
     private static final int PAID_NOTIFICATION_CODE = 123;
+    private static final String CHANNEL_ID = "1";
     private final HashMap<String, Long> mEventTimes = new HashMap<>();
     private final ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
     private Handler mHandler;
@@ -302,6 +305,7 @@ public class WinnerService extends Service {
     }
 
     private void showPaidNotification(Context context, String id, String name, long time) {
+        createNotificationChannel();
         int minutesBefore;
 
         if (time - System.currentTimeMillis() < 5 * 60 * 1000) {
@@ -329,7 +333,7 @@ public class WinnerService extends Service {
             return;
         }
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.warning)
                 .setContentTitle(name + " game starts in less than " + minutesBefore + " minutes")
                 .setAutoCancel(true)
@@ -357,9 +361,24 @@ public class WinnerService extends Service {
         mShownPaidNotifications.add(PAID_NOTIFICATION_CODE + Integer.parseInt(id) + minutesBefore);
     }
 
+    private void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void showReminderNotification(Context context, String id, String name, long time,
                                           int emptySquaresCount) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+        createNotificationChannel();
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.warning)
                 .setContentTitle(name + " game starts @ " + Util.formatTime(time))
                 .setAutoCancel(true)
@@ -390,7 +409,9 @@ public class WinnerService extends Service {
 
 
     private void showWinDialog(final int price, final String quarter, final String name, final String gameId) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext())
+        createNotificationChannel();
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.notif)
                 .setContentTitle("Congratulations!")
                 .setAutoCancel(true)

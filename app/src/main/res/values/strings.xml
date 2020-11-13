@@ -116,4 +116,6 @@
     <string name="score">Score</string>
     <string name="game_id">Game ID:</string>
     <string name="purchase_failed">Purchase failed</string>
+    <string name="channel_name">Contender</string>
+    <string name="channel_description">Contender notifications</string>
 </resources>
