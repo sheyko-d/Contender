@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/friends_pending_title_txt"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 
         <Button
             android:id="@+id/friends_find_btn"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="16dp"
@@ -52,7 +52,7 @@
 
         <TextView
             android:id="@+id/friends_title_txt"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

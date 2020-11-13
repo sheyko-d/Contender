@@ -55,9 +55,9 @@ public class FriendsFragment extends Fragment {
     Button mFindBtn;
 
     // Usual variables
-    private ArrayList<Friend> mFriends = new ArrayList<>();
-    private ArrayList<Friend> mPendingFriends = new ArrayList<>();
-    private ArrayList<Friend> mFoundFriends = new ArrayList<>();
+    private final ArrayList<Friend> mFriends = new ArrayList<>();
+    private final ArrayList<Friend> mPendingFriends = new ArrayList<>();
+    private final ArrayList<Friend> mFoundFriends = new ArrayList<>();
     private String mMyId;
     private DatabaseReference mDatabase;
     private FriendsAdapter mAdapter;
@@ -100,13 +100,13 @@ public class FriendsFragment extends Fragment {
                 @SuppressLint("InflateParams")
                 View dialogView = LayoutInflater.from(getActivity())
                         .inflate(R.layout.dialog_friends, null);
-                RecyclerView recycler = (RecyclerView) dialogView.findViewById
+                RecyclerView recycler = dialogView.findViewById
                         (R.id.friends_find_recycler);
                 recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
                 mFoundAdapter = new FriendsAdapter(FriendsFragment.this, mFoundFriends, true);
                 recycler.setAdapter(mFoundAdapter);
 
-                final EditText editTxt = (EditText) dialogView.findViewById(R.id.friends_find_edit_txt);
+                final EditText editTxt = dialogView.findViewById(R.id.friends_find_edit_txt);
                 editTxt.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

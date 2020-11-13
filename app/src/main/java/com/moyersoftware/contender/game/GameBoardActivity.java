@@ -235,8 +235,8 @@ public class GameBoardActivity extends AppCompatActivity {
     private LinearLayoutManager mRowLayoutManager;
     private DatabaseReference mDatabase;
     private String mGameId;
-    private ArrayList<Integer> mRowNumbers = new ArrayList<>();
-    private ArrayList<Integer> mColumnNumbers = new ArrayList<>();
+    private final ArrayList<Integer> mRowNumbers = new ArrayList<>();
+    private final ArrayList<Integer> mColumnNumbers = new ArrayList<>();
     private ArrayList<SelectedSquare> mSelectedSquares = new ArrayList<>();
     private GameRowAdapter mColumnAdapter;
     private GameRowAdapter mRowAdapter;
@@ -247,22 +247,22 @@ public class GameBoardActivity extends AppCompatActivity {
     private GameBoardAdapter mBoardAdapter;
     private Boolean mGameLive = false;
     private boolean mIgnoreUpdate = false;
-    private ArrayList<String> mPlayerEmails = new ArrayList<>();
+    private final ArrayList<String> mPlayerEmails = new ArrayList<>();
     private String mAuthorId;
     private AlertDialog mPlayersDialog;
-    private ArrayList<Player> mPlayers = new ArrayList<>();
-    private ArrayList<Player> mAllPlayers = new ArrayList<>();
-    private ArrayList<String> mPaidPlayers = new ArrayList<>();
+    private final ArrayList<Player> mPlayers = new ArrayList<>();
+    private final ArrayList<Player> mAllPlayers = new ArrayList<>();
+    private final ArrayList<String> mPaidPlayers = new ArrayList<>();
     private GamePlayersAdapter mPlayersAdapter;
     private String mMyEmail;
     private String mDeviceOwnerId;
     private AlertDialog mInviteFriendsDialog;
-    private ArrayList<Friend> mFriends = new ArrayList<>();
+    private final ArrayList<Friend> mFriends = new ArrayList<>();
     private GameFriendsAdapter mFriendsAdapter;
-    private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
+    private final ArrayList<String> mInvitedFriendIds = new ArrayList<>();
     private int mRemoveSquarePos;
-    private ArrayList<String> mFriendIds = new ArrayList<>();
-    private ArrayList<Integer> mSelectedSquaresCount = new ArrayList<>();
+    private final ArrayList<String> mFriendIds = new ArrayList<>();
+    private final ArrayList<Integer> mSelectedSquaresCount = new ArrayList<>();
     private GameInvite.Game mGame;
     private GameFriendsSquaresAdapter mFriendsSquaresAdapter;
     private Event mEvent;
@@ -996,7 +996,7 @@ public class GameBoardActivity extends AppCompatActivity {
         });
     }
 
-    private static String FILE = Environment.getExternalStorageDirectory() + "/Contender.pdf";
+    private static final String FILE = Environment.getExternalStorageDirectory() + "/Contender.pdf";
 
     public void onPdfButtonClicked(View view) {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -1158,7 +1158,7 @@ public class GameBoardActivity extends AppCompatActivity {
         return b;
     }
 
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     public void selectSquare(int position) {
         if (position == -1) return;
@@ -1228,9 +1228,9 @@ public class GameBoardActivity extends AppCompatActivity {
         dialogBuilder.setTitle("Select or add player");
         @SuppressLint("InflateParams")
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_player, null);
-        recycler = (RecyclerView) dialogView.findViewById
+        recycler = dialogView.findViewById
                 (R.id.friends_select_recycler);
-        final EditText editTxt = (EditText) dialogView.findViewById(R.id.friends_select_edit_txt);
+        final EditText editTxt = dialogView.findViewById(R.id.friends_select_edit_txt);
         View addBtn = dialogView.findViewById(R.id.friends_select_add_btn);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1681,7 +1681,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == ((View) arg1);
+            return arg0 == arg1;
         }
     }
 
@@ -1732,7 +1732,7 @@ public class GameBoardActivity extends AppCompatActivity {
 
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == ((View) arg1);
+            return arg0 == arg1;
         }
     }
 }

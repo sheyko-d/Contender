@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class FoundFriendsAdapter extends RecyclerView.Adapter<FoundFriendsAdapter.ViewHolder> {
 
     // Usual variables
-    private FindFriendsActivity mActivity;
+    private final FindFriendsActivity mActivity;
     private ArrayList<User> mUsers = new ArrayList<>();
     private String mMyId;
     private ArrayList<String> mAlreadyFriends;

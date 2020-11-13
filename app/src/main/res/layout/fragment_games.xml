@@ -28,7 +28,7 @@
                 android:padding="16dp">
 
                 <TextView
-                    fontPath="fonts/gothic_bold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
@@ -38,7 +38,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -55,7 +55,7 @@
 
                     <Button
                         android:id="@+id/games_how_to_use_btn"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="0dp"
                         android:layout_height="64dp"
                         android:layout_marginEnd="4dp"
@@ -73,7 +73,7 @@
 
                         <Button
                             android:id="@+id/games_how_to_btn"
-                            fontPath="fonts/gothic.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="match_parent"
                             android:layout_height="64dp"
                             android:layout_marginLeft="4dp"
@@ -111,7 +111,7 @@
 
             <TextView
                 android:id="@+id/games_title_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
 
             <Button
                 android:id="@+id/games_host_btn"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginLeft="14dp"
@@ -147,7 +147,7 @@
 
             <Button
                 android:id="@+id/games_join_btn"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginBottom="16dp"

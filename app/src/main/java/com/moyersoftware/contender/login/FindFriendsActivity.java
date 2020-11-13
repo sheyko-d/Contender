@@ -52,11 +52,11 @@ public class FindFriendsActivity extends AppCompatActivity {
     @BindView(R.id.find_friends_skip_btn)
     Button mFriendsSkipBtn;
 
-    private ArrayList<User> mUsers = new ArrayList<>();
-    private ArrayList<User> mFoundFriends = new ArrayList<>();
+    private final ArrayList<User> mUsers = new ArrayList<>();
+    private final ArrayList<User> mFoundFriends = new ArrayList<>();
     private FoundFriendsAdapter mPlayersAdapter;
     private String mMyId;
-    private ArrayList<String> mFriendIds = new ArrayList<>();
+    private final ArrayList<String> mFriendIds = new ArrayList<>();
 
     // Usual variables
 
@@ -207,7 +207,7 @@ public class FindFriendsActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.

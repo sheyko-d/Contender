@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/game_name_txt"
-                    fontPath="fonts/gothicbold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
@@ -51,7 +51,7 @@
 
                 <TextView
                     android:id="@+id/game_score_txt"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -75,7 +75,7 @@
 
                 <TextView
                     android:id="@+id/game_teams_txt"
-                    fontPath="fonts/gothicbold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -86,7 +86,7 @@
 
                 <TextView
                     android:id="@+id/game_time_txt"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -107,7 +107,7 @@
 
                     <TextView
                         android:id="@+id/game_final_txt"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/red"
@@ -147,7 +147,7 @@
 
             <TextView
                 android:id="@+id/game_invite_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -157,7 +157,7 @@
 
             <TextView
                 android:id="@+id/game_join_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

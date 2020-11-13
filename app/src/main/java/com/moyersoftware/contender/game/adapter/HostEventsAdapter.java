@@ -32,8 +32,8 @@ public class HostEventsAdapter extends RecyclerView.Adapter<HostEventsAdapter.Vi
     public static final int TYPE_ITEM = 2;
 
     // Usual variables
-    private HostActivity mActivity;
-    private ArrayList<Event> mEvents;
+    private final HostActivity mActivity;
+    private final ArrayList<Event> mEvents;
 
     public HostEventsAdapter(HostActivity activity, ArrayList<Event> events) {
         mActivity = activity;

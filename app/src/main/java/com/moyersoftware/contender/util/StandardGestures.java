@@ -24,10 +24,10 @@ public class StandardGestures implements View.OnTouchListener, ScaleGestureDetec
     private final Context mContext;
     private final float mOldScaleFactor;
     private View view;
-    private ScaleGestureDetector gestureScale;
+    private final ScaleGestureDetector gestureScale;
     private float scaleFactor = 1;
     private boolean inScale;
-    private int mDefaultHeight;
+    private final int mDefaultHeight;
 
     public StandardGestures(Context context, GameBoardAdapter boardAdapter,
                             GameRowAdapter rowAdapter, GameRowAdapter columnAdapter,

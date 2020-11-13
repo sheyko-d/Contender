@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class GameRowAdapter extends RecyclerView.Adapter<GameRowAdapter.ViewHolder> {
 
     // Usual variables
-    private ArrayList<Integer> mNumbers;
+    private final ArrayList<Integer> mNumbers;
     private Boolean mLive = false;
     private int mHeight;
     private final int mDefaultCellSize;

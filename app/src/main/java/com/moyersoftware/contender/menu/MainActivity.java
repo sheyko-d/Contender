@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mPager;
 
     // Usual variables
-    private int[] mTabIcons = new int[]{
+    private final int[] mTabIcons = new int[]{
             R.drawable.tab_home,
             R.drawable.tab_friends,
             R.drawable.tab_settings
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         String data = getIntent().getDataString();
 
         if (!TextUtils.isEmpty(data) && data.contains("moyersoftware.com/contender#")) {
-            String gameId = data.substring(data.indexOf("#") + 1, data.length());
+            String gameId = data.substring(data.indexOf("#") + 1);
             playGame(gameId);
         }
     }

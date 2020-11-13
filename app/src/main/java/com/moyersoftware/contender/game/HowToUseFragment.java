@@ -35,7 +35,7 @@ public class HowToUseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_how_to_play, container, false);
-        ImageView image = (ImageView) view.findViewById(R.id.image);
+        ImageView image = view.findViewById(R.id.image);
         image.setImageResource(HowToUseActivity.mImages[page]);
         return view;
     }

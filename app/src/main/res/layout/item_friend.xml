@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/friend_name_txt"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/friend_username_txt"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
@@ -47,7 +47,7 @@
 
     <ImageView
         android:id="@+id/friend_add_img"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/didact_gothic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

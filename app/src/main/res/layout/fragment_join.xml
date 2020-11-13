@@ -25,7 +25,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    fontPath="fonts/gothicbold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:textAllCaps="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:id="@+id/join_id_edit_txt"
                     style="@style/EditText"
                     android:layout_width="match_parent"
@@ -49,7 +49,7 @@
 
                 <TextView
                     android:id="@+id/join_id_title_txt"
-                    fontPath="fonts/gothicbold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -85,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/join_location_search_txt"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

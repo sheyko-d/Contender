@@ -10,7 +10,7 @@
     tools:targetApi="lollipop">
 
     <TextView
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/montserrat"
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/montserrat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_gray"
@@ -55,7 +55,7 @@
             android:src="@drawable/back" />
 
         <TextView
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

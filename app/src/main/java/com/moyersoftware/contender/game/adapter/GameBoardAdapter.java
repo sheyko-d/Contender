@@ -32,8 +32,8 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     private boolean mCustom = false;
 
     // Usual variables
-    private GameBoardActivity mActivity;
-    private HashMap<Integer, SelectedSquare> mSelectedPositions = new HashMap<>();
+    private final GameBoardActivity mActivity;
+    private final HashMap<Integer, SelectedSquare> mSelectedPositions = new HashMap<>();
     private Boolean mLive = false;
     private boolean mPrintMode = false;
     private Integer mHomeScore = null;
@@ -41,7 +41,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
     private ArrayList<Integer> mRowNumbers = new ArrayList<>();
     private ArrayList<Integer> mColumnNumbers = new ArrayList<>();
     private int mHeight;
-    private int mDefaultHeight;
+    private final int mDefaultHeight;
 
     public GameBoardAdapter(GameBoardActivity activity) {
         mActivity = activity;
@@ -180,14 +180,14 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 lastHomeDigit = String.valueOf(mHomeScore);
             } else {
                 lastHomeDigit = (String.valueOf(mHomeScore).substring(String
-                        .valueOf(mHomeScore).length() - 1, String.valueOf(mHomeScore).length()));
+                        .valueOf(mHomeScore).length() - 1));
             }
             String lastAwayDigit;
             if (String.valueOf(mAwayScore).length() == 1) {
                 lastAwayDigit = String.valueOf(mAwayScore);
             } else {
                 lastAwayDigit = (String.valueOf(mAwayScore).substring(String
-                        .valueOf(mAwayScore).length() - 1, String.valueOf(mAwayScore).length()));
+                        .valueOf(mAwayScore).length() - 1));
             }
             int column = position;
             int row = 0;
@@ -196,7 +196,7 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
                 column -= 10;
             }
 
-            Util.Log("lastAwayDigit = " + lastAwayDigit + " == " + String.valueOf(mColumnNumbers.get(row)));
+            Util.Log("lastAwayDigit = " + lastAwayDigit + " == " + mColumnNumbers.get(row));
             if (!mCustom && lastAwayDigit.equals(String.valueOf(mColumnNumbers.get(row)))
                     && lastHomeDigit.equals(String.valueOf(mRowNumbers.get(column)))) {
                 holder.winningView.setVisibility(View.VISIBLE);

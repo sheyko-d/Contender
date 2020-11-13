@@ -68,7 +68,7 @@ public class SettingsFragment extends Fragment {
     private StorageReference mImageRef;
     private String mUserId;
     private String mUsername;
-    private Target mTarget = new Target() {
+    private final Target mTarget = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             mBitmap = bitmap;
@@ -120,7 +120,7 @@ public class SettingsFragment extends Fragment {
         @SuppressLint("InflateParams") View dialogView = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_edit_username, null);
         dialog.setTitle(R.string.edit_username);
-        final EditText username = (EditText) dialogView.findViewById(R.id.username);
+        final EditText username = dialogView.findViewById(R.id.username);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

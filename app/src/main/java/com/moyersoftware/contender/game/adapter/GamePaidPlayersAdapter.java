@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class GamePaidPlayersAdapter extends RecyclerView.Adapter<GamePaidPlayersAdapter.ViewHolder> {
 
     // Usual variables
-    private GameBoardActivity mActivity;
+    private final GameBoardActivity mActivity;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private ArrayList<String> mPaidPlayers;
 

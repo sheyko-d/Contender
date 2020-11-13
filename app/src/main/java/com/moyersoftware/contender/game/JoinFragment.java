@@ -59,7 +59,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     TextView mSearchTxt;
 
     // Usual variables
-    private ArrayList<GameInvite.Game> mIdGames = new ArrayList<>();
+    private final ArrayList<GameInvite.Game> mIdGames = new ArrayList<>();
     private JoinGamesAdapter mIdAdapter;
     private String mQuery;
     private DataSnapshot mIdDataSnapshot;
@@ -67,14 +67,14 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     private String mMyEmail;
     private String mMyName;
     private String mMyPhoto;
-    private HashMap<String, Long> mIdEventTimes = new HashMap<>();
+    private final HashMap<String, Long> mIdEventTimes = new HashMap<>();
     private ArrayList<GameInvite.Game> mIdGamesSnapshot;
 
-    private ArrayList<GameInvite.Game> mLocationGames = new ArrayList<>();
+    private final ArrayList<GameInvite.Game> mLocationGames = new ArrayList<>();
     private JoinGamesAdapter mLocationAdapter;
     private GoogleApiClient mGoogleApiClient;
     private Location mMyLocation;
-    private HashMap<String, Long> mLocationEventTimes = new HashMap<>();
+    private final HashMap<String, Long> mLocationEventTimes = new HashMap<>();
     private ArrayList<GameInvite.Game> mLocationGamesSnapshot;
     private ArrayList<GameInvite.Game> mGamesSnapshot;
 
@@ -310,7 +310,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case LOCATION_PERMISSION_CODE: {

@@ -10,12 +10,11 @@
     tools:targetApi="lollipop">
 
     <TextView
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/montserrat"
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_gray"
-        android:fontFamily="sans-serif"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="@string/app_title1"
@@ -25,12 +24,11 @@
 
     <TextView
         android:id="@+id/textView4"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/montserrat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_gray"
         android:elevation="4dp"
-        android:fontFamily="sans-serif"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="@string/app_title2"
@@ -57,7 +55,7 @@
             android:src="@drawable/back" />
 
         <TextView
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -81,7 +79,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/gothicbold.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +104,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -118,7 +116,7 @@
 
                     <TextView
                         android:id="@+id/host_id_txt"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -129,7 +127,7 @@
                         tools:text="54897678" />
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -140,7 +138,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -151,7 +149,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:id="@+id/host_name_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -162,7 +160,7 @@
                         android:inputType="textCapWords" />
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -201,7 +199,7 @@
                         </FrameLayout>
 
                         <Button
-                            fontPath="fonts/gothic.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="52dp"
                             android:layout_gravity="center_vertical"
@@ -215,7 +213,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -226,7 +224,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -237,7 +235,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:id="@+id/host_password_edit_txt"
                         style="@style/EditText"
                         android:layout_width="match_parent"
@@ -249,7 +247,7 @@
                         tools:ignore="TextFields" />
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -291,7 +289,7 @@
 
                             <TextView
                                 android:id="@+id/host_event_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingBottom="12dp"
@@ -315,7 +313,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -328,7 +326,7 @@
 
                     <RadioButton
                         android:id="@+id/host_custom_radio_btn"
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -361,7 +359,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="1dp"
@@ -371,7 +369,7 @@
                                 android:textSize="16sp" />
 
                             <EditText
-                                fontPath="fonts/gothic.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:id="@+id/host_custom_team_home_edit_txt"
                                 style="@style/EditText"
                                 android:layout_width="match_parent"
@@ -388,7 +386,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="1dp"
@@ -408,7 +406,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -443,7 +441,7 @@
                         android:text="@string/host_default_square_price" />
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -493,7 +491,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter1_price_edit_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -529,7 +527,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter2_price_edit_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -565,7 +563,7 @@
 
                             <EditText
                                 android:id="@+id/host_quarter3_price_edit_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -601,7 +599,7 @@
 
                             <EditText
                                 android:id="@+id/host_final_price_edit_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -637,7 +635,7 @@
 
                             <TextView
                                 android:id="@+id/host_total_price_txt"
-                                fontPath="fonts/gothicbold.ttf"
+                                android:fontFamily="@font/didact_gothic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
@@ -651,7 +649,7 @@
                     </LinearLayout>
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -696,7 +694,7 @@
 
             <TextView
                 android:id="@+id/textView2"
-                fontPath="fonts/gothicbold.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -722,7 +720,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -759,7 +757,7 @@
                         android:textColorHint="@color/secondary_text" />
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -791,7 +789,7 @@
 
                         <RadioButton
                             android:id="@+id/host_allow_radio_btn"
-                            fontPath="fonts/gothicbold.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Allow Incomplete"
@@ -800,7 +798,7 @@
 
                         <RadioButton
                             android:id="@+id/host_dont_allow_radio_btn"
-                            fontPath="fonts/gothicbold.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
@@ -812,7 +810,7 @@
 
                     <TextView
                         android:id="@+id/textView"
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"

@@ -14,7 +14,7 @@ public class FirebaseDatabaseConnectionHandler implements Application.ActivityLi
 
     private int count = 0;
     private final long delayedTimeMillis = 60000; // change this if you want different timeout
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {

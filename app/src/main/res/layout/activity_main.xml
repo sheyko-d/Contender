@@ -10,11 +10,11 @@
 
     <TextView
         android:id="@+id/textView3"
-        fontPath="fonts/gothic.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_gray"
         android:elevation="4dp"
+        android:fontFamily="@font/montserrat"
         android:includeFontPadding="false"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/montserrat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_gray"

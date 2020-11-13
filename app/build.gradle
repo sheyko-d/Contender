@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -13,8 +13,8 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 1230
-        versionName '2.2.10'
+        versionCode 1234
+        versionName '2.3.00'
     }
     buildTypes {
         release {

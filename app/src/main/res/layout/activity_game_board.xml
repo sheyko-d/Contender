@@ -28,7 +28,7 @@
 
                 <TextView
                     android:id="@+id/textView3"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/montserrat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="5dp"
@@ -41,7 +41,7 @@
 
                 <TextView
                     android:id="@+id/textView4"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/montserrat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="4dp"
@@ -83,7 +83,7 @@
 
                     <TextView
                         android:id="@+id/board_title_txt"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/green"
@@ -95,10 +95,10 @@
 
                     <TextView
                         android:id="@+id/board_score_txt"
-                        fontPath="fonts/gothic_italic.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:fontFamily="@font/didact_gothic"
                         android:text="1,000 pts"
                         android:textColor="@color/color_lightgray"
                         android:textSize="12sp" />
@@ -140,7 +140,7 @@
                 tools:src="@android:color/white" />
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -156,7 +156,7 @@
 
         <TextView
             android:id="@+id/board_progress_txt"
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -181,7 +181,7 @@
 
                 <TextView
                     android:id="@+id/board_home_name_txt"
-                    fontPath="fonts/gothic_bold.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
@@ -241,7 +241,7 @@
 
                         <com.moyersoftware.contender.util.VerticalTextView
                             android:id="@+id/board_away_name_txt"
-                            fontPath="fonts/gothic_bold.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -283,7 +283,7 @@
                     android:padding="36dp">
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Rules"
@@ -445,7 +445,7 @@
                         android:src="@drawable/icon" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -456,7 +456,7 @@
                         android:textSize="8sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -465,7 +465,7 @@
                         android:textSize="8sp" />
 
                     <TextView
-                        fontPath="fonts/segoe_ui_medium.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -492,7 +492,7 @@
 
                 <TextView
                     android:id="@+id/board_info_title_txt"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/green"
@@ -506,7 +506,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="6dp"
@@ -516,7 +516,7 @@
 
                     <TextView
                         android:id="@+id/board_info_game_id_txt"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_lightgray"
@@ -526,7 +526,7 @@
 
                 <TextView
                     android:id="@+id/board_info_score_txt"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -536,7 +536,7 @@
             </FrameLayout>
 
             <TextView
-                fontPath="fonts/gothic_italic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -547,7 +547,7 @@
 
             <TextView
                 android:id="@+id/board_rules_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -557,7 +557,7 @@
                 tools:text="@string/rules_default" />
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -587,7 +587,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -634,7 +634,7 @@
 
                         <TextView
                             android:id="@+id/score_q1_title"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
@@ -644,7 +644,7 @@
 
                         <TextView
                             android:id="@+id/score_q1_desc"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -664,7 +664,7 @@
 
                         <TextView
                             android:id="@+id/score_q2_title"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
@@ -674,7 +674,7 @@
 
                         <TextView
                             android:id="@+id/score_q2_desc"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -694,7 +694,7 @@
 
                         <TextView
                             android:id="@+id/score_q3_title"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
@@ -704,7 +704,7 @@
 
                         <TextView
                             android:id="@+id/score_q3_desc"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -724,7 +724,7 @@
 
                         <TextView
                             android:id="@+id/score_final_title"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
@@ -734,7 +734,7 @@
 
                         <TextView
                             android:id="@+id/score_final_desc"
-                            fontPath="fonts/segoe_ui.ttf"
+                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -771,7 +771,7 @@
 
                 <TextView
                     android:id="@+id/board_info_time_txt"
-                    fontPath="fonts/calibri.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="9"
@@ -792,7 +792,7 @@
 
                     <TextView
                         android:id="@+id/board_info_away_name_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -803,7 +803,7 @@
 
                     <TextView
                         android:id="@+id/board_info_away_total_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
@@ -824,7 +824,7 @@
 
                     <TextView
                         android:id="@+id/board_info_home_total_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -835,7 +835,7 @@
 
                     <TextView
                         android:id="@+id/board_info_home_name_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
@@ -870,7 +870,7 @@
 
                     <TextView
                         android:id="@+id/board_quarter_home_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -882,7 +882,7 @@
 
                     <TextView
                         android:id="@+id/board_quarter_away_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -901,7 +901,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q1_title_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -913,7 +913,7 @@
 
                     <TextView
                         android:id="@+id/board_away_q1_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -925,7 +925,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q1_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -944,7 +944,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q2_title_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -956,7 +956,7 @@
 
                     <TextView
                         android:id="@+id/board_away_q2_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -968,7 +968,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q2_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -987,7 +987,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q3_title_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -999,7 +999,7 @@
 
                     <TextView
                         android:id="@+id/board_away_q3_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1011,7 +1011,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q3_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1030,7 +1030,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q4_title_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1042,7 +1042,7 @@
 
                     <TextView
                         android:id="@+id/board_away_q4_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1054,7 +1054,7 @@
 
                     <TextView
                         android:id="@+id/board_home_q4_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1074,7 +1074,7 @@
 
                     <TextView
                         android:id="@+id/board_home_final_title_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1086,7 +1086,7 @@
 
                     <TextView
                         android:id="@+id/board_away_final_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -1098,7 +1098,7 @@
 
                     <TextView
                         android:id="@+id/board_home_final_score_txt"
-                        fontPath="fonts/calibri.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"

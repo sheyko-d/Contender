@@ -13,7 +13,7 @@
         tools:targetApi="lollipop">
 
         <TextView
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/gothicbold.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/settings_name_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -77,7 +77,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        fontPath="fonts/gothicbold.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:textAllCaps="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
 
                     <TextView
                         android:id="@+id/settings_username_txt"
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -122,7 +122,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/gothicbold.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
 
             <TextView
                 android:id="@+id/settings_email_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -154,7 +154,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/gothicbold.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:textAllCaps="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
 
                 <Button
                     android:id="@+id/settings_photo_btn"
-                    fontPath="fonts/gothic.ttf"
+                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
                     android:layout_gravity="center_vertical"
@@ -198,7 +198,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -212,7 +212,7 @@
         </LinearLayout>
 
         <TextView
-            fontPath="fonts/gothic.ttf"
+            android:fontFamily="@font/didact_gothic"
             android:textAllCaps="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -235,7 +235,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -253,7 +253,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -271,7 +271,7 @@
                 android:background="@color/divider" />
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -290,7 +290,7 @@
 
             <TextView
                 android:id="@+id/settings_rate_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -309,7 +309,7 @@
 
             <TextView
                 android:id="@+id/settings_about_txt"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"

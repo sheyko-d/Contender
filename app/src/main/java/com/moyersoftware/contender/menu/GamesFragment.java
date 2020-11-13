@@ -78,9 +78,9 @@ public class GamesFragment extends Fragment {
     View mWelcomeLayout;
 
     // Usual variables
-    private ArrayList<GameInvite.Game> mGames = new ArrayList<>();
+    private final ArrayList<GameInvite.Game> mGames = new ArrayList<>();
     private GamesAdapter mAdapter;
-    private HashMap<String, Long> mEventTimes = new HashMap<>();
+    private final HashMap<String, Long> mEventTimes = new HashMap<>();
     private String mGameToRemoveId;
     private FirebaseUser mFirebaseUser;
     private GameInvite.Game mRemoveGame;

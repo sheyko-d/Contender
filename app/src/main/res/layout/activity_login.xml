@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
@@ -67,7 +67,7 @@
                     android:orientation="vertical">
 
                     <EditText
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:id="@+id/login_email_edit_txt"
                         style="@style/EditText.Green"
                         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                         android:inputType="textEmailAddress" />
 
                     <EditText
-                        fontPath="fonts/gothic.ttf"
+                        android:fontFamily="@font/didact_gothic"
                         android:id="@+id/login_password_edit_txt"
                         style="@style/EditText.Green"
                         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
 
             <Button
                 android:id="@+id/login_sign_in_btn"
-                fontPath="fonts/gothic.ttf"
+                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginBottom="16dp"
@@ -106,7 +106,7 @@
     <Button
         android:id="@+id/login_forgot_password_btn"
         style="@style/Button.Borderless"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/didact_gothic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class GamePlayersAdapter extends RecyclerView.Adapter<GamePlayersAdapter.ViewHolder> {
 
     // Usual variables
-    private GameBoardActivity mActivity;
+    private final GameBoardActivity mActivity;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private String mMyId;
 

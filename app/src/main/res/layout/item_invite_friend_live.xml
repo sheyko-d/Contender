@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/friend_invite_name_txt"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/didact_gothic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/friend_squares_txt"
-        fontPath="fonts/gothic.ttf"
+        android:fontFamily="@font/didact_gothic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

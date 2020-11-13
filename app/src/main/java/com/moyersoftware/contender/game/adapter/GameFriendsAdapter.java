@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class GameFriendsAdapter extends RecyclerView.Adapter<GameFriendsAdapter.ViewHolder> {
 
     // Usual variables
-    private GameBoardActivity mActivity;
+    private final GameBoardActivity mActivity;
     private ArrayList<Friend> mFriends = new ArrayList<>();
     private ArrayList<String> mInvitedFriendIds = new ArrayList<>();
 

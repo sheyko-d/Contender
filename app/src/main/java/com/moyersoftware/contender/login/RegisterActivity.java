@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String mUserId;
     private StorageReference mImageRef;
     private ProgressDialog mDialog;
-    private Target mTarget = new Target() {
+    private final Target mTarget = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             mBitmap = bitmap;

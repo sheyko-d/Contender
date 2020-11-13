@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
     private boolean mSearch = false;
-    private FriendsFragment mFragment;
-    private ArrayList<Friend> mFriends;
+    private final FriendsFragment mFragment;
+    private final ArrayList<Friend> mFriends;
 
     public FriendsAdapter(FriendsFragment fragment, ArrayList<Friend> friends) {
         mFragment = fragment;

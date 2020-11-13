@@ -72,7 +72,7 @@ public class JoinActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.MaterialDialog);
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null);
-        final EditText editText = (EditText) view.findViewById(R.id.join_password_edit_txt);
+        final EditText editText = view.findViewById(R.id.join_password_edit_txt);
         dialogBuilder.setView(view);
         dialogBuilder.setTitle("Enter game password");
         dialogBuilder.setPositiveButton("OK", null);

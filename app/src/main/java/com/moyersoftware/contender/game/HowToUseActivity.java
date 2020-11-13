@@ -22,7 +22,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 public class HowToUseActivity extends AppCompatActivity {
 
     // Hey Ryan, you can change colors here
-    private int[] mColors = new int[]{
+    private final int[] mColors = new int[]{
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
@@ -41,7 +41,7 @@ public class HowToUseActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private MyPagerAdapter mAdapter;
-    private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
+    private final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
     private CirclePageIndicator mPageIndicator;
     private View mNextBtn;
 
@@ -68,9 +68,9 @@ public class HowToUseActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mPageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
+        mToolbar = findViewById(R.id.toolbar);
+        mViewPager = findViewById(R.id.view_pager);
+        mPageIndicator = findViewById(R.id.page_indicator);
         mNextBtn = findViewById(R.id.next_btn);
     }
 

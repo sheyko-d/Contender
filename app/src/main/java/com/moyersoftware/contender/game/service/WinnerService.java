@@ -35,8 +35,8 @@ import static com.moyersoftware.contender.game.GameBoardActivity.EXTRA_GAME_ID;
 public class WinnerService extends Service {
 
     private static final int PAID_NOTIFICATION_CODE = 123;
-    private HashMap<String, Long> mEventTimes = new HashMap<>();
-    private ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
+    private final HashMap<String, Long> mEventTimes = new HashMap<>();
+    private final ArrayList<Integer> mShownPaidNotifications = new ArrayList<>();
     private Handler mHandler;
 
     @Nullable
@@ -329,13 +329,12 @@ public class WinnerService extends Service {
             return;
         }
 
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.warning)
-                        .setContentTitle(name + " game starts in less than " + minutesBefore + " minutes")
-                        .setAutoCancel(true)
-                        .setOnlyAlertOnce(true)
-                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.warning)
+                .setContentTitle(name + " game starts in less than " + minutesBefore + " minutes")
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
         mBuilder.setContentText("Not everybody paid for their squares yet!");
         Intent resultIntent = new Intent(context, GameBoardActivity.class)
                 .putExtra(EXTRA_GAME_ID, id);
@@ -360,12 +359,11 @@ public class WinnerService extends Service {
 
     private void showReminderNotification(Context context, String id, String name, long time,
                                           int emptySquaresCount) {
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.warning)
-                        .setContentTitle(name + " game starts @ " + Util.formatTime(time))
-                        .setAutoCancel(true)
-                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.warning)
+                .setContentTitle(name + " game starts @ " + Util.formatTime(time))
+                .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
         if (emptySquaresCount == 100) {
             mBuilder.setContentText("You didn't fill a single square yet!");
         } else {
@@ -392,12 +390,11 @@ public class WinnerService extends Service {
 
 
     private void showWinDialog(final int price, final String quarter, final String name, final String gameId) {
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)
-                new NotificationCompat.Builder(MyApplication.getContext())
-                        .setSmallIcon(R.drawable.notif)
-                        .setContentTitle("Congratulations!")
-                        .setAutoCancel(true)
-                        .setColor(ContextCompat.getColor(MyApplication.getContext(), R.color.colorPrimary));
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyApplication.getContext())
+                .setSmallIcon(R.drawable.notif)
+                .setContentTitle("Congratulations!")
+                .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(MyApplication.getContext(), R.color.colorPrimary));
         if (TextUtils.isEmpty(name)) {
             mBuilder.setContentText("You won " + price + " points in the " + quarter
                     + " quarter");

@@ -177,7 +177,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private double mLatitude;
     private double mLongitude;
     private HostEventsAdapter mAdapter;
-    private ArrayList<Event> mEvents = new ArrayList<>();
+    private final ArrayList<Event> mEvents = new ArrayList<>();
     private AlertDialog mEventsDialog;
     private String mEventId;
     private String mAuthorImage;
@@ -543,7 +543,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter1PriceEditTxt.setText("0");
                     mQuarter1PriceEditTxt.setSelection(1);
                 } else if (text.length() > 1 && text.startsWith("0")) {
-                    mQuarter1PriceEditTxt.setText(text.substring(1, text.length()));
+                    mQuarter1PriceEditTxt.setText(text.substring(1));
                 } else if (text.length() == 1) {
                     mQuarter1PriceEditTxt.setSelection(1);
                 }
@@ -583,7 +583,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter2PriceEditTxt.setText("0");
                     mQuarter2PriceEditTxt.setSelection(1);
                 } else if (text.length() > 1 && text.startsWith("0")) {
-                    mQuarter2PriceEditTxt.setText(text.substring(1, text.length()));
+                    mQuarter2PriceEditTxt.setText(text.substring(1));
                 } else if (text.length() == 1) {
                     mQuarter2PriceEditTxt.setSelection(1);
                 }
@@ -623,7 +623,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mQuarter3PriceEditTxt.setText("0");
                     mQuarter3PriceEditTxt.setSelection(1);
                 } else if (text.length() > 1 && text.startsWith("0")) {
-                    mQuarter3PriceEditTxt.setText(text.substring(1, text.length()));
+                    mQuarter3PriceEditTxt.setText(text.substring(1));
                 } else if (text.length() == 1) {
                     mQuarter3PriceEditTxt.setSelection(1);
                 }
@@ -663,7 +663,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     mFinalPriceEditTxt.setText("0");
                     mFinalPriceEditTxt.setSelection(1);
                 } else if (text.length() > 1 && text.startsWith("0")) {
-                    mFinalPriceEditTxt.setText(text.substring(1, text.length()));
+                    mFinalPriceEditTxt.setText(text.substring(1));
                 } else if (text.length() == 1) {
                     mFinalPriceEditTxt.setSelection(1);
                 }
@@ -1180,7 +1180,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case LOCATION_PERMISSION_CODE: {
@@ -1211,7 +1211,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         dialogBuilder.setTitle("Choose a game");
         @SuppressLint("InflateParams")
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_events, null);
-        RecyclerView eventsRecycler = (RecyclerView) dialogView.findViewById(R.id.events_recycler);
+        RecyclerView eventsRecycler = dialogView.findViewById(R.id.events_recycler);
         eventsRecycler.setLayoutManager(new LinearLayoutManager(this));
         eventsRecycler.setHasFixedSize(true);
         mAdapter = new HostEventsAdapter(this, mEvents);

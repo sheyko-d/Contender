@@ -30,10 +30,10 @@ import butterknife.ButterKnife;
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
 
     private HashMap<String, Event> mEvents;
-    private MainActivity mActivity;
-    private GamesFragment mFragment;
-    private ArrayList<GameInvite.Game> mGames;
-    private String mMyId;
+    private final MainActivity mActivity;
+    private final GamesFragment mFragment;
+    private final ArrayList<GameInvite.Game> mGames;
+    private final String mMyId;
     private Integer mFirstInvitePos;
 
     public GamesAdapter(MainActivity activity, GamesFragment fragment,

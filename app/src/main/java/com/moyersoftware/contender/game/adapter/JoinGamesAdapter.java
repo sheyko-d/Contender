@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 
 public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.ViewHolder> {
 
-    private String mMyId;
-    private String mMyEmail;
-    private String mMyName;
-    private String mMyPhoto;
-    private JoinActivity mActivity;
+    private final String mMyId;
+    private final String mMyEmail;
+    private final String mMyName;
+    private final String mMyPhoto;
+    private final JoinActivity mActivity;
     private ArrayList<GameInvite.Game> mGames;
 
     public JoinGamesAdapter(JoinActivity activity, ArrayList<GameInvite.Game> games, String myId,
