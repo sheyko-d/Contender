@@ -191,6 +191,7 @@
                     android:textAllCaps="true"
                     android:textColor="#305396"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     tools:text="New England Patriots" />
 
                 <FrameLayout
@@ -241,9 +242,9 @@
 
                         <com.moyersoftware.contender.util.VerticalTextView
                             android:id="@+id/board_away_name_txt"
-                            android:fontFamily="@font/didact_gothic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:fontFamily="@font/didact_gothic"
                             android:gravity="center"
                             android:paddingLeft="8dp"
                             android:paddingTop="10dp"
@@ -252,6 +253,7 @@
                             android:textAllCaps="true"
                             android:textColor="#00AFF0"
                             android:textSize="14sp"
+                            android:textStyle="bold"
                             tools:ignore="RtlHardcoded"
                             tools:text="New York Giants" />
                     </FrameLayout>
