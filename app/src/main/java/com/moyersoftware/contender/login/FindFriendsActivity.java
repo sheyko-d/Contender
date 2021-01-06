@@ -103,13 +103,15 @@ public class FindFriendsActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 User user = dataSnapshot.getValue(User.class);
-                                                Util.Log("data change: " + user.getName());
+                                                if (user!=null) {
+                                                    Util.Log("data change: " + user.getName());
 
-                                                Friend friend = new Friend(dataSnapshot.getKey(),
-                                                        user.getName(), user.getUsername(),
-                                                        user.getImage(), user.getEmail(), false);
-                                                if (!mFriendIds.contains(friend.getId())) {
-                                                    mFriendIds.add(friend.getId());
+                                                    Friend friend = new Friend(dataSnapshot.getKey(),
+                                                            user.getName(), user.getUsername(),
+                                                            user.getImage(), user.getEmail(), false);
+                                                    if (!mFriendIds.contains(friend.getId())) {
+                                                        mFriendIds.add(friend.getId());
+                                                    }
                                                 }
                                             }
 

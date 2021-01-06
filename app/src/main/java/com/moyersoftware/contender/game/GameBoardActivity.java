@@ -996,7 +996,8 @@ public class GameBoardActivity extends AppCompatActivity {
         });
     }
 
-    private static final String FILE = Environment.getExternalStorageDirectory() + "/Contender.pdf";
+    private static final String FILE = getContext().getExternalFilesDir(null).getAbsolutePath()
+            + "/Contender.pdf";
 
     public void onPdfButtonClicked(View view) {
         if (Build.VERSION.SDK_INT >= 23) {

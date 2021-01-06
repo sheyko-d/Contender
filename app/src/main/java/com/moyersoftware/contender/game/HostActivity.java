@@ -906,7 +906,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         String totalPrice = mTotalPriceTxt.getText().toString();
         if (!TextUtils.isEmpty(totalPrice)) {
-            mTotalPrice = Integer.valueOf(totalPrice);
+            try {
+                mTotalPrice = Integer.valueOf(totalPrice);
+            }catch (Exception e){
+                mTotalPrice = -1;
+            }
         } else {
             mTotalPrice = -1;
         }
