@@ -26,6 +26,8 @@ public class HowToUseActivity extends AppCompatActivity {
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
+            Color.parseColor("#252525"),
+            Color.parseColor("#252525"),
             Color.parseColor("#252525")
 
 
@@ -35,7 +37,9 @@ public class HowToUseActivity extends AppCompatActivity {
             R.drawable.how_to_use_1,
             R.drawable.how_to_use_2,
             R.drawable.how_to_use_3,
-            R.drawable.how_to_use_4
+            R.drawable.how_to_use_4,
+            R.drawable.how_to_use_5,
+            R.drawable.how_to_use_6
     };
 
     private Toolbar mToolbar;

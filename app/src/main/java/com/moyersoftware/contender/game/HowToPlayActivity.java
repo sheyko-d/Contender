@@ -30,6 +30,7 @@ public class HowToPlayActivity extends AppCompatActivity {
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
             Color.parseColor("#252525"),
+            Color.parseColor("#252525"),
             Color.parseColor("#252525")
     };
     // ... Images
@@ -38,7 +39,8 @@ public class HowToPlayActivity extends AppCompatActivity {
             R.drawable.how_to_play_2,
             R.drawable.how_to_play_3,
             R.drawable.how_to_play_4,
-            R.drawable.how_to_play_5
+            R.drawable.how_to_play_5,
+            R.drawable.how_to_play_6
     };
 
     private Toolbar mToolbar;
