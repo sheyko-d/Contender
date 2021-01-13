@@ -272,6 +272,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private Call<Void> mPaidPlayersCall = null;
     private ViewPager pager;
     private PopupWindow popupWindow;
+    private boolean isActivityActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -402,6 +403,7 @@ public class GameBoardActivity extends AppCompatActivity {
         NotificationManager mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotifyMgr.cancelAll();
+        isActivityActive = true;
     }
 
     private void initUser() {
@@ -825,8 +827,16 @@ public class GameBoardActivity extends AppCompatActivity {
         }, 1000);
     }
 
+    @Override
+    protected void onPause() {
+        isActivityActive = false;
+        super.onPause();
+    }
+
     @SuppressWarnings("deprecation")
     private void showRulesDialog(GameInvite.Game game) {
+        if (!isActivityActive) return;
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameBoardActivity.this);
         if (!TextUtils.isEmpty(game.getRules())) {
             dialogBuilder.setTitle("Rules");
@@ -861,7 +871,8 @@ public class GameBoardActivity extends AppCompatActivity {
                 finish();
             }
         });
-        dialogBuilder.create().show();
+
+        if(!isFinishing()) dialogBuilder.create().show();
 
         Util.setRulesShown(game.getId());
     }
