@@ -962,7 +962,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
                             .show();
                 }
-                mProgressDialog.cancel();
+                //mProgressDialog.cancel();
             }
 
             @Override
@@ -995,7 +995,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                         Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
                                 .show();
                     }
-                    mProgressDialog.cancel();
+                    //mProgressDialog.cancel();
                 }
 
                 @Override
@@ -1113,8 +1113,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void createGame() {
         try {
-            mProgressDialog = ProgressDialog.show(getApplicationContext(), "Creating game...", null, false);
-            mProgressDialog.show();
+            //mProgressDialog = ProgressDialog.show(getApplicationContext(), "Creating game...", null, false);
+            //mProgressDialog.show();
 
             if (mBitmap != null) {
                 uploadImage();
