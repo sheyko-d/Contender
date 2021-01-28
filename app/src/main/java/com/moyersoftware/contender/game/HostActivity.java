@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -1268,14 +1269,34 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                             .newBuilder()
                             .setPurchaseToken(purchase.getPurchaseToken())
                             .build();
+
+
                     mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
                         @Override
                         public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                 createGame();
                             } else {
-                                Toast.makeText(HostActivity.this, "Failed to consume purchase", Toast.LENGTH_LONG)
-                                        .show();
+                                // If the purchase failed, consume it again after some delay
+                                final Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+                                            @Override
+                                            public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
+                                                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                    createGame();
+                                                } else {
+                                                    Toast.makeText(HostActivity.this,
+                                                            "Purchase failed: "+billingResult.getResponseCode()
+                                                                    +", "+billingResult.getDebugMessage(), Toast.LENGTH_LONG)
+                                                            .show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }, 3000);
                             }
                         }
                     });
