@@ -130,13 +130,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        @SuppressLint("HardwareIds") String phoneNumber = tMgr.getLine1Number();
+        try {
+            TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            @SuppressLint("HardwareIds") String phoneNumber = tMgr.getLine1Number();
 
-        Util.Log("my phoneNumber = " + phoneNumber);
-
-        FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
-                .child("phone").setValue(phoneNumber);
+            FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
+                    .child("phone").setValue(phoneNumber);
+        }catch (Exception e){
+            Util.Log("Phone permission is not granted");
+        }
     }
 
     @Override

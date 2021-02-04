@@ -806,7 +806,14 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
             createGame();
         } else if (BuildConfig.DEBUG) {
-            createGame();
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                     createGame();
+                }
+            }, 3000);
+            //createGame();
         } else if (TextUtils.isEmpty(mCode)) {
             purchaseGame();
         } else {
@@ -1271,35 +1278,25 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                             .build();
 
 
-                    mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                createGame();
-                            } else {
-                                // If the purchase failed, consume it again after some delay
-                                final Handler handler = new Handler(Looper.getMainLooper());
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
-                                            @Override
-                                            public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                                                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                                    createGame();
-                                                } else {
-                                                    Toast.makeText(HostActivity.this,
-                                                            "Purchase failed: "+billingResult.getResponseCode()
-                                                                    +", "+billingResult.getDebugMessage(), Toast.LENGTH_LONG)
-                                                            .show();
-                                                }
-                                            }
-                                        });
+                        public void run() {
+                            mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
+                                @Override
+                                public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
+                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                        createGame();
+                                    } else {
+                                        Toast.makeText(HostActivity.this,
+                                                "Purchase failed: " + billingResult.getResponseCode()
+                                                        + ", " + billingResult.getDebugMessage(), Toast.LENGTH_LONG)
+                                                .show();
                                     }
-                                }, 3000);
-                            }
+                                }
+                            });
                         }
-                    });
+                    }, 3000);
                 }
             } else {
 
