@@ -1277,26 +1277,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                             .setPurchaseToken(purchase.getPurchaseToken())
                             .build();
 
-
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mBillingClient.consumeAsync(consumeParams, new ConsumeResponseListener() {
-                                @Override
-                                public void onConsumeResponse(@NonNull BillingResult billingResult, @NonNull String s) {
-                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                        createGame();
-                                    } else {
-                                        Toast.makeText(HostActivity.this,
-                                                "Purchase failed: " + billingResult.getResponseCode()
-                                                        + ", " + billingResult.getDebugMessage(), Toast.LENGTH_LONG)
-                                                .show();
-                                    }
-                                }
-                            });
-                        }
-                    }, 3000);
+                    mBillingClient.consumeAsync(consumeParams, (billingResult1, s) -> createGame());
                 }
             } else {
 
