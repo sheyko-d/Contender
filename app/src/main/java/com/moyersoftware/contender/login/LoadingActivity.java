@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,16 +52,29 @@ public class LoadingActivity extends AppCompatActivity {
     private String mFacebookName = null;
     private String mFacebookPhoto = null;
     private String mFacebookEmail = null;
+    private Button btn_signin, btn_facebook;
+    private TextView txt_create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        btn_signin      =   findViewById(R.id.btn_signin);
+        btn_facebook    =   findViewById(R.id.btn_facebook);
+        txt_create      =   findViewById(R.id.txt_create);
+
         initActivity();
         initAuth();
         initStatusBar();
         initFacebook();
+
+        btn_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
+            }
+        });
     }
 
     private void initAuth() {

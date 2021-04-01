@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,15 +33,9 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // Views
-    @BindView(R.id.login_email_edit_txt)
-    EditText mEmailEditTxt;
-    @BindView(R.id.login_password_edit_txt)
-    EditText mPasswordEditTxt;
-    @BindView(R.id.login_forgot_password_btn)
-    Button mForgotPasswordBtn;
-    @BindView(R.id.login_sign_in_btn)
     Button mSignInButton;
+    EditText mEmailEditTxt, mPasswordEditTxt;
+    TextView txt_goback, txt_forgot, txt_create2;
 
     // Usual variables
     private FirebaseAuth mAuth;
@@ -53,9 +48,31 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        mEmailEditTxt       =   findViewById(R.id.login_email_edit_txt);
+        mPasswordEditTxt    =   findViewById(R.id.login_password_edit_txt);
+        mSignInButton       =   findViewById(R.id.login_sign_in_btn);
+        txt_goback          =   findViewById(R.id.txt_goback);
+        txt_forgot          =   findViewById(R.id.txt_forgot);
+        txt_create2         =   findViewById(R.id.txt_create2);
+
         overrideActivityAnimation();
         initAuth();
         initStatusBar();
+
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginClicked();
+            }
+        });
+
+        txt_goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.super.onBackPressed();
+                overridePendingTransition(0, R.anim.activity_fade_out);
+            }
+        });
     }
 
     private void initAuth() {
@@ -150,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
-    public void onLoginButtonClicked(View view) {
+    private void LoginClicked() {
         if (!mRestorePassword) {
             String email = mEmailEditTxt.getText().toString();
             String password = mPasswordEditTxt.getText().toString();
@@ -195,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onRestorePasswordButtonClicked(View view) {
         mPasswordEditTxt.setVisibility(View.INVISIBLE);
-        mForgotPasswordBtn.setVisibility(View.GONE);
+        txt_forgot.setVisibility(View.GONE);
         mSignInButton.setText(R.string.reset_password);
         mRestorePassword = true;
     }
@@ -224,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             mPasswordEditTxt.setVisibility(View.VISIBLE);
                             mPasswordEditTxt.setText("");
-                            mForgotPasswordBtn.setVisibility(View.VISIBLE);
+                            txt_forgot.setVisibility(View.VISIBLE);
                             mSignInButton.setText(R.string.login_submit);
                             mRestorePassword = false;
                         } else {

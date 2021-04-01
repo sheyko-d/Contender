@@ -6,7 +6,7 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="facebook">#3b5998</color>
-    <color name="background">#DADADA</color>
+    <color name="background">#ffffff</color>
     <color name="background_light">#F0F0F0</color>
     <color name="divider">#C6C6C6</color>
     <color name="button_disabled">#aaa</color>
@@ -21,5 +21,12 @@
     <color name="color_gray">#252525</color>
     <color name="color_green">#60b864</color>
     <color name="color_lightgray">#727272</color>
+
+    <!-- THEME -->
+    <color name="theme_green">#60b864</color>
+    <color name="theme_green_dark">#4CA951</color>
+    <color name="theme_gray">#969795</color>
+    <color name="theme_gray_dark">#484947</color>
+    <color name="theme_black">#252525</color>
 
 </resources>

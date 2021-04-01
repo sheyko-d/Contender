@@ -5,7 +5,7 @@
     <!-- Loading screen -->
     <string name="loading_email">Sign in with Email</string>
     <string name="loading_facebook">Sign in with Facebook</string>
-    <string name="loading_register">Register</string>
+    <string name="loading_register">No account? CREATE ONE</string>
     <string name="loading_code_desc">Enter the code you were given to add them to your Friends List.</string>
 
     <!-- Register screen -->
