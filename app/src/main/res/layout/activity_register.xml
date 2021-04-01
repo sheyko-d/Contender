@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,133 +7,185 @@
     tools:context=".login.LoadingActivity"
     tools:ignore="MissingPrefix">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop"
-        android:src="@drawable/loading_bg" />
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:background="@color/theme_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/app_title2"
+        android:textAllCaps="true"
+        android:textColor="@color/theme_gray"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/frameLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/app_title1"
+        android:textAllCaps="true"
+        android:textColor="@color/color_green"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="64dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/cardView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
         app:cardBackgroundColor="@color/white"
-        app:cardElevation="8dp">
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_signin2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/register_password_edit_txt"
+                style="@style/EditText.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/raleway"
+                android:hint="@string/register_password"
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toTopOf="@+id/register_repeat_password_edit_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:onClick="onRegisterButtonClicked"
+                android:text="@string/register_submit"
+                android:theme="@style/Button.Host"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/register_name_edit_txt"
+                style="@style/EditText.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/raleway"
+                android:hint="@string/register_name"
+                android:inputType="textCapWords|textPersonName"
+                app:layout_constraintBottom_toTopOf="@+id/register_email_edit_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/register_email_edit_txt"
+                style="@style/EditText.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/raleway"
+                android:hint="@string/register_email"
+                android:inputType="textEmailAddress"
+                app:layout_constraintBottom_toTopOf="@+id/register_password_edit_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/register_repeat_password_edit_txt"
+                style="@style/EditText.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/raleway"
+                android:hint="@string/register_repeat_password"
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toTopOf="@+id/btn_register"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:fontFamily="@font/didact_gothic"
+                android:id="@+id/txt_goback2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
+                android:drawableStart="@drawable/arrow_back"
                 android:drawableLeft="@drawable/back"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/arrow_back"
-                android:onClick="onBackButtonClicked"
+                android:fontFamily="@font/raleway"
                 android:padding="16dp"
                 android:text="@string/go_back"
                 android:textAllCaps="true"
                 android:textColor="@color/primary_text"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1">
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/raleway_light"
+                android:text="CREATE AN ACCOUNT"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_green_dark"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/register_photo_img"
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:clickable="true"
-                        android:contentDescription="@null"
-                        android:onClick="onUpdatePhotoClicked"
-                        android:src="@drawable/avatar_placeholder" />
-
-                    <EditText
-                        android:fontFamily="@font/didact_gothic"
-                        android:id="@+id/register_name_edit_txt"
-                        style="@style/EditText.Green"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/register_name"
-                        android:inputType="textCapWords|textPersonName" />
-
-                    <EditText
-                        android:id="@+id/register_email_edit_txt"
-                        style="@style/EditText.Green"
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/register_email"
-                        android:inputType="textEmailAddress" />
-
-                    <EditText
-                        android:id="@+id/register_password_edit_txt"
-                        style="@style/EditText.Green"
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/register_password"
-                        android:inputType="textPassword" />
-
-                    <EditText
-                        android:id="@+id/register_repeat_password_edit_txt"
-                        style="@style/EditText.Green"
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/register_repeat_password"
-                        android:inputType="textPassword" />
-                </LinearLayout>
-            </ScrollView>
-
-            <Button
-                android:fontFamily="@font/didact_gothic"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:onClick="onRegisterButtonClicked"
-                android:text="@string/register_submit"
-                android:theme="@style/Button.Host" />
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
-        style="@style/Button.Borderless"
-        android:fontFamily="@font/didact_gothic"
+    <TextView
+        android:id="@+id/txt_signin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="16dp"
-        android:onClick="onLoginButtonClicked"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/raleway_semibold"
         android:text="@string/register_login"
-        android:textAllCaps="false" />
-</FrameLayout>
+        android:textAllCaps="false"
+        android:textColor="@color/theme_green_dark"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

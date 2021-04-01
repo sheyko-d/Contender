@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button mSignInButton;
     EditText mEmailEditTxt, mPasswordEditTxt;
-    TextView txt_goback, txt_forgot, txt_create2;
+    TextView txt_goback, txt_forgot;
 
     // Usual variables
     private FirebaseAuth mAuth;
@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton       =   findViewById(R.id.login_sign_in_btn);
         txt_goback          =   findViewById(R.id.txt_goback);
         txt_forgot          =   findViewById(R.id.txt_forgot);
-        txt_create2         =   findViewById(R.id.txt_create2);
 
         overrideActivityAnimation();
         initAuth();
@@ -71,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LoginActivity.super.onBackPressed();
                 overridePendingTransition(0, R.anim.activity_fade_out);
+            }
+        });
+
+        txt_forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -153,20 +159,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(0, R.anim.activity_fade_out);
-    }
-
-    /**
-     * Required for the calligraphy library.
-     */
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
-    }
-
     private void LoginClicked() {
         if (!mRestorePassword) {
             String email = mEmailEditTxt.getText().toString();
@@ -201,14 +193,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void onBackButtonClicked(View view) {
-        finish();
-    }
-
-    public void onRegisterButtonClicked(View view) {
-        finish();
-        startActivity(new Intent(this, RegisterActivity.class));
-    }
 
     public void onRestorePasswordButtonClicked(View view) {
         mPasswordEditTxt.setVisibility(View.INVISIBLE);

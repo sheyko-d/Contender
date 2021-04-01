@@ -75,6 +75,13 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(LoadingActivity.this, LoginActivity.class));
             }
         });
+
+        txt_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoadingActivity.this, RegisterActivity.class));
+            }
+        });
     }
 
     private void initAuth() {

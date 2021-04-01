@@ -11,8 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,43 +46,18 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    // Constants
+    Button btn_register;
+    TextView txt_signin2, txt_goback2;
+    EditText mNameEditTxt, mEmailEditTxt, mPasswordEditTxt, mRepeatPasswordEditTxt;
+
+    // Constants******remove
     private static final int PICK_IMAGE_CODE = 0;
     private static final int USER_PHOTO_SIZE_PX = 500;
-
-    // Views
-    @BindView(R.id.register_name_edit_txt)
-    EditText mNameEditTxt;
-    @BindView(R.id.register_email_edit_txt)
-    EditText mEmailEditTxt;
-    @BindView(R.id.register_password_edit_txt)
-    EditText mPasswordEditTxt;
-    @BindView(R.id.register_repeat_password_edit_txt)
-    EditText mRepeatPasswordEditTxt;
-    @BindView(R.id.register_photo_img)
-    ImageView mPhotoImg;
 
     // Usual variables
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private Bitmap mBitmap;
     private String mUserId;
-    private StorageReference mImageRef;
-    private ProgressDialog mDialog;
-    private final Target mTarget = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            mBitmap = bitmap;
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +65,39 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
+        btn_register        =   findViewById(R.id.btn_register);
+        txt_signin2         =   findViewById(R.id.txt_signin2);
+        txt_goback2         =   findViewById(R.id.txt_goback2);
+        mNameEditTxt        =   findViewById(R.id.register_name_edit_txt);
+        mEmailEditTxt       =   findViewById(R.id.register_email_edit_txt);
+        mPasswordEditTxt    =   findViewById(R.id.register_password_edit_txt);
+        mRepeatPasswordEditTxt = findViewById(R.id.register_repeat_password_edit_txt);
+
         overrideActivityAnimation();
         initAuth();
         initStatusBar();
+
+        btn_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRegisterButtonClicked();
+            }
+        });
+
+        txt_goback2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.super.onBackPressed();
+                overridePendingTransition(0, R.anim.activity_fade_out);
+            }
+        });
+
+        txt_signin2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
     }
 
     private void initAuth() {
@@ -105,20 +112,13 @@ public class RegisterActivity extends AppCompatActivity {
                             .child(user.getUid()).setValue(new User(user.getUid(),
                             mNameEditTxt.getText().toString(), Util.parseUsername(user),
                             user.getEmail(), "", null));
-                    Util.setPhoto("");
 
-                    if (mBitmap != null) {
-                        mDialog = ProgressDialog.show(RegisterActivity.this, "Loading...",
-                                "");
-                        uploadImage();
-                    } else {
                         finish();
                         LoadingActivity.sActivity.finish();
                         Util.setCurrentPlayerId(FirebaseAuth.getInstance()
                                 .getCurrentUser().getUid());
 
                         startActivity(new Intent(RegisterActivity.this, FindFriendsActivity.class));
-                    }
                 }
             }
         };
@@ -145,32 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_hold);
     }
 
-    /**
-     * Makes the status bar translucent.
-     */
-    private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(0, R.anim.activity_fade_out);
-    }
-
-    /**
-     * Required for the calligraphy library.
-     */
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
-    }
-
-    public void onRegisterButtonClicked(View view) {
+    private void onRegisterButtonClicked() {
         String email = mEmailEditTxt.getText().toString();
         String password = mPasswordEditTxt.getText().toString();
         String repeatedPassword = mRepeatPasswordEditTxt.getText().toString();
@@ -205,89 +180,15 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public void onBackButtonClicked(View view) {
-        finish();
-    }
-
-    public void onLoginButtonClicked(View view) {
-        finish();
-        startActivity(new Intent(this, LoginActivity.class));
-    }
-
-    public void onUpdatePhotoClicked(View v) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a game image"),
-                PICK_IMAGE_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
-                        .centerCrop().fit().into(mPhotoImg);
-
-                Picasso.get().load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
-                        USER_PHOTO_SIZE_PX).into(mTarget);
-            }
+    /**
+     * Makes the status bar translucent.
+     */
+    private void initStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
     }
 
-    private void uploadImage() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            mUserId = user.getUid();
-        }
-
-        initStorage();
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] data = outputStream.toByteArray();
-
-        UploadTask uploadTask = mImageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Util.Log("File uploading failure: " + exception);
-
-                Toast.makeText(RegisterActivity.this, "Can't upload image", Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                @SuppressWarnings("ConstantConditions")
-                Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                savePhoto(downUrl.getResult().toString());
-            }
-        });
-    }
-
-    private void savePhoto(String photo) {
-        Util.setPhoto(photo);
-
-        FirebaseDatabase.getInstance().getReference().child("users").child(mUserId).child("image")
-                .setValue(photo);
-
-        mDialog.dismiss();
-        finish();
-        LoadingActivity.sActivity.finish();
-        Util.setCurrentPlayerId(FirebaseAuth.getInstance()
-                .getCurrentUser().getUid());
-        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-    }
-
-    private void initStorage() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReferenceFromUrl
-                ("gs://contender-3ef7d.appspot.com");
-
-        // Create a reference the photo
-        mImageRef = storageRef.child(mUserId + ".jpg");
-    }
 }
