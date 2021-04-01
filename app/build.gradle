@@ -13,8 +13,8 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 1247
-        versionName '2.3.11'
+        versionCode 1261
+        versionName '3.0.00'
     }
     buildTypes {
         release {
@@ -60,9 +60,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.android.billingclient:billing:3.0.2'
 
-    implementation('com.crashlytics.sdk.android:answers:1.4.7@aar') {
-        transitive = true
-    }
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -18,10 +18,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.3'
         //noinspection GradleDependency
-        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.jakewharton:butterknife:10.1.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
         //noinspection GradleDynamicVersion
 
 
