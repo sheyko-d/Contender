@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +42,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,14 +55,11 @@ public class RegisterActivity extends AppCompatActivity {
     TextView txt_signin2, txt_goback2;
     EditText mNameEditTxt, mEmailEditTxt, mPasswordEditTxt, mRepeatPasswordEditTxt;
 
-    // Constants******remove
-    private static final int PICK_IMAGE_CODE = 0;
-    private static final int USER_PHOTO_SIZE_PX = 500;
-
     // Usual variables
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private String mUserId;
+    FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    String mUserId;
+    FirebaseFirestore fStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +105,32 @@ public class RegisterActivity extends AppCompatActivity {
     private void initAuth() {
         // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(user.getUid()).setValue(new User(user.getUid(),
-                            mNameEditTxt.getText().toString(), Util.parseUsername(user),
-                            user.getEmail(), "", null));
+                    mUserId = user.getUid();
+                    Map<String,Object> user_ = new HashMap<>();
+                    user_.put("name", mNameEditTxt.getText().toString());
+                    user_.put("email", mEmailEditTxt.getText().toString());
+                    user_.put("id", mUserId);
+                    fStore.collection("users").document(mUserId)
+                            .set(user_)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("START","success");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("START","error");
+                                }
+                            });
+
 
                         finish();
                         LoadingActivity.sActivity.finish();
