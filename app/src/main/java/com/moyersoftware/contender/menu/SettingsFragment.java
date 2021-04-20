@@ -56,10 +56,10 @@ public class SettingsFragment extends Fragment {
     TextView mUsernameTxt;
     @BindView(R.id.settings_email_txt)
     TextView mEmailTxt;
-    @BindView(R.id.settings_photo_img)
-    ImageView mPhotoImg;
-    @BindView(R.id.settings_photo_btn)
-    Button mPhotoBtn;
+    //@BindView(R.id.settings_photo_img)
+    //ImageView mPhotoImg;
+    //@BindView(R.id.settings_photo_btn)
+    //Button mPhotoBtn;
     @BindView(R.id.editUsernameImg)
     View mEditUsernameImg;
 
@@ -154,14 +154,14 @@ public class SettingsFragment extends Fragment {
             }
             mUsernameTxt.setText(mUsername);
             mEmailTxt.setText(user.getEmail());
-            Picasso.get().load(Util.getPhoto())
-                    .placeholder(R.drawable.avatar_placeholder).fit().into(mPhotoImg);
-            mPhotoBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onUpdatePhotoClicked();
-                }
-            });
+            //Picasso.get().load(Util.getPhoto())
+            //        .placeholder(R.drawable.avatar_placeholder).fit().into(mPhotoImg);
+            //mPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            //    @Override
+            //    public void onClick(View v) {
+            //        onUpdatePhotoClicked();
+            //    }
+            //});
 
             FirebaseDatabase.getInstance().getReference().child("users").child(mUserId)
                     .child("username")
@@ -200,11 +200,11 @@ public class SettingsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
-                        .centerCrop().fit().into(mPhotoImg);
+                //Picasso.get().load(data.getData()).placeholder(android.R.color.white)
+                //        .centerCrop().fit().into(mPhotoImg);
 
-                Picasso.get().load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
-                        USER_PHOTO_SIZE_PX).into(mTarget);
+                //Picasso.get().load(data.getData()).centerCrop().resize(USER_PHOTO_SIZE_PX,
+               //         USER_PHOTO_SIZE_PX).into(mTarget);
             }
         }
     }

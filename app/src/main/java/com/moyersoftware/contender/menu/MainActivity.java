@@ -40,6 +40,7 @@ import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.service.WinnerService;
 import com.moyersoftware.contender.login.LoadingActivity;
+import com.moyersoftware.contender.login.LoginActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 import com.moyersoftware.contender.menu.data.Friendship;
 import com.moyersoftware.contender.menu.data.Player;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, LoadingActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
         }
@@ -397,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLogOutButtonClicked(View view) {
         mFirebaseAuth.signOut();
-        startActivity(new Intent(this, LoadingActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 

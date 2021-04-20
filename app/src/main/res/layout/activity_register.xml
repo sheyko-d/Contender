@@ -139,28 +139,10 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/txt_goback2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:drawableStart="@drawable/arrow_back"
-                android:drawableLeft="@drawable/back"
-                android:drawablePadding="8dp"
-                android:fontFamily="@font/raleway"
-                android:padding="16dp"
-                android:text="@string/go_back"
-                android:textAllCaps="true"
-                android:textColor="@color/primary_text"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="36dp"
                 android:fontFamily="@font/raleway_light"
                 android:text="CREATE AN ACCOUNT"
                 android:textAllCaps="true"
@@ -184,7 +166,7 @@
         android:text="@string/register_login"
         android:textAllCaps="false"
         android:textColor="@color/theme_green_dark"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

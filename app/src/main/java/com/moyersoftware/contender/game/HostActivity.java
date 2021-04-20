@@ -114,8 +114,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     // Views
     @BindView(R.id.host_id_txt)
     TextView mIdTxt;
-    @BindView(R.id.host_game_img)
-    ImageView mGameImg;
+    //@BindView(R.id.host_game_img)
+    //ImageView mGameImg;
     @BindView(R.id.host_name_edit_txt)
     EditText mNameEditTxt;
     @BindView(R.id.host_password_edit_txt)
@@ -134,8 +134,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     EditText mSquareLimitEditTxt;
     @BindView(R.id.host_total_price_txt)
     TextView mTotalPriceTxt;
-    @BindView(R.id.host_img_progress_bar)
-    ProgressBar mProgressBar;
+    //@BindView(R.id.host_img_progress_bar)
+    //ProgressBar mProgressBar;
     @BindView(R.id.host_event_txt)
     TextView eventTxt;
     @BindView(R.id.host_code_edit_txt)
@@ -787,9 +787,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onCreateButtonClicked(View view) {
         readFieldValues();
 
-        if (mProgressBar.getVisibility() == View.VISIBLE) {
-            Toast.makeText(this, "Image is still loading", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mPassword) || mSquarePrice == -1) {
+        //if (mProgressBar.getVisibility() == View.VISIBLE) {
+        //    Toast.makeText(this, "Image is still loading", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(mName) || TextUtils.isEmpty(mPassword) || mSquarePrice == -1) {
             Toast.makeText(this, "Some fields are empty", Toast.LENGTH_SHORT).show();
         } else if (mPassword.length() < MIN_PASSWORD_LENGTH) {
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
@@ -1056,30 +1056,30 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                Picasso.get().load(data.getData()).placeholder(android.R.color.white)
-                        .centerCrop().fit().into(mGameImg);
+        //if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
+        //    if (data != null) {
+                //Picasso.get().load(data.getData()).placeholder(android.R.color.white)
+                //        .centerCrop().fit().into(mGameImg);
 
-                mProgressBar.setVisibility(View.VISIBLE);
-                Picasso.get().load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
-                        GAME_IMAGE_SIZE_PX).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mBitmap = bitmap;
-                        mProgressBar.setVisibility(View.GONE);
-                    }
+                //mProgressBar.setVisibility(View.VISIBLE);
+                //Picasso.get().load(data.getData()).centerCrop().resize(GAME_IMAGE_SIZE_PX,
+                //        GAME_IMAGE_SIZE_PX).into(new Target() {
+                //    @Override
+                //    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                //        mBitmap = bitmap;
+                //        mProgressBar.setVisibility(View.GONE);
+                //    }
 
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                    }
+                 //   @Override
+                  //  public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                 //   }
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    }
-                });
-            }
-        } else if (requestCode == 1001) {
+                  //  @Override
+                 //   public void onPrepareLoad(Drawable placeHolderDrawable) {
+                 //   }
+         //       });
+        //    }
+        //} else if (requestCode == 1001) {
             /*String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
 
             if (resultCode == RESULT_OK) {
@@ -1116,7 +1116,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     e.printStackTrace();
                 }
             }*/
-        }
+        //}
     }
 
     private void createGame() {

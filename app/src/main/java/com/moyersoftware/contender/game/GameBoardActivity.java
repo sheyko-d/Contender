@@ -442,8 +442,8 @@ public class GameBoardActivity extends AppCompatActivity {
         mGameIdTxt.setText(game.getId());
 
         // Set game image
-        Picasso.get().load(game.getImage()).centerCrop().fit()
-                .placeholder(R.drawable.placeholder).into(mGameImg);
+        //Picasso.get().load(game.getImage()).centerCrop().fit()
+        //        .placeholder(R.drawable.placeholder).into(mGameImg);
 
         // Set game name
         mGameName = game.getName();
@@ -501,12 +501,12 @@ public class GameBoardActivity extends AppCompatActivity {
             playerLayout = LayoutInflater.from(this)
                     .inflate(R.layout.item_player_avatar, null);
             playerName = playerLayout.findViewById(R.id.player_name);
-            playerImage = playerLayout.findViewById(R.id.player_photo);
+            //playerImage = playerLayout.findViewById(R.id.player_photo);
             if (TextUtils.isEmpty(player.getPhoto())) {
-                playerImage.setVisibility(View.GONE);
+                //playerImage.setVisibility(View.GONE);
             } else {
-                playerImage.setVisibility(View.VISIBLE);
-                Picasso.get().load(player.getPhoto()).into(playerImage);
+                //playerImage.setVisibility(View.VISIBLE);
+                //Picasso.get().load(player.getPhoto()).into(playerImage);
             }
             playerName.setText(parseNameAbbr(player.getName()));
             mPlayersLayout.addView(playerLayout);
@@ -598,7 +598,7 @@ public class GameBoardActivity extends AppCompatActivity {
                         mAwayNameTxt.setTextColor(Color.parseColor(event.getTeamAway()
                                 .getColor()));
                     } catch (Exception e) {
-                        mAwayBg.setBackgroundColor(Color.parseColor("#77777"));
+                        mAwayBg.setBackgroundColor(Color.parseColor("#777777"));
                         mInfoAwayNameTxt.setTextColor(Color.parseColor("#FFFFFF"));
                         mInfoAwayTotalScoreTxt.setTextColor(Color.parseColor("#FFFFFF"));
                         mAwayNameTxt.setTextColor(Color.parseColor("#777777"));

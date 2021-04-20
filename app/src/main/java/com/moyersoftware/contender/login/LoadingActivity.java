@@ -93,6 +93,7 @@ public class LoadingActivity extends AppCompatActivity {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     if (mFacebookName != null) {
+
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())
                                 .child("name").setValue(mFacebookName);
                         FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid())

@@ -69,7 +69,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         btn_register        =   findViewById(R.id.btn_register);
         txt_signin2         =   findViewById(R.id.txt_signin2);
-        txt_goback2         =   findViewById(R.id.txt_goback2);
         mNameEditTxt        =   findViewById(R.id.register_name_edit_txt);
         mEmailEditTxt       =   findViewById(R.id.register_email_edit_txt);
         mPasswordEditTxt    =   findViewById(R.id.register_password_edit_txt);
@@ -86,13 +85,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        txt_goback2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RegisterActivity.super.onBackPressed();
-                overridePendingTransition(0, R.anim.activity_fade_out);
-            }
-        });
 
         txt_signin2.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -116,52 +116,52 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
             holder.nameTxt.setText(selectedSquare.getAuthorName());
 
             if (!mPrintMode) {
-                holder.img.setVisibility(View.VISIBLE);
+                //holder.img.setVisibility(View.VISIBLE);
                 try {
-                    Picasso.get()
-                            .load(selectedSquare.getAuthorPhoto())
-                            .networkPolicy(NetworkPolicy.OFFLINE)
-                            .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
-                            .into(holder.img, new Callback() {
-                                @Override
-                                public void onSuccess() {
+                    //Picasso.get()
+                    //        .load(selectedSquare.getAuthorPhoto())
+                    //        .networkPolicy(NetworkPolicy.OFFLINE)
+                    //        .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
+                    //        .into(holder.img, new Callback() {
+                    //            @Override
+                    //            public void onSuccess() {
 
-                                }
+                    //            }
 
-                                @Override
-                                public void onError(Exception e) {
+                    //            @Override
+                    //            public void onError(Exception e) {
                                     //Try again online if cache failed
-                                    Picasso.get()
-                                            .load(selectedSquare.getAuthorPhoto())
-                                            .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
-                                            .into(holder.img, new Callback() {
-                                                @Override
-                                                public void onSuccess() {
+                                    //Picasso.get()
+                                    //        .load(selectedSquare.getAuthorPhoto())
+                                    //        .placeholder(R.drawable.avatar_placeholder).centerCrop().fit()
+                                    //        .into(holder.img, new Callback() {
+                                    //            @Override
+                                    //            public void onSuccess() {
 
-                                                }
+                                    //            }
 
-                                                @Override
-                                                public void onError(Exception e) {
-                                                    Log.v("Picasso", "Could not fetch image");
-                                                }
-                                            });
-                                }
-                            });
+                                    //            @Override
+                                    //            public void onError(Exception e) {
+                                    //                Log.v("Picasso", "Could not fetch image");
+                                    //            }
+                                    //        });
+                  //              }
+                  //          });
                 } catch (Exception e) {
-                    holder.img.setImageResource(R.drawable.avatar_placeholder);
+                    //holder.img.setImageResource(R.drawable.avatar_placeholder);
                 }
-                holder.nameTxt.setTextColor(Color.WHITE);
+                holder.nameTxt.setTextColor(Color.BLACK);
                 holder.nameTxt.setEllipsize(TextUtils.TruncateAt.END);
-                holder.nameTxt.setMaxLines(1);
+                holder.nameTxt.setMaxLines(2);
             } else {
-                holder.img.setVisibility(View.GONE);
+                //holder.img.setVisibility(View.GONE);
                 holder.nameTxt.setTextColor(Color.BLACK);
                 holder.nameTxt.setEllipsize(null);
                 holder.nameTxt.setShadowLayer(0, 0, 0, 0);
                 holder.nameTxt.setMaxLines(2);
             }
         } else {
-            holder.img.setVisibility(View.GONE);
+            //holder.img.setVisibility(View.GONE);
             holder.nameTxt.setText("");
         }
 
@@ -222,8 +222,8 @@ public class GameBoardAdapter extends RecyclerView.Adapter<GameBoardAdapter.View
 
         @BindView(R.id.cell_name_txt)
         TextView nameTxt;
-        @BindView(R.id.cell_img)
-        ImageView img;
+        //@BindView(R.id.cell_img)
+        //ImageView img;
         @BindView(R.id.cell_winning_view)
         View winningView;
 

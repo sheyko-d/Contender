@@ -66,36 +66,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/txt_goback"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:drawableStart="@drawable/arrow_back"
-                android:drawableLeft="@drawable/back"
-                android:drawablePadding="8dp"
-                android:fontFamily="@font/raleway"
-                android:padding="16dp"
-                android:text="@string/go_back"
-                android:textAllCaps="true"
-                android:textColor="@color/primary_text"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="102dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:src="@drawable/icon"
                 app:layout_constraintBottom_toTopOf="@+id/login_email_edit_txt"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:layout_constraintVertical_bias="0.51" />
+                app:layout_constraintVertical_bias="0.536" />
 
             <EditText
                 android:id="@+id/login_email_edit_txt"
@@ -104,11 +89,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/raleway"
                 android:hint="@string/login_email_hint"
                 android:inputType="textEmailAddress"
                 app:layout_constraintBottom_toTopOf="@+id/login_password_edit_txt"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -118,11 +105,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/raleway"
                 android:hint="@string/login_password_hint"
                 android:inputType="textPassword"
                 app:layout_constraintBottom_toTopOf="@+id/login_sign_in_btn"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
@@ -135,6 +124,23 @@
                 android:fontFamily="@font/raleway_semibold"
                 android:text="@string/login_submit"
                 android:theme="@style/Button.Host"
+                app:layout_constraintBottom_toTopOf="@+id/btn_facebook2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_facebook2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableStart="@drawable/facebook"
+                android:fontFamily="@font/raleway_semibold"
+                android:onClick="onFacebookButtonClicked"
+                android:text="@string/loading_facebook"
+                android:theme="@style/Button.Facebook"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -143,7 +149,7 @@
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="36dp"
                 android:fontFamily="@font/raleway_light"
                 android:text="SIGN IN"
                 android:textAllCaps="true"
@@ -167,8 +173,21 @@
         android:fontFamily="@font/raleway_semibold"
         android:text="Forgot password?"
         android:textAllCaps="true"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_create2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/raleway_semibold"
+        android:text="@string/loading_register"
+        android:textColor="@color/theme_green_dark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
