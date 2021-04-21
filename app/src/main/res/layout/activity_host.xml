@@ -214,13 +214,6 @@
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/host_game_radio_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:checked="true" />
-
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -257,99 +250,6 @@
                                 android:contentDescription="@null"
                                 android:src="@drawable/spinner_arrow" />
                         </FrameLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/or"
-                        android:textAllCaps="true"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="12sp" />
-
-                    <RadioButton
-                        android:id="@+id/host_custom_radio_btn"
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:text="@string/custom_game_board"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:id="@+id/host_custom_game_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginRight="14dp"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:layout_marginRight="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:fontFamily="@font/didact_gothic"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="1dp"
-                                android:text="Home Team"
-                                android:textColor="@color/primary_text"
-                                android:textSize="16sp" />
-
-                            <EditText
-                                android:fontFamily="@font/didact_gothic"
-                                android:id="@+id/host_custom_team_home_edit_txt"
-                                style="@style/EditText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:fontFamily="@font/didact_gothic"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="1dp"
-                                android:text="Away Team"
-                                android:textColor="@color/primary_text"
-                                android:textSize="16sp" />
-
-                            <EditText
-                                fontPath="fonts/gothic.ttf"
-                                android:id="@+id/host_custom_team_away_edit_txt"
-                                style="@style/EditText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView
@@ -754,41 +654,6 @@
                             android:textColor="@color/secondary_text"
                             android:textSize="14sp" />
                     </RadioGroup>
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:fontFamily="@font/didact_gothic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Have a secret code?"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="2dp"
-                        android:text="Enter it here to get a free game!"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
-
-                    <EditText
-                        fontPath="fonts/gothic.ttf"
-                        android:id="@+id/host_code_edit_txt"
-                        style="@style/EditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginRight="14dp"
-                        android:layout_marginTop="-8dp"
-                        android:capitalize="characters"
-                        android:inputType="textNoSuggestions|textCapCharacters" />
 
                     <Button
                         fontPath="fonts/gothic.ttf"

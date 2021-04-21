@@ -18,8 +18,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
      * Returns total number of pages.
      */
     @Override
+    //public int getCount() {
+    //    return 3;
+    //}
     public int getCount() {
-        return 3;
+        return 1;
     }
 
     /**
@@ -30,10 +33,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return GamesFragment.newInstance();
-            case 1:
-                return FriendsFragment.newInstance();
-            case 2:
-                return SettingsFragment.newInstance();
+            //case 1:
+            //    return FriendsFragment.newInstance();
+            //case 2:
+            //    return SettingsFragment.newInstance();
             default:
                 return null;
         }

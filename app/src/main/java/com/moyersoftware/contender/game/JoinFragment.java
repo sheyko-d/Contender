@@ -53,10 +53,10 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
     EditText mIdEditTxt;
     @BindView(R.id.join_id_title_txt)
     TextView mTitleIdTxt;
-    @BindView(R.id.join_location_recycler)
-    RecyclerView mGamesLocationRecycler;
-    @BindView(R.id.join_location_search_txt)
-    TextView mSearchTxt;
+    //@BindView(R.id.join_location_recycler)
+    //RecyclerView mGamesLocationRecycler;
+    //@BindView(R.id.join_location_search_txt)
+    //TextView mSearchTxt;
 
     // Usual variables
     private final ArrayList<GameInvite.Game> mIdGames = new ArrayList<>();
@@ -95,7 +95,7 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
         initUser();
         initSearchField();
         initIdRecycler();
-        initLocationRecycler();
+        //initLocationRecycler();
         initDatabase();
         initGoogleClient();
 
@@ -150,14 +150,14 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
         mGamesIdRecycler.setAdapter(mIdAdapter);
     }
 
-    private void initLocationRecycler() {
-        mGamesLocationRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mGamesLocationRecycler.setHasFixedSize(true);
-        mLocationAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mLocationGames,
-                mMyId, mMyEmail,
-                mMyName, mMyPhoto);
-        mGamesLocationRecycler.setAdapter(mLocationAdapter);
-    }
+    //private void initLocationRecycler() {
+    ///    mGamesLocationRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+    //    mGamesLocationRecycler.setHasFixedSize(true);
+    //    mLocationAdapter = new JoinGamesAdapter((JoinActivity) getActivity(), mLocationGames,
+    //            mMyId, mMyEmail,
+   //             mMyName, mMyPhoto);
+    //    mGamesLocationRecycler.setAdapter(mLocationAdapter);
+   // }
 
     private void initDatabase() {
         retrofit2.Call<ArrayList<GameInvite.Game>> call = ApiFactory.getApiService().getGames();
@@ -276,12 +276,12 @@ public class JoinFragment extends Fragment implements GoogleApiClient.Connection
                 }
                 mLocationAdapter.notifyDataSetChanged();
 
-                if (mLocationGames.size() > 0) {
-                    mSearchTxt.setVisibility(View.GONE);
-                } else {
-                    mSearchTxt.setText(R.string.join_location_empty);
-                    mSearchTxt.setVisibility(View.VISIBLE);
-                }
+                //if (mLocationGames.size() > 0) {
+                //    mSearchTxt.setVisibility(View.GONE);
+               // } else {
+                //    mSearchTxt.setText(R.string.join_location_empty);
+                //    mSearchTxt.setVisibility(View.VISIBLE);
+               // }
             }
 
             @Override

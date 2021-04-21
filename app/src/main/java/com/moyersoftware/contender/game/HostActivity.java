@@ -138,20 +138,20 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     //ProgressBar mProgressBar;
     @BindView(R.id.host_event_txt)
     TextView eventTxt;
-    @BindView(R.id.host_code_edit_txt)
-    EditText mCodeEditTxt;
+    //@BindView(R.id.host_code_edit_txt)
+    //EditText mCodeEditTxt;
     @BindView(R.id.host_rules_edit_txt)
     EditText mRulesEditTxt;
-    @BindView(R.id.host_game_radio_btn)
-    RadioButton mGameRadioBtn;
-    @BindView(R.id.host_custom_radio_btn)
-    RadioButton mCustomRadioBtn;
-    @BindView(R.id.host_custom_game_layout)
-    View mCustomGameLayout;
-    @BindView(R.id.host_custom_team_home_edit_txt)
-    EditText mCustomTeamHomeEditTxt;
-    @BindView(R.id.host_custom_team_away_edit_txt)
-    EditText mCustomTeamAwayEditTxt;
+    //@BindView(R.id.host_game_radio_btn)
+    //RadioButton mGameRadioBtn;
+   // @BindView(R.id.host_custom_radio_btn)
+    //RadioButton mCustomRadioBtn;
+    //@BindView(R.id.host_custom_game_layout)
+    //View mCustomGameLayout;
+    //@BindView(R.id.host_custom_team_home_edit_txt)
+    //EditText mCustomTeamHomeEditTxt;
+    //@BindView(R.id.host_custom_team_away_edit_txt)
+    //EditText mCustomTeamAwayEditTxt;
     @BindView(R.id.host_allow_radio_btn)
     RadioButton mAllowIncompleteRadioBtn;
 
@@ -203,8 +203,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         initStorage();
         initPrices();
         initGoogleClient();
-        initCodes();
-        initFields();
+        //initCodes();
+        //initFields();
         loadEvents();
         registerRealTimeListener();
 
@@ -220,25 +220,25 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }, new IntentFilter(MyFirebaseMessagingService.TYPE_EVENTS_UPDATED));
     }
 
-    private void initFields() {
-        mGameRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    mCustomRadioBtn.setChecked(false);
-                }
-            }
-        });
-        mCustomRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    mGameRadioBtn.setChecked(false);
-                }
-                mCustomGameLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
+    //private void initFields() {
+        //mGameRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //    @Override
+        //    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+        //        if (checked) {
+        //            mCustomRadioBtn.setChecked(false);
+        //        }
+        //    }
+       // });
+        //mCustomRadioBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //    @Override
+        //    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+        //        if (checked) {
+        //            mGameRadioBtn.setChecked(false);
+        //        }
+        //        mCustomGameLayout.setVisibility(checked ? View.VISIBLE : View.GONE);
+        //    }
+        //});
+    //}
 
     protected void onPostResume() {
         super.onPostResume();
@@ -284,7 +284,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null || dataSnapshot.getValue(Boolean.class)) {
                             mFirstFreeGame = true;
-                            mCodeEditTxt.setEnabled(false);
+                            //mCodeEditTxt.setEnabled(false);
                             Toast.makeText(HostActivity.this, "First game is free, enjoy!",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -297,22 +297,22 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
-    private void initCodes() {
-        mCodeEditTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    //private void initCodes() {
+    //    mCodeEditTxt.addTextChangedListener(new TextWatcher() {
+    //        @Override
+    //        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    //        }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loadCodes(mCodeEditTxt.getText().toString());
-            }
+    //        @Override
+    //        public void onTextChanged(CharSequence s, int start, int before, int count) {
+    //            loadCodes(mCodeEditTxt.getText().toString());
+    //        }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }
+   //         @Override
+    //        public void afterTextChanged(Editable s) {
+    //        }
+    //    });
+   // }
 
     private BillingClient mBillingClient;
 
@@ -363,58 +363,58 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void loadCodes(String query) {
-        OkHttpClient client = new OkHttpClient();
+   // private void loadCodes(String query) {
+    //    OkHttpClient client = new OkHttpClient();
 
-        RequestBody formBody = new FormBody.Builder()
-                .add("query", query)
-                .build();
-        Request request = new Request.Builder()
-                .url(Util.GET_CODES_URL)
-                .post(formBody)
-                .build();
+    //    RequestBody formBody = new FormBody.Builder()
+    //            .add("query", query)
+    //            .build();
+    //    Request request = new Request.Builder()
+    //            .url(Util.GET_CODES_URL)
+     //           .post(formBody)
+     //           .build();
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Util.Log("Can't retrieve codes: " + e);
-            }
+    //    client.newCall(request).enqueue(new Callback() {
+     //       @Override
+     //       public void onFailure(Call call, IOException e) {
+     //           Util.Log("Can't retrieve codes: " + e);
+     //       }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) return;
+    //        @Override
+     //       public void onResponse(Call call, Response response) throws IOException {
+     //           if (!response.isSuccessful()) return;
 
-                String responseTxt = response.body().string();
-                Util.Log("response: " + responseTxt);
+     //           String responseTxt = response.body().string();
+     //           Util.Log("response: " + responseTxt);
 
-                try {
-                    JSONObject codeJson = new JSONObject(responseTxt);
-                    boolean expired = codeJson.getInt("expired") == 1;
-                    if (!expired) {
-                        mCode = codeJson.getString("text");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(HostActivity.this, "Great, this game will be free!",
-                                        Toast.LENGTH_SHORT).show();
-                                mCodeEditTxt.setEnabled(false);
-                            }
-                        });
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(HostActivity.this, "Code is expired",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                } catch (JSONException e) {
-                    Util.Log("Can't parse codes: " + e);
-                }
-            }
-        });
-    }
+      //          try {
+     //               JSONObject codeJson = new JSONObject(responseTxt);
+     //               boolean expired = codeJson.getInt("expired") == 1;
+      //              if (!expired) {
+    //                    mCode = codeJson.getString("text");
+    //                   runOnUiThread(new Runnable() {
+    //                        @Override
+     //                       public void run() {
+     //                           Toast.makeText(HostActivity.this, "Great, this game will be free!",
+     //                                   Toast.LENGTH_SHORT).show();
+     //                           mCodeEditTxt.setEnabled(false);
+      //                      }
+     //                  });
+     //               } else {
+    //                    runOnUiThread(new Runnable() {
+     //                       @Override
+     //                       public void run() {
+     //                           Toast.makeText(HostActivity.this, "Code is expired",
+     //                                   Toast.LENGTH_SHORT).show();
+     //                       }
+     //                   });
+      //              }
+     //           } catch (JSONException e) {
+     //               Util.Log("Can't parse codes: " + e);
+     //           }
+     //       }
+     //   });
+   // }
 
     private void loadEvents() {
         retrofit2.Call<ArrayList<Event>> call = ApiFactory.getApiService().getEvents();
@@ -762,7 +762,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             mAuthorId = firebaseUser.getUid();
             mAuthorEmail = firebaseUser.getEmail();
             mAuthorName = Util.getDisplayName();
-            mAuthorImage = Util.getPhoto();
+            //mAuthorImage = Util.getPhoto();
         }
     }
 
@@ -773,7 +773,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                 ("gs://contender-3ef7d.appspot.com");
 
         // Create a reference to the photo
-        mImageRef = storageRef.child(mGameId + ".jpg");
+        //mImageRef = storageRef.child(mGameId + ".jpg");
     }
 
     private void initDatabase() {
@@ -795,12 +795,12 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         } else if (mSquaresLimit == 0) {
             Toast.makeText(this, "Squares limit is empty", Toast.LENGTH_SHORT).show();
-        } else if (!mCustomRadioBtn.isChecked() && TextUtils.isEmpty(mEventId)) {
+        } else if ( TextUtils.isEmpty(mEventId)) {
             Toast.makeText(this, "Choose an upcoming game", Toast.LENGTH_SHORT).show();
-        } else if (mCustomRadioBtn.isChecked() && (TextUtils.isEmpty(mCustomTeamHomeEditTxt
-                .getText().toString()) || TextUtils.isEmpty(mCustomTeamAwayEditTxt.getText()
-                .toString()))) {
-            Toast.makeText(this, "Enter team names for a custom event.", Toast.LENGTH_SHORT).show();
+        //} else if (mCustomRadioBtn.isChecked() && (TextUtils.isEmpty(mCustomTeamHomeEditTxt
+        //        .getText().toString()) || TextUtils.isEmpty(mCustomTeamAwayEditTxt.getText()
+        //        .toString()))) {
+        //    Toast.makeText(this, "Enter team names for a custom event.", Toast.LENGTH_SHORT).show();
         } else if (mFirstFreeGame) {
             FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance()
                     .getCurrentUser().getUid()).child("free_first_game").setValue(false);
@@ -932,52 +932,52 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void uploadData(String imageUrl) {
-        mImageUrl = imageUrl;
+        //mImageUrl = imageUrl;
 
-        if (mCustomRadioBtn.isChecked()) {
-            createCustomEvent();
-        } else {
+        //if (mCustomRadioBtn.isChecked()) {
+        //    createCustomEvent();
+        //} else {
             saveGame();
-        }
+       // }
     }
 
-    private void createCustomEvent() {
-        mEventId = Util.generateGameId();
-        TeamHome teamHome = new TeamHome("http://moyersoftware.com/contender/images/tba.png",
-                mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0",
-                "0", "0"), "", "", "", "", "", "", "");
-        TeamAway teamAway = new TeamAway("http://moyersoftware.com/contender/images/tba.png",
-                mCustomTeamAwayEditTxt.getText().toString(), new Score("0", "0", "0",
-                "0", "0"), "", "", "", "", "", "", "");
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.MONTH, Calendar.JANUARY);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
+    //private void createCustomEvent() {
+    //    mEventId = Util.generateGameId();
+    //    TeamHome teamHome = new TeamHome("http://moyersoftware.com/contender/images/tba.png",
+    //            mCustomTeamHomeEditTxt.getText().toString(), new Score("0", "0", "0",
+    //            "0", "0"), "", "", "", "", "", "", "");
+     //   TeamAway teamAway = new TeamAway("http://moyersoftware.com/contender/images/tba.png",
+    //            mCustomTeamAwayEditTxt.getText().toString(), new Score("0", "0", "0",
+    //            "0", "0"), "", "", "", "", "", "", "");
+    //    Calendar calendar = Calendar.getInstance();
+    //    calendar.add(Calendar.YEAR, 1);
+    //    calendar.set(Calendar.DAY_OF_MONTH, 1);
+    //    calendar.set(Calendar.MONTH, Calendar.JANUARY);
+    //    calendar.set(Calendar.HOUR_OF_DAY, 0);
+     //   calendar.set(Calendar.MINUTE, 0);
 
-        retrofit2.Call<Void> call = ApiFactory.getApiService().createEvent(new Event(mEventId,
-                teamAway, teamHome, calendar.getTimeInMillis(), "Custom game board", "Custom games",
-                HostEventsAdapter.TYPE_ITEM, true));
-        call.enqueue(new retrofit2.Callback<Void>() {
-            @Override
-            public void onResponse(retrofit2.Call<Void> call,
-                                   retrofit2.Response<Void> response) {
-                if (response.isSuccessful()) {
-                    mCustom = true;
-                    saveGame();
-                } else {
-                    Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
-                            .show();
-                }
+    //    retrofit2.Call<Void> call = ApiFactory.getApiService().createEvent(new Event(mEventId,
+     //           teamAway, teamHome, calendar.getTimeInMillis(), "Custom game board", "Custom games",
+    //            HostEventsAdapter.TYPE_ITEM, true));
+    //    call.enqueue(new retrofit2.Callback<Void>() {
+    //        @Override
+    //        public void onResponse(retrofit2.Call<Void> call,
+    //                               retrofit2.Response<Void> response) {
+     //           if (response.isSuccessful()) {
+     //               mCustom = true;
+     //               saveGame();
+     //           } else {
+    //                Toast.makeText(HostActivity.this, "Can't create a game", Toast.LENGTH_SHORT)
+    //                        .show();
+     //           }
                 //mProgressDialog.cancel();
-            }
+     //       }
 
-            @Override
-            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-            }
-        });
-    }
+     //       @Override
+    //        public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+    //        }
+    //    });
+    //}
 
     private void saveGame() {
         try {
@@ -1015,43 +1015,43 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void uploadImage() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] data = outputStream.toByteArray();
+    //private void uploadImage() {
+     //   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+     //   mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+     //   byte[] data = outputStream.toByteArray();
 
-        UploadTask uploadTask = mImageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Util.Log("File uploading failure: " + exception);
+     //   UploadTask uploadTask = mImageRef.putBytes(data);
+     //   uploadTask.addOnFailureListener(new OnFailureListener() {
+     //       @Override
+     //       public void onFailure(@NonNull Exception exception) {
+     //           // Handle unsuccessful uploads
+     //           Util.Log("File uploading failure: " + exception);
 
-                Toast.makeText(HostActivity.this, "Can't upload image", Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //noinspection VisibleForTests
-                @SuppressWarnings("ConstantConditions")
-                Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                downUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        uploadData(uri.toString());
-                    }
-                });
-            }
-        });
-    }
+     //           Toast.makeText(HostActivity.this, "Can't upload image", Toast.LENGTH_LONG).show();
+     //       }
+     //   }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+     //       @Override
+     //       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+     //           //noinspection VisibleForTests
+     //           @SuppressWarnings("ConstantConditions")
+     //           Task<Uri> downUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+     //           downUrl.addOnSuccessListener(new OnSuccessListener<Uri>() {
+     //               @Override
+      //              public void onSuccess(Uri uri) {
+      //                  uploadData(uri.toString());
+      //              }
+      //          });
+      //      }
+      //  });
+    //}
 
-    public void onImageButtonClicked(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a game image"),
-                PICK_IMAGE_CODE);
-    }
+    //public void onImageButtonClicked(View view) {
+    //    Intent intent = new Intent();
+    //    intent.setType("image/*");
+    //    intent.setAction(Intent.ACTION_GET_CONTENT);
+    //    startActivityForResult(Intent.createChooser(intent, "Select a game image"),
+    //            PICK_IMAGE_CODE);
+    //}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1124,11 +1124,11 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             //mProgressDialog = ProgressDialog.show(getApplicationContext(), "Creating game...", null, false);
             //mProgressDialog.show();
 
-            if (mBitmap != null) {
-                uploadImage();
-            } else {
+            //if (mBitmap != null) {
+            //    uploadImage();
+            //} else {
                 uploadData(null);
-            }
+            //}
         } catch (Exception e) {
             Toast.makeText(HostActivity.this, "Can't create game:" + e.toString(), Toast.LENGTH_LONG).show();
         }

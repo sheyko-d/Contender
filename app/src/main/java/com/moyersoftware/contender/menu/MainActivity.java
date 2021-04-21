@@ -56,8 +56,8 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 public class MainActivity extends AppCompatActivity {
 
     // Views
-    @BindView(R.id.main_tab_layout)
-    TabLayout mTabLayout;
+    //@BindView(R.id.main_tab_layout)
+    //TabLayout mTabLayout;
     @BindView(R.id.main_pager)
     ViewPager mPager;
 
@@ -381,11 +381,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTabs() {
-        mTabLayout.setupWithViewPager(mPager);
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+        //mTabLayout.setupWithViewPager(mPager);
+        //for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             //noinspection ConstantConditions
-            mTabLayout.getTabAt(i).setIcon(mTabIcons[i]);
-        }
+        //    mTabLayout.getTabAt(i).setIcon(mTabIcons[i]);
+        //}
     }
 
     /**
@@ -420,13 +420,13 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra(Intent.EXTRA_EMAIL, new String[]{Util.SUPPORT_EMAIL});
                         String subject;
                         if (selectedPosition == 0) {
-                            subject = "Support Issue (Contender)";
+                            subject = "Support Issue (Android Squares)";
                         } else if (selectedPosition == 1) {
-                            subject = "Report Abuse (Contender)";
+                            subject = "Report Abuse (Android Squares)";
                         } else if (selectedPosition == 2) {
-                            subject = "Suggestions (Contender)";
+                            subject = "Suggestions (Android Squares)";
                         } else {
-                            subject = "Feedback (Contender)";
+                            subject = "Feedback (Android Squares)";
                         }
                         i.putExtra(Intent.EXTRA_SUBJECT, subject);
                         try {

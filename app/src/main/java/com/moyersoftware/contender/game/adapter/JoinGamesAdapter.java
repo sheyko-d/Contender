@@ -54,7 +54,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
             holder.nameTxt.setText(game.getName());
             holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
                     (game.getAuthor().getEmail())));
-            Picasso.get().load(game.getImage()).placeholder(R.drawable.placeholder)
+            Picasso.get().load(game.getImage()).placeholder(R.drawable.icon)
                     .centerCrop().fit().into(holder.img);
 
             if (game.getPlayers() != null && game.getPlayers().contains(new Player(mMyId, null,
