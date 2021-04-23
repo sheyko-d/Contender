@@ -264,7 +264,7 @@
                 android:id="@+id/contender_logo"
                 android:layout_width="220dp"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -285,9 +285,9 @@
                     android:padding="36dp">
 
                     <TextView
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/didact_gothic"
                         android:text="Rules"
                         android:textAllCaps="true"
                         android:textColor="@color/primary_text"
@@ -447,10 +447,10 @@
                         android:src="@drawable/icon" />
 
                     <TextView
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:fontFamily="@font/didact_gothic"
                         android:gravity="center_horizontal"
                         android:text="Created by"
                         android:textAllCaps="true"
@@ -458,18 +458,18 @@
                         android:textSize="8sp" />
 
                     <TextView
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/didact_gothic"
                         android:gravity="center_horizontal"
                         android:text="MoyerSoftware LLC"
                         android:textColor="@color/primary_text"
                         android:textSize="8sp" />
 
                     <TextView
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/didact_gothic"
                         android:gravity="center_horizontal"
                         android:text="www.MoyerSoftware.com"
                         android:textColor="@color/green"

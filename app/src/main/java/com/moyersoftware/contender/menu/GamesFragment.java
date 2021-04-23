@@ -7,11 +7,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +39,7 @@ import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.JoinActivity;
 import com.moyersoftware.contender.game.data.Event;
 import com.moyersoftware.contender.game.data.GameInvite;
+import com.moyersoftware.contender.game.data.SelectedSquare;
 import com.moyersoftware.contender.game.service.firebase.MyFirebaseMessagingService;
 import com.moyersoftware.contender.menu.adapter.GamesAdapter;
 import com.moyersoftware.contender.menu.data.Player;
@@ -57,25 +62,30 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.moyersoftware.contender.util.MyApplication.getContext;
+
 public class GamesFragment extends Fragment {
 
     // Views
     @BindView(R.id.games_recycler)
     RecyclerView mGamesRecycler;
-    @BindView(R.id.games_host_btn)
-    Button mHostBtn;
-    @BindView(R.id.games_join_btn)
-    Button mJoinBtn;
+    //@BindView(R.id.games_host_btn)
+    //Button mHostBtn;
+    //@BindView(R.id.games_join_btn)
+    //Button mJoinBtn;
     @BindView(R.id.games_title_txt)
     TextView mTitleTxt;
-    @BindView(R.id.games_how_to_use_btn)
-    Button mHowToUseBtn;
-    @BindView(R.id.games_how_to_btn)
-    Button mHowToBtn;
-    @BindView(R.id.welcome_close_img)
-    View mCloseImg;
-    @BindView(R.id.welcome_layout)
-    View mWelcomeLayout;
+    //@BindView(R.id.games_how_to_use_btn)
+    //Button mHowToUseBtn;
+    //@BindView(R.id.games_how_to_btn)
+    //Button mHowToBtn;
+    //@BindView(R.id.welcome_close_img)
+    //View mCloseImg;
+    //@BindView(R.id.welcome_layout)
+    //View mWelcomeLayout;
+    @BindView(R.id.btn_fab)
+    FloatingActionButton fab;
+    private PopupWindow popupWindow;
 
     // Usual variables
     private final ArrayList<GameInvite.Game> mGames = new ArrayList<>();
@@ -103,7 +113,7 @@ public class GamesFragment extends Fragment {
         initDatabase();
         initRecycler();
         initButtons();
-        initWelcomeLayout();
+        //initWelcomeLayout();
 
         return view;
     }
@@ -168,17 +178,17 @@ public class GamesFragment extends Fragment {
         });
     }
 
-    private void initWelcomeLayout() {
-        if (Util.showWelcomeBanner(mFirebaseUser.getUid()))
-            mWelcomeLayout.setVisibility(View.VISIBLE);
-        mCloseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mWelcomeLayout.setVisibility(View.GONE);
-                Util.hideWelcomeBanner(mFirebaseUser.getUid());
-            }
-        });
-    }
+    //private void initWelcomeLayout() {
+    //    if (Util.showWelcomeBanner(mFirebaseUser.getUid()))
+    //        mWelcomeLayout.setVisibility(View.VISIBLE);
+    //    mCloseImg.setOnClickListener(new View.OnClickListener() {
+    //        @Override
+     //       public void onClick(View view) {
+    //            mWelcomeLayout.setVisibility(View.GONE);
+    //            Util.hideWelcomeBanner(mFirebaseUser.getUid());
+    //        }
+    //    });
+    //}
 
     public void initDatabase() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -339,31 +349,72 @@ public class GamesFragment extends Fragment {
     }
 
     private void initButtons() {
-        mHostBtn.setOnClickListener(new View.OnClickListener() {
+        //mHostBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        startActivity(new Intent(getActivity(), HostActivity.class));
+        //    }
+        //});
+        //mJoinBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        startActivity(new Intent(getActivity(), JoinActivity.class));
+        //    }
+        //});
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), HostActivity.class));
+                PopupWindow popupwindow_obj = popupDisplay();
+            popupwindow_obj.showAtLocation(fab, Gravity.TOP, fab.getLeft(), fab.getTop() );
             }
         });
-        mJoinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //mHowToBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+         //       startActivity(new Intent(getActivity(), HowToPlayActivity.class));
+        //    }
+        //});
+        //mHowToUseBtn.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        startActivity(new Intent(getActivity(), HowToUseActivity.class));
+        //    }
+        //});
+    }
+
+    public PopupWindow popupDisplay() {
+        popupWindow = new PopupWindow(getActivity());
+
+        // inflate your layout or dynamically add view
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view;
+
+        view = inflater.inflate(R.layout.popup_host_join, null);
+
+        view.findViewById(R.id.game_join).setOnClickListener(menuClickListener);
+        view.findViewById(R.id.game_host).setOnClickListener(menuClickListener);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(view);
+
+        return popupWindow;
+    }
+
+    View.OnClickListener menuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            popupWindow.dismiss();
+
+            if (v.getId() == R.id.game_host) {
+                startActivity(new Intent(getActivity(), HostActivity.class));
+            } else if (v.getId() == R.id.game_join) {
                 startActivity(new Intent(getActivity(), JoinActivity.class));
             }
-        });
-        mHowToBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), HowToPlayActivity.class));
-            }
-        });
-        mHowToUseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), HowToUseActivity.class));
-            }
-        });
-    }
+        }
+    };
 
     public void joinGame(String gameId) {
         startActivity(new Intent(getActivity(), GameBoardActivity.class)

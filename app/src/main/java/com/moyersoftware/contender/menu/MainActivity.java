@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.facebook.applinks.AppLinkData;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,7 +40,6 @@ import com.moyersoftware.contender.game.HowToPlayActivity;
 import com.moyersoftware.contender.game.HowToUseActivity;
 import com.moyersoftware.contender.game.data.GameInvite;
 import com.moyersoftware.contender.game.service.WinnerService;
-import com.moyersoftware.contender.login.LoadingActivity;
 import com.moyersoftware.contender.login.LoginActivity;
 import com.moyersoftware.contender.menu.adapter.MainPagerAdapter;
 import com.moyersoftware.contender.menu.data.Friendship;
@@ -56,8 +56,8 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 public class MainActivity extends AppCompatActivity {
 
     // Views
-    //@BindView(R.id.main_tab_layout)
-    //TabLayout mTabLayout;
+    @BindView(R.id.main_tab_layout)
+    TabLayout mTabLayout;
     @BindView(R.id.main_pager)
     ViewPager mPager;
 
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         updateGoogleToken();
+
     }
 
     private void updateGoogleToken() {
@@ -381,11 +382,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTabs() {
-        //mTabLayout.setupWithViewPager(mPager);
-        //for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+        mTabLayout.setupWithViewPager(mPager);
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             //noinspection ConstantConditions
-        //    mTabLayout.getTabAt(i).setIcon(mTabIcons[i]);
-        //}
+            mTabLayout.getTabAt(i).setIcon(mTabIcons[i]);
+        }
     }
 
     /**
