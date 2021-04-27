@@ -60,14 +60,17 @@
         events such as football games. Football Squares is a game played while watching Football
         games. To read how it is played, go to this link: http://www.footballsquares.net/pages/help.
     </string>
-    <string name="settings_about_copyright">Copyright © 2021 MoyerSoftware LLC
-        \nwww.MoyerSoftware.com
+    <string name="settings_about_copyright">www.MoyerSoftware.com
     </string>
     <string name="games_how_to">How to Play\nSquares</string>
     <string name="about_version">1.0.16</string>
     <string name="settings_how_to">How to Play Squares</string>
     <string name="settings_how_to_use">How to Use Contender</string>
     <string name="username_hint">Enter your username</string>
+    <string name="about_company1">Copyright © 2021</string>
+    <string name="about_company2">moyer</string>
+    <string name="about_company3">software</string>
+    <string name="about_company4">LLC</string>
 
     <!-- How to Play screen -->
     <string name="title_activity_how_to_play">How to Play Squares</string>

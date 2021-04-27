@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Usual variables
     private final int[] mTabIcons = new int[]{
-            R.drawable.tab_home,
-            R.drawable.tab_friends,
-            R.drawable.tab_settings
+            R.drawable.icon_home,
+            R.drawable.icon_news,
+            R.drawable.icon_settings
     };
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         initPager();
         initTabs();
         initUser();
-        updatePhoneNumber();
+        //updatePhoneNumber();
 
         if (!Util.isTutorialShown(mFirebaseUser.getUid())) {
             startActivity(new Intent(this, HowToPlayActivity.class));
@@ -121,36 +121,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePhoneNumber() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
+    //private void updatePhoneNumber() {
+    //    if (ContextCompat.checkSelfPermission(this,
+    //            Manifest.permission.READ_PHONE_STATE)
+    //            != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_PHONE_STATE},
-                    0);
-            return;
-        }
+    //        ActivityCompat.requestPermissions(this,
+    //                new String[]{Manifest.permission.READ_PHONE_STATE},
+    //                0);
+    //        return;
+    //    }
 
-        try {
-            TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            @SuppressLint("HardwareIds") String phoneNumber = tMgr.getLine1Number();
+    //    try {
+    //        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+    //        @SuppressLint("HardwareIds") String phoneNumber = tMgr.getLine1Number();
 
-            FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
-                    .child("phone").setValue(phoneNumber);
-        }catch (Exception e){
-            Util.Log("Phone permission is not granted");
-        }
-    }
+    //        FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid())
+    //                .child("phone").setValue(phoneNumber);
+    //    }catch (Exception e){
+    //        Util.Log("Phone permission is not granted");
+    //    }
+    //}
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            updatePhoneNumber();
-        }
-    }
+   // @Override
+    //public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+     //                                      @NonNull int[] grantResults) {
+    //    if (grantResults.length > 0
+    //            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    //        updatePhoneNumber();
+    //    }
+    //}
 
     private void checkFacebookInvite() {
         AppLinkData.fetchDeferredAppLinkData(this, new AppLinkData.CompletionHandler() {

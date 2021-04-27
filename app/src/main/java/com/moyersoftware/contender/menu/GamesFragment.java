@@ -365,7 +365,7 @@ public class GamesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 PopupWindow popupwindow_obj = popupDisplay();
-            popupwindow_obj.showAtLocation(fab, Gravity.TOP, fab.getLeft(), fab.getTop() );
+            popupwindow_obj.showAtLocation(fab, Gravity.TOP, fab.getLeft(), fab.getTop() - 48 );
             }
         });
         //mHowToBtn.setOnClickListener(new View.OnClickListener() {
@@ -378,7 +378,7 @@ public class GamesFragment extends Fragment {
         //    @Override
         //    public void onClick(View v) {
         //        startActivity(new Intent(getActivity(), HowToUseActivity.class));
-        //    }
+        //    }Check game
         //});
     }
 

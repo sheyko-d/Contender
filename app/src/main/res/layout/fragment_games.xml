@@ -57,6 +57,7 @@
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:src="@drawable/icon_football"
+            android:tint="@color/theme_gray_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:maxImageSize="36dp" />

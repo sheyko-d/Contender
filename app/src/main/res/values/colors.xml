@@ -28,5 +28,7 @@
     <color name="theme_gray">#969795</color>
     <color name="theme_gray_dark">#484947</color>
     <color name="theme_black">#252525</color>
+    <color name="company_blue1">#0353a4</color>
+    <color name="company_blue2">#023e7d</color>
 
 </resources>

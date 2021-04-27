@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,10 +40,13 @@ import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class SettingsFragment extends Fragment {
 
@@ -62,6 +67,8 @@ public class SettingsFragment extends Fragment {
     //Button mPhotoBtn;
     @BindView(R.id.editUsernameImg)
     View mEditUsernameImg;
+    @BindView(R.id.txt_version)
+    TextView txtVer;
 
     // Usual variables
     private Bitmap mBitmap;
@@ -102,6 +109,7 @@ public class SettingsFragment extends Fragment {
         initMyAccount();
         initStorage();
         initSettings();
+        setVersion();
 
         return view;
     }
@@ -256,4 +264,17 @@ public class SettingsFragment extends Fragment {
         // Create a reference the photo
         mImageRef = storageRef.child(mUserId + ".jpg");
     }
+
+    private void setVersion(){
+
+        try {
+            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            String version = pInfo.versionName;
+            txtVer.setText("version "+version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
