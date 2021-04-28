@@ -21,8 +21,8 @@
     <string name="login_submit">Sign in</string>
 
     <!-- Games screen -->
-    <string name="games_title">Current Games</string>
-    <string name="games_title_empty">No games found</string>
+    <string name="games_title">My Games</string>
+    <string name="games_title_empty">No active games found</string>
     <string name="games_host">Host a Game</string>
     <string name="games_join">Join a Game</string>
     <string name="games_score">%1$d squares - %2$d/100</string>
