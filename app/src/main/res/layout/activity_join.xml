@@ -1,73 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout6"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.moyersoftware.contender.menu.MainActivity"
     tools:ignore="MissingPrefix"
     tools:targetApi="lollipop">
 
-    <TextView
-        android:fontFamily="@font/montserrat"
-        android:id="@+id/textView3"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_gray"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/app_title1"
-        android:textColor="@color/color_green"
-        android:textSize="24sp"
-        android:elevation="4dp"/>
+        android:background="@color/theme_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:fontFamily="@font/montserrat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_gray"
-        android:elevation="4dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/app_title2"
-        android:textColor="@color/color_lightgray"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:fontFamily="@font/montserrat"
+            android:includeFontPadding="false"
+            android:paddingLeft="16dp"
+            android:text="@string/app_title1"
+            android:textColor="@color/theme_green"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/color_gray"
-        android:elevation="4dp"
-        android:orientation="horizontal">
-
-        <ImageView
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:elevation="4dp"
+            android:fontFamily="@font/montserrat"
+            android:paddingLeft="16dp"
+            android:text="@string/app_title2"
+            android:textColor="@color/theme_gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/theme_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="@null"
             android:onClick="onBackButtonClicked"
-            android:src="@drawable/back" />
+            android:src="@drawable/icon_left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
         <TextView
-            android:fontFamily="@font/didact_gothic"
-            android:layout_width="match_parent"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/raleway_light"
             android:includeFontPadding="false"
-            android:text="@string/games_join"
+            android:text="JOIN A GAME"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/join_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

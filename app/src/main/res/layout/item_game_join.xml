@@ -33,32 +33,32 @@
 
             <TextView
                 android:id="@+id/game_name_txt"
-                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_semibold"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
                 tools:text="Big Day" />
 
             <TextView
                 android:id="@+id/game_author_txt"
-                android:fontFamily="@font/didact_gothic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="2dp"
+                android:fontFamily="@font/raleway_light"
                 android:includeFontPadding="false"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 tools:text="Created by @sd1234" />
         </LinearLayout>
 
         <Button
             android:id="@+id/game_join_btn"
-            android:fontFamily="@font/didact_gothic"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
+            android:fontFamily="@font/raleway_semibold"
             android:stateListAnimator="@null"
             android:text="@string/join_btn"
             android:textSize="14sp"
