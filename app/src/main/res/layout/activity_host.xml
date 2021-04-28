@@ -120,8 +120,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout8"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/textView18"
@@ -151,12 +150,14 @@
 
                     <TextView
                         android:id="@+id/host_id_txt"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtGameID"
                         tools:text="54897678" />
@@ -177,13 +178,15 @@
 
                     <TextView
                         android:id="@+id/txtGameName_sub"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="Name your game so players know it's yours"
+                        android:text="Give your game a custom name"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtGameName" />
 
@@ -197,6 +200,7 @@
                         android:fontFamily="@font/raleway_light"
                         android:inputType="textCapWords"
                         android:textColor="@color/theme_green"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtGameName_sub" />
@@ -217,13 +221,15 @@
 
                     <TextView
                         android:id="@+id/txtGamePassword_sub"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="Enter at least 4 numbers"
+                        android:text="Must be at least 4 numbers"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtGamePassword" />
 
@@ -237,6 +243,7 @@
                         android:fontFamily="@font/raleway_light"
                         android:inputType="number"
                         android:textColor="@color/theme_green"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtGamePassword_sub"
@@ -285,7 +292,7 @@
                                 android:id="@+id/host_event_txt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_light"
                                 android:paddingLeft="16dp"
                                 android:paddingTop="12dp"
                                 android:paddingRight="16dp"
@@ -322,21 +329,21 @@
 
                     <TextView
                         android:id="@+id/txtPointsGame_sub"
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="How much will each square cost?"
+                        android:text="Enter the cost per square"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtPointsGame" />
 
                     <EditText
                         android:id="@+id/host_square_price_edit_txt"
                         style="@style/EditText"
-                        fontPath="fonts/gothic.ttf"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -348,7 +355,8 @@
                         android:textColor="@color/theme_green"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtPointsGame_sub" />
+                        app:layout_constraintTop_toBottomOf="@id/txtPointsGame_sub"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/txtPointsQuarter"
@@ -366,14 +374,15 @@
 
                     <TextView
                         android:id="@+id/txtPointsQuarter_sub"
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="How many points will each quarter be worth?"
+                        android:text="What will the payout breakdown be per quarter?"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtPointsQuarter" />
 
@@ -398,10 +407,10 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:fontFamily="@font/raleway_light"
                                 android:gravity="center"
                                 android:text="Q1"
                                 android:textColor="@color/secondary_text"
@@ -414,7 +423,7 @@
                                 android:layout_marginTop="2dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="@null"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_semibold"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:text="20"
@@ -434,10 +443,10 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:fontFamily="@font/raleway_light"
                                 android:gravity="center"
                                 android:text="Q2"
                                 android:textColor="@color/secondary_text"
@@ -450,7 +459,7 @@
                                 android:layout_marginTop="2dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="@null"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_semibold"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:text="20"
@@ -470,10 +479,10 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:fontFamily="@font/raleway_light"
                                 android:gravity="center"
                                 android:text="Q3"
                                 android:textColor="@color/secondary_text"
@@ -486,7 +495,7 @@
                                 android:layout_marginTop="2dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="@null"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_semibold"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:text="20"
@@ -506,10 +515,10 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:fontFamily="@font/raleway_light"
                                 android:gravity="center"
                                 android:text="Final"
                                 android:textColor="@color/secondary_text"
@@ -522,7 +531,7 @@
                                 android:layout_marginTop="2dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="@null"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_semibold"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:text="40"
@@ -542,10 +551,10 @@
                             android:orientation="vertical">
 
                             <TextView
-                                fontPath="fonts/gothic.ttf"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
+                                android:fontFamily="@font/raleway_light"
                                 android:gravity="center"
                                 android:text="Total"
                                 android:textColor="@color/green"
@@ -558,7 +567,7 @@
                                 android:layout_marginTop="2dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="@null"
-                                android:fontFamily="@font/didact_gothic"
+                                android:fontFamily="@font/raleway_semibold"
                                 android:gravity="center"
                                 android:text="100"
                                 android:textColor="@color/green"
@@ -582,21 +591,21 @@
 
                     <TextView
                         android:id="@+id/txtRules_sub"
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="Enter any rules you want"
+                        android:text="Enter any custom rules you may have for your game"
                         android:textColor="@color/secondary_text"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtRules" />
 
                     <EditText
                         android:id="@+id/host_rules_edit_txt"
                         style="@style/EditText"
-                        fontPath="fonts/gothic.ttf"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -611,6 +620,7 @@
                         android:paddingTop="10dp"
                         android:paddingRight="16dp"
                         android:paddingBottom="32dp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtRules_sub"
@@ -618,116 +628,129 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/didact_gothic"
-                android:text="@string/host_game_options"
-                android:textAllCaps="true"
-                android:textColor="@color/colorAccent"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@+id/cardView6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView5" />
-
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="@color/background_light"
+                android:layout_marginEnd="8dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardView5">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="16dp"
-                        android:fontFamily="@font/didact_gothic"
-                        android:text="Squares Limit"
-                        android:textColor="@color/primary_text"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="16dp"
-                        android:text="What is the max number of squares a player is allowed to choose?"
+                        android:fontFamily="@font/raleway_light"
+                        android:text="@string/host_game_options"
+                        android:textAllCaps="true"
                         android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtSquaresLimit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/raleway_semibold"
+                        android:text="Squares Limit"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary_text"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView2" />
+
+                    <TextView
+                        android:id="@+id/txtSquaresLimit_sub"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/raleway_light"
+                        android:text="What is the maximum amount of squares each player can choose?"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtSquaresLimit" />
 
                     <EditText
                         android:id="@+id/host_square_limit_edit_txt"
                         style="@style/EditText"
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="-8dp"
-                        android:layout_marginRight="14dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/raleway_light"
                         android:hint="@string/host_default_square_limit"
                         android:inputType="number"
                         android:max="3"
                         android:text="@string/host_default_square_limit"
-                        android:textColorHint="@color/secondary_text" />
+                        android:textColor="@color/theme_green"
+                        android:textColorHint="@color/secondary_text"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtSquaresLimit_sub" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtIncomplete"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginRight="16dp"
-                        android:fontFamily="@font/didact_gothic"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/raleway_semibold"
                         android:text="Allow Incomplete Boards"
+                        android:textAllCaps="true"
                         android:textColor="@color/primary_text"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/host_square_limit_edit_txt" />
 
                     <TextView
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtIncomplete_sub"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="16dp"
-                        android:text="If a board is not 100% filled in, allow the game to be played? Points that are not won due to the board not being filled will be rolled over to the FINAL score winnings."
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/raleway_light"
+                        android:text="Should the game be playable if all 100 squares are not chosen by players? Payouts for quarters with no winner will be rolled forward automatically"
                         android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtIncomplete" />
 
                     <RadioGroup
-                        android:layout_width="match_parent"
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="10dp"
                         android:checkedButton="@+id/host_allow_radio_btn"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtIncomplete_sub">
 
                         <RadioButton
                             android:id="@+id/host_allow_radio_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/didact_gothic"
+                            android:fontFamily="@font/raleway"
                             android:text="Allow Incomplete"
                             android:textColor="@color/secondary_text"
                             android:textSize="14sp" />
@@ -738,25 +761,30 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
-                            android:fontFamily="@font/didact_gothic"
+                            android:fontFamily="@font/raleway"
                             android:text="Don't Allow"
                             android:textColor="@color/secondary_text"
                             android:textSize="14sp" />
                     </RadioGroup>
 
-                    <Button
-                        fontPath="fonts/gothic.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="64dp"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="14dp"
-                        android:layout_marginBottom="16dp"
-                        android:onClick="onCreateButtonClicked"
-                        android:text="@string/host_create"
-                        android:theme="@style/Button" />
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnCreate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="onCreateButtonClicked"
+                android:text="@string/host_create"
+                android:theme="@style/Button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
