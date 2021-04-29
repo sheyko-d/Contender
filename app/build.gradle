@@ -13,7 +13,7 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1271
+        versionCode 1272
         versionName '3.0.00'
     }
     buildTypes {
@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.android.billingclient:billing:3.0.3'
+    implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
 
 
 }
