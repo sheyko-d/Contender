@@ -230,6 +230,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mHomeFinalTitleTxt;
     @BindView(R.id.board_info_game_id_txt)
     TextView mGameIdTxt;
+    @BindView(R.id.numPlayersTxt)
+    TextView numPlayers;
 
     // Usual variables
     private int mTotalScrollY;
@@ -275,6 +277,7 @@ public class GameBoardActivity extends AppCompatActivity {
     private ViewPager pager;
     private PopupWindow popupWindow;
     private boolean isActivityActive = false;
+    private int numP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -504,6 +507,7 @@ public class GameBoardActivity extends AppCompatActivity {
         playerEmail.setText(game.getAuthor().getEmail());
         //playerName.setText(parseNameAbbr(game.getAuthor().getName()));
         mPlayersLayout.addView(playerLayout);
+        numP = 1;
         for (Player player : game.getPlayers()) {
             playerLayout = LayoutInflater.from(this)
                     .inflate(R.layout.item_player_avatar, null);
@@ -520,8 +524,10 @@ public class GameBoardActivity extends AppCompatActivity {
             playerName.setText(player.getName());
             playerEmail.setText(player.getEmail());
 
+            numP++;
             mPlayersLayout.addView(playerLayout);
         }
+        numPlayers.setText(numP+" players");
 
         mPdfQ1Txt.setText(String.valueOf(game.getQuarter1Price()));
         mPdfQ2Txt.setText(String.valueOf(game.getQuarter2Price()));
@@ -677,10 +683,10 @@ public class GameBoardActivity extends AppCompatActivity {
                     mHomeNameTxt.setText(event.getTeamHome().getName());
 
                     // Init bottom section info
-                    mInfoAwayNameTxt.setText(event.getTeamAway().getName() + " "
-                            + event.getTeamAway().getAbbrev());
-                    mInfoHomeNameTxt.setText(event.getTeamHome().getName() + " "
-                            + event.getTeamHome().getAbbrev());
+                    mInfoAwayNameTxt.setText(event.getTeamAway().getAbbrev() + " "
+                            + event.getTeamAway().getName());
+                    mInfoHomeNameTxt.setText(event.getTeamHome().getAbbrev() + " "
+                            + event.getTeamHome().getName());
                     mQuarterHomeTxt.setText(event.getTeamAway().getAbbrev());
                     mQuarterAwayTxt.setText(event.getTeamHome().getAbbrev());
 

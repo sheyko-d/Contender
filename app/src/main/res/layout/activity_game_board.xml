@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/raleway_light"
-                    android:text="1,000 pts"
+                    android:text="3,000 pts"
                     android:textColor="@color/theme_gray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -473,7 +473,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/game_info_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView8"
@@ -632,12 +633,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/raleway_semibold"
                 android:text="PLAYERS"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/board_rules_txt" />
 
@@ -834,6 +833,17 @@
                 </LinearLayout>
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/numPlayersTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/raleway_light"
+                android:text="15 players"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView38"
+                app:layout_constraintStart_toEndOf="@+id/textView38" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
