@@ -52,8 +52,7 @@ public class JoinGamesAdapter extends RecyclerView.Adapter<JoinGamesAdapter.View
         try {
 
             holder.nameTxt.setText(game.getName());
-            holder.authorTxt.setText(mActivity.getString(R.string.join_author_txt, Util.parseUsername
-                    (game.getAuthor().getEmail())));
+            holder.authorTxt.setText("Created by "+game.getAuthor().getName());
             Picasso.get().load(game.getImage()).placeholder(R.drawable.icon)
                     .centerCrop().fit().into(holder.img);
 

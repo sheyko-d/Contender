@@ -79,63 +79,6 @@
                     android:layout_height="1px"
                     android:background="@color/divider" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/raleway_semibold"
-                            android:includeFontPadding="false"
-                            android:paddingLeft="16dp"
-                            android:paddingTop="10dp"
-                            android:paddingRight="16dp"
-                            android:text="Username"
-                            android:textAllCaps="true"
-                            android:textColor="@color/primary_text"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/settings_username_txt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/raleway_light"
-                            android:includeFontPadding="false"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:paddingBottom="12dp"
-                            android:textColor="@color/primary_text"
-                            android:textSize="16sp"
-                            tools:text="sheyko.dmitriy" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/editUsernameImg"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="bottom"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:contentDescription="@null"
-                        android:padding="16dp"
-                        android:src="@drawable/icon_edit"
-                        app:tint="@color/theme_gray" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/divider" />
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -375,12 +318,13 @@
         android:id="@+id/txt_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/raleway_light"
         android:text="version 3.0.00"
         android:textColor="@color/theme_gray_dark"
         android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView20"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="676dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,16 +57,16 @@ public class SettingsFragment extends Fragment {
     // Views
     @BindView(R.id.settings_name_txt)
     TextView mNameTxt;
-    @BindView(R.id.settings_username_txt)
-    TextView mUsernameTxt;
+    //@BindView(R.id.settings_username_txt)
+    //TextView mUsernameTxt;
     @BindView(R.id.settings_email_txt)
     TextView mEmailTxt;
     //@BindView(R.id.settings_photo_img)
     //ImageView mPhotoImg;
     //@BindView(R.id.settings_photo_btn)
     //Button mPhotoBtn;
-    @BindView(R.id.editUsernameImg)
-    View mEditUsernameImg;
+    //@BindView(R.id.editUsernameImg)
+    //View mEditUsernameImg;
     @BindView(R.id.txt_version)
     TextView txtVer;
 
@@ -115,12 +115,12 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initSettings() {
-        mEditUsernameImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editUsername();
-            }
-        });
+        //mEditUsernameImg.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        editUsername();
+        //    }
+        //});
     }
 
     private void editUsername() {
@@ -142,7 +142,7 @@ public class SettingsFragment extends Fragment {
                 if (!TextUtils.isEmpty(username.getText())) {
                     FirebaseDatabase.getInstance().getReference().child("users").child(mUserId)
                             .child("username").setValue(username.getText().toString());
-                    mUsernameTxt.setText(username.getText().toString());
+                    //mUsernameTxt.setText(username.getText().toString());
                 }
             }
         });
@@ -160,7 +160,7 @@ public class SettingsFragment extends Fragment {
             } catch (Exception e) {
                 mUsername = "";
             }
-            mUsernameTxt.setText(mUsername);
+            //mUsernameTxt.setText(mUsername);
             mEmailTxt.setText(user.getEmail());
             //Picasso.get().load(Util.getPhoto())
             //        .placeholder(R.drawable.avatar_placeholder).fit().into(mPhotoImg);
@@ -180,10 +180,10 @@ public class SettingsFragment extends Fragment {
                                 if (dataSnapshot != null
                                         && !TextUtils.isEmpty(dataSnapshot.getValue().toString())) {
                                     mUsername = dataSnapshot.getValue().toString();
-                                    mUsernameTxt.setText(mUsername);
+                                    //mUsernameTxt.setText(mUsername);
                                 }
                             } catch (Exception e) {
-                                mUsernameTxt.setText("");
+                                //mUsernameTxt.setText("");
                                 // Can't retrieve Firebase profile
                             }
                         }

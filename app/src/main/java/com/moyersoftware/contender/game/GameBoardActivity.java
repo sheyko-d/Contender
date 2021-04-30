@@ -188,6 +188,8 @@ public class GameBoardActivity extends AppCompatActivity {
     View mGameInfoLayout;
     @BindView(R.id.board_info_title_txt)
     TextView mInfoTitleTxt;
+    @BindView(R.id.board_created_txt)
+    TextView mCreatedTxt;
     @BindView(R.id.board_info_score_txt)
     TextView mInfoScoreTxt;
     @BindView(R.id.board_rules_txt)
@@ -449,6 +451,7 @@ public class GameBoardActivity extends AppCompatActivity {
         mGameName = game.getName();
         mTitleTxt.setText(mGameName);
         mInfoTitleTxt.setText(mGameName);
+        mCreatedTxt.setText((game.getAuthor().getName()));
 
         // Update row numbers
         mRowNumbers.clear();
