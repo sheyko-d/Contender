@@ -194,10 +194,10 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mRulesTxt;
     @BindView(R.id.players_layout)
     ViewGroup mPlayersLayout;
-    @BindView(R.id.tabLayout)
-    TabLayout mTabLayout;
-    @BindView(R.id.scoresPager)
-    ViewPager mScoresPager;
+    //@BindView(R.id.tabLayout)
+    //TabLayout mTabLayout;
+    //@BindView(R.id.scoresPager)
+    //ViewPager mScoresPager;
     @BindView(R.id.score_q1_title)
     TextView mScoreQ1Title;
     @BindView(R.id.score_q1_desc)
@@ -302,9 +302,9 @@ public class GameBoardActivity extends AppCompatActivity {
 
     private void initScoresPager() {
         ScoresPagerAdapter myPagerAdapter = new ScoresPagerAdapter();
-        mScoresPager.setOffscreenPageLimit(4);
-        mScoresPager.setAdapter(myPagerAdapter);
-        mTabLayout.setupWithViewPager(mScoresPager);
+        //mScoresPager.setOffscreenPageLimit(4);
+        //mScoresPager.setAdapter(myPagerAdapter);
+       // mTabLayout.setupWithViewPager(mScoresPager);
     }
 
     private void registerRealTimeListener() {
@@ -467,18 +467,19 @@ public class GameBoardActivity extends AppCompatActivity {
                 || game.getQuarter3Winner() != null
                 || game.getFinalWinner() != null) {
             mScoresLayout.setVisibility(View.VISIBLE);
-            mScoreQ1Title.setText(parseNameAbbr(game.getQuarter1Winner().getPlayer().getName()));
+            //mScoreQ1Title.setText(parseNameAbbr(game.getQuarter1Winner().getPlayer().getName()));
+            mScoreQ1Title.setText(game.getQuarter1Winner().getPlayer().getName());
             mScoreQ1Desc.setText(game.getQuarter1Price() + " pts");
             if (game.getQuarter2Winner() != null) {
-                mScoreQ2Title.setText(parseNameAbbr(game.getQuarter2Winner().getPlayer().getName()));
+                mScoreQ2Title.setText(game.getQuarter2Winner().getPlayer().getName());
                 mScoreQ2Desc.setText(game.getQuarter2Price() + " pts");
             }
             if (game.getQuarter3Winner() != null) {
-                mScoreQ3Title.setText(parseNameAbbr(game.getQuarter3Winner().getPlayer().getName()));
+                mScoreQ3Title.setText(game.getQuarter3Winner().getPlayer().getName());
                 mScoreQ3Desc.setText(game.getQuarter3Price() + " pts");
             }
             if (game.getFinalWinner() != null) {
-                mScoreFinalTitle.setText(parseNameAbbr(game.getFinalWinner().getPlayer().getName()));
+                mScoreFinalTitle.setText(game.getFinalWinner().getPlayer().getName());
                 mScoreFinalDesc.setText(game.getFinalPrice() + " pts");
             }
         } else {
@@ -488,19 +489,23 @@ public class GameBoardActivity extends AppCompatActivity {
         View playerLayout = LayoutInflater.from(this)
                 .inflate(R.layout.item_player_avatar, null);
         TextView playerName = playerLayout.findViewById(R.id.player_name);
-        ImageView playerImage = playerLayout.findViewById(R.id.player_photo);
-        if (TextUtils.isEmpty(game.getAuthor().getPhoto())) {
-            playerImage.setVisibility(View.GONE);
-        } else {
-            playerImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(game.getAuthor().getPhoto()).into(playerImage);
-        }
-        playerName.setText(parseNameAbbr(game.getAuthor().getName()));
+        TextView playerEmail = playerLayout.findViewById(R.id.player_email);
+        //ImageView playerImage = playerLayout.findViewById(R.id.player_photo);
+        //if (TextUtils.isEmpty(game.getAuthor().getPhoto())) {
+            //playerImage.setVisibility(View.GONE);
+        //} else {
+            //playerImage.setVisibility(View.VISIBLE);
+            //Picasso.get().load(game.getAuthor().getPhoto()).into(playerImage);
+        //}
+        playerName.setText(game.getAuthor().getName());
+        playerEmail.setText(game.getAuthor().getEmail());
+        //playerName.setText(parseNameAbbr(game.getAuthor().getName()));
         mPlayersLayout.addView(playerLayout);
         for (Player player : game.getPlayers()) {
             playerLayout = LayoutInflater.from(this)
                     .inflate(R.layout.item_player_avatar, null);
             playerName = playerLayout.findViewById(R.id.player_name);
+            playerEmail = playerLayout.findViewById(R.id.player_email);
             //playerImage = playerLayout.findViewById(R.id.player_photo);
             if (TextUtils.isEmpty(player.getPhoto())) {
                 //playerImage.setVisibility(View.GONE);
@@ -508,7 +513,10 @@ public class GameBoardActivity extends AppCompatActivity {
                 //playerImage.setVisibility(View.VISIBLE);
                 //Picasso.get().load(player.getPhoto()).into(playerImage);
             }
-            playerName.setText(parseNameAbbr(player.getName()));
+            //playerName.setText(parseNameAbbr(player.getName()));
+            playerName.setText(player.getName());
+            playerEmail.setText(player.getEmail());
+
             mPlayersLayout.addView(playerLayout);
         }
 

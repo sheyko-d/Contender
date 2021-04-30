@@ -30,5 +30,6 @@
     <color name="theme_black">#252525</color>
     <color name="company_blue1">#0353a4</color>
     <color name="company_blue2">#023e7d</color>
+    <color name="theme_yellow">#FFE066</color>
 
 </resources>
