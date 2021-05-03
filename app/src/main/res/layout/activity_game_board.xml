@@ -465,8 +465,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/dosis"
                         android:gravity="center_horizontal"
-                        android:text="MoyerSoftware LLC"
-                        android:textColor="@color/company_blue1"
+                        android:text="moyersoftware LLC"
+                        android:textColor="@color/primary_text"
                         android:textSize="8sp" />
 
                     <TextView
@@ -527,7 +527,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:fontFamily="@font/raleway_light"
-                        android:text="@user"
+                        android:text="username"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView19"
                         app:layout_constraintStart_toEndOf="@+id/textView19" />
@@ -721,7 +721,7 @@
                         android:fontFamily="@font/raleway_light"
                         android:textAlignment="center"
                         android:textSize="12sp"
-                        tools:text="@user" />
+                        tools:text="username" />
 
                     <TextView
                         android:id="@+id/score_q1_desc"
@@ -891,12 +891,13 @@
 
                 <TextView
                     android:id="@+id/board_info_time_txt"
-                    android:fontFamily="@font/didact_gothic"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="9"
+                    android:fontFamily="@font/didact_gothic"
                     android:gravity="center"
                     android:includeFontPadding="false"
+                    android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     android:textSize="13sp"
                     tools:text="Q 2 | 14:53" />
@@ -912,21 +913,21 @@
 
                     <TextView
                         android:id="@+id/board_info_away_name_txt"
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/didact_gothic"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
                         tools:text="CAR Panthers" />
 
                     <TextView
                         android:id="@+id/board_info_away_total_score_txt"
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
+                        android:fontFamily="@font/didact_gothic"
                         android:includeFontPadding="false"
                         android:text="07"
                         android:textColor="@android:color/white"
@@ -944,10 +945,10 @@
 
                     <TextView
                         android:id="@+id/board_info_home_total_score_txt"
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/didact_gothic"
                         android:includeFontPadding="false"
                         android:text="14"
                         android:textColor="@android:color/white"
@@ -955,13 +956,13 @@
 
                     <TextView
                         android:id="@+id/board_info_home_name_txt"
-                        android:fontFamily="@font/didact_gothic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"
+                        android:fontFamily="@font/didact_gothic"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
                         tools:text="NE Patriots" />
                 </FrameLayout>
             </LinearLayout>

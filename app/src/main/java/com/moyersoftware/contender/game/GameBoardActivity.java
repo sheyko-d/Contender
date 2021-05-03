@@ -496,6 +496,7 @@ public class GameBoardActivity extends AppCompatActivity {
                 .inflate(R.layout.item_player_avatar, null);
         TextView playerName = playerLayout.findViewById(R.id.player_name);
         TextView playerEmail = playerLayout.findViewById(R.id.player_email);
+        TextView squaresCount = playerLayout.findViewById(R.id.squaresCount);
         //ImageView playerImage = playerLayout.findViewById(R.id.player_photo);
         //if (TextUtils.isEmpty(game.getAuthor().getPhoto())) {
             //playerImage.setVisibility(View.GONE);
@@ -513,6 +514,7 @@ public class GameBoardActivity extends AppCompatActivity {
                     .inflate(R.layout.item_player_avatar, null);
             playerName = playerLayout.findViewById(R.id.player_name);
             playerEmail = playerLayout.findViewById(R.id.player_email);
+            squaresCount = playerLayout.findViewById(R.id.squaresCount);
             //playerImage = playerLayout.findViewById(R.id.player_photo);
             if (TextUtils.isEmpty(player.getPhoto())) {
                 //playerImage.setVisibility(View.GONE);
@@ -523,6 +525,7 @@ public class GameBoardActivity extends AppCompatActivity {
             //playerName.setText(parseNameAbbr(player.getName()));
             playerName.setText(player.getName());
             playerEmail.setText(player.getEmail());
+            //squaresCount.setText(player.getUserId()); <--- need to figure # of squares
 
             numP++;
             mPlayersLayout.addView(playerLayout);

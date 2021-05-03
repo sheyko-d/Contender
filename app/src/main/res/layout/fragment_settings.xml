@@ -129,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackground"
                     android:clickable="true"
+                    android:drawableTint="@color/primary_text"
                     android:fontFamily="@font/raleway_semibold"
                     android:includeFontPadding="false"
                     android:onClick="onLogOutButtonClicked"
@@ -265,8 +266,8 @@
 
             <ImageView
                 android:id="@+id/imageView6"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
