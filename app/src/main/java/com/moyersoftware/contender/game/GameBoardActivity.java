@@ -686,10 +686,8 @@ public class GameBoardActivity extends AppCompatActivity {
                     mHomeNameTxt.setText(event.getTeamHome().getName());
 
                     // Init bottom section info
-                    mInfoAwayNameTxt.setText(event.getTeamAway().getAbbrev() + " "
-                            + event.getTeamAway().getName());
-                    mInfoHomeNameTxt.setText(event.getTeamHome().getAbbrev() + " "
-                            + event.getTeamHome().getName());
+                    mInfoAwayNameTxt.setText(event.getTeamAway().getName());
+                    mInfoHomeNameTxt.setText(event.getTeamHome().getName());
                     mQuarterHomeTxt.setText(event.getTeamAway().getAbbrev());
                     mQuarterAwayTxt.setText(event.getTeamHome().getAbbrev());
 
