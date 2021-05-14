@@ -56,8 +56,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
-            android:src="@drawable/icon_football"
-            android:tint="@color/theme_gray_dark"
+            android:src="@drawable/icon_squares"
+            android:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:maxImageSize="36dp" />

@@ -123,10 +123,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
         try {
             Picasso.get().load(game.getImage()).placeholder
-                    (android.R.color.white).centerCrop().fit().placeholder(R.drawable.placeholder)
+                    (android.R.color.white).centerCrop().fit().placeholder(R.drawable.icon)
                     .into(holder.img);
         } catch (Exception e) {
-            Picasso.get().load(R.drawable.placeholder).centerCrop().fit()
+            Picasso.get().load(R.drawable.icon).centerCrop().fit()
                     .into(holder.img);
         }
 

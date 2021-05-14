@@ -11,14 +11,13 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
-        jcenter()
         google()
 
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         //noinspection GradleDependency
         classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.jakewharton:butterknife:10.2.3'
@@ -42,7 +41,6 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
-        jcenter()
     }
     tasks.withType(JavaCompile) {
         configure(options) {
