@@ -31,9 +31,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -232,6 +234,8 @@ public class GameBoardActivity extends AppCompatActivity {
     TextView mGameIdTxt;
     @BindView(R.id.numPlayersTxt)
     TextView numPlayers;
+    @BindView(R.id.btnPDF)
+    ImageButton btnPDF;
 
     // Usual variables
     private int mTotalScrollY;
@@ -303,6 +307,14 @@ public class GameBoardActivity extends AppCompatActivity {
         initBoardLayout();
         registerRealTimeListener();
         initScoresPager();
+
+        btnPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPdfButtonClicked();
+            }
+        });
+
     }
 
     private void initScoresPager() {

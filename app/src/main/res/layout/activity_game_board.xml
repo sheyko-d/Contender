@@ -606,6 +606,19 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView26"
                         app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageButton
+                        android:id="@+id/btnPDF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:backgroundTint="@color/theme_green"
+                        android:scaleType="fitCenter"
+                        android:tint="@color/theme_gray_dark"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnInvite"
+                        app:layout_constraintStart_toEndOf="@+id/btnInvite"
+                        app:layout_constraintTop_toTopOf="@+id/btnInvite"
+                        app:srcCompat="@drawable/icon_pdf" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -849,6 +862,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/numPlayersTxt"
                 android:layout_width="wrap_content"
