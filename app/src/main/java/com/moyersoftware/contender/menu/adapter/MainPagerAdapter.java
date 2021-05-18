@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.moyersoftware.contender.menu.FriendsFragment;
 import com.moyersoftware.contender.menu.GamesFragment;
+import com.moyersoftware.contender.menu.NewsFragment;
 import com.moyersoftware.contender.menu.SettingsFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
@@ -34,7 +35,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return GamesFragment.newInstance();
             case 1:
-                return FriendsFragment.newInstance();
+                return NewsFragment.newInstance();
             case 2:
                 return SettingsFragment.newInstance();
             default:
