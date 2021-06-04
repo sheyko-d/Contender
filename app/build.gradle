@@ -13,7 +13,7 @@ android {
         applicationId "com.moyersoftware.contender"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1281
+        versionCode 1285
         versionName '3.0.00'
     }
     buildTypes {
@@ -47,15 +47,18 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.facebook.android:facebook-android-sdk:9.1.1'
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-core:18.0.3'
     implementation 'com.google.firebase:firebase-auth:20.0.4'
     implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'com.google.firebase:firebase-storage:19.2.2'
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'com.itextpdf:itextpdf:5.5.13.1'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
-    implementation 'com.viewpagerindicator:library:2.4.1'
+    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
@@ -63,6 +66,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:3.0.3'
     implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
     implementation 'com.google.android.gms:play-services-ads:20.1.0'
+    implementation 'com.android.volley:volley:1.2.0'
 
 
 }
