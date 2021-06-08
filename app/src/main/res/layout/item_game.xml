@@ -13,6 +13,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
+        app:contentPadding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +36,6 @@
                     android:id="@+id/game_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:contentDescription="@null"
@@ -140,9 +140,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/game_details_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/game_name_txt">
@@ -154,13 +153,13 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/raleway_light"
                         android:maxLines="1"
-                        android:minEms="7"
-                        android:textAlignment="textEnd"
+                        android:textAlignment="center"
                         android:textColor="@color/primary_text"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toTopOf="@+id/game_time_txt"
                         app:layout_constraintEnd_toEndOf="parent"
-                        tools:text="20 points" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="DAL @ TB" />
 
                     <TextView
                         android:id="@+id/game_time_txt"
@@ -169,15 +168,14 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/raleway_light"
                         android:includeFontPadding="false"
-                        android:lineSpacingExtra="5dp"
                         android:maxLines="1"
-                        android:minEms="7"
-                        android:textAlignment="textEnd"
+                        android:textAlignment="center"
                         android:textColor="@color/primary_text"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        tools:text="09 Nov 4:30 PM EST" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Sept 9 @ 8:30p" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
