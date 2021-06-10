@@ -42,6 +42,7 @@
                 android:id="@+id/game_information_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
                 android:text="@string/game_information"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
@@ -78,6 +79,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
                 android:text="@string/create_pdf"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
@@ -114,6 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
                 android:text="@string/player_details"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
@@ -153,7 +156,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/list_of_players"
                 android:textColor="@color/primary_text"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins" />
         </LinearLayout>
 
         <View
