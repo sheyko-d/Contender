@@ -14,10 +14,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.moyersoftware.contender.R;
+import com.moyersoftware.contender.util.Util;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
@@ -56,7 +58,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder holder, int position) {
         Picasso.get().load(imageList.get(position)).into(holder.articleImage);
         holder.titleText.setText(titleList.get(position));
-        holder.dateText.setText(dateList.get(position));
+        //holder.dateText.setText(Util.formatDateTime(Long.parseLong(dateList.get(position))));
+        try {
+            holder.dateText.setText(Util.formatDateString(dateList.get(position)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         holder.authorText.setText(authorList.get(position));
         holder.descText.setText(descList.get(position));
 

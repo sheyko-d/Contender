@@ -11,10 +11,10 @@ android {
     buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.moyersoftware.contender"
-        minSdkVersion 22
+        minSdkVersion 24
         targetSdkVersion 30
-        versionCode 1292
-        versionName '3.0   build 1292'
+        versionCode 1293
+        versionName '3.0   build 1293'
     }
     buildTypes {
         release {

@@ -13,8 +13,11 @@ import com.moyersoftware.contender.login.data.User;
 
 import org.json.JSONArray;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Random;
@@ -100,6 +103,14 @@ public class Util {
         SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d");
         fmtOut.setTimeZone(TimeZone.getTimeZone("EST"));
         return fmtOut.format(time);
+    }
+
+    public static String formatDateString(String time) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        Date date = dateFormat.parse(time);//You will get date object relative to server/client timezone wherever it is parsed
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+        String dateStr = formatter.format(date);
+        return dateStr;
     }
 
     /**
