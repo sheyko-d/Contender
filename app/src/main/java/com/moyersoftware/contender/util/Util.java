@@ -105,14 +105,6 @@ public class Util {
         return fmtOut.format(time);
     }
 
-    public static String formatDateString(String time) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        Date date = dateFormat.parse(time);//You will get date object relative to server/client timezone wherever it is parsed
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
-        String dateStr = formatter.format(date);
-        return dateStr;
-    }
-
     /**
      * Parses the user email and full name and formats it to username.
      */
