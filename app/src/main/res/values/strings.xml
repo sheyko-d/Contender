@@ -108,7 +108,7 @@
     <string name="list_of_players">List of Players</string>
     <string name="create_pdf">Create PDF</string>
     <string name="game_information">Game Information</string>
-    <string name="invite_friends">Invite Players</string>
+    <string name="invite_friends">Invite Friends</string>
     <string name="add_players">Add Players</string>
     <string name="paid_players">Players Who Paid</string>
     <string name="q1">Q1</string>
@@ -117,11 +117,19 @@
     <string name="quarter_final">FINAL</string>
     <string name="q4">Q4</string>
     <string name="regular_style">Regular Style</string>
-    <string name="rules_default"><![CDATA[There is a winner at the end of each quarter & the final score. Winners are based on the last digit of the score of each team.]]></string>
     <string name="the_players">The Players</string>
     <string name="score">Score</string>
     <string name="game_id">Game ID:</string>
     <string name="purchase_failed">Purchase failed</string>
     <string name="channel_name">Contender</string>
     <string name="channel_description">Contender notifications</string>
+
+    <!-- Game Info Screen -->
+    <string name="info_invite">INVITE FRIENDS</string>
+    <string name="info_created">Created By:</string>
+    <string name="info_id">Game ID:</string>
+    <string name="info_gamerules">GAME RULES</string>
+    <string name="info_players">PLAYERS</string>
+    <string name="info_winners">WINNER\'S ROW</string>
+    <string name="rules_default"><![CDATA[There is a winner at the end of each quarter & the final score. Winners are based on the last digit of the score of each team.]]></string>
 </resources>

@@ -67,7 +67,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         Date convertedDate = new Date();
         try {
             convertedDate = dateFormat.parse(strDate);
-            SimpleDateFormat sdfnewformat = new SimpleDateFormat("MMM dd, yyyy HH:mm a");
+            SimpleDateFormat sdfnewformat = new SimpleDateFormat("MMM d, yyyy");
             String finalDateString = sdfnewformat.format(convertedDate);
             holder.dateText.setText(finalDateString);
         } catch (ParseException e) {

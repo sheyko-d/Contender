@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/raleway_semibold"
+            android:fontFamily="@font/poppins_medium"
             android:text="PLAYERS"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
@@ -251,7 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/raleway_semibold"
-                    android:text="Q1"
+                    android:text="@string/q1"
                     android:textAlignment="center" />
 
                 <TextView

@@ -546,7 +546,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:ellipsize="end"
-                        android:fontFamily="@font/raleway_semibold"
+                        android:fontFamily="@font/poppins_medium"
                         android:text="Game Name"
                         android:textColor="@color/theme_green"
                         android:textSize="16sp"
@@ -586,7 +586,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:fontFamily="@font/raleway_semibold"
+                        android:fontFamily="@font/poppins_medium"
                         android:text="564856"
                         android:textColor="@color/secondary_text"
                         android:textIsSelectable="true"
@@ -601,7 +601,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@color/theme_green"
-                        android:text="INVITE PLAYERS"
+                        android:text="@string/info_invite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView26"
@@ -629,7 +629,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/raleway_semibold"
+                android:fontFamily="@font/poppins_medium"
                 android:text="GAME RULES"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
@@ -658,7 +658,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/raleway_semibold"
+                android:fontFamily="@font/poppins_medium"
                 android:text="PLAYERS"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
@@ -690,7 +690,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="0dp"
-                android:fontFamily="@font/raleway_semibold"
+                android:fontFamily="@font/poppins_medium"
                 android:text="WINNER'S ROW"
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
@@ -722,8 +722,8 @@
                         android:id="@+id/textView40"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_semibold"
-                        android:text="Q1"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/q1"
                         android:textAlignment="center" />
 
                     <TextView
@@ -760,8 +760,8 @@
                         android:id="@+id/textView41"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_semibold"
-                        android:text="Q2"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/q2"
                         android:textAlignment="center" />
 
                     <TextView
@@ -798,8 +798,8 @@
                         android:id="@+id/textView42"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_semibold"
-                        android:text="Q3"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/q3"
                         android:textAlignment="center" />
 
                     <TextView
@@ -836,8 +836,8 @@
                         android:id="@+id/textView43"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/raleway_semibold"
-                        android:text="FINAL"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/quarter_final"
                         android:textAlignment="center" />
 
                     <TextView
