@@ -84,7 +84,7 @@
     <string name="login_forgot_password">FORGOT PASSWORD?</string>
     <string name="login_register">REGISTER</string>
     <string name="go_back">Go back</string>
-    <string name="register_login">Already have an account? LOG IN</string>
+    <string name="register_login">Already have an account? SIGN IN</string>
     <string name="welcome_title">Welcome!</string>
     <string name="welcome_desc">Contender - Football Squares is your go-to place to play Football Squares! Now Squares doesn\'t have to only be during the Big Game!</string>
     <string name="games_how_to_use">How to use</string>
