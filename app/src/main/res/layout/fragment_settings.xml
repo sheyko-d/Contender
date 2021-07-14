@@ -193,6 +193,24 @@
                     android:clickable="true"
                     android:fontFamily="@font/poppins_medium"
                     android:includeFontPadding="false"
+                    android:onClick="onHowToButtonClicked"
+                    android:padding="16dp"
+                    android:text="@string/settings_how_to"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:fontFamily="@font/poppins_medium"
+                    android:includeFontPadding="false"
                     android:onClick="onSupportButtonClicked"
                     android:padding="16dp"
                     android:text="@string/settings_support"
@@ -230,7 +248,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:autoLink="web"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/nunito_light"
         android:lineSpacingExtra="2dp"
         android:text="@string/settings_about_copyright"
         android:textAlignment="center"
@@ -310,7 +328,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/nunito_light"
         android:text="@string/about_company1"
         android:textColor="@color/theme_gray_dark"
         android:textSize="10sp"
@@ -323,7 +341,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/nunito_light"
         android:text="version 3.0.00"
         android:textColor="@color/theme_gray_dark"
         android:textSize="10sp"
