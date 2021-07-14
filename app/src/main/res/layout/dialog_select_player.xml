@@ -28,7 +28,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins"
+            android:fontFamily="@font/nunito_light"
             android:hint="Or enter a new player's name"
             android:textColor="@color/theme_green"
             android:textSize="16sp"

@@ -4,7 +4,7 @@
     android:layout_width="@dimen/board_cell_size"
     android:layout_height="@dimen/board_cell_size"
     android:background="@color/theme_green"
-    android:fontFamily="@font/poppins_light"
+    android:fontFamily="@font/nunito_light"
     android:gravity="center"
     android:textColor="@color/white"
     android:textSize="34sp"

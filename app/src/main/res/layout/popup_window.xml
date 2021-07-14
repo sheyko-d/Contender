@@ -43,7 +43,7 @@
                 android:id="@+id/game_information_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/nunito_semibold"
                 android:text="@string/game_information"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
@@ -81,7 +81,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/nunito"
                 android:text="@string/create_pdf"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />
@@ -121,7 +121,7 @@
                 android:id="@+id/list_players_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/nunito"
                 android:text="@string/invite_friends"
                 android:textColor="@color/primary_text"
                 android:textSize="14sp" />

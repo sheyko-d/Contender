@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Football Squares</string>
     <string name="facebook_app_id">1228412957223237</string>
-    <string name="ADMOB_BANNER_UNIT_ID">ca-app-pub-1761468736156699/1458069982</string>
+    <string name="ADMOB_APP_ID">ca-app-pub-1761468736156699~2270259675</string>
+    <string name="ADMOB_BANNER_UNIT_ID">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ADMOB_FIRST_USE_ID">ca-app-pub-1761468736156699/5482271983</string>
 <!--    ca-app-pub-3940256099942544/6300978111 Test ID-->
 <!--    ca-app-pub-1761468736156699/1458069982 YOUR ID-->
 
@@ -67,7 +69,7 @@
     </string>
     <string name="games_how_to">How to Play\nSquares</string>
     <string name="about_version">1.0.16</string>
-    <string name="settings_how_to">How to Play Squares</string>
+    <string name="settings_how_to">How to Play Football Squares</string>
     <string name="settings_how_to_use">How to Use Contender</string>
     <string name="username_hint">Enter your username</string>
     <string name="about_company1">Copyright © 2021</string>
@@ -76,7 +78,7 @@
     <string name="about_company4">LLC</string>
 
     <!-- How to Play screen -->
-    <string name="title_activity_how_to_play">How to Play Squares</string>
+    <string name="title_activity_how_to_play">How to Play Football Squares</string>
     <string name="skip">Skip</string>
     <string name="settings_about_affiliation">This app is not affiliated with or endorsed by the National Football League. Any trademarks used in the app are done so under \"fair use\" with the sole purpose of identifying the respective entities, and remain the property of their respective owners.</string>
     <string name="login_email_hint">EMAIL</string>

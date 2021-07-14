@@ -87,5 +87,6 @@
     <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/theme_green</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="fontFamily">@font/nunito</item>
     </style>
 </resources>
